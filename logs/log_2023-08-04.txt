@@ -1,0 +1,26 @@
+15:25:01 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+15:25:01 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:42:36 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+16:43:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+16:43:58 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: data.id.id.substring is not a function
+
+16:44:57 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: data.id.id.substring is not a function
+

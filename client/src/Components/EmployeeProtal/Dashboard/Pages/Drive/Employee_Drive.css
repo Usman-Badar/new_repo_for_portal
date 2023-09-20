@@ -1,0 +1,169 @@
+.Employee_Drive {
+    padding: 0 20px;
+    max-height: calc( 100vh - 110px);
+    font-family: Roboto-Light;
+    overflow-y: overlay;
+}
+
+.Employee_Drive h5 {
+    font-family: Roboto;
+}
+
+.Employee_Drive video {
+    width: 100% !important;
+}
+
+.Employee_Drive .Modalcontent .btn {
+    font-size: 12px;
+    margin: 0 10px;
+}
+
+.Employee_Drive .Modalcontent i {
+    font-size: 20px;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.Employee_Drive .Employee_Drive_Grid {
+    display: grid;
+    grid-template-columns: 20fr 20fr 20fr 20fr 20fr;
+    grid-gap: 20px;
+    padding: 20px 0;
+}
+
+.Employee_Drive .Employee_Drive_GridForModal {
+    display: grid;
+    grid-template-columns: 50fr 50fr !important;
+    grid-gap: 20px;
+    padding: 20px 0;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 .Employee_Drive_Text {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+    background-color: #fff;
+    border-radius: 0 0 10px 10px;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 .Employee_Drive_Text p:first-child,
+.Employee_Drive .Employee_Drive_Grid .Div1 .Employee_Drive_Text i {
+    color: #000;
+}
+
+.Employee_Drive .Drive_Icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    margin-left: auto;
+    transition: .3s;
+}
+
+.Employee_Drive .Drive_Icon:hover {
+    background-color: rgb(211, 211, 211, .5);
+}
+
+.Employee_Drive .Drive_Icon .Show_Changes_Menu {
+    position: absolute;
+    right: 0%;
+    bottom: 100%;
+    width: 200px;
+    height: max-content;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    display: none;
+    z-index: 1;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 .Show_Changes_Menu i {
+    color: #000;
+}
+
+.Employee_Drive .Drive_Icon .Show_Changes_Menu .DropDown_Drive_Menu div {
+    transition: .3s;
+}
+
+.Employee_Drive .Drive_Icon .Show_Changes_Menu .DropDown_Drive_Menu div:hover {
+    background-color: rgb(211, 211, 211, .5);
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 p {
+    margin-bottom: 0;
+    font-size: 10px;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    transition: .8s;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 .Div1_IMG {
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+    height: 150px;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 i {
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.Employee_Drive .Employee_Drive_Grid .Div1 .Employee_Drive_Text .Drive_Icon .Show_Changes_Menu .DropDown_Drive_Menu i {
+    font-size: 15px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .Employee_Drive .Employee_Drive_Grid {
+        grid-template-columns: 25fr 25fr 25fr 25fr;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .Employee_Drive .Employee_Drive_Grid {
+        grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Employee_Drive .Employee_Drive_Grid {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .Employee_Drive {
+        padding: 10px;
+    }
+    .Employee_Drive .Employee_Drive_Grid {
+        grid-gap: 10px;
+    }
+    .Employee_Drive .Employee_Drive_Grid .Div1 .Employee_Drive_Text {
+        padding: 10px;
+        word-break: break-all;
+    }
+    .folders .Div1 .Drive_Icon .DropDown_Drive_Menu p {
+        font-size: 8px !important;
+    }
+    .folders .Div1 .Drive_Icon .DropDown_Drive_Menu i {
+        font-size: 12px !important;
+    }
+    .Employee_Drive .Drive_Icon .Show_Changes_Menu {
+        width: 150px;
+    }
+}

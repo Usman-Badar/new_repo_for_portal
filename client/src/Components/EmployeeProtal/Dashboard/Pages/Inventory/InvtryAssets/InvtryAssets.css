@@ -1,0 +1,131 @@
+.InventoryAssets_Box {
+    display: grid;
+    grid-template-columns: 90fr 10fr;
+    background-color: rgba(242, 243, 247, 255);
+    grid-column-gap: 30px;
+    padding: 30px;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details {
+    padding: 30px;
+    background-color: white;
+    font-family: Quicksand;
+    max-height: 780px;
+    overflow: auto;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one {
+    display: grid;
+    grid-template-columns: 15fr 30fr;
+    grid-column-gap: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .3s;
+    /* background-color: #ECF0F5; */
+    position: relative;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one .index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one .index span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one .Text {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one .ShowOnHover {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one:hover .ShowOnHover {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    width: 20%;
+    height: 100%;
+    padding: 0 30px;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one .ShowOnHover i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.InventoryAssets_Box .InventoryAssets_Details .one .ShowOnHover i:hover {
+    background-color: rgb(207, 207, 207);
+}
+
+.InventoryAssets_Box .InventoryAssets_Right {
+    display: flex;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+.InventoryAssets_Box .InventoryAssets_Right .Btn5 {
+    position: relative;
+    width: 100%;
+    height: max-content;
+    overflow: hidden;
+}
+
+.InventoryAssets_Box .InventoryAssets_Right .Btn5 .NewAssetForm {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    padding: 30px;
+    background: #fff;
+    width: 400px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    font-family: Quicksand;
+    opacity: 0;
+    transition: 1s;
+}
+
+.InventoryAssets_Box .InventoryAssets_Right .Btn5:hover {
+    overflow: visible;
+}
+
+.InventoryAssets_Box .InventoryAssets_Right .Btn5:hover .NewAssetForm {
+    opacity: 1;
+}
+
+.InventoryAssets_Box .InventoryAssets_Right .Btn5 button {
+    color: white;
+    background-color: black;
+}

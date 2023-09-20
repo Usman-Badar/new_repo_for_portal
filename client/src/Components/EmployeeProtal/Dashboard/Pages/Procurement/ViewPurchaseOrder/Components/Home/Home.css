@@ -1,0 +1,166 @@
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three,
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .two {
+    width: 100%;
+    display: grid;
+    grid-column-gap: 20px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three {
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    margin-bottom: 20px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .two {
+    grid-template-columns: 50fr 50fr;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three .RequestStatusChart,
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three .Calculate {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px !important;
+    padding: 10px;
+    border-radius: 15px;
+    font-family: Poppins;
+    min-height: 320px;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three .Calculate small {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .ViewPrRequests_graphdiv {
+    border-bottom: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    padding: 10px;
+    width: 100%;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid {
+    display: grid;
+    grid-template-columns: 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr;
+    grid-column-gap: 10px;
+    height: 250px;
+    align-items: flex-end;
+    position: relative;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_monthgrid {
+    display: grid;
+    grid-template-columns: 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr;
+    grid-column-gap: 10px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar {
+    background-color: lightgray;
+    border-radius: 10px;
+    position: relative;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background-color: black;
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    width: max-content;
+    left: 0;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background-color: black;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graph_data .Graph_monthgrid div {
+    font-weight: bolder;
+    text-align: center;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .ViewPrRequests_graph .graphyear {
+    text-align: center;
+    font-weight: bolder;
+}
+
+@media only screen and (max-width: 1100px) {
+    .ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .three {
+        width: 1000px;
+        overflow-x: auto;
+    }
+}
+
+
+/* .ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .graph {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    padding: 20px;
+    padding-bottom: 40px;
+    grid-template-columns: 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr;
+    grid-column-gap: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    align-items: flex-end;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .graph .Heading {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .graph .Heading h4 {
+    font-weight: bolder;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .graph .GraphItem {
+    width: 100%;
+    background-color: lightgray;
+    border-radius: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Right.RequestDetails .Home .graph .GraphItem div {
+    position: absolute;
+    bottom: -30px;
+    left: 42%;
+    font-weight: bold;
+} */

@@ -1,0 +1,30 @@
+.AdminModule {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Poppins;
+}
+
+.AdminModule .Admin_Dashboard_main_content {
+    height: auto;
+    width: 85vw;
+    margin-left: 15vw;
+    background-color: var( --lightgray );
+    min-height: 100vh;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.AdminModule .Admin_Dashboard_main_content .content {
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 55px;
+    overflow: auto hidden !important;
+}
+
+@media only screen and (max-width: 1400px) {
+    .AdminModule .Admin_Dashboard_main_content {
+        width: 100vw;
+        margin-left: 0;
+    }
+}

@@ -1,0 +1,155 @@
+.ChatBot_Notification .ChatBot_Notification_Speeddail .Button {
+    position: fixed;
+    bottom: 3%;
+    right: 2%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(13, 184, 222, 255);
+    color: white;
+    font-size: 25px;
+    border-radius: 50%;
+    z-index: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ChatBot_Notification .ChatBot_Notification_Speeddail .chatBotRobot {
+    position: fixed;
+    bottom: 3%;
+    right: 2%;
+    width: 80px;
+    height: 80px;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+    width: max-content;
+    max-width: 20%;
+    word-break: break-all;
+    position: fixed;
+    bottom: 14%;
+    right: 2.5%;
+    height: max-content;
+    padding: 10px;
+    z-index: 1;
+    border-radius: 5px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: white;
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 999;
+}
+
+@keyframes autoplay2 {
+    0% {
+        display: block;
+    }
+    40% {
+        display: block;
+        opacity: 1;
+    }
+    90% {
+        display: block;
+        opacity: 1;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
+
+.ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid::before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    bottom: -8px;
+    right: 20px;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid .Speeddail_Grid1 {
+    font-size: 20px;
+}
+
+.ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid div {
+    color: black !important
+}
+
+.ChatBot_Notification p {
+    font-size: 12px;
+}
+
+.ChatBot_Notification .ChatBot_Notification_Speeddail .Button {
+    animation: roll 3s;
+}
+
+@media only screen and (max-width: 1600px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 30%;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 40%;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 50%;
+        left: 10px;
+    }
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Button {
+        left: 20px;
+    }
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .chatBotRobot {
+        left: 10px;
+    }
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid::before {
+        left: 35px;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 60%;
+    }
+}
+
+@media only screen and (max-height: 750px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        bottom: 18%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 70%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 90%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        max-width: 94%;
+    }
+}
+
+@media only screen and (max-height: 450px) {
+    .ChatBot_Notification .ChatBot_Notification_Speeddail .Speeddail_Grid {
+        bottom: 30%;
+    }
+}

@@ -1,0 +1,167 @@
+div.empModals .modal-body .add_div {
+    font-size: 12px;
+}
+
+div.empModals .modal-body .add_div .form-control {
+    background: none;
+    border-radius: 0;
+    height: 30px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #ECF0F5;
+    padding: 0 10px;
+}
+
+div.empModals .modal-body .add_div select option {
+    color: #000;
+}
+
+.EmployeeForm {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.EmployeeForm .EmployeeForm-content {
+    width: 65%;
+    background-color: #fff;
+    padding: 50px 20px 30px 20px;
+    font-family: Poppins;
+    position: relative;
+    color: #222D32;
+    font-size: 12px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.EmployeeForm .EmployeeForm-content .steps {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.EmployeeForm .EmployeeForm-content .steps i {
+    font-size: 25px;
+    padding: 10px;
+    margin: 0 20px;
+    border-radius: 50%;
+    background-color: #ECF0F5;
+}
+
+.EmployeeForm .EmployeeForm-content .steps .activeStep {
+    background-color: #222D32 !important;
+    color: #ECF0F5 !important;
+}
+
+.EmployeeForm .EmployeeForm-content .Step1 input[type='radio'] {
+    width: 15px;
+    height: 15px;
+}
+
+.EmployeeForm .EmployeeForm-content .table tr th {
+    padding: 10px;
+}
+
+.EmployeeForm .EmployeeForm-content .table tr td {
+    padding: 5px;
+    border: 0;
+}
+
+.EmployeeForm .EmployeeForm-content #armedLicense {
+    display: none !important;
+}
+
+.EmployeeForm .EmployeeForm-content #drivingLicense {
+    display: none !important;
+}
+
+.EmployeeForm .EmployeeForm-content .Step4 .employee_img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .5s;
+    background-size: cover;
+}
+
+.EmployeeForm .EmployeeForm-content .Step4 .employee_img:hover {
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+
+.EmployeeForm .EmployeeForm-content .Step4 .employee_img::before {
+    content: 'PHOTOGRAPH';
+    position: absolute;
+}
+
+.EmployeeForm .EmployeeForm-content .leftRight label {
+    margin-left: 33px;
+}
+
+.EmployeeForm .EmployeeForm-content .leftRight {
+    width: 50%;
+}
+
+.EmployeeForm .EmployeeForm-content .leftRight i {
+    font-size: 25px;
+    padding: 0 8px 0 0;
+}
+
+.EmployeeForm .EmployeeForm-content .form-control {
+    height: 30px;
+    font-size: 12px;
+    border-radius: 0;
+}
+
+.EmployeeForm .EmployeeForm-content .btn {
+    background-color: #222D32;
+    color: #ECF0F5;
+    border-radius: 0;
+    width: 20%;
+    transition: .3s;
+}
+
+.EmployeeForm .EmployeeForm-content .btn:hover {
+    background-color: #fff;
+    color: #222D32;
+    border: 1px solid #222D32;
+}
+
+@media only screen and (max-width: 991px) {
+    .EmployeeForm .EmployeeForm-content {
+        width: 80%;
+    }
+    .EmployeeForm .EmployeeForm-content .leftRight {
+        width: 100%;
+        margin: 0 !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .EmployeeForm .EmployeeForm-content {
+        width: 95%;
+    }
+    .EmployeeForm .EmployeeForm-content .emp_form_img {
+        display: none;
+    }
+    .EmployeeForm .EmployeeForm-content .emp_form_img_sm {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        top: 30px;
+        right: calc( 50% - 75px);
+        display: flex;
+    }
+    .EmployeeForm .EmployeeForm-content .emp_heading {
+        margin-top: 150px;
+    }
+    .EmployeeForm .EmployeeForm-content .btn[type='submit'] {
+        width: 40%;
+    }
+}

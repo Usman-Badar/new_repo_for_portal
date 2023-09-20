@@ -1,0 +1,206 @@
+.Dashboard_topbar {
+    width: 100%;
+    height: 45px;
+    justify-content: space-between !important;
+    padding: 5px 15px 5px 30px;
+    background-color: var(--dark-black);
+    color: var(--gray-text);
+    z-index: 100;
+}
+
+.Dashboard_topbar .topbar_news {
+    overflow: hidden;
+    font-family: Roboto-Light;
+    font-size: 12px;
+    padding: 0 50px 0 0;
+    position: relative;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.Dashboard_topbar .topbar_news:hover {
+    color: var(--dark-c-green);
+}
+
+.Dashboard_topbar .Attandence_Request_Div .Attandence_Request_Div_Content {
+    width: 50%;
+}
+
+.Dashboard_topbar .Attandence_Request_Div .Attandence_Request_Div_Content .table tbody tr {
+    cursor: pointer;
+    transition: .5s;
+}
+
+.Dashboard_topbar .Attandence_Request_Div .Attandence_Request_Div_Content .table tbody tr:hover,
+.Dashboard_topbar .Attandence_Request_Div .Attandence_Request_Div_Content .table tbody tr.viewed {
+    background-color: rgb(212, 212, 212, .5);
+}
+
+/* .Dashboard_topbar .topbar_news::before {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(90deg,#272F3E 0,hsla(0,0%,100%,0));
+    left: 0;
+    top: 0;
+}
+
+.Dashboard_topbar .topbar_news::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(270deg,#272F3E 0,hsla(0,0%,100%,0));
+    right: 0;
+    top: 0;
+} */
+
+.Dashboard_topbar .icons {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.Dashboard_topbar .icons .btn {
+    font-size: 25px;
+}
+
+.Dashboard_topbar .icons .emp_img_container {
+    position: relative;
+}
+
+.Dashboard_topbar .icons .emp_img_container .emp_dropdown {
+    position: absolute;
+    top: 130%;
+    left: -100px;
+    width: 150px;
+    padding: 15px 0;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    font-size: 12px;
+    font-family: Raleway;
+    z-index: 300;
+    border-radius: 5px;
+    display: none;
+}
+
+.Dashboard_topbar .icons .emp_img_container .emp_dropdown .links {
+    display: flex;
+    justify-content: start;
+    padding: 5px 20px;
+    font-family: Poppins;
+    color: #1A2226;
+    transition: .5s;
+}
+
+.Dashboard_topbar .icons .emp_img_container .emp_dropdown .links:hover {
+    text-decoration: none;
+    background-color: #EBFCFF;
+}
+
+.Dashboard_topbar .icons .emp_img_container .emp_dropdown .links i {
+    font-size: 15px;
+}
+
+.Dashboard_topbar .icons .emp_img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-size: cover;
+}
+
+.Dashboard_topbar .icons .search {
+    position: relative;
+}
+
+.Dashboard_topbar .icons .search .search_dropdown {
+    position: absolute;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    top: 100%;
+    left: -250px;
+    width: 300px;
+    padding: 10px;
+    z-index: 300;
+    background-color: #fff;
+    display: none;
+}
+
+.Dashboard_topbar .icons .search .search_dropdown .form-control {
+    border: 0;
+    border-radius: 0;
+    background-color: #222D32;
+    color: #ECF0F5;
+}
+
+.Dashboard_topbar .icons .search .search_dropdown .btn {
+    background-color: #222D32;
+    color: #ECF0F5;
+    border: 0;
+    outline: none;
+}
+
+.modal .modal-dialog .modal-content {
+    background-color: #222D32;
+    color: #ECF0F5;
+    font-family: Poppins;
+}
+
+.modal .modal-dialog .modal-content .messages-content {
+    max-height: 600px;
+    overflow: auto;
+}
+
+.modal .modal-dialog .modal-content .close:focus {
+    outline: none;
+}
+
+.modal .modal-dialog .modal-content .message {
+    width: 100%;
+    height: max-content;
+    border-radius: 20px;
+    background-color: #1A2226;
+    padding: 10px 20px;
+    text-align: justify;
+    word-wrap: break-word;
+    margin-bottom: 20px;
+}
+
+.modal .modal-dialog .modal-content .btn {
+    border-color: #0DB8DE;
+    color: #0DB8DE;
+    border-radius: 0px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    padding: 8px 50px;
+}
+
+.modal .modal-dialog .modal-content .btn:hover {
+    background-color: #0DB8DE;
+    color: #ECF0F5;
+}
+
+
+/* @media only screen and (max-width: 1400px) {
+    .Dashboard_topbar {
+        width: 100vw;
+    }
+} */
+
+@media only screen and (max-width: 450px) {
+    .Dashboard_topbar {
+        padding: 5px 10px;
+    }
+    .Dashboard_topbar .icons .search {
+        position: static;
+    }
+    .Dashboard_topbar .icons .search .search_dropdown {
+        width: 100%;
+        left: 0;
+        top: 50px;
+    }
+    .Dashboard_topbar .icons .emp_img {
+        width: 30px;
+        height: 30px;
+    }
+}

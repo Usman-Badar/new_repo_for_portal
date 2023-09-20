@@ -1,0 +1,66 @@
+.AdminModule .Admin_Dashboard_sideBar {
+    width: 18%;
+    min-height: 100vh;
+    max-height: 100vh;
+    background-color: #1A2226;
+    color: #ECF0F5;
+    overflow: auto;
+    position: fixed;
+    z-index: 999;
+    transition: .3s;
+}
+
+.AdminModule .Admin_Dashboard_sideBar .Admin_Dashboard_logo {
+    width: 100%;
+    height: max-content;
+    justify-content: space-between !important;
+    padding: 10px 20px;
+    font-family: Oxygen;
+    margin-bottom: 20px;
+}
+
+.AdminModule .Admin_Dashboard_sideBar .Admin_Dashboard_logo button {
+    font-size: 20px;
+    color: #ECF0F5;
+}
+
+.AdminModule .Admin_Dashboard_sideBar .Admin_Dashboard_logo button:focus {
+    box-shadow: none;
+}
+
+.AdminModule .Admin_Dashboard_sideBar .links {
+    justify-content: start !important;
+    padding: 10px 20px;
+    font-family: Poppins;
+    color: #ECF0F5;
+    margin-bottom: 10px;
+    border-left: 2px solid #1A2226;
+    transition: .5s;
+    font-size: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.AdminModule .Admin_Dashboard_sideBar ._options {
+    background-color: #222D32;
+}
+
+.AdminModule .Admin_Dashboard_sideBar .links i {
+    font-size: 18px;
+}
+
+.Admin_Dashboard_active {
+    background-color: #222D32;
+    border-left: 2px solid #0DB8DE !important;
+}
+
+.AdminModule .Admin_Dashboard_sideBar .links:hover {
+    text-decoration: none;
+    color: #0DB8DE;
+}
+
+@media only screen and (max-width: 1200px) {
+    .AdminModule .Admin_Dashboard_sideBar {
+        width: 0;
+    }
+}

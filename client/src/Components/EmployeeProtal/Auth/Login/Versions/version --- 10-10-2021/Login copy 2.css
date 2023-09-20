@@ -1,0 +1,117 @@
+.Employee_Login {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Quicksand;
+}
+
+.Employee_Login .Login_Div {
+    width: 30%;
+    height: 60vh;
+    border: 1px solid rgb(197, 197, 197);
+    border-radius: 10px;
+    position: relative;
+}
+
+.Employee_Login .Login_Div .MuiFormControl-root label,
+.Employee_Login .Login_Div .MuiFormControl-root input {
+    font-family: Poppins;
+}
+
+.Employee_Login .Login_Div1 .PrevLogins {
+    display: grid;
+    grid-template-columns: 15fr 85fr;
+    grid-column-gap: 10px;
+    padding: 10px;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.Employee_Login .Login_Div1 .PrevLogins:hover {
+    background: rgb(211, 211, 211, .3);
+}
+
+.Employee_Login .Login_Div1 .PrevLogins img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+}
+
+.Employee_Login .Login_Div1 .AnotherOptions {
+    display: grid;
+    grid-template-columns: 15fr 85fr;
+    padding: 10px;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.Employee_Login .Login_Div1 .AnotherOptions:hover {
+    background: rgb(211, 211, 211, .3);
+}
+
+.Employee_Login .Login_Div1 .AnotherOptions i {
+    font-size: 35px;
+    display: block !important;
+    margin-right: auto;
+}
+
+.Employee_Login .Login_Div1 p {
+    font-size: 13px;
+}
+
+.Employee_Login .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    width: 100%;
+}
+
+.Employee_Login .Login_Div div button {
+    width: 30%;
+    margin: 0 auto;
+    background-color: black;
+    color: white;
+}
+
+.Employee_Login .Login_Div .prev {
+    position: absolute;
+    cursor: pointer;
+}
+@media only screen and (max-width: 1400px) {
+    .Employee_Login .Login_Div {
+        width: 40%;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .Employee_Login .Login_Div {
+        width: 50%;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .Employee_Login .Login_Div {
+        width: 60%;
+    }
+}
+@media only screen and (max-width: 670px) {
+    .Employee_Login .Login_Div {
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 580px) {
+    .Employee_Login .Login_Div {
+        width: 80%;
+    }
+}
+@media only screen and (max-width: 510px) {
+    .Employee_Login .Login_Div {
+        width: 90%;
+    }
+}
+@media only screen and (max-width: 455px) {
+    .Employee_Login {
+        padding: 0 10px;
+    }
+    .Employee_Login .Login_Div {
+        width: 100%;
+        height: 70vh;
+    }
+}

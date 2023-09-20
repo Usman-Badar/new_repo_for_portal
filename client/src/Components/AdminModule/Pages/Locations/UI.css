@@ -1,0 +1,80 @@
+.LocationsContainer {
+    width: 100%;
+    height: calc( 100vh - 57px );
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+}
+
+.LocationsContainer .grid_column {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    z-index: 1;
+}
+
+.LocationsContainer .grid_column2 {
+    z-index: 0;
+}
+
+.LocationsContainer .submit {
+    background-color: var(--orange);
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 12px;
+}
+
+.LocationsContainer .logContainer {
+    width: 100%;
+    background-color: rgb(211, 211, 211, .5);
+    padding: 10px;
+    font-family: CourierPrime;
+    margin-bottom: 10px;
+}
+
+.LocationsContainer .logContainer .log {
+    padding: 1px 10px;
+    color: var( --orange );
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 12px;
+}
+
+.LocationsContainer .submit.cancle {
+    background-color: var(--blue);
+}
+
+.LocationsContainer .grid_column.details {
+    font-size: 13px;
+}
+
+.LocationsContainer .grid_column .listContainer {
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.LocationsContainer .grid_column .listContainer .listItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.LocationsContainer .grid_column .listContainer .listItem p {
+    font-size: 12px;
+}
+
+.LocationsContainer .grid_column .listContainer .listItem .editBtn {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+.LocationsContainer form.grid_column .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}

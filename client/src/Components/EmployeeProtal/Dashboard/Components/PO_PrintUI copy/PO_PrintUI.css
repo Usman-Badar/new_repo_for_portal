@@ -1,0 +1,95 @@
+.PO_PrintUI {
+    padding: 20px 0;
+}
+
+.PO_PrintUI p{
+    margin-bottom: 0 !important;
+    font-size: 13px;
+}
+/* .PO_PrintUI .PO_PrintUI_Div{
+    width: 30%;
+} */
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Logos{
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Logos div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Logos img{
+    width: 100%;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Top{
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 50px;
+    margin-top: 30px;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrinUI_Venders{
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 50px;
+    margin-top: 30px;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle{
+    padding: 30px 0;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle .PO_PrintUI_Grid {
+    display: grid;
+    grid-template-columns: 5fr 35fr 15fr 20fr 20fr;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle .PO_PrintUI_Grid div{
+    border: 1px solid rgb(201, 201, 201);
+    text-align: center;
+    padding: 5px 0;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle .PO_PrintUI_Grid1 {
+    display: grid;
+    grid-template-columns: 5fr 35fr 15fr 20fr 20fr;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle .PO_PrintUI_Grid1 .Total{
+    border: 1px solid rgb(201, 201, 201);
+    text-align: center;
+    padding: 5px 0;
+}
+
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Bottom .PO_PrintUI_CommentBox div{
+    padding: 5px;
+    border: 1px solid rgb(201, 201, 201);
+}
+
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Bottom .PO_PrintUI_CommentBox div:last-child {
+    min-height: 100px;
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Bottom .PO_PrintUI_Remarks{
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    border: 1px solid rgb(201, 201, 201);
+}
+.PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Bottom .PO_PrintUI_Remarks .DIVS{
+    display: flex;
+    padding: 5px;
+    border-bottom:  0 !important;
+    border-right: 1px solid rgb(201, 201, 201);
+}
+
+@media only screen and (max-width: 992px) {
+    .PO_PrintUI p{
+        font-size: 12px !important;
+    }
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Top, .PO_PrintUI .PO_PrintUI_Div .PO_PrinUI_Venders{
+        grid-column-gap: 0;
+    }
+
+    .PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle .PO_PrintUI_Grid, .PO_PrintUI .PO_PrintUI_Div .PO_PrintUI_Middle .PO_PrintUI_Grid1 {
+        display: grid;
+        grid-template-columns: 10fr 30fr 20fr 20fr 20fr;
+    }
+    
+}

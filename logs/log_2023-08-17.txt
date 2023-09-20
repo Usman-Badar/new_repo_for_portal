@@ -1,0 +1,3149 @@
+09:32:37 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:44:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:44:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:10 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+11:45:19 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'emp_date')
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:01:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:08:55 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: holidays is not defined
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+
+12:13:53 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'beginTransaction')
+

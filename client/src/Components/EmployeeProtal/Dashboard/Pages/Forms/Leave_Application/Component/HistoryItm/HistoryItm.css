@@ -1,0 +1,181 @@
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #28A745;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #28A745;
+    stroke-miterlimit: 10;
+    margin: auto;
+    box-shadow: inset 0px 0px 0px #28A745;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+.cross__svg {
+    border-radius: 50%;
+    display: block;
+    height: 30px;
+    margin: 0 auto;
+    stroke-width: 3;
+    width: 30px;
+}
+
+.cross__circle {
+    animation: 0.6s ease 0s normal forwards 1 running stroke;
+    fill: none;
+    margin: auto;
+    stroke: #e55454;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 1;
+}
+
+.cross__path {
+    stroke: #e55454;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    transform-origin: 50% 50% 0;
+}
+
+.f {
+    stroke: #e55454;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    transform-origin: 50% 50% 0;
+    animation: 0.3s ease 0.8s normal forwards 1 running stroke;
+}
+
+.l {
+    stroke: #e55454;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    transform-origin: 50% 50% 0;
+    animation: 1s ease 0.8s normal forwards 1 running stroke;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.histories {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    background-color: #ffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: auto;
+}
+
+.histories {
+    display: grid;
+    grid-template-columns: 20fr 80fr;
+    grid-column-gap: 20px;
+    font-size: 10px;
+    transition: .5s;
+    animation: popups .2s linear 1 forwards alternate;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.History .histories {
+    width: 30%;
+}
+
+.Emp_Leave_Details .histories {
+    width: 100%;
+}
+
+.histories:hover {
+    background-color: rgb(240, 240, 240, 0.5);
+}
+
+.histories div.statusg {
+    color: #28A745;
+}
+
+.histories div.statusr {
+    color: #e55454;
+}
+
+.histories div.statuss {
+    color: #000;
+}
+
+.histories div.statusp {
+    color: #FFC107;
+}
+
+.histories div.statuss .las,
+.histories div.statusp .las {
+    font-size: 20px;
+    border: 1px solid;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    transform: rotate(180deg);
+    animation: rr .8s linear 1 forwards alternate;
+}
+
+@keyframes rr {
+    100% {
+        transform: rotate( 0deg);
+    }
+}
+
+@media only screen and (max-width: 1460px) {
+    .histories {
+        width: 40%;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .histories {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 880px) {
+    .histories {
+        width: 60%;
+    }
+}
+
+@media only screen and (max-width: 730px) {
+    .histories {
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width: 630px) {
+    .histories {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .histories {
+        width: 90%;
+    }
+}

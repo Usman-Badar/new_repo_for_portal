@@ -1,0 +1,90 @@
+.ItemNamesContainer {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.ItemNamesContainer .gridContainer {
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+    grid-gap: 30px;
+}
+
+.ItemNamesContainer .gridContainer .divs {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.ItemNamesContainer .gridContainer .divs .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.ItemNamesContainer .gridContainer .divs label {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.ItemNamesContainer .gridContainer .divs .submit {
+    background-color: var(--blue);
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 12px;
+}
+
+.ItemNamesContainer .gridContainer .divs .listContainer {
+    max-height: 70vh;
+}
+
+.ItemNamesContainer .gridContainer .divs .table {
+    font-size: 12px;
+}
+
+.ItemNamesContainer .gridContainer .divs .table .las {
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.ItemNamesContainer .gridContainer .logContainer {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 30px;
+    font-size: 13px;
+    opacity: 0;
+    transform: scale(0.8);
+    font-family: CourierPrime;
+}
+
+.ItemNamesContainer .popup {
+    animation: popup .5s linear 1 forwards alternate;
+}
+
+@keyframes popup {
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.ItemNamesContainer .gridContainer .logContainer.success {
+    border: 1px solid var(--success);
+    background-color: rgb(86, 204, 130, .2);
+    color: var( --success );
+}
+
+.ItemNamesContainer .gridContainer .logContainer.error {
+    border: 1px solid var(--orange);
+    background-color: rgb(231, 96, 74, .2);
+    color: var( --orange );
+}

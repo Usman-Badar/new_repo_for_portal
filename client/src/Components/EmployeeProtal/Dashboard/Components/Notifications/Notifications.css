@@ -1,0 +1,135 @@
+.notification {
+    position: relative;
+    /* overflow: hidden; */
+    transition: 0.3s;
+}
+
+.notification .notification_number {
+    position: absolute;
+    top: 1px;
+    left: calc(75% - 2px);
+    width: 7px;
+    height: 7px;
+    background-color: var( --orange);
+    border-radius: 50%;
+}
+
+#clearAllBtn:disabled {
+    background-color: red;
+}
+
+.notification .Notifications_Box {
+    position: absolute;
+    top: 100%;
+    left: -400px;
+    width: 25.6rem;
+    /* min-height: 10rem; */
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    font-size: 12px !important;
+    z-index: 100;
+    transition: .5s;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* .notification:focus {
+    overflow: visible;
+    background-color: red !important;
+}
+
+.notification:focus > .Notifications_Box {
+    opacity: 1;
+    z-index: 100;
+} */
+
+.notification .Notifications_Box .Notifications_topbar {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    border-bottom: 1px solid lightgray;
+}
+
+.notification .Notifications_Box .Notifications_topbar div, .notification .Notifications_Box .Notifications_footer div {
+    text-align: center;
+    padding: 10px 0;
+    transition: 0.3s;
+    border-bottom: 3px solid #fff;
+}
+
+.notification .Notifications_Box .Notifications_topbar div p, .notification .Notifications_Box .Notifications_footer div p {
+    color: #000 !important;
+}
+
+.notification .Notifications_Box .Notifications_topbar div.active,
+.notification .Notifications_Box .Notifications_topbar div:hover{
+    border-bottom: 3px solid #272F3E;
+    background-color: rgb(243, 243, 243);
+}
+
+.notification .Notifications_Box .Notifications_footer div:hover{
+    background-color: rgb(243, 243, 243);
+}
+
+.notification .Notifications_Box .Notifications_footer {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    border-top: 1px solid lightgray;
+}
+
+.notification .Notifications_Box .Notifications_list {
+    max-height: 300px;
+    overflow-y: auto;
+    word-break: break-all;
+    margin: 10px 0;
+}
+
+.notification .Notifications_Box .Notifications_list .list {
+    padding: 10px 20px;
+    transition: .5s;
+    position: relative;
+    border-bottom: 1px dotted lightgray;
+    color: #000;
+    display: block;
+    text-decoration: none;
+}
+
+.notification .Notifications_Box .Notifications_list .list .second {
+    font-family: Roboto-Light;
+    font-weight: bold;
+}
+
+.notification .Notifications_Box .Notifications_list .list .cross {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+}
+
+.notification .Notifications_Box .Notifications_list .list:hover {
+    background-color: rgb(241, 243, 242, .5);
+}
+
+.notification .Notifications_Box .Notifications_Clear {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 10px;
+}
+
+.notification .Notifications_Box .Notifications_Clear button {
+    width: 30%;
+    background-color: var( --lightgray);
+    font-size: 10px;
+    border-radius: 20px;
+}
+
+.notification .Notifications_Box .Notifications_Clear button:hover {
+    background-color: rgb(212, 212, 212, .5);
+}

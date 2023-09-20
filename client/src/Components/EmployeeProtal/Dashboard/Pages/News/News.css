@@ -1,0 +1,79 @@
+.Employee_Portal_news {
+    display: grid;
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+    padding: 30px;
+    font-family: Roboto-Light;
+}
+
+.Employee_Portal_notices {
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}
+
+.Employee_Portal_news .Employee_Portal_news_divs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 5px;
+    width: 100%;
+    background: #fff;
+    transition: .5s;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Employee_Portal_notices .Employee_Portal_news_divs {
+    padding: 0;
+}
+
+.Employee_Portal_news .Employee_Portal_news_divs:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    /* background-color: rgb(236, 240, 245, .1); */
+}
+
+.Employee_Portal_news .Employee_Portal_news_divs img {
+    width: 100%;
+}
+
+.Employee_Portal_news .Employee_Portal_news_divs p {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bolder;
+}
+
+.Employee_Portal_news h1 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+/* @media only screen and (max-width: 1200px) {
+    .Employee_Portal_news .Employee_Portal_news_divs img {
+        width: 100%;
+        height: 100%;
+    }
+} */
+
+@media only screen and (max-width: 1050px) {
+    .Employee_Portal_news {
+        grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    }
+    /* .Employee_Portal_news .Employee_Portal_news_divs img {
+        width: 110px;
+        height: 110px;
+    } */
+}
+
+@media only screen and (max-width: 800px) {
+    .Employee_Portal_news {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .Employee_Portal_news {
+        grid-template-columns: 100fr;
+    }
+}

@@ -1,0 +1,31 @@
+.shipping_line_payment .shipping_line_payment_form .grid {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+}
+
+.shipping_line_payment .footer-grid {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-gap: 20px;
+}
+
+.shipping_line_payment .bill-grid {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 20px;
+}
+
+.shipping_line_payment #FPImage {
+    cursor: pointer;
+    transition: .5s;
+    padding: 10px 30px;
+    border-radius: 5px;
+    width: 150px;
+    height: 140px;
+}
+
+.shipping_line_payment #FPImage:hover {
+    background-color: rgb(211, 211, 211, .5);
+}

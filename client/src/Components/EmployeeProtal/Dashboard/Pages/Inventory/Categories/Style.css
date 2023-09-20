@@ -1,0 +1,68 @@
+.category {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.category .category_container {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.category .category_container .table tr th,
+.category .category_container .table tr td {
+    font-size: 13px;
+}
+
+.category .category_container .table tr td .iconic {
+    background-color: #f1f1f1;
+    padding: 10px 15px;
+    font-size: 18px;
+    display: block;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.category .category_container .table tr td .iconic:hover {
+    background-color: lightgray;
+}
+
+.category .category_container .table .icons-bg {
+    background-color: red;
+    padding: 12px 15px;
+    display: block;
+    width: fit-content;
+}
+
+.category .category_container .table .icons-bg svg {
+    width: 18px;
+    height: 18px;
+}
+
+.category .category_container .icons_container {
+    display: grid;
+    grid-template-columns: 10fr 10fr 10fr 10fr 10fr 10fr 10fr 10fr 10fr 10fr;
+    grid-gap: 10px;
+    max-height: 150px;
+    overflow-y: overlay;
+    overflow-x: hidden;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.category .category_container .icons_container svg {
+    cursor: pointer !important;
+    fill: var(--dark-black);
+    padding: 10px;
+    width: 100%;
+    height: 50px;
+}
+
+.category .category_container .icons_container .selected svg {
+    border: 1px solid;
+}

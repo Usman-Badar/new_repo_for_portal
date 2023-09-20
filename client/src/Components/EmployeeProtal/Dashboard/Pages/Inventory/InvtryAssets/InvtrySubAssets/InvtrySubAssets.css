@@ -1,0 +1,102 @@
+.InvtrySubAssets_box {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-column-gap: 30px;
+    background-color: rgba(242, 243, 247, 255);
+    padding: 30px;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Header .InvtrySubAssets_Details {
+    padding: 30px;
+    background-color: white;
+    font-family: Quicksand;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Header .InvtrySubAssets_Details .form-control {
+    border-radius: 0;
+    margin-bottom: 15px;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details {
+    padding: 30px;
+    background-color: white;
+    width: 100%;
+    font-family: Quicksand;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one {
+    display: grid;
+    grid-template-columns: 15fr 30fr;
+    grid-column-gap: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .3s;
+    /* background-color: #ECF0F5; */
+    position: relative;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one .index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one .index span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one .Text {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one .ShowOnHover {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one:hover .ShowOnHover {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    width: 20%;
+    height: 100%;
+    padding: 0 30px;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one .ShowOnHover i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.InvtrySubAssets_box .InvtrySubAssets_Right .InvtrySubAssets_Details .one .ShowOnHover i:hover {
+    background-color: rgb(207, 207, 207);
+}

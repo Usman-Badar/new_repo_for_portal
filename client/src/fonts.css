@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap');
+
+@font-face {
+    font-family: Roboto;
+    src: url(./fonts/Roboto-Bold.ttf);
+}
+
+@font-face {
+    font-family: Roboto-Light;
+    src: url(./fonts/Roboto-Light.ttf);
+}
+
+@font-face {
+    font-family: Raleway;
+    src: url(./fonts/Raleway-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Oxygen;
+    src: url(./fonts/Oxygen-Regular.ttf);
+}
+
+@font-face {
+    font-family: Lato;
+    src: url(./fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+    font-family: Exo;
+    src: url(./fonts/Exo-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Merriweather;
+    src: url(./fonts/Merriweather-Regular.ttf);
+}
+
+@font-face {
+    font-family: OpenSans;
+    src: url(./fonts/OpenSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: PoiretOne;
+    src: url(./fonts/PoiretOne-Regular.ttf);
+}
+
+@font-face {
+    font-family: Pacifico;
+    src: url(./fonts/Pacifico-Regular.ttf);
+}
+
+@font-face {
+    font-family: JosefinSans;
+    src: url(./fonts/JosefinSans-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Quicksand;
+    src: url(./fonts/Quicksand-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url(./fonts/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: Tangerine;
+    src: url(./fonts/Tangerine-Regular.ttf);
+}
+
+@font-face {
+    font-family: Noto;
+    src: url(./fonts/NotoSerif-Regular.ttf);
+}
+
+@font-face {
+    font-family: CourierPrime;
+    src: url(./fonts/CourierPrime-Regular.ttf);
+}
+
+@font-face {
+    font-family: Cinzel;
+    src: url(./fonts/Cinzel-Regular.ttf);
+}
+
+@font-face {
+    font-family: Maersk-Head;
+    src: url(./fonts/MaerskHeadline-Regular.woff2);
+}
+
+@font-face {
+    font-family: Maersk;
+    src: url(./fonts/MaerskText-Regular.woff2);
+}

@@ -1,0 +1,110 @@
+.View_Employee_Attendance {
+    width: 100%;
+    display: grid;
+}
+
+.View_Employee_Attendance .Filters {
+    font-size: 12px;
+}
+
+.View_Employee_Attendance .Filters input,
+.View_Employee_Attendance .Filters select {
+    margin-bottom: 0 !important;
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+/* .View_Employee_Attendance .Filters .download-table-xls-button {
+    background-color: var(--orange) !important;
+    color: #fff;
+    outline: none;
+    border: 0;
+    padding: 6px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: auto;
+    display: block;
+} */
+
+.View_Employee_Attendance .Attendance {
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    max-height: 80vh;
+    border-radius: 5px;
+}
+
+.View_Employee_Attendance .Attendance .attendance-content {
+    overflow-y: scroll;
+    height: 50vh;
+}
+
+.View_Employee_Attendance .Attendance .table thead tr {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+.View_Employee_Attendance .Attendance .table tbody tr {
+    position: relative;
+}
+
+.View_Employee_Attendance .Attendance .table tbody tr .data-container {
+    position: absolute;
+    top: 0;
+    right: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    min-width: 300px;
+    max-width: 50%;
+    opacity: 0;
+    z-index: -1;
+    transform: scale(0);
+    transition: .5s;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.View_Employee_Attendance .Attendance .table tbody tr .data-container .logs_list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.View_Employee_Attendance .Attendance .table tbody tr:hover > .data-container {
+    opacity: 1;
+    z-index: 1;
+    transform: scale(1);
+}
+
+@media only screen and (max-width: 992px) {
+    .View_Employee_Attendance {
+        display: block;
+    }
+    .View_Employee_Attendance .DivFirst {
+        margin-bottom: 20px;
+    }
+    .View_Employee_Attendance .Attendance {
+        max-height: max-content;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .View_Employee_Attendance {
+        padding: 30px 15px;
+    }
+    .View_Employee_Attendance .Filters {
+        padding: 30px 15px;
+    }
+    .View_Employee_Attendance .Attendance {
+        padding: 30px 0;
+        font-size: 10px;
+    }
+    .View_Employee_Attendance .Attendance h5.mb-4 {
+        margin-left: 30px;
+    }
+    .View_Employee_Attendance .Attendance #test-table-xls-button {
+        margin-right: 30px;
+    }
+}

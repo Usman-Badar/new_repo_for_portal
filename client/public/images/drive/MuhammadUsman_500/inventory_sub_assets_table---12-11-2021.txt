@@ -1,0 +1,4 @@
+// invtry_sub_assets
+
+asset_code int not null
+asset_name varchar not null

@@ -1,0 +1,64 @@
+.ItemNamesContainer {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.ItemNamesContainer .cancle {
+    background-color: var(--orange);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 15px;
+}
+
+.ItemNamesContainer .itemsList {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.ItemNamesContainer .itemsList .table {
+    font-size: 12px;
+}
+
+.ItemNamesContainer .itemsList .table .las {
+    font-size: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.ItemNamesContainer form {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.ItemNamesContainer form .gridContainer {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 30px;
+}
+
+.ItemNamesContainer form .gridContainer .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.ItemNamesContainer form .gridContainer label {
+    font-size: 13px;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.ItemNamesContainer form .submit {
+    background-color: var(--blue);
+    color: #fff;
+    outline: none;
+    border: 0;
+    color: 12px;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 12px;
+}

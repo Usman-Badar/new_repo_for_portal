@@ -1,0 +1,26 @@
+12:02:26 GMT+0100 (British Summer Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'length')
+
+12:02:26 GMT+0100 (British Summer Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+12:03:40 GMT+0100 (British Summer Time)
+type: error
+Error: Execution context was destroyed, most likely because of a navigation.
+
+12:04:26 GMT+0100 (British Summer Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:04:43 GMT+0100 (British Summer Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:21:08 GMT+0100 (British Summer Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+

@@ -1,0 +1,41 @@
+.CreateUser {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    width: 100%;
+    font-family: Poppins;
+}
+
+.CreateUser .Box1 {
+    display: block;
+    border-radius: 10px;
+    width: 500px;
+    padding: 30px;
+    background-color: white;
+}
+
+.CreateUser .Box1 .user_img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    cursor: pointer;
+    transition: .5s;
+    background-size: cover;
+    display: block;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.CreateUser .Box1 p {
+    margin-bottom: 2px;
+}
+
+.CreateUser .createBtn {
+    padding: 8px 25px;
+    text-align: center;
+    background-color: rgba(13, 184, 222, 255);
+    color: white;
+}

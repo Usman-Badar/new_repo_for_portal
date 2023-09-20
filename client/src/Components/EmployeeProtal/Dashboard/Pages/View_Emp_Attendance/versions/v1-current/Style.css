@@ -1,0 +1,52 @@
+.edit_employees_attendance {
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    font-family: Maersk;
+}
+
+.edit_employees_attendance .employees_list {
+    transition: .5s;
+    width: 100%;
+}
+
+.edit_employees_attendance .employees_list h6 {
+    background-color: var(--lightgray);
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+}
+
+.edit_employees_attendance .employees_list label,
+.edit_employees_attendance .employees_list .form-control {
+    font-size: 13px;
+}
+
+.edit_employees_attendance .employees_list .form-control {
+    background-color: #fff !important;
+    border-bottom: 0 !important;
+    border-radius: 5px 5px 0 0 !important;
+}
+
+.edit_employees_attendance .employees_list .list_content {
+    background-color: var(--lightgray);
+    position: relative;
+    min-height: 70vh;
+    overflow-y: auto;
+}
+
+.edit_employees_attendance .employees_list .list_content .table {
+    font-size: 12px;
+}
+
+.edit_employees_attendance .employees_list .download-table-xls-button {
+    background-color: var(--success) !important;
+    color: #fff;
+    outline: none;
+    border: 0;
+    padding: 6px 15px;
+    font-size: 12px;
+    border-radius: 10px 10px 0 0;
+    display: block;
+    margin-left: 5px;
+}

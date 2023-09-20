@@ -1,0 +1,202 @@
+.Employee_Chat {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-column-gap: 20px;
+    font-family: Quicksand;
+    max-height: -webkit-fill-available;
+    overflow: hidden;
+}
+
+.Employee_Chat .Grid1 .list {
+    max-height: calc( 100vh - 108px);
+    overflow: auto;
+    padding-right: 10px;
+}
+
+.Employee_Chat .Grid1 .DIV1 {
+    display: flex;
+    border-radius: 5px !important;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding-bottom: 10px;
+    background-color: #ECF0F5;
+}
+
+.Employee_Chat .Grid1 .DIV1 input {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border-radius: 0 !important;
+}
+
+.Employee_Chat .Grid1 .DIV1 i {
+    width: 50px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.Employee_Chat .Grid1 .searchbarDivShow {
+    opacity: 1 !important;
+    z-index: inherit !important;
+}
+
+.Employee_Chat .Grid1 .searchbarDiv {
+    position: fixed;
+    z-index: inherit;
+    width: 41vw;
+    opacity: 0;
+    z-index: -1;
+    transition: .5s;
+    top: 110px;
+    left: 38.5vw;
+}
+
+.Employee_Chat .Grid1 .SearchBar {
+    width: 100%;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 10%);
+    font-family: Quicksand;
+}
+
+.Employee_Chat .Grid1 .SearchBar input {
+    font-family: Quicksand;
+}
+
+.Employee_Chat .Grid1 .SearchBar button:focus {
+    outline: none;
+}
+
+.Employee_Chat .Grid1 .DIV1 {
+    box-shadow: 0 2px 2px rgb(0 0 0 / 10%);
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.Employee_Chat .Grid1 .emplist {
+    font-size: 12px;
+    background-color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.Employee_Chat .Grid1 .emplist:hover {
+    background: rgb(211, 211, 211, .1);
+}
+
+.Employee_Chat .Grid1 .emplist .empImgs {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.Employee_Chat .Grid1 .emplist p {
+    margin-bottom: 0;
+}
+
+.Employee_Chat .Grid2 {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div {
+    width: 100%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: grid;
+    grid-template-rows: 10fr 80fr 10fr;
+    height: calc( 100vh - 86px);
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Emp_Chat_Header div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Emp_Chat_Header div img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div {
+    background-color: #fff;
+    display: grid;
+    grid-template-rows: 10fr 10fr 10fr 10fr 10fr 10fr 10fr 10fr;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div .Chat_Box_Container_right {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 30px;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div .Chat_Box_Container_left {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 30px;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div .Chat_Box_Container_right img,
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div .Chat_Box_Container_left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div .Chat_Box_Message {
+    background-color: #d8d8d8;
+    border-radius: 5px;
+    word-wrap: break-word;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 10px;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div #TextArea {
+    border: 0;
+    resize: none;
+    width: 100%;
+    background-color: #ECF0F5;
+}
+
+.Employee_Chat .Grid2 .Emp_Chat_2 p {
+    margin-bottom: 0;
+}
+
+@media only screen and (max-width: 1000px) {
+    .Employee_Chat {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .Employee_Chat .Grid1 .searchbarDiv {
+        width: 100vw;
+    }
+    .Employee_Chat .Grid1 .list {
+        padding: 0 10px;
+    }
+    .Employee_Chat .Grid1 .searchbarDiv {
+        width: 100vw;
+        top: 55px;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .Employee_Chat {
+        padding: 30px 0;
+    }
+    .Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Emp_Chat_Header div img {
+        width: 40px;
+        height: 40px;
+    }
+    .Employee_Chat .Grid2 .Emp_Chat_2 .Emp_Chat_Div .Chat_Box_Div .Chat_Box_Message {
+        font-size: 13px;
+    }
+}

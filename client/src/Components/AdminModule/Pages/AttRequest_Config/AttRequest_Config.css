@@ -1,0 +1,52 @@
+.AttRequest_Config {
+    width: 100%;
+    padding-top: 30px;
+}
+
+.AttRequest_Config .AttRequest_Config-content {
+    width: 80%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    font-family: Oxygen;
+}
+
+.AttRequest_Config .AttRequest_Config-content .search-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Quicksand;
+    margin-bottom: 40px;
+}
+
+.AttRequest_Config .AttRequest_Config-content .Requests {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    font-family: Poppins;
+    font-size: 12px;
+}
+
+.AttRequest_Config .AttRequest_Config-content .Requests .index {
+    border: 1px solid #000;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.AttRequest_Config .AttRequest_Config-content .Requests .colums {
+    width: 25%;
+}
+
+.AttRequest_Config .AttRequest_Config-content .Requests span {
+    color: rgb(128, 128, 128, .5);
+}
+
+.AttRequest_Config .AttRequest_Config-content .Requests p {
+    font-size: 15px;
+}

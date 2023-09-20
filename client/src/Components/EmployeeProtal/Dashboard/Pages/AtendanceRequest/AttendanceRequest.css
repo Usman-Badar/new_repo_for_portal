@@ -1,0 +1,42 @@
+.attendance_request {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.attendance_request .attendance_request_container {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.attendance_request .attendance_request_container .details {
+    position: absolute;
+    top: 5%;
+    height: 70vh;
+    right: 4%;
+    overflow-y: overlay;
+    overflow-x: hidden;
+    z-index: 1;
+}
+
+.attendance_request .attendance_request_container .details .divs {
+    background-color: #ffffff;
+    padding: 20px;
+    max-width: 250px;
+    word-wrap: break-word;
+}
+
+.attendance_request .attendance_request_container .details .distance_line {
+    border-left: 2px solid #ffffff;
+    height: 100px;
+    margin: 10px 0 10px 10px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-family: Poppins;
+    width: 95%;
+}

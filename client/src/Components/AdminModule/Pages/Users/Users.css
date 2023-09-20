@@ -1,0 +1,61 @@
+.Admin_Users {
+    width: 100%;
+    padding-top: 30px;
+}
+
+.Admin_Users .Admin_Users-content {
+    width: 85%;
+    font-family: Poppins;
+}
+
+.Admin_Users .Admin_Users-content h3 {
+    color: rgb(128, 128, 128, .5);
+    margin-bottom: 20px;
+}
+
+.Admin_Users .Admin_Users-content .CreateUser {
+    background-color: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.Admin_Users .Admin_Users-content .CreateUser .btn {
+    background: #1A7DEC;
+    color: white;
+    width: 200px;
+    margin-left: 20px;
+}
+
+.Admin_Users .Admin_Users-content .users {
+    background-color: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.Admin_Users .Admin_Users-content .users .index {
+    border: 2px solid rgb(26, 125, 236, .5);
+    color: rgb(26, 125, 236, .5);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.Admin_Users .Admin_Users-content .users .operations .btn {
+    color: white;
+    padding: 5px 20px;
+    font-size: 12px;
+}
+
+.Admin_Users .Admin_Users-content .modal {
+    font-family: Poppins;
+}

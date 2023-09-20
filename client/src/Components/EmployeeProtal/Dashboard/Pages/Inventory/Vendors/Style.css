@@ -1,0 +1,45 @@
+.vendor {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.vendor .vendor_container {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.vendor .vendor_container .table tr th,
+.vendor .vendor_container .table tr td {
+    font-size: 13px;
+}
+
+.vendor .vendor_container .vendor_details_grid {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-gap: 20px;
+    position: relative;
+}
+
+.vendor .vendor_container .vendor_details_grid .details {
+    background-color: rgb(211, 211, 211, .1);
+    border: 1px solid lightgray;
+    padding: 15px;
+    border-radius: 5px;
+    position: sticky;
+    top: 0;
+}
+
+.vendor .vendor_container .vendor_details_grid .details .lar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 15px;
+    border: 1px solid lightgray;
+    color: gray;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}

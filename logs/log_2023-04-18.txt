@@ -1,0 +1,12 @@
+15:27:50 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'substring')
+
+15:28:05 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'substring')
+
+15:28:52 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'substring')
+

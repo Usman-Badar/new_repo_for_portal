@@ -1,0 +1,44 @@
+.products {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.products .products_container {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.products .products_container .table tr th,
+.products .products_container .table tr td {
+    font-size: 13px;
+    font-style: italic;
+}
+
+.products .products_container .table tr td .iconic {
+    background-color: #f1f1f1;
+    padding: 10px 15px;
+    font-size: 18px;
+    display: block;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.products .products_container .table tr td .iconic:hover {
+    background-color: lightgray;
+}
+
+.products .products_container .table .icons-bg {
+    background-color: red;
+    padding: 12px 15px;
+    display: block;
+    width: fit-content;
+}
+
+.products .products_container .table .icons-bg svg {
+    width: 18px;
+    height: 18px;
+}

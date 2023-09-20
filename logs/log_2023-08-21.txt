@@ -1,0 +1,55 @@
+09:49:50 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+
+09:49:50 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+
+09:49:50 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+
+09:49:50 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+
+11:29:46 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:07:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:07:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:07:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:19:29 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:38:34 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: rslt is not defined
+
+12:45:56 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:45:56 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+

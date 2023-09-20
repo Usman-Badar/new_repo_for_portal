@@ -1,0 +1,42 @@
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Left.RequestsList .ViewPoRequests_div {
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Left.RequestsList .ViewPoRequests_div img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Left.RequestsList .ViewPoRequests_div i {
+    color: var(--orange);
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Left.RequestsList .ViewPoRequests_div .ViewPoRequests_button {
+    display: flex;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Left.RequestsList .ViewPoRequests_div .ViewPoRequests_button .btn:first-child {
+    background-color: rgb(238, 238, 238);
+    font-weight: bolder;
+    color: rgb(182, 181, 181);
+    width: 100%;
+    margin-right: 10px;
+}
+
+.ViewPurchaseOrderContainer .ViewPurchaseOrderGridContainer .Left.RequestsList .ViewPoRequests_div .ViewPoRequests_button .btn:last-child {
+    background-color: var(--orange);
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+    width: 100%;
+    margin-left: 10px;
+}

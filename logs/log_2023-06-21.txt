@@ -1,0 +1,43 @@
+12:23:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+12:23:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+12:23:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+12:23:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+12:23:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+15:23:02 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'name')
+
+15:24:50 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'name')
+
+15:25:07 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+15:31:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+15:55:32 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+

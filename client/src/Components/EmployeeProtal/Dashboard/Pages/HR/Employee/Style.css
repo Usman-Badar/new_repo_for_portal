@@ -1,0 +1,12 @@
+.hr_employee {
+    padding: 0 20px;
+    font-family: Poppins;
+}
+
+.hr_employee .hr_employee_form {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-size: 12px;
+}

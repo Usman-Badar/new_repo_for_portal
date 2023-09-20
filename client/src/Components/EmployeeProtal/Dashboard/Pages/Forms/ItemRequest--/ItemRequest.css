@@ -1,0 +1,242 @@
+.commentBox {
+    position: fixed;
+    bottom: -55vh;
+    right: 50px;
+    width: 300px;
+    font-size: 12px;
+    transition: .5s;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.commentBox .header {
+    background-color: var( --black );
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    transition: .5s;
+    display: flex;
+    align-items: center;
+}
+
+.commentBox .header .counting {
+    background-color: var( --orange );
+    padding: 0 7px;
+    margin-left: 10px;
+    border-radius: 50%;
+}
+
+.commentBox .comments_content {
+    height: 50vh;
+    background-color: #fff;
+    overflow-y: auto;
+    padding: 10px;
+    word-break: break-all;
+    scroll-behavior: smooth;
+    font-family: CourierPrime;
+}
+
+.commentBox .comments_content p {
+    margin-bottom: 0;
+    background-color: rgb(211, 211, 211, .5);
+    padding: 5px 5px 3px;
+    border-radius: 5px;
+}
+
+.commentBox .comments_content .comment {
+    width: fit-content;
+    margin: 5px 0;
+}
+
+.commentBox .comments_content .comment.mine {
+    margin-left: auto;
+}
+
+.commentBox .comments_content p.mine {
+    background-color: var( --blue );
+    color: #fff;
+    text-align: right;
+}
+
+.commentBox .comments_content small.mine {
+    text-align: right;
+    display: block;
+}
+
+.commentBox .newComment {
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.commentBox .newComment input {
+    width: 100%;
+    background-color: var( --lightgray );
+    outline: none;
+    border: 0;
+    padding: 0 10px;
+}
+
+.commentBox .newComment button {
+    background-color: var( --orange );
+    color: #fff;
+    outline: none;
+    border: 0;
+    color: 12px;
+    padding: 0 10px !important;
+}
+
+.commentBox .header:hover {
+    background-color: var( --dark-black );
+}
+
+.commentBox.open {
+    bottom: 0;
+}
+
+.items_container {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.items_container .table {
+    font-size: 11px;
+}
+
+.items_container .newBtn {
+    padding: 3px 20px;
+    background-color: var( --orange );
+    color: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.items_container form {
+    font-size: 12px;
+}
+
+.items_container .statusBox {
+    width: max-content;
+    padding: 0px 20px;
+    background-color: var(--black);
+    border-radius: 20px;
+    color: #fff;
+}
+
+.items_container .table tr.hover {
+    transition: .5s;    
+}
+
+.items_container .table tr i {
+    font-size: 15px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.items_container .table tr .icons {
+    display: flex;
+    justify-content: space-between;
+    word-break: break-all;
+}
+
+.items_container .table tr.hover:hover {
+    cursor: pointer;
+    background-color: rgb(211, 211, 211, .5);
+}
+
+.items_container .table tr .ItemColumn {
+    position: relative;
+}
+
+.items_container .table tr .ItemColumn .StoreItemsList {
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    width: 95%;
+}
+
+.items_container .table tr .ItemColumn .StoreItemsList .StoreItemsListItem {
+    cursor: pointer;
+    margin-bottom: 5px;
+    transition: .5s;
+}
+
+.items_container .table tr .ItemColumn .StoreItemsList .StoreItemsListItem:hover {
+    background-color: rgb(211, 211, 211, .5);
+}
+
+.items_container .table tr.highlighted {
+    background-color: lightgray;
+}
+
+.items_container .table tr .underline {
+    text-decoration: underline !important;
+    position: relative;
+}
+
+.items_container .table tr .underline .details {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    opacity: 0;
+    background-color: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 30px;
+    transition: .5s;
+}
+
+.items_container .table tr .underline:hover .items_specifications.details {
+    z-index: 1;
+    opacity: 1;
+}
+
+.items_container form {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.items_container form .logContainer {
+    width: 100%;
+    background-color: rgb(211, 211, 211, .5);
+    padding: 10px;
+    font-family: CourierPrime;
+}
+
+.items_container form .log {
+    padding: 1px 10px;
+    color: var( --black );
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.items_container form .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.items_container .itemNameContainer {
+    position: relative;
+}
+
+.items_container .itemNameContainer .list {
+    position: absolute;
+    /* bottom: 0;
+    left: 0; */
+    width: 100%;
+    padding: 5px;
+    background-color: #fff;
+}

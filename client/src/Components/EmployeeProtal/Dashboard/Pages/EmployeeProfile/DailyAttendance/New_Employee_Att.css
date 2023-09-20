@@ -1,0 +1,161 @@
+.New_Employee_Att p {
+    margin-bottom: 0 !important;
+}
+
+.New_Employee_Att .New_Employee_Att_Div {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .Emp_Att_Grid {
+    display: grid;
+    grid-template-columns: 10fr 10fr 60fr 10fr 10fr;
+    padding: 20px;
+}
+
+.New_Employee_Att .New_Employee_Att_Div p {
+    text-align: center;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div_Off {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3px;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div_Off .ProgressBar_line {
+    background-color: #0db8de;
+    width: 100%;
+    height: 5px;
+    position: relative;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div_Off .ProgressBar_line .ProgressBar_Box {
+    position: absolute;
+    top: calc( 1.5px - 20px);
+    left: calc( 50% - 10%);
+    width: 20%;
+    height: 40px;
+    background-color: white;
+    border: 5px solid #0db8de;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar1 {
+    background-color: #0db8de;
+    width: 50%;
+    height: 3px;
+    position: relative;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar2 {
+    background-color: #343a40;
+    width: 12.5%;
+    height: 3px;
+    position: relative;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar3 {
+    background-color: #0db8de;
+    width: 37.5%;
+    height: 3px;
+    position: relative;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar1 .tooltip,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar2 .tooltip,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar3 .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    width: max-content;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar1 .tooltip::before,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar2 .tooltip::before,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar3 .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background-color: #343a40;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar1:hover .tooltip,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar2:hover .tooltip,
+.New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div .ProgressBar3:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.New_Employee_Att .New_Employee_Att_Div .Show_Emp_Att_Grid1 {
+    display: none;
+}
+
+.New_Employee_Att .New_Employee_Att_Div .Emp_Att_Grid1 {
+    display: none;
+}
+
+.New_Employee_Att {
+    font-size: 12px !important;
+}
+
+@media only screen and (max-width: 1150px) {
+    .New_Employee_Att .New_Employee_Att_Div {
+        padding: 10px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .New_Employee_Att .New_Employee_Att_Div {
+        font-size: 10px;
+    }
+    .New_Employee_Att .New_Employee_Att_Div .Show_Emp_Att_Grid {
+        display: none;
+    }
+    .New_Employee_Att .New_Employee_Att_Div .Emp_Att_Grid {
+        display: none;
+    }
+    .New_Employee_Att .New_Employee_Att_Div .Show_Emp_Att_Grid1 {
+        display: block;
+        padding: 0 20px 20px 20px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        margin-bottom: 20px;
+    }
+    .New_Employee_Att .New_Employee_Att_Div .Emp_Att_Grid1 {
+        display: grid;
+        grid-template-columns: 25fr 25fr 25fr 25fr;
+        border-radius: 5px;
+        padding: 20px 0;
+    }
+    .New_Employee_Att .New_Employee_Att_Div .ProgressBar_Div_Off .ProgressBar_line .ProgressBar_Box {
+        top: calc( 1.5px - 15px);
+        left: calc( 50% - 20%);
+        width: 40%;
+        height: 30px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .New_Employee_Att .New_Employee_Att_Div {
+        grid-template-columns: 20fr 20fr 60fr;
+        text-align: justify !important;
+    }
+}

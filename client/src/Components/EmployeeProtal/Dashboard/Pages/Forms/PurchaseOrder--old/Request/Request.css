@@ -1,0 +1,37 @@
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders .PreviousPORequest {
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders .PreviousPORequest img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders .PreviousPORequest i {
+    color: var(--orange);
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders .PreviousPORequest .ViewPrRequests_button {
+    display: flex;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders .PreviousPORequest .ViewPrRequests_button a {
+    width: 100%;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders .PreviousPORequest .ViewPrRequests_button button {
+    background-color: var(--orange);
+    font-weight: bolder;
+    color: white;
+    width: 100%;
+}

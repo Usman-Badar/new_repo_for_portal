@@ -1,0 +1,98 @@
+.AdminCompanies{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-gap: 20px;
+    padding: 10px 20px;
+    font-size: 13px;
+}
+
+.AdminCompanies form.left,
+.AdminCompanies .CompanyDetails {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.AdminCompanies .CompanyDetails {
+    display: flex;
+}
+
+.AdminCompanies .CompanyDetails .rightSide {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 20px;
+    padding-left: 20px;
+    height: fit-content;
+}
+
+.AdminCompanies .CompanyDetails .la-2x {
+    cursor: pointer;
+}
+
+.AdminCompanies .CompanyDetails .logContainer {
+    width: 100%;
+    background-color: rgb(211, 211, 211, .5);
+    padding: 10px;
+    font-family: CourierPrime;
+}
+
+.AdminCompanies .CompanyDetails .logContainer .log {
+    padding: 1px 10px;
+    color: var( --black );
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.AdminCompanies form.left .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.AdminCompanies .submit {
+    background-color: var(--blue);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 15px;
+    font-size: 12px;
+    display: block;
+    margin-top: 20px;
+}
+
+.AdminCompanies .cancle {
+    background-color: var(--orange);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 15px;
+    display: block;
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.AdminCompanies .right {
+    display: grid;
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+    grid-gap: 10px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.AdminCompanies .right .companyDiv {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    text-align: center;
+    font-size: 10px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.AdminCompanies .right .companyDiv:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

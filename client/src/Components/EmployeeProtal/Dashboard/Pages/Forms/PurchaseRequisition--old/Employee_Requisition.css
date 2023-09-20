@@ -1,0 +1,66 @@
+.Employee_Requisitions {
+    display: grid;
+    grid-template-columns: 25fr 75fr;
+    grid-column-gap: 10px;
+    padding: 0 10px;
+    font-family: Poppins;
+}
+
+.Employee_Requisitions .Employee_Requisition_Left {
+    max-height: calc( 100vh - 150px);
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.Employee_Requisition_Menu {
+    position: relative;
+}
+
+.ViewPrRequests_Left {
+    overflow-y: auto;
+    max-height: calc( 100vh - 120px);
+}
+
+.ViewPrRequests_Left p {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.ViewPrRequests_Left .ViewPrRequests_div {
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.ViewPrRequests_Left .ViewPrRequests_div img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.ViewPrRequests_Left .ViewPrRequests_div i {
+    color: var(--orange);
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.ViewPrRequests_Left .ViewPrRequests_div .ViewPrRequests_button {
+    display: flex;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.ViewPrRequests_Left .ViewPrRequests_div .ViewPrRequests_button a {
+    width: 100%;
+}
+
+.ViewPrRequests_Left .ViewPrRequests_div .ViewPrRequests_button button {
+    background-color: var(--orange);
+    font-weight: bolder;
+    color: white;
+    width: 100%;
+}

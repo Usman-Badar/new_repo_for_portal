@@ -1,0 +1,43 @@
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .ViewPrRequests_div {
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .ViewPrRequests_div img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .ViewPrRequests_div i {
+    color: var(--orange);
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .ViewPrRequests_div .ViewPrRequests_button {
+    display: flex;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .ViewPrRequests_div .ViewPrRequests_button .btn:first-child {
+    background-color: rgb(238, 238, 238);
+    font-weight: bolder;
+    color: rgb(182, 181, 181);
+    width: 100%;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .ViewPrRequests_div .ViewPrRequests_button .btn:last-child {
+    background-color: var(--orange);
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+    width: 100%;
+    margin-left: 10px;
+}

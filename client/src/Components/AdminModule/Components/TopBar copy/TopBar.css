@@ -1,0 +1,159 @@
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar {
+    width: 100%;
+    height: min-content;
+    justify-content: space-between !important;
+    padding: 10px 30px;
+    background-color: #fff;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .topbar_news {
+    overflow: hidden;
+    font-family: Poppins;
+    font-size: 12px;
+    padding: 0 50px 0 0;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .emp_img_container {
+    position: relative;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .emp_img_container .emp_dropdown {
+    position: absolute;
+    top: 100%;
+    left: -120px;
+    width: 180px;
+    padding: 20px 0;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    font-size: 12px;
+    font-family: Raleway;
+    z-index: 300;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .emp_img_container .emp_dropdown .links {
+    display: flex;
+    justify-content: start;
+    padding: 5px 25px;
+    font-family: Poppins;
+    color: #1A2226;
+    transition: .5s;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .emp_img_container .emp_dropdown .links:hover {
+    text-decoration: none;
+    background-color: #ECF0F5;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .emp_img_container .emp_dropdown .links i {
+    font-size: 15px;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .emp_img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-size: cover;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .notification {
+    position: relative;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .notification .notification_number {
+    position: absolute;
+    top: 2px;
+    left: calc(75% - 10px);
+    width: 7px;
+    height: 7px;
+    background-color: #0DB8DE;
+    border-radius: 50%;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .search {
+    position: relative;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .search .search_dropdown {
+    position: absolute;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    top: 100%;
+    left: -250px;
+    width: 300px;
+    padding: 10px;
+    z-index: 300;
+    background-color: #fff;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .search .search_dropdown .form-control {
+    border: 0;
+    border-radius: 0;
+    background-color: #222D32;
+    color: #ECF0F5;
+}
+
+.AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .search .search_dropdown .btn {
+    background-color: #222D32;
+    color: #ECF0F5;
+    border: 0;
+    outline: none;
+}
+
+.AdminModule .modal .modal-dialog .modal-content {
+    background-color: #222D32;
+    color: #ECF0F5;
+    font-family: Poppins;
+}
+
+.AdminModule .modal .modal-dialog .modal-content .messages-content {
+    max-height: 600px;
+    overflow: auto;
+}
+
+.AdminModule .modal .modal-dialog .modal-content .close:focus {
+    outline: none;
+}
+
+.AdminModule .modal .modal-dialog .modal-content .message {
+    width: 100%;
+    height: max-content;
+    border-radius: 20px;
+    background-color: #1A2226;
+    padding: 10px 20px;
+    text-align: justify;
+    word-wrap: break-word;
+    margin-bottom: 20px;
+}
+
+.AdminModule .modal .modal-dialog .modal-content .btn {
+    border-color: #0DB8DE;
+    color: #0DB8DE;
+    border-radius: 0px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    padding: 8px 50px;
+}
+
+.AdminModule .modal .modal-dialog .modal-content .btn:hover {
+    background-color: #0DB8DE;
+    color: #ECF0F5;
+}
+
+@media only screen and (max-width: 450px) {
+    .AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar {
+        padding: 10px;
+    }
+    .AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .search {
+        position: static;
+    }
+    .AdminModule .Admin_Dashboard_main_content .Admin_Dashboard_topbar .icons .search .search_dropdown {
+        width: 100%;
+        left: 0;
+        top: 50px;
+    }
+}

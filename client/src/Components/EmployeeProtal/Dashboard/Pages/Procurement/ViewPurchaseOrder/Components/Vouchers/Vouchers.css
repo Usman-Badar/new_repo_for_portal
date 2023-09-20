@@ -1,0 +1,103 @@
+.AttachedVouchers {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 25fr 50fr 25fr;
+    grid-column-gap: 10px;
+    font-family: Poppins;
+}
+
+.AttachedVouchers .Attach {
+    width: 100%;
+    height: 150px;
+    border: 1px dotted lightgray;
+    position: relative;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.AttachedVouchers .label {
+    position: absolute;
+    top: -8px;
+    left: 15px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.AttachedVouchers .Attach .AttachContent {
+    width: 100%;
+    height: 100%;
+    background-color: #EAEEF2;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+
+.AttachedVouchers .Attach .AttachContent i {
+    font-size: 25px;
+}
+
+.AttachedVouchers .Attach .AttachContent p {
+    font-size: 10px;
+}
+
+.AttachedVouchers .AttachmentPreview {
+    width: 100%;
+    height: 60vh;
+    border: 1px dotted lightgray;
+    position: relative;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.AttachedVouchers .AttachmentPreview .Preview {
+    width: 100%;
+    height: 100%;
+    background-color: #EAEEF2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+.AttachedVouchers .VouchersList {
+    width: 100%;
+    height: 60vh;
+    overflow: auto;
+}
+
+.AttachedVouchers .VouchersList .VoucherItem {
+    width: 100%;
+    padding: 5px;
+    border: 1px dotted lightgray;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-column-gap: 10px;
+    margin-bottom: 10px;
+}
+
+.AttachedVouchers .VouchersList .VoucherItem .thumbnail {
+    width: 100%;
+    height: 75px;
+    border-radius: 5px;
+    border: 1px dotted lightgray;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.AttachedVouchers .VouchersList .VoucherItem p,
+.AttachedVouchers .VouchersList .VoucherItem button {
+    font-size: 12px;
+    word-break: break-all;
+}

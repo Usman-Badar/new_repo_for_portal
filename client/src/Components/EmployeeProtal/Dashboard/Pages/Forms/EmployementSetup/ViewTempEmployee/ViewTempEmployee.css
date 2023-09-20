@@ -1,0 +1,32 @@
+.ViewTempEmployee {
+    width: 100%;
+    padding-top: 30px;
+}
+
+.ViewTempEmployee .ViewTempEmployee-content {
+    width: 80%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    font-family: Oxygen;
+}
+
+.ViewTempEmployee .ViewTempEmployee-content .emp_img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+}
+
+.ViewTempEmployee .ViewTempEmployee-content .cnic_images {
+    width: 300px;
+    height: 180px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.ViewTempEmployee .ViewTempEmployee-content .emp_docs_images {
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}

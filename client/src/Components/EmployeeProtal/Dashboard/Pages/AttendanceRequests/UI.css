@@ -1,0 +1,40 @@
+.AttendanceRequests {
+    padding: 20px;
+    font-style: italic;
+    font-family: Roboto;
+}
+
+.AttendanceRequests p {
+    margin-bottom: 0;
+}
+
+.AttendanceRequests .upper.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.AttendanceRequests .table {
+    font-size: 13px;
+}
+
+.AttendanceRequests .table tbody {
+    color: #5b6d80;
+}
+
+.AttendanceRequests .table tbody tr {
+    position: relative;
+}
+
+.AttendanceRequests .table tbody input[type="time"]:before {
+    content: attr(data-text);
+    color: #5b6d80;
+}
+
+.AttendanceRequests .table tbody .Edit {
+    /* position: absolute;
+    right: 0;
+    bottom: 0; */
+    font-size: 10px;
+}

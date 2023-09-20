@@ -1,0 +1,70 @@
+.Item_Request {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.Item_Request .Item_Request_container {
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.Item_Request .Item_Request_container .item_details_grid {
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+    grid-gap: 20px;
+}
+
+.Item_Request .Item_Request_container .table tbody tr.pointer {
+    cursor: pointer;
+    transition: .5s;
+}
+
+.Item_Request .Item_Request_container .table tbody tr.issued {
+    background-color: var(--c-green);
+}
+
+.Item_Request .Item_Request_container .flex_container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.Item_Request .Item_Request_container .flex_container > div {
+    width: 50%;
+}
+
+.Item_Request .Item_Request_container .grid {
+    display: grid;
+    grid-template-columns: 30fr 15fr 55fr;
+    grid-gap: 10px;
+}
+
+.Item_Request .Item_Request_container .grid .items_container {
+    position: relative;
+}
+
+.Item_Request .Item_Request_container .grid .items_container .items_list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 100px;
+    overflow-y: overlay;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.Item_Request .Item_Request_container .grid .items_container .items_list .item {
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: .5s;
+}
+
+.Item_Request .Item_Request_container .grid .items_container .items_list .item:hover {
+    background-color: rgb(211, 211, 211, .3);
+}
+
+.Item_Request .Item_Request_container .table tbody tr .lar {
+    font-size: 20px;
+    cursor: pointer;
+}

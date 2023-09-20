@@ -1,0 +1,19 @@
+10:06:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'isNewsletter')
+    at Object.t.canReplyMsg (https://web.whatsapp.com/app.fb6a489ddae1e000677a.js:72:703296)
+    at Object.window.WWebJS.sendMessage (__puppeteer_evaluation_script__:101:41)
+    at __puppeteer_evaluation_script__:10:45
+
+10:59:58 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+11:13:12 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+11:21:13 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+

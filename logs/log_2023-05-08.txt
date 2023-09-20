@@ -1,0 +1,52 @@
+09:38:56 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/null'
+
+10:10:22 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+11:43:13 GMT+0500 (Pakistan Standard Time)
+type: error
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+
+11:43:48 GMT+0500 (Pakistan Standard Time)
+type: error
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+
+11:43:48 GMT+0500 (Pakistan Standard Time)
+type: error
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+
+12:17:25 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/null'
+
+12:19:03 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/null'
+
+12:19:37 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/null'
+
+16:00:26 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError [ERR_INVALID_ARG_TYPE]: The "dest" argument must be of type string or an instance of Buffer or URL. Received undefined
+
+16:01:57 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, copyfile 'assets/inventory/assets/images/products/desktop-wallpaper-web-development1683534141802_852023.png' -> 'assets/inventory/assets/images/inward_id_1_products/desktop-wallpaper-web-development1683534141802_852023.png'
+
+16:03:10 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, copyfile 'assets/inventory/assets/images/products/desktop-wallpaper-web-development1683534141802_852023.png' -> 'assets/inventory/assets/images/inward_id_1_products/desktop-wallpaper-web-development1683534141802_852023.png'
+
+16:03:15 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, copyfile 'assets/inventory/assets/images/products/desktop-wallpaper-web-development1683534141802_852023.png' -> 'assets/inventory/assets/images/inward_id_1_products/desktop-wallpaper-web-development1683534141802_852023.png'
+
+16:08:38 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, copyfile 'assets/inventory/assets/images/products/uzsedw5h1683544177163_852023.png' -> 'assets/inventory/assets/images/products/inward_id_20_1683544200303products/uzsedw5h1683544177163_852023.png'
+

@@ -1,0 +1,167 @@
+.ViewPrRequests {
+    width: 100%;
+    font-family: Quicksand;
+    padding: 15px 0;
+}
+
+.ViewPrRequests iframe {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.ViewPrRequests p,
+.ViewPrRequests button {
+    margin-bottom: 0;
+    font-size: 11px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-column-gap: 20px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left {
+    padding: 0 15px;
+    margin: 15px 0;
+    overflow-y: auto;
+    max-height: 80vh;
+    position: relative;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left .collapseBtn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px 0;
+    background-color: var(--dark-black);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right {
+    overflow: auto;
+    height: 70vh;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .previewWindow {
+    height: 70vh;
+    margin-top: 20px;
+    padding-right: 15px;
+    overflow: auto;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .previewWindow .openBtn {
+    display: none;
+    margin: 0 auto;
+    padding: 0 20px;
+    background-color: var(--dark-black);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control .firstBtn {
+    background-color: var(--gray-text);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control .secondBtn {
+    background-color: var(--dark-black);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control .thirdBtn {
+    background-color: var(--c-green);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control .forthBtn {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control .fifthBtn {
+    background-color: var(--orange);
+    color: #fff;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .control .sixthBtn {
+    background-color: var(--success);
+    color: #fff;
+}
+
+.ViewPrRequests .Menu {
+    display: none;
+}
+
+@media only screen and (max-width: 1600px) {
+    .ViewPrRequests .ViewPrRequests_grid {
+        grid-template-columns: 40% 60% !important;
+        grid-column-gap: 0;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .ViewPrRequests .ViewPrRequests_grid {
+        grid-template-columns: 25% 75% !important;
+        grid-column-gap: 0;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .ViewPrRequests .ViewPrRequests_grid {
+        grid-column-gap: 5px;
+    }
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left {
+        padding: 0 5px;
+    }
+    .ViewPrRequests .ViewPrRequests_grid {
+        grid-template-columns: 40fr 60fr;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .ViewPrRequests .Menu {
+        display: block;
+    }
+    .ViewPrRequests .ViewPrRequests_grid {
+        display: block;
+    }
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left {
+        display: none;
+    }
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .previewWindow {
+        padding: 15px;
+    }
+}
+
+
+/* @media only screen and (max-width: 700px) {
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Left {
+        display: none;
+    }
+    .ViewPrRequests .SearchnFilterDiv {
+        display: block;
+    }
+    .ViewPrRequests .SearchnFilterDiv .filterdiv {
+        display: block;
+    }
+    .ViewPrRequests .SearchnFilterDiv {
+        width: 100%;
+        padding: 10px 0;
+    }
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .previewWindow {
+        padding: 5px;
+    }
+    .ViewPrRequests .SearchnFilterDiv .filterdiv div {
+        margin: 15px;
+        width: 92%;
+        padding: 10px
+    }
+} */

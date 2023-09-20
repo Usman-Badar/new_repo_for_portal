@@ -1,0 +1,15 @@
+13:14:25 GMT+0500 (Pakistan Standard Time)
+type: error
+SyntaxError: F:\IT\Web Development\MERN\portal\data.json: Unexpected end of JSON input
+
+13:55:24 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: data is not defined
+
+15:18:13 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'isNewsletter')
+    at Object.t.canReplyMsg (https://web.whatsapp.com/app.fb6a489ddae1e000677a.js:72:703296)
+    at Object.window.WWebJS.sendMessage (__puppeteer_evaluation_script__:101:41)
+    at __puppeteer_evaluation_script__:10:45
+

@@ -1,0 +1,98 @@
+.EmployeesAttendanceUI {
+    width: 100%;
+    padding: 20px;
+    font-family: Poppins;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 20px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left,
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Right {
+    width: 100%;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphContainer {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs {
+    padding: 20px 0 ;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs p,
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs h5{
+    color: rgb(134, 134, 134);
+}
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphrating sub{
+    font-size: 14px;
+    color: rgb(134, 134, 134);
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphrating {
+    padding: 0 80px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphrating p{
+    position: absolute;
+    top: -8px;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphprogressbar {
+    padding: 0 50px;
+}
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphprogressbar .Bar1 {
+    width: 100%;
+    height: 7px;
+    background-color: #B8CAF0;
+    border-radius: 10px;
+    display: flex;
+}
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphprogressbar .Bar2 {
+    width: 80%;
+    height: 7px;
+    background-color: #F14B71;
+    border-radius: 10px;
+}
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .graphprogressbar .Bar3 {
+    width: 80%;
+    height: 7px;
+    background-color: #423A8E;
+    border-radius: 10px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .grahgrid{
+    margin: 30px 70px;
+    display: grid;
+    grid-template-columns: 10fr 50fr 20fr 20fr;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .grahgrid p{
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .grahgrid .graphcirclediv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphDecs .grahgrid .graphcirclediv .graphcircle{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}

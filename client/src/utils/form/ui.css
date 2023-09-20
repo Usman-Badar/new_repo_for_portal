@@ -1,0 +1,40 @@
+.custom-form {
+    position: relative;
+    overflow: hidden;
+}
+
+.grid {
+    display: grid;
+    grid-gap: 20px;
+}
+
+.preview-grid {
+    display: grid;
+    grid-gap: 10px;
+    overflow: hidden;
+}
+
+.preview-grid.grid-2 {
+    grid-template-columns: 50fr 50fr;
+}
+
+.preview-grid.grid-3 {
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}
+
+.preview-grid.grid-4 {
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+}
+
+.grid.grid-1 {
+    grid-template-columns: 100fr;
+    grid-gap: 0;
+}
+
+.grid.grid-2 {
+    grid-template-columns: 50fr 50fr;
+}
+
+.grid.grid-3 {
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}

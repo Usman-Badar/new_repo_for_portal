@@ -1,0 +1,37 @@
+.Devices {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.Devices .Devices-content {
+    width: 65%;
+    background-color: #fff;
+    padding: 50px 20px 30px 20px;
+    font-family: Poppins;
+    color: #222D32;
+    font-size: 12px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.Devices .Devices-content .allDevices .SrNo {
+    width: 7%;
+    word-wrap: break-word;
+}
+
+.Devices .Devices-content .allDevices .DevName {
+    width: 30%;
+    word-wrap: break-word;
+}
+
+.Devices .Devices-content .allDevices .DevLocation {
+    width: 20%;
+    word-wrap: break-word;
+}
+
+.Devices .Devices-content .allDevices .DevIP {
+    width: 43%;
+    word-wrap: break-word;
+}

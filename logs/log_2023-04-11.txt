@@ -1,0 +1,12 @@
+10:35:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: CreateLogs is not defined
+
+10:36:37 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: CreateLogs is not defined
+
+13:21:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'release')
+

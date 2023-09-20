@@ -1,0 +1,38 @@
+.EmployeeChat .LoadingStateForDailyChat {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(91, 109, 128, .3);
+}
+
+.EmployeeChat .Center .ChatContent .Tweet {
+    width: 100%;
+    color: #5b6d80;
+    margin-bottom: 10px;
+}
+
+.EmployeeChat .Center .ChatContent .Tweet.owner {
+    text-align: right;
+}
+
+.EmployeeChat .Center .ChatContent .Tweet.owner .TweetBox {
+    margin-left: auto;
+    background-color: var( --black );
+    color: #fff;
+}
+
+.EmployeeChat .Center .ChatContent .TweetDate {
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.EmployeeChat .Center .ChatContent .Tweet p {
+    margin-left: 10px;
+    font-size: 12px;
+}

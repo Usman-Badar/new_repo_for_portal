@@ -1,0 +1,50 @@
+.advance_cash .advance_cash_container .grid-container-5050 {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 20px;
+}
+
+.advance_cash .advance_cash_container .grid-container-32 {
+    display: grid;
+    grid-template-columns: 66.66fr 33.33fr;
+    grid-gap: 20px;
+}
+
+.advance_cash .advance_cash_container .employees_list_container {
+    position: relative;
+}
+
+.advance_cash .advance_cash_container .employees_list_container .employees_list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 10px 5px;
+    background-color: #fff;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    z-index: 1;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: overlay;
+}
+
+.advance_cash .advance_cash_container .employees_list_container .employees_list .employee {
+    display: flex;
+    padding: 8px 5px;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+    border-radius: 10px;
+}
+
+.advance_cash .advance_cash_container .employees_list_container .employees_list .employee:hover {
+    background-color: #e7e4e4;
+}
+
+.advance_cash .Attandence_Request_Div_Content.Attandence_Request_Div_Content2 {
+    width: 50%;
+}
+
+.advance_cash .Attandence_Request_Div_Content .table tr.highlighted {
+    background-color: var(--lightgray);
+}

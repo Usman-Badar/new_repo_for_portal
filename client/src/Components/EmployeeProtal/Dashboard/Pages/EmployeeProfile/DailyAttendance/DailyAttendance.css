@@ -1,0 +1,26 @@
+.DailyAttendance {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 75fr 25fr;
+    grid-column-gap: 30px;
+    padding: 30px;
+    font-size: 12px;
+}
+
+.DailyAttendance .attendance {
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    margin-bottom: 10px;
+}
+
+.DailyAttendance .attendance .attendance-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+@media only screen and (max-width: 900px) {
+    .DailyAttendance {
+        display: block;
+        padding: 20px;
+    }
+}

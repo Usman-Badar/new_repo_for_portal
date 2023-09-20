@@ -1,0 +1,92 @@
+.PeerReviewForm .PeerReviewForm-content .grid-div {
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+    grid-column-gap: 30px;
+    padding: 0 30px;
+}
+
+.PeerReviewForm .PeerReviewForm-content .grid-div .leftdiv h6 {
+    width: 75%;
+    text-align: justify;
+}
+
+.PeerReviewForm .PeerReviewForm-content .grid-div .rightdiv {
+    padding: 20px;
+    width: 100%;
+    background-color: var(--lightgray);
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+
+.PeerReviewForm .PeerReviewForm-content .grid-div .rightdiv .rightdiv-details {
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+    align-items: center;
+}
+
+.PeerReviewForm .PeerReviewForm-content .grid-div .rightdiv .rightdiv .rightdiv-details.reverse {
+    grid-template-columns: 60fr 40fr;
+}
+
+.PeerReviewForm .PeerReviewForm-content label {
+    font-weight: bold;
+    font-size: 13px;
+    font-family: 'Roboto-Light';
+}
+
+.PeerReviewForm .PeerReviewForm-content textarea.form-control {
+    min-height: 80px;
+}
+
+.PeerReviewForm .PeerReviewForm-content .las.la-sync.animate {
+    animation: saving 1s linear infinite reverse;
+}
+
+.PeerReviewForm .PeerReviewForm-content .savingTxt {
+    position: absolute;
+    bottom: -35px;
+    left: -30px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: #fff;
+    padding: 5px 20px;
+    opacity: 0;
+    transition: .5s;
+    cursor: none;
+}
+
+.PeerReviewForm .PeerReviewForm-content .savingTxt.animate {
+    opacity: 1;
+    cursor: progress;
+}
+
+@keyframes saving {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .PeerReviewForm .PeerReviewForm-content .grid-div {
+        grid-template-columns: 60fr 40fr;
+    }
+
+    .PeerReviewForm .PeerReviewForm-content .grid-div .leftdiv h6 {
+        width: 100% !important;
+    }
+
+    .PeerReviewForm .PeerReviewForm-content label.urdu {
+        font-size: 16px;
+    }
+
+    .PeerReviewForm .PeerReviewForm-content .question {
+        align-items: center !important;
+    }
+    
+    .PeerReviewForm .PeerReviewForm-content .question .left,
+    .PeerReviewForm .PeerReviewForm-content .question .right {
+        max-width: 50%;
+    }
+}

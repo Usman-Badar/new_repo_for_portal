@@ -1,0 +1,30 @@
+.Inventory_Dashboard {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Poppins;
+}
+
+.Inventory_Dashboard .Inventory_Dashboard_main_content {
+    height: auto;
+    width: 85vw;
+    margin-left: 15vw;
+    background-color: #edf0f7;
+    min-height: 100vh;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.Inventory_Dashboard .Inventory_Dashboard_main_content .content {
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 50px;
+    overflow: auto hidden !important;
+}
+
+@media only screen and (max-width: 1400px) {
+    .Inventory_Dashboard .Inventory_Dashboard_main_content {
+        width: 100vw;
+        margin-left: 0;
+    }
+}

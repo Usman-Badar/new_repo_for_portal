@@ -1,0 +1,22 @@
+.Dashboard {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: Poppins;
+    display: flex;
+}
+
+.Dashboard .Dashboard_main_content {
+    width: 100%;
+    background-color: var( --lightgray);
+    transition: .3s;
+}
+
+.Dashboard .Dashboard_main_content .content {
+    width: 100%;
+    height: calc( 100vh - 45px);
+    /* overflow: auto !important; */
+    overflow-y: scroll !important;
+    padding: 20px 0 0;
+    position: relative;
+}

@@ -1,0 +1,117 @@
+.Employee_Requisitions .PR_printUI {
+    padding: 20px 0;
+}
+
+.Employee_Requisitions .PR_printUI p {
+    margin-bottom: 0 !important;
+    font-size: 13px;
+}
+
+.Employee_Requisitions .PR_printUI h1,
+.Employee_Requisitions .PR_printUI h3 {
+    text-decoration: underline;
+}
+
+.Employee_Requisitions .PR_printUI_Logos {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}
+
+.Employee_Requisitions .PR_printUI_Logos div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Employee_Requisitions .PR_printUI_Logos img {
+    width: 100%;
+}
+
+.Employee_Requisitions .PR_printUI_Top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Employee_Requisitions .PR_printUI_Top .PR_printUI_Top_select {
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+}
+
+.Employee_Requisitions .PR_printUI_Top .PR_printUI_Top_select .selects {
+    background-color: #ECF0F5;
+    border: 0 !important;
+}
+
+.Employee_Requisitions .PR_printUI_Middle {
+    padding: 30px 0;
+}
+
+.Employee_Requisitions .PR_printUI_Middle .PR_printUI_Grid {
+    display: grid;
+    grid-template-columns: 5fr 35fr 35fr 8.33fr 8.33fr 8.33fr !important;
+}
+
+.Employee_Requisitions .PR_printUI_Middle .PR_printUI_Grid div {
+    border: 1px solid rgb(201, 201, 201);
+    text-align: center;
+    padding: 5px 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    overflow: auto;
+}
+
+.Employee_Requisitions .PR_printUI_Bottom .PR_printUI_Grid1 {
+    display: grid;
+    grid-template-columns: 5fr 95fr;
+}
+
+.Employee_Requisitions .PR_printUI_Bottom .PR_printUI_Grid1 div {
+    border: 1px solid rgb(201, 201, 201);
+    text-align: center;
+    padding: 5px 0;
+}
+
+.Employee_Requisitions .PR_printUI_Middle .PR_printUI_Grid input,
+.Employee_Requisitions .PR_printUI_Middle .PR_printUI_Grid textarea {
+    border: 0 !important;
+    height: max-content;
+    padding: 0 10px;
+}
+
+.Employee_Requisitions .PR_prinUI_Content {
+    width: 100%;
+    position: relative;
+    display: table;
+    table-layout: fixed;
+}
+
+.Employee_Requisitions .PR_printUI_Footer {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.Employee_Requisitions .PR_printUI_Remarks {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    border: 1px solid rgb(201, 201, 201);
+}
+
+.Employee_Requisitions .PR_printUI_Remarks .DIVS {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    padding: 5px;
+    border-bottom: 0 !important;
+    border-right: 1px solid rgb(201, 201, 201);
+}
+
+.Employee_Requisitions .PR_printUI_Remarks:last-child .DIVS {
+    display: grid;
+    grid-template-columns: 20fr 80fr;
+}
+
+.Employee_Requisitions .PR_printUI_Bottom .PR_printUI_Remark .DIVS {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+}

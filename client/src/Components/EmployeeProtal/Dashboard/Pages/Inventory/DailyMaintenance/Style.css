@@ -1,0 +1,27 @@
+.daily_maintenance {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.daily_maintenance .daily_maintenance_container {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.daily_maintenance .daily_maintenance_container .table tbody tr.pointer {
+    cursor: pointer;
+    transition: .5s;
+}
+
+.daily_maintenance .daily_maintenance_container .table tbody tr.pointer:hover {
+    background-color: #f1f1f1;
+}
+
+.daily_maintenance .daily_maintenance_container .table tbody tr .la-trash, 
+.daily_maintenance .daily_maintenance_container .table tbody tr .la-edit {
+    cursor: pointer;
+    font-size: 20px;
+}

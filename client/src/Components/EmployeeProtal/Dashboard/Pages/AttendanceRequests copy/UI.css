@@ -1,0 +1,57 @@
+.AttendanceRequests {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.AttendanceRequests p {
+    margin-bottom: 0;
+}
+
+.AttendanceRequests .upper.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.AttendanceRequests .upper.controls .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+    font-size: 12px;
+}
+
+.AttendanceRequests .table {
+    font-size: 13px;
+}
+
+.AttendanceRequests .table tbody {
+    color: #5b6d80;
+}
+
+.AttendanceRequests .table tr {
+    position: relative;
+    font-size: 11px;
+}
+
+/* .AttendanceRequests .table tbody input[type="time"]:before {
+    content: attr(data-text);
+    color: #5b6d80;
+} */
+
+.AttendanceRequests .table tbody tr input {
+    outline: none;
+    border: 0;
+    background-color: var(--lightgray);
+    padding: 5px;
+    border-bottom: 1px solid rgb(128, 128, 128, .5);
+}
+
+.AttendanceRequests .table tbody .Edit {
+    font-size: 10px;
+    background-color: var(--orange);
+    color: #fff;
+    margin: auto;
+    display: block;
+}

@@ -1,0 +1,24 @@
+.EmployeesAttendanceUI {
+    width: 100%;
+    padding: 20px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 20px;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left,
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Right {
+    width: 100%;
+}
+
+.EmployeesAttendanceUI .EmployeesAttendanceUIContent .Left .GraphContainer {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

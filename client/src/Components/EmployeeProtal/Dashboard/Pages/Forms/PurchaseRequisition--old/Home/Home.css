@@ -1,0 +1,45 @@
+.Employee_Requisitions .Employee_Requisition_Left .Home .three,
+.Employee_Requisitions .Employee_Requisition_Left .Home .two {
+    width: 100%;
+    display: grid;
+    grid-column-gap: 20px;
+}
+
+.Employee_Requisitions .Employee_Requisition_Left .Home .three {
+    grid-template-columns: 50fr 50fr;
+    margin-bottom: 20px;
+}
+
+.Employee_Requisitions .Employee_Requisition_Left .Home .two {
+    grid-template-columns: 50fr 50fr;
+}
+
+.Employee_Requisitions .Employee_Requisition_Left .Home .three .RequestStatusChart,
+.Employee_Requisitions .Employee_Requisition_Left .Home .three .Calculate {
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 15px;
+    font-family: Poppins;
+    min-height: 320px;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.Employee_Requisitions .Employee_Requisition_Left .Home .three .Calculate small {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+@media only screen and (max-width: 1100px) {
+    .Employee_Requisitions .Employee_Requisition_Left .Home .three {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .Employee_Requisitions .Employee_Requisition_Left .Home .three {
+        width: 1000px;
+        overflow-x: auto;
+    }
+}

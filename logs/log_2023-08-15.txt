@@ -1,0 +1,358 @@
+10:03:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+10:03:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:03:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:03:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:03:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:35:01 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+10:36:50 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+10:36:50 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+10:36:50 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+10:36:50 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:36:50 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:38:29 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+10:42:44 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+10:42:44 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:42:44 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:42:44 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+10:42:44 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:19:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:24:39 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:39:58 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Execution context was destroyed, most likely because of a navigation.
+
+11:39:58 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Execution context was destroyed, most likely because of a navigation.
+
+11:39:58 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:41:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Execution context was destroyed, most likely because of a navigation.
+
+11:41:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Execution context was destroyed, most likely because of a navigation.
+
+11:41:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:41:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:41:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:50:52 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:52:26 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:54:33 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+11:54:33 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:54:33 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:54:33 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+11:54:33 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+12:07:37 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+12:16:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:16:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+12:16:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+12:16:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+12:16:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
+    at __puppeteer_evaluation_script__:2:53
+
+15:23:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+15:33:09 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+15:34:02 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+15:36:16 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+15:39:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+15:46:25 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+15:53:36 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+16:56:22 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+17:00:13 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+17:02:47 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+17:03:44 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+17:04:11 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+17:05:02 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+
+17:05:35 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+17:15:10 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
+    at __puppeteer_evaluation_script__:9:66
+

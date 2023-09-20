@@ -1,0 +1,210 @@
+.Employee_Requisition {
+    display: grid;
+    grid-template-columns: 90fr 10fr;
+    grid-column-gap: 20px;
+    padding: 30px;
+    font-family: Poppins;
+}
+
+.ViewPrRequests {
+    max-height: calc( 100vh - 110px);
+}
+
+.ViewPrRequests .PR_printUIView {
+    padding: 20px;
+    background-color: #fff;
+    min-width: 1000px;
+}
+
+.ViewPrRequests p {
+    margin-bottom: 0 !important;
+    font-size: 13px;
+}
+
+.ViewPrRequests .PR_printUIView h1,
+.PR_printUIView h3 {
+    text-decoration: underline;
+}
+
+.ViewPrRequests .PR_printUI_Logos {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}
+
+.ViewPrRequests .PR_printUI_Logos div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ViewPrRequests .PR_printUI_Logos img {
+    width: 100%;
+}
+
+.ViewPrRequests .PR_printUI_Top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ViewPrRequests .PR_printUI_Top .PR_printUI_Top_select {
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+}
+
+.ViewPrRequests .PR_printUI_Top .PR_printUI_Top_select .selects {
+    background-color: #ECF0F5;
+    border: 0 !important;
+}
+
+.ViewPrRequests .PR_printUI_Middle {
+    padding: 30px 0;
+    overflow-x: auto;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid {
+    display: grid;
+    grid-template-columns: minmax(20px, 5fr) minmax(150px, 25fr) minmax(200px, 30fr) minmax(50px, 8.33fr) minmax(50px, 8.33fr) minmax(75px, 7.5fr) minmax(75px, 7.5fr) minmax(50px, 8.33fr);
+    min-width: 1200px;
+    overflow: auto;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid #individualTax {
+    background: none;
+    width: 100%;
+    border: none;
+    font-size: 10px;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid #individualTax:focus {
+    outline: none;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid_Bottom {
+    display: grid;
+    grid-template-columns: 67.51fr 16.66fr 15.83fr !important;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid_Bottom div:last-child {
+    display: grid;
+    grid-template-columns: 20fr 80fr;
+    align-items: center;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid_Bottom div:nth-child(1) {
+    border: 0;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid_Bottom div select {
+    background: none;
+    border: none;
+    padding: 0;
+    height: auto
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid_Bottom div select:focus {
+    outline: none;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid div {
+    border: 1px solid rgb(201, 201, 201);
+    text-align: center;
+    padding: 5px 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    overflow: auto;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid input,
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid textarea,
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid select {
+    border: 0 !important;
+    height: max-content;
+    padding: 0 10px;
+    font-size: 13px;
+}
+
+.ViewPrRequests .PR_printUI_Middle .PR_printUI_Grid input:disabled {
+    background: none !important;
+}
+
+.ViewPrRequests .form-control:disabled {
+    background: #fff;
+}
+
+.ViewPrRequests .PR_printUI_Remarks {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    border: 1px solid rgb(201, 201, 201);
+}
+
+.ViewPrRequests .PR_printUI_Remarks .columns {
+    display: grid;
+}
+
+.ViewPrRequests .PR_printUI_Remarks .DIVS {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    padding: 5px;
+    border-bottom: 0 !important;
+    border-right: 1px solid rgb(201, 201, 201);
+}
+
+.Employee_Requisition .Employee_Requisition_Right .RightButtonDiv {
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.Employee_Requisition .Employee_Requisition_Right .RightButtonDiv:hover .Box {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.Employee_Requisition .Employee_Requisition_Right .RightButtonDiv .Box {
+    height: 100px;
+    border-radius: 10px 0 0 10px;
+    word-wrap: break-word;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    background-color: #fff;
+}
+
+.Employee_Requisition .Employee_Requisition_Right .RightButtonDiv .Box .circle {
+    width: 70px;
+    height: 70px;
+    border: 1px solid lightgray;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Employee_Requisition .Employee_Requisition_Right .RightButtonDiv .Box .circle i {
+    font-size: 40px;
+    color: lightgray;
+}
+
+.Employee_Requisition .Employee_Requisition_Right .RightButtonDiv p {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 600px) {
+    .ViewPrRequests .PR_printUI_Top .PR_printUI_Top_select {
+        display: block;
+    }
+    .ViewPrRequests .PR_printUIView p {
+        font-size: 12px;
+    }
+    .ViewPrRequests .PR_printUIView h1 {
+        font-size: 25px;
+    }
+    .ViewPrRequests .PR_printUIView h3 {
+        font-size: 20px;
+    }
+    .ViewPrRequests .PR_printUI_Remarks .DIVS {
+        display: block;
+    }
+}

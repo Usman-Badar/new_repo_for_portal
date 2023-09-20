@@ -1,0 +1,62 @@
+.MenuSetupContainer {
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+    grid-gap: 20px;
+}
+
+.MenuSetupContainer .grid_column {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.MenuSetupContainer .grid_column .listContainer {
+    border: 1px solid lightgray;
+    border-bottom: 0;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.MenuSetupContainer .grid_column .listContainer .listItem .actionStrings {
+    cursor: pointer;
+}
+
+.MenuSetupContainer .grid_column .listContainer .listItem .actionStrings:hover {
+    text-decoration: underline;
+}
+
+.MenuSetupContainer .grid_column .listContainer .listItem .indexing {
+    width: 50px;
+}
+
+.MenuSetupContainer .grid_column .listContainer .listItem {
+    padding: 20px;
+    font-size: 12px;
+}
+
+.MenuSetupContainer .grid_column .listContainer .listItem p {
+    margin-bottom: 0;
+}
+
+.MenuSetupContainer .grid_column form label {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.MenuSetupContainer .grid_column form .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.MenuSetupContainer .grid_column form .submit {
+    background-color: var(--blue);
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 12px;
+}

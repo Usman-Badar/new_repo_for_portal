@@ -1,0 +1,14 @@
+.OutOfLocation {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.OutOfLocation .OutOfLocation-content {
+    width: 50%;
+    padding: 30px;
+    text-align: center;
+    font-family: Poppins;
+}

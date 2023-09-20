@@ -1,0 +1,17 @@
+.ConfirmApproval {
+    width: 100%;
+    padding-top: 30px;
+}
+
+.ConfirmApproval .ConfirmApproval-content {
+    width: 80%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    font-family: Oxygen;
+}
+
+.ConfirmApproval .ConfirmApproval-content .empAccess {
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+}

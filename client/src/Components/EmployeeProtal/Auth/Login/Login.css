@@ -1,0 +1,203 @@
+.Emp_Login2 {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding-top: 100px;
+    background-color: var( --lightgray );
+}
+
+.Emp_Login2 p {
+    font-size: 12px;
+}
+
+.Emp_Login2 svg {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    opacity: 0;
+    animation: svgAnimation 1s linear 1 forwards alternate;
+}
+
+@keyframes svgAnimation {
+    100% {
+        opacity: 1;
+    }
+}
+
+.Emp_Login2 .Emp_Login2_Div {
+    animation: slideDown 1s linear 1 forwards alternate;
+    transform: translateY(-20px);
+}
+
+@keyframes slideDown {
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.Emp_Login2 .Emp_Login2_Div h1 {
+    margin-bottom: 50px;
+    color: white;
+    font-family: Cinzel;
+    letter-spacing: 10px;
+}
+
+.Emp_Login2 .Emp_Login2_Div {
+    width: 30%;
+    z-index: 1;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .Emp_Login2_Grid {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 30px;
+    padding: 0 30px;
+    margin: 30px 0;
+    position: relative;
+    background-color: rgb(211, 211, 211, .2);
+    border-radius: 30px;
+    letter-spacing: 2px;
+    font-family: JosefinSans;
+    text-transform: uppercase;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .Emp_Login2_Grid div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .Emp_Login2_Grid .HideDiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var( --dark-black );
+    color: var( --gray-text );
+    height: 100%;
+    width: 50%;
+    transition: .5s;
+    border-radius: 30px;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv,
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .ButtonDiv2 {
+    display: none;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .LoginDiv,
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv {
+    padding: 10px 30px;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .ButtonDiv1,
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .ButtonDiv2 {
+    padding: 30px;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .LoginDiv input,
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv input,
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .LoginDiv label,
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv label {
+    font-family: JosefinSans !important;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv .passDiv_input{
+    border-radius: 0.25rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff !important;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv input{
+    border: 0 !important;
+}
+
+.Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv .passDiv_input i{
+    margin: 0 5px;
+    color: gray;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 1600px) {
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .LoginDiv,
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv {
+        padding: 10px 20px;
+    }
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .ButtonDiv {
+        padding: 30px 20px;
+    }
+}
+
+@media only screen and (max-width: 1450px) {
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .LoginDiv,
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv {
+        padding: 10;
+    }
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .ButtonDiv {
+        padding: 30px 10px;
+    }
+}
+
+@media only screen and (max-width: 1350px) {
+    .Emp_Login2 .Emp_Login2_Div {
+        width: 40%;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .Emp_Login2 .Emp_Login2_Div {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .Emp_Login2 .Emp_Login2_Div {
+        width: 60%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .Emp_Login2 {
+        padding-top: 50px;
+    }
+    .Emp_Login2 .Emp_Login2_Div {
+        width: 70%;
+    }
+    .Emp_Login2 .Emp_Login2_Div h1 {
+        margin-bottom: 30px;
+    }
+    .Emp_Login2 svg {
+        height: 300px;
+    }
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .LoginDiv,
+    .Emp_Login2 .Emp_Login2_Div .Emp_Login2_Div_Box .PassDiv {
+        padding: 10px 0 !important;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .Emp_Login2 .Emp_Login2_Div {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .Emp_Login2 .Emp_Login2_Div {
+        width: 90%;
+    }
+}

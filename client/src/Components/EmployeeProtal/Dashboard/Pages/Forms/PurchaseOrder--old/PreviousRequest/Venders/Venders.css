@@ -1,0 +1,8 @@
+.POForm .GridContainer.Venders.ShipTo .Vender {
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    padding-top: 10px;
+    position: relative;
+}

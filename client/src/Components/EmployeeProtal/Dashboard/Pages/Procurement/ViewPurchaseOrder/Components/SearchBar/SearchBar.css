@@ -1,0 +1,74 @@
+.ViewPurchaseOrderContainer .SearchContainer {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    background-color: white;
+    padding: 15px 0;
+    width: 97%;
+    margin: 0 auto;
+    border-radius: 15px;
+    font-size: 12px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchBar {
+    margin: 0 15px;
+    padding: 5px;
+    display: flex;
+    border-radius: 5px !important;
+    background-color: rgba(236, 240, 245, 255);
+}
+
+.ViewPurchaseOrderContainer .SearchContainer input,
+.ViewPurchaseOrderContainer .SearchContainer select {
+    border: 0 !important;
+    border-left: 1px solid lightgray !important;
+    border-radius: 0 5px 5px 0;
+    background: none;
+    font-size: 12px;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchBar div {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    background-color: rgba(236, 240, 245, 255);
+    color: lightgray;
+    border-radius: 5px 0 0 5px;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchFiltersContainer {
+    display: flex;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchFiltersContainer div {
+    background-color: rgba(236, 240, 245, 255);
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    /* width: 100%; */
+    position: relative;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchFiltersContainer label {
+    position: absolute;
+    top: -25%;
+    font-size: 12px;
+    font-weight: bolder;
+    margin-bottom: 0;
+    padding: 0 5px;
+    border-radius: 5px;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchFiltersContainer select,
+.ViewPurchaseOrderContainer .SearchContainer .SearchFiltersContainer input[type=date] {
+    background-color: rgba(236, 240, 245, 255);
+    border: 0 !important;
+    border-radius: 5px;
+    height: 100%;
+}
+
+.ViewPurchaseOrderContainer .SearchContainer .SearchFiltersContainer select option {
+    background-color: #fff;
+}

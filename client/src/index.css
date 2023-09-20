@@ -1,0 +1,31 @@
+html {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+body {
+    scroll-behavior: smooth;
+}
+
+.btn:focus,
+.form-control:focus {
+    box-shadow: none;
+}
+
+.d-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-group-vertical>.btn.active, .btn-group-vertical>.btn:active, .btn-group-vertical>.btn:focus, .btn-group>.btn.active, .btn-group>.btn:active, .btn-group>.btn:focus {
+    z-index: 0;
+}
+
+body > iframe {
+    /* display: none !important; */
+    z-index: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+}

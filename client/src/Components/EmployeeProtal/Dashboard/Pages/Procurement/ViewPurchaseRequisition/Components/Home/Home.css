@@ -1,0 +1,143 @@
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three,
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .two {
+    width: 100%;
+    display: grid;
+    grid-column-gap: 20px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three {
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    margin-bottom: 20px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .two {
+    grid-template-columns: 50fr 50fr;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three .RequestStatusChart,
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three .Calculate {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding: 10px;
+    border-radius: 15px;
+    font-family: Poppins;
+    min-height: 320px;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+/* .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three .RequestStatusChart canvas {
+    height: 100px;
+} */
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three .Calculate small {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .ViewPrRequests_graphdiv {
+    border-bottom: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    padding: 10px;
+    width: 100%;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid {
+    display: grid;
+    grid-template-columns: 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr;
+    grid-column-gap: 10px;
+    height: 250px;
+    align-items: flex-end;
+    position: relative;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_monthgrid {
+    display: grid;
+    grid-template-columns: 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr 8.33fr;
+    grid-column-gap: 10px;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar {
+    background-color: lightgray;
+    border-radius: 10px;
+    position: relative;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background-color: black;
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    width: max-content;
+    left: 0;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background-color: black;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_Bargrid .graphbar:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graph_data .Graph_monthgrid div {
+    font-weight: bolder;
+    text-align: center;
+}
+
+.ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .ViewPrRequests_graph .graphyear {
+    text-align: center;
+    font-weight: bolder;
+}
+
+@media only screen and (max-width: 1600px) {
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three {
+        grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    }
+    /* .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three .RequestStatusChart canvas {
+        height: 100px;
+    } */
+}
+
+@media only screen and (max-width: 1200px) {
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .ViewPrRequests .ViewPrRequests_grid .ViewPrRequests_Right .Home .three {
+        grid-template-columns: 100fr;
+    }
+}

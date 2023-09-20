@@ -1,0 +1,38 @@
+.repair_request {
+    font-size: 13px;
+}
+
+.repair_request .RepairRequestForm {
+    padding: 50px;
+}
+
+.repair_request .RepairRequestForm .inner {
+    border: 1px solid lightgray;
+    padding: 30px;
+}
+
+.repair_request .request_container {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-gap: 20px;
+}
+
+.repair_request .request_container .repair_request_form {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.repair_request .request_container .repair_request_form span.attached_files {
+    display: block;
+    color: var(--blue);
+}
+
+.repair_request .request_container .repair_request_form .btn {
+    font-size: 13px;
+}
+
+.repair_request_list {
+    max-height: 75vh;
+    overflow-y: auto;
+}

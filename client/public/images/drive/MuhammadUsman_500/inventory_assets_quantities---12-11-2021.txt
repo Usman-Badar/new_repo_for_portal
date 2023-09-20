@@ -1,0 +1,6 @@
+// invtry_asset_quantites
+
+id int not null
+asset_table varchar not null
+asset_id int not null (foreign key => invtry_main_assets OR invtry_asset_sub_assets)
+quantity int not null

@@ -1,0 +1,63 @@
+.View_Employee_Attendance {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-column-gap: 30px;
+    padding: 30px;
+}
+
+.View_Employee_Attendance .Filters {
+    background-color: #fff;
+    padding: 30px;
+    font-size: 12px;
+}
+
+.View_Employee_Attendance .Filters .MuiFormControl-root input {
+    font-family: Quicksand;
+    font-size: 12px;
+}
+
+.View_Employee_Attendance .Attendance {
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    font-size: 12px;
+    max-height: 80vh;
+}
+
+.View_Employee_Attendance .Attendance .attendance-content {
+    overflow-y: auto;
+    max-height: 50vh;
+    margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 992px) {
+    .View_Employee_Attendance {
+        display: block;
+    }
+    .View_Employee_Attendance .DivFirst {
+        margin-bottom: 20px;
+    }
+    .View_Employee_Attendance .Attendance {
+        max-height: max-content;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .View_Employee_Attendance {
+        padding: 30px 15px;
+    }
+    .View_Employee_Attendance .Filters {
+        padding: 30px 15px;
+    }
+    .View_Employee_Attendance .Attendance {
+        padding: 30px 0;
+        font-size: 10px;
+    }
+    .View_Employee_Attendance .Attendance h5.mb-4 {
+        margin-left: 30px;
+    }
+    .View_Employee_Attendance .Attendance #test-table-xls-button {
+        margin-right: 30px;
+    }
+}

@@ -1,0 +1,60 @@
+.Employee_Help {
+    width: 100%;
+}
+
+.Employee_Help .Employee_Questions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.Employee_Help .Employee_Questions .la-question-circle {
+    font-size: 60px;
+}
+
+.Employee_Help .Employee_Questions input {
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-radius: 5px;
+}
+
+.Employee_Help .Employee_Questions .inputDiv {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.Employee_Help .Employee_Questions input:focus {
+    outline: none;
+}
+
+.Employee_Help .Employee_FAQs {
+    width: 80%;
+    margin: 0 auto;
+    height: 50vh;
+}
+
+.Employee_Help .Employee_FAQs .FAQs_Div {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+}
+
+.Employee_Help .Employee_FAQs .FAQs_Div div {
+    padding: 10px 20px 10px 50px;
+    height: 70px;
+}
+
+hr {
+    margin: 0;
+}
+
+.Employee_Help .Employee_FAQs .Showdiv {
+    background-color: rgb(235, 233, 233);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Employee_Help p {
+    margin-bottom: 0;
+}

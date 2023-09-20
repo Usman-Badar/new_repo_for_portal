@@ -1,0 +1,12 @@
+.advance_salary .advance_salary_container .grid {
+    display: grid;
+    grid-template-columns: 25fr 50fr 25fr;
+    grid-gap: 20px;
+}
+
+.advance_salary .advance_salary_container .sigCanvas {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    width: 100%;
+    height: 300px;
+}

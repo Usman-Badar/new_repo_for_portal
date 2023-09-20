@@ -1,0 +1,129 @@
+.Admin_Locations {
+    width: 100%;
+    padding-top: 30px;
+}
+
+.Admin_Locations .Admin_Locations-content {
+    width: 85%;
+    font-family: Poppins;
+}
+
+.Admin_Locations .Admin_Locations-content h3 {
+    color: rgb(128, 128, 128, .5);
+    margin-bottom: 20px;
+}
+
+.Admin_Locations .Admin_Locations-content .addLocations {
+    background-color: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.Admin_Locations .Admin_Locations-content .addLocations  .addLocationsGrid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40fr 40fr 20fr;
+    grid-column-gap: 10px;
+}
+.Admin_Locations .Admin_Locations-content .addLocations  .addLocationsGrid1{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 80fr 20fr;
+    grid-column-gap: 10px;
+}
+
+.Admin_Locations .Admin_Locations-content .addLocations .btn {
+    background: #1A7DEC;
+    color: white;
+    width: 200px;
+}
+
+.Admin_Locations .Admin_Locations-content .locations {
+    background-color: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.Admin_Locations .Admin_Locations-content .locations .index {
+    border: 2px solid rgb(26, 125, 236, .5);
+    color: rgb(26, 125, 236, .5);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+
+.Admin_Locations .Admin_Locations-content .locations .operations .EdditDiv,  .Admin_Locations .Admin_Locations-content .locations .operations .DeleteDiv{
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Admin_Locations .Admin_Locations-content .modal {
+    font-family: Poppins;
+}
+
+.Admin_Locations .Admin_Locations-content .locations .LocationGrid{
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 20px;
+}
+
+.Admin_Locations .Admin_Locations-content .locations .LocationDetails{
+    padding: 20px;
+    display: flex;
+    border-bottom: 1px solid lightgray;
+    transition: 0.5s;
+    cursor: pointer;
+    position: relative;
+}
+
+.Admin_Locations .Admin_Locations-content .locations .LocationDetails .operations {
+    display: flex;
+    opacity: 0;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    background-color: rgb(238, 238, 238) ;
+    transition: 0.5s;
+}
+
+.Admin_Locations .Admin_Locations-content .locations .LocationDetails:hover{
+    background-color: rgb(238, 238, 238);
+}
+
+.Admin_Locations .Admin_Locations-content .locations .LocationDetails:hover .operations{
+    opacity: 1;
+}
+
+.Admin_Locations .Admin_Locations-content .locations .LocationDetails .LocationPhone{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.Admin_Locations .Admin_Locations-content .locations input{
+    border: 0 !important;
+}
+
+.Admin_Locations .Admin_Locations-content .locations h5 {
+    font-weight: bolder;
+}
+.Admin_Locations .Admin_Locations-content .locations p {
+    margin-bottom: 0;
+}

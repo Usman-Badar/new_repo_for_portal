@@ -1,0 +1,106 @@
+.SelfAssessmentForm .SelfAssessmentForm-content .grid-div {
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+    grid-column-gap: 30px;
+    padding: 0 30px;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .grid-div .leftdiv h6 {
+    width: 75%;
+    text-align: justify;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .grid-div .rightdiv {
+    padding: 20px;
+    width: 100%;
+    background-color: var(--lightgray);
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .grid-div .rightdiv .rightdiv-details {
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+    align-items: center;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .grid-div .rightdiv .rightdiv-details.reverse {
+    grid-template-columns: 60fr 40fr;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content label {
+    font-weight: bold;
+    font-size: 13px;
+    font-family: 'Roboto-Light';
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content textarea.form-control {
+    min-height: 80px;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .question {
+    word-break: break-word;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .question.ticket {
+    cursor: pointer;
+    transition: .5s;
+    padding: 10px;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .question.ticket:hover {
+    background-color: var(--lightgray);
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .las.la-sync.animate {
+    animation: saving 1s linear infinite reverse;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .savingTxt {
+    position: absolute;
+    bottom: -35px;
+    left: -30px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: #fff;
+    padding: 5px 20px;
+    opacity: 0;
+    transition: .5s;
+    cursor: none;
+}
+
+.SelfAssessmentForm .SelfAssessmentForm-content .savingTxt.animate {
+    opacity: 1;
+    cursor: progress;
+}
+
+@keyframes saving {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .SelfAssessmentForm .SelfAssessmentForm-content .grid-div {
+        grid-template-columns: 60fr 40fr;
+    }
+
+    .SelfAssessmentForm .SelfAssessmentForm-content .grid-div .leftdiv h6 {
+        width: 100% !important;
+    }
+
+    .SelfAssessmentForm .SelfAssessmentForm-content label.urdu {
+        font-size: 16px;
+    }
+
+    .SelfAssessmentForm .SelfAssessmentForm-content .question {
+        align-items: center !important;
+    }
+    
+    .SelfAssessmentForm .SelfAssessmentForm-content .question .left,
+    .SelfAssessmentForm .SelfAssessmentForm-content .question .right {
+        max-width: 50%;
+    }
+}

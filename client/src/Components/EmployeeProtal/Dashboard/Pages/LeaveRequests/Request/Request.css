@@ -1,0 +1,41 @@
+.requests {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    background-color: #ffff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+    cursor: pointer;
+    transition: .5s;
+    animation: popups .2s linear 1 forwards alternate;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.requests:hover {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+
+.requests .shortDetails {
+    display: none;
+}
+
+.requests .status {
+    padding: 5px 8px;
+    border-radius: 3px;
+}
+
+.requests .statusa {
+    background-color: #defaed;
+    color: #307365;
+}
+
+.requests .statusr {
+    background-color: #ffeaed;
+    color: #d19399;
+}
+
+.requests .statusp {
+    background-color: #fff4e9;
+    color: #fc9701;
+}

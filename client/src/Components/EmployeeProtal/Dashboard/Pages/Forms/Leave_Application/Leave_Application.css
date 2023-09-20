@@ -1,0 +1,354 @@
+.Leave_container{
+    width: 90%;
+    margin: auto;
+    transition: .5s;
+    font-family: Roboto-Light;
+}
+
+.Leave_container .grid_container {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-gap: 20px;
+}
+
+.Leave_container .Topbar_menu{
+    display: flex;
+    width: 100%;
+    letter-spacing: 3px;
+    border-bottom: 5px solid var(--c-green);
+}
+
+.Leave_container .Topbar_menu div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.Leave_container .Topbar_menu .tabs.active {
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.History {
+    border: 1px solid lightgray;
+    border-radius: 0 0 5px 5px;
+}
+
+
+.History .table td,
+.History .table th {
+    font-size: 12px;
+}
+
+.History .table td b {
+    font-family: Roboto;
+}
+
+.History .checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #28A745;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.History .checkmark {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #28A745;
+    stroke-miterlimit: 10;
+    margin: auto;
+    box-shadow: inset 0px 0px 0px #28A745;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.History .checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+.cross__svg {
+    border-radius: 50%;
+    display: block;
+    height: 30px;
+    margin: 0 auto;
+    stroke-width: 3;
+    width: 30px;
+}
+
+.cross__circle {
+    animation: 0.6s ease 0s normal forwards 1 running stroke;
+    fill: none;
+    margin: auto;
+    stroke: #e55454;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 1;
+}
+
+.cross__path {
+    stroke: #e55454;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    transform-origin: 50% 50% 0;
+}
+
+.f {
+    stroke: #e55454;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    transform-origin: 50% 50% 0;
+    animation: 0.3s ease 0.8s normal forwards 1 running stroke;
+}
+
+.l {
+    stroke: #e55454;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    transform-origin: 50% 50% 0;
+    animation: 1s ease 0.8s normal forwards 1 running stroke;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.down {
+    display: none;
+}
+
+.Short_Leave_Form {
+    border: 1px solid lightgray;
+    border-radius: 0 0 5px 5px;
+}
+
+.Short_Leave_Form,
+.Filters {
+    width: 100%;
+}
+
+.history_content {
+    transition: .5s;
+    padding: 20px;
+    animation: popups 1s linear 1 forwards alternate;
+    opacity: 0;
+    border-radius: 10px;
+}
+
+.history_content .signatures {
+    transform: rotate(-10deg) translate(20px, 40px);
+    font-family: "Tangerine", serif;
+}
+
+.history_content .accepted_div {
+    display: block;
+    margin-left: auto;
+    width: 200px;
+    padding: 30px 0;
+    background: none;
+    border: 1px dashed gray;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.history_content .accepted_div:hover {
+    background-color: rgb(245, 245, 245);
+}
+
+.history_content .accepted_div:focus {
+    outline: 0;
+    /* outline: 5px auto -webkit-focus-ring-color; */
+}
+
+.history_content .form-control#leave_type_select {
+    width: fit-content !important;
+}
+
+.history_content .div_item {
+    display: flex;
+    grid-template-columns: 20fr 80fr;
+    grid-column-gap: 10px;
+}
+
+.Application_Form {
+    border-radius: 10px;
+    padding: 20px;
+    transition: .5s;
+    animation: popups 1s linear 1 forwards alternate;
+    opacity: 0;
+}
+
+.history_content .div_item div:first-child {
+    font-weight: bold;
+}
+
+.history_content .div_item div:last-child {
+    border-bottom: 1px solid;
+    padding: 0 15px;
+}
+
+.history_content .table {
+    font-size: 13px;
+}
+
+.history_content .Print_button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.Short_Leave_Form p {
+    margin-bottom: 0;
+}
+
+.Short_Leave_Form .Application_Form form input,
+.Short_Leave_Form .Application_Form form select,
+.Short_Leave_Form .Application_Form form textarea,
+.Short_Leave_Form .Application_Form form p {
+    font-size: 13px;
+}
+
+.Leave_container label {
+    font-family: Roboto;
+}
+
+.leave_status_date {
+    display: none;
+}
+
+@media only screen and (max-width: 992px) {
+    .History .table.tbl td:nth-child(2) {
+        width: 30% !important;
+    }
+}
+
+@media only screen and (max-width: 786px) {
+    .Leave_container .Topbar_menu div {
+        font-size: 13px;
+        padding: 10px 0;
+    }
+}
+
+@media only screen and (max-width: 730px) {
+    .Leave_container{
+        width: 90%;
+    }
+    .history_content .form-control#leave_type_select {
+        font-size: 13px;
+    }
+    .History .table.tbl td:nth-child(1),
+    .History .table.tbl th:nth-child(1) {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .Leave_container .Topbar_menu div{
+        font-size: 13px;
+    }
+    .Application_Form h4{
+        font-size: 20px;
+    }
+    .history_content .form-control#leave_type_select {
+        /* width: 30% !important; */
+        font-size: 15px;
+    }
+    .history_content .status_div {
+        font-size: 10px;
+    }
+    .history_content .table th{
+        font-size: 10px;
+    }
+
+    .history_content h3{
+        font-size: 18px;
+    }
+    .history_content h2{
+        font-size: 20px;
+    }
+    .history_content .signatures {
+        transform: rotate(-12deg) translate(30px, 10px);
+        font-family: "Tangerine", serif;
+    }
+
+    .history_content {
+        padding: 20px 10px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .Leave_container{
+        width: 95%;
+    }
+
+    .History .table td,
+    .History .table th {
+        font-size: 10px;
+    }
+
+    .Leave_container .Topbar_menu div {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .Leave_container .Topbar_menu {
+        display: grid;
+        grid-template-columns: 50fr 50fr;
+        padding-bottom: 10px;
+    }
+
+    .Leave_container .Topbar_menu .tabs.active {
+        border-radius: 10px !important;
+    }
+    .history_content .form-control#leave_type_select {
+        /* width: 30% !important; */
+        font-size: 12px;
+    }
+
+    .History .table.tbl td:nth-child(2) {
+        width: 40% !important;
+    }
+
+    .History .table.tbl th:nth-child(3),
+    .History .table.tbl td:nth-child(3) {
+        display: none;
+    }
+
+    .History .table.tbl.tbl2 th:nth-child(4),
+    .History .table.tbl.tbl2 td:nth-child(4) {
+        display: none;
+    }
+    
+    .leave_status_date {
+        display: flex;
+    }
+}
+
+
+@media only screen and (max-width: 450px) {
+    .Leave_container .grid_container {
+        display: block;
+    }
+
+    .Leave_container .heading {
+        font-size: 25px;
+    }
+}

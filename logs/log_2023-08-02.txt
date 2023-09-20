@@ -1,0 +1,4 @@
+14:09:27 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: argument callback must be a function when provided
+

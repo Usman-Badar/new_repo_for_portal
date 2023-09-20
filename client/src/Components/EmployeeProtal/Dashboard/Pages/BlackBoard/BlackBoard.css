@@ -1,0 +1,453 @@
+.BlackBoard {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Poppins';
+    font-size: 12px;
+}
+
+.BlackBoard .BlackBoard_Header {
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    align-items: center;
+}
+
+.BlackBoard .BlackBoard_Header h1 {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.BlackBoard .BlackBoard_Data {
+    width: 100%;
+}
+
+.BlackBoard .BlackBoard_Data .Data {
+    width: 70%;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.BlackBoard .BlackBoard_Data .Data .DataPera {
+    width: 25%;
+    margin: 50px 0;
+    cursor: pointer;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Data_Grid {
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Data_Grid input {
+    border-radius: 5px 0 0 5px !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Data_Grid button {
+    border-radius: 0 5px 5px 0 !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: rgb(245, 245, 245);
+    height: 38px;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Courses_Cards {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-column-gap: 20px;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Courses_Cards .DIV {
+    transition: .5s;
+    animation: popups .2s linear 1 forwards alternate;
+    opacity: 0;
+    transform: scale(0.8);
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Courses_Cards .DIV .IMAGE {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    position: relative;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Courses_Cards .DIV .Circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    left: calc( 50% - 25px);
+    top: calc( 200px - 25px);
+    border: 2px solid rgb(153, 153, 153);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Courses_Cards .DIV .Boxes div:not(.__react_component_tooltip) {
+    background-color: white;
+    cursor: pointer;
+}
+
+.BlackBoard .BlackBoard_Data .Data .Courses_Cards .DIV .Boxes div:hover:not(.__react_component_tooltip) {
+    opacity: 0.7;
+}
+
+.BlackBoard_Videos {
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    font-family: 'Poppins', sans-serif;
+    padding: 10px;
+}
+
+.BlackBoard_Videos .Courses_Content {
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.BlackBoard_Videos .Courses_Content .BacktoBlackboard {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.BlackBoard_Videos .Courses_Content .BacktoBlackboard:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+.BlackBoard_Videos .Courses_Content .Content_Div {
+    padding: 20px 10px;
+}
+
+.BlackBoard_Videos .Courses_Content .Course_heading {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    position: sticky;
+    top: 0;
+}
+
+.BlackBoard_Videos .Courses_Content .Content_Div .divshow div {
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.BlackBoard_Videos .Courses_Content .Showdiv {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.BlackBoard_Videos p {
+    margin-bottom: 0;
+}
+
+.BlackBoard_Videos1 {
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+    padding: 20px 50px;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid {
+    display: flex;
+    width: 100%;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid video {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid #status span.status {
+    display: none;
+    font-weight: bold;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid span.status.complete {
+    color: green;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid span.status.incomplete {
+    color: red;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid #status.complete span.status.complete {
+    display: inline;
+}
+
+.BlackBoard_Videos1 .BlackBoard_Videos1_grid #status.incomplete span.status.incomplete {
+    display: inline;
+}
+
+.BlackBoard_Videos .Courses_Content .Showdiv:hover {
+    background-color: rgb(247, 247, 247);
+}
+
+.BlackBoard_Videos1 button {
+    background-color: #454545;
+    color: white;
+}
+
+.BlackBoard_Videos1 button:hover {
+    color: white !important;
+}
+
+.Courses_Available {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.Courses_Available .Courses_Available_Data {
+    width: 70%;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-column-gap: 20px;
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards .DIV .IMAGE {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards .DIV .Rect {
+    width: 200px;
+    height: 50px;
+    background-color: white;
+    position: absolute;
+    left: calc( 50% - 100px);
+    top: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: 0.5s;
+    opacity: 0.5;
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards .DIV .Boxes {
+    background-color: white;
+    cursor: pointer;
+    padding: 30px 0 20px 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards .DIV:hover .Rect {
+    position: relative;
+    transform: translateY(-100px);
+    opacity: 1;
+    width: 260px;
+    height: 60px;
+    left: calc( 50% - 130px);
+    top: calc( 200px - 30px);
+    font-size: 25px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards .DIV {
+    margin-bottom: 30px;
+    transition: .5s;
+    animation: popups .2s linear 1 forwards alternate;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.Courses_Available .Courses_Available_Data .Courses_Cards .DIV:hover {
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+.BacktoBlackboard {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.BacktoBlackboard:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+@media only screen and (max-width: 1200px) {
+    .BlackBoard .BlackBoard_Data .Data {
+        width: 80%;
+        margin: 0 auto;
+    }
+    .BlackBoard .BlackBoard_Header h1 {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .BlackBoard .BlackBoard_Data .Data {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .BlackBoard .BlackBoard_Header h1 {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .BlackBoard .BlackBoard_Data .Data .Courses_Cards {
+        grid-template-columns: 50fr 50fr;
+    }
+    .BlackBoard .BlackBoard_Data .Data .DataPera {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .BlackBoard .BlackBoard_Data .Data .Courses_Cards {
+        grid-template-columns: 100fr;
+    }
+    .BlackBoard .BlackBoard_Data .Data .Data_Grid {
+        display: grid;
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .BlackBoard .BlackBoard_Data .Data .Data_Grid {
+        display: block;
+    }
+    .BlackBoard .BlackBoard_Header h1 {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    .BlackBoard .BlackBoard_Header h1 {
+        font-size: 25px;
+    }
+    .BlackBoard .BlackBoard_Data .Data .DataPera {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .BlackBoard_Videos {
+        grid-template-columns: 40fr 60fr;
+    }
+    .BlackBoard_Videos1 {
+        padding: 50px;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .BlackBoard_Videos1 {
+        padding: 30px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .BlackBoard_Videos {
+        display: block;
+    }
+    /* .BlackBoard_Videos .Courses_Content{
+        display: none;
+    } */
+}
+
+@media only screen and (max-width: 700px) {
+    .BlackBoard_Videos1 {
+        padding: 20px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .BlackBoard_Videos1 {
+        padding: 10px;
+    }
+    .BlackBoard_Videos1 div h1 {
+        font-size: 30px !important;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .BlackBoard_Videos .Courses_Content .Course_heading h2 {
+        font-size: 25px;
+    }
+    .BlackBoard_Videos .Courses_Content .Content_Div {
+        padding: 10px 15px;
+    }
+    .BlackBoard_Videos .Courses_Content .Showdiv p {
+        font-size: 13px !important;
+    }
+    .BlackBoard_Videos1 div h1 {
+        font-size: 25px !important;
+    }
+    .BlackBoard_Videos1 {
+        padding: 0;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .BlackBoard_Videos .Courses_Content .Course_heading h2 {
+        font-size: 20px;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    .Courses_Available .Courses_Available_Data {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .Courses_Available .Courses_Available_Data {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .Courses_Available .Courses_Available_Data .Courses_Cards {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .Courses_Available .Courses_Available_Data .Courses_Cards {
+        grid-template-columns: 100fr;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    .Courses_Available .Courses_Available_Data h1 {
+        font-size: 30px;
+    }
+}

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<style>
+    body {
+        scroll-behavior: smooth;
+    }
+
+    .content {
+        background-color: #fff;
+        padding: 10px;
+        padding-top: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .content .form-control {
+        font-size: 13px;
+        border-radius: 0;
+    }
+
+    .animated {
+        opacity: 0;
+        transition: 1s;
+        animation: popUp 1s linear 1 forwards alternate;
+    }
+
+    #step2 {
+        display: none;
+    }
+
+    @keyframes popUp {
+        100% {
+            opacity: 1;
+        }        
+    }
+</style>
+
+<body style="background-color: #f1f1f1; font-size: 13px;">
+    <p class="d-none" id="emp_id"><%= emp_id %></p>
+    <p class="d-none" id="url"><%= url %></p>
+    <p class="d-none" id="category_id"><%= category_id %></p>
+    <div class="content">
+
+        <form id="step1" class="animated">
+            <label class="mb-0">Location</label>
+            <select required name="location_code" id="location_code" class="form-control mb-2">
+                <option value="">Select The Option</option>
+            </select>
+            <label class="mb-0">Vehicle Type</label>
+            <select required name="vehicle_type" id="vehicle_type" class="form-control mb-2">
+                <option value="">Select The Option</option>
+            </select>
+            <label class="mb-0">Vehicle</label>
+            <select required name="vehicle" id="vehicle" class="form-control mb-2">
+                <option value="">Select The Option</option>
+            </select>
+            <label class="mb-0">Driver</label>
+            <select required name="drivers" id="drivers" class="form-control mb-2">
+                <option value="">Select The Option</option>
+            </select>
+            <label class="mb-0">Current Meter Reading</label>
+            <input required placeholder="2.60" name="meter_reading" id="meter_reading" class="form-control mb-2" />
+
+            <button type="submit" class="btn btn-sm btn-primary px-3 d-block ml-auto">Next</button>
+            <button type="reset" class="d-none" id="reset1">cancel</button>
+        </form>
+
+        <form id="step2" class="animated pt-3">
+            <h6>Check The Following List:</h6>
+            <div id="step2content"></div>
+            <button type="submit" class="btn btn-light btn-sm px-4 d-block mx-auto mt-3" id="confirmationBtn">Confirm</button>
+            <button type="reset" class="d-none" id="reset2">cancel</button>
+        </form>
+
+    </div>
+</body>
+
+<script>
+
+    const emp_id = document.getElementById('emp_id').textContent;
+    const url = document.getElementById('url').textContent;
+    const category_id = document.getElementById('category_id').textContent;
+    const sub_category_id = document.getElementById('sub_category_id');
+    const formStep1 = document.getElementById('step1');
+    const formStep2 = document.getElementById('step2');
+    const step2content = document.getElementById('step2content');
+    const vehicleTypeSelect = document.getElementById('vehicle_type');
+    const locationSelect = document.getElementById('location_code');
+    const confirmationBtn = document.getElementById('confirmationBtn');
+    let checkedArray = [];
+    let RenderedList = [];
+    
+    vehicleTypeSelect.addEventListener('change', loadVehicles);
+    formStep1.addEventListener('submit', step1Submission);
+    formStep2.addEventListener('submit', step2Submission);
+    locationSelect.addEventListener('change', loadDrivers);
+
+    function loadLocations()
+    {
+        const formData = new FormData();
+        formData.append('emp_id', emp_id);
+        fetch(url+'/workshop/list/locations', {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json()
+        ).then(
+            response => renderLocations(response)
+        );
+    }
+
+    function renderLocations(list)
+    {
+        for ( let x = 0; x < list.length; x++ )
+        {
+            const option = document.createElement('option');
+            
+            option.value = list[x].location_code;
+            option.textContent = list[x].location_name;
+
+            if ( list.length === 1 )
+            {
+                option.setAttribute('selected', true);
+            }
+
+            locationSelect.appendChild(option);
+        }
+        loadSubCategories();
+    }
+
+    function loadSubCategories()
+    {
+        const formData = new FormData();
+        formData.append('category_id', category_id);
+        fetch(url+'/workshop/list/sub_categories', {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json()
+        ).then(
+            response => renderSubCategories(response)
+        );
+    }
+
+    function renderSubCategories(list)
+    {
+        let location_code;
+        for ( let x = 0; x < list.length; x++ )
+        {
+            const option = document.createElement('option');
+            
+            option.value = list[x].id;
+            option.textContent = list[x].name;
+
+            vehicleTypeSelect.appendChild(option);
+        }
+    }
+
+    function loadDrivers()
+    {
+        const formData = new FormData();
+        formData.append('location_code', locationSelect.value);
+        fetch(url+'/workshop/list/drivers', {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json()
+        ).then(
+            response => renderDrivers(response)
+        );
+    }
+
+    function renderDrivers(list)
+    {
+        const driversSelect = document.getElementById('drivers');
+        let location_code;
+        for ( let x = 0; x < list.length; x++ )
+        {
+            const option = document.createElement('option');
+            
+            option.value = list[x].emp_id;
+            option.textContent = list[x].name;
+
+            driversSelect.appendChild(option);
+        }
+    }
+
+    function loadVehicles( e )
+    {
+        const formData = new FormData();
+        formData.append('location_code', locationSelect.value);
+        formData.append('category_id', category_id);
+        formData.append('sub_category_id', e.target.value);
+        fetch(url+'/workshop/list/vehicles', {
+            method: "POST",
+            body: formData
+        }).then(
+            res => res.json()
+        ).then(
+            response => renderVehicles(response)
+        );
+    }
+
+    function renderVehicles(list)
+    {
+        const vehicleSelect = document.getElementById('vehicle');
+        let location_code;
+        for ( let x = 0; x < list.length; x++ )
+        {
+            const option = document.createElement('option');
+            
+            option.value = list[x].transaction_id;
+            option.textContent = list[x].name;
+
+            vehicleSelect.appendChild(option);
+        }
+    }
+    function loadList()
+    {
+        fetch(url+'/workshop/list', {
+            method: "GET",
+        }).then(
+            res => res.json()
+        ).then(
+            response => {
+                renderList(response);
+            }
+        );
+    }
+
+    function renderList(list)
+    {
+        for ( let x = 0; x < list.length; x++ )
+        {
+            const textarea = document.createElement('textarea');
+            const card = document.createElement('div');
+            const div = document.createElement('div');
+            const p1 = document.createElement('p');
+            const p2 = document.createElement('p');
+            const checkbox = document.createElement('input');
+            
+            card.className = 'shadow-sm p-3 bg-white d-flex align-items-center justify-content-between mb-2';
+            p1.className = 'mb-0 font-weight-bold text-capitalize';
+            p2.className = 'mb-0 text-secondary text-capitalize';
+            p1.style.wordWrap = 'break-word';
+            p2.style.wordWrap = 'break-word';
+            div.style.width = '95%';
+            p2.id = "commentTxt" + list[x].id;
+            textarea.className = 'form-control my-2';
+            textarea.name = "comment" + list[x].id;
+            textarea.id = "comment" + list[x].id;
+            textarea.style.display = 'none';
+
+            p1.textContent = list[x].title;
+            p2.textContent = "Tap To Comment";
+            textarea.placeholder = "Enter Comments For " + list[x].title;
+
+            checkbox.type = 'checkbox';
+            checkbox.setAttribute('name', 'checkbox' + list[x].id);
+
+            div.addEventListener('click', () => {
+                if(textarea.style.display==='none')
+                {
+                    textarea.style.display='block';
+                }else
+                {
+                    textarea.style.display='none';
+                }
+            });
+            textarea.addEventListener('change', (e) => {
+
+                const id = e.target.name.split('comment').pop();
+                if ( e.target.value === '' )
+                {
+                    $('#commentTxt' + id).text('Tap To Comment');
+                }else
+                {
+                    $('#commentTxt' + id).text(e.target.value);
+                }
+                
+            });
+            checkbox.addEventListener('change', (e) => {
+                const { name, checked } = e.target;
+                if ( checked )
+                {
+                    checkedArray.push(name.split('checkbox').pop());
+                }else
+                {
+                    checkedArray = checkedArray.filter( id => {return id != name.split('checkbox').pop()} );
+                }
+                // confirmationBtn.textContent = "Confirm (" + checkedArray.length + ")";
+            })
+
+            div.appendChild(p1);
+            div.appendChild(p2);
+            card.appendChild(div);
+            card.appendChild(checkbox);
+            step2content.appendChild(card);
+            step2content.appendChild(textarea);
+        }
+        RenderedList = list;
+    }
+
+    function step1Submission( e )
+    {
+        e.preventDefault();
+        formStep1.style.display = 'none';
+        formStep2.style.display = 'block';
+        loadList();
+    }
+
+    function step2Submission( e )
+    {
+        e.preventDefault();
+        const arrayOfData = [];
+        for ( let child in step2content.childNodes )
+        {
+            if ( child % 2 == 0 )
+            {
+                const innerCheckbox = step2content.childNodes[child].childNodes[1];
+                const id = innerCheckbox.name.split('checkbox').pop();
+                const comment = document.getElementById('comment' + id);
+                if ( innerCheckbox.checked )
+                {
+                    comment.style.border = '1px solid lightgray';
+                    comment.style.display = 'none';
+                }else
+                {
+                    if ( comment.value === '' )
+                    {
+                        comment.style.display = 'block';
+                        comment.style.border = '1px solid red';
+                        comment.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+                        return false;
+                    }else
+                    {
+                        comment.style.display = 'none';
+                        comment.style.border = '1px solid green';
+                    }
+                }
+
+                arrayOfData.push(
+                    {
+                        id: id,
+                        comment: comment.value,
+                        checkbox: innerCheckbox.checked
+                    }
+                );
+            }
+        }
+        
+        if ( RenderedList.length === arrayOfData.length )
+        {
+            $('button').prop('disabled', true);
+            const location_code = document.getElementById('location_code').value;
+            const vehicle_type = document.getElementById('vehicle_type').value;
+            const vehicle = document.getElementById('vehicle').value;
+            const drivers = document.getElementById('drivers').value;
+            const meter_reading = document.getElementById('meter_reading').value;
+            const formData = new FormData();
+            formData.append('arrayOfData', JSON.stringify(arrayOfData));
+            formData.append('emp_id', emp_id);
+            formData.append('location_code', location_code);
+            formData.append('vehicle_type', vehicle_type);
+            formData.append('vehicle', vehicle);
+            formData.append('drivers', drivers);
+            formData.append('meter_reading', meter_reading);
+            fetch(url+'/workshop/submit', {
+                method: "POST",
+                body: formData
+            }).then(
+                response => {
+                    $('button').prop('disabled', false);
+                    alert('Report Submitted');
+                    $("#reset1").trigger('click');
+                    $("#reset2").trigger('click');
+                    formStep1.style.display = 'block';
+                    formStep2.style.display = 'none';
+                }
+            );
+        }
+    }
+    loadLocations();
+
+</script>
+
+</html>

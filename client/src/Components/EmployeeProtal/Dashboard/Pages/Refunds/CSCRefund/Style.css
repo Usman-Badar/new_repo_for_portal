@@ -1,0 +1,50 @@
+.csc_refund_form .upload_div {
+    border: 2px dashed lightgray;
+    padding: 50px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gray;
+    cursor: pointer;
+}
+
+.csc_refund_form .grid {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-gap: 20px;
+}
+
+.csc_refund table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+.csc_refund table tfoot td {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--lightgray);
+    font-size: 16px;
+}
+
+.csc_refund table tbody td {
+    font-family: Poppins;
+}
+
+.csc_refund table tbody td.text-right,
+.csc_refund table tfoot td.text-right {
+    font-family: Lato;
+}
+
+.csc_refund_form .upload_div i {
+    font-size: 100px;
+}
+
+.csc_refund .matched {
+    background-color: rgb(40, 167, 68, .1);
+}
+
+.csc_refund .not-matched {
+    background-color: rgb(220, 53, 69, .1);
+}

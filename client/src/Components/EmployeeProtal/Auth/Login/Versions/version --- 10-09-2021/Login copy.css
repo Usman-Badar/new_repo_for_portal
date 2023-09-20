@@ -1,0 +1,164 @@
+.Emp_LoginPage_Header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: f8f8f8;
+}
+
+.Emp_LoginPage_Header a {
+    text-decoration: none;
+    cursor: unset;
+}
+
+.Emp_LoginPage_Header .svg1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 300px;
+    height: 300px;
+}
+
+.Emp_LoginPage_Header .svg2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.Emp_LoginPage_Header .svg3 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 300px;
+    height: 300px;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box {
+    display: grid;
+    grid-template-columns: 20fr 80fr;
+    width: 80%;
+    margin: 0 auto;
+    height: max-content;
+    background-color: #383c43;
+    grid-column-gap: 50px;
+    border-radius: 10px;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Image {
+    background-image: url('https://picsum.photos/1000');
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height: 100%;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details {
+    padding: 50px;
+    color: rgb(255, 255, 255);
+    font-family: Poppins;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details div button {
+    width: 150px;
+    background-color: #383c43;
+    color: white;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 30px;
+    color: white;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLoginsDivs {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLogins {
+    width: 100%;
+    /* border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff; */
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLogins:hover {
+    background-color: rgb(255, 255, 255, .1);
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLogins div {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLogins div img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLogins div p {
+    margin-bottom: 0;
+    display: block;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .previousLogins div small {
+    font-size: 10px;
+    display: block;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .LoginPage_Form .LoginPage_Form_checkbox input {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .LoginPage_Form .form-control {
+    height: 50px;
+    margin-bottom: 20px;
+    background-color: #383c43;
+    color: white;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .LoginPage_Form .form-control:focus {
+    border: 1px solid #0DB8DE;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .LoginPage_Form button[type='submit'] {
+    padding: 10px 50px;
+    background-color: #0DB8DE;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .LoginPage_Form .LoginPage_Icons div {
+    background-color: #383c43;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.Emp_LoginPage_Header .Emp_LoginPage_Box .LoginPage_Details .LoginPage_Info .LoginPage_Form .LoginPage_Icons div:hover {
+    opacity: 0.5;
+}

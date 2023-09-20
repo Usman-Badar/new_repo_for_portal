@@ -1,0 +1,78 @@
+09:27:12 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Cannot find module './Attendance/auth'
+Require stack:
+- H:\IT\React\portal\server.js
+
+09:39:50 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Cannot find module './Attendance/auth'
+Require stack:
+- H:\IT\React\portal\server.js
+
+09:40:06 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Cannot find module './Attendance/auth'
+Require stack:
+- H:\IT\React\portal\server.js
+
+14:34:10 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'pr_id')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:50:45 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:57:44 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+
+14:57:44 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'request_by')
+

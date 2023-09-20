@@ -1,0 +1,74 @@
+.items_container {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.items_container .table {
+    font-size: 11px;
+}
+
+.items_container .newBtn {
+    padding: 3px 20px;
+    background-color: var( --orange );
+    color: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.items_container form {
+    font-size: 12px;
+}
+
+.items_container .table i {
+    position: absolute;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.items_container .table i:first-child {
+    right: 30px;
+}
+
+.items_container .table i:last-child {
+    right: 5px;
+}
+
+.items_container form {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.items_container form .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.items_container form .Assets_form_button {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    align-items: center;
+}
+
+.items_container form .submit {
+    background-color: var(--blue);
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-size: 12px;
+}
+
+.items_container .cancle {
+    background-color: var(--orange);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 15px;
+}

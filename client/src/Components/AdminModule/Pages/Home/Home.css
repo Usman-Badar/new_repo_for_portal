@@ -1,0 +1,15 @@
+.Admin_Home {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 30px;
+}
+
+.Admin_Home .Admin_Home-content {
+    width: 60%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 50px 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}

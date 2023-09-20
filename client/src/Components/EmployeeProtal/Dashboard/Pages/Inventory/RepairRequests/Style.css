@@ -1,0 +1,8 @@
+.repair-requests .repair-requests-container .table.requests tbody tr {
+    cursor: pointer;
+    transition: .5s;
+}
+
+.repair-requests .repair-requests-container .table.requests tbody tr:hover {
+    background-color: rgb(211, 211, 211, .5);
+}

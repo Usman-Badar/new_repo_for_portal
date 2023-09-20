@@ -1,0 +1,317 @@
+.EmployeeChat {
+    width: 100%;
+    height: calc( 100vh - 65px);
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-column-gap: 20px;
+    font-size: 12px !important;
+    position: relative;
+    overflow: hidden;
+    padding: 15px;
+    width: 96%;
+    margin: auto;
+    background-color: #fff;
+    box-shadow: rgb(0 0 0 / 15%) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+}
+
+.EmployeeChat p {
+    margin-bottom: 0;
+    font-size: 13px;
+    font-family: Roboto-Light !important;
+}
+
+.EmployeeChat .Left {
+    position: relative;
+}
+
+.EmployeeChat .Left .chatcount {
+    height: 40px;
+}
+
+.EmployeeChat .Left p:nth-child(2) {
+    color: var( --blue);
+}
+
+.EmployeeChat .Left .tabs {
+    width: 100%;
+    height: 39px;
+    border-bottom: 1px dotted lightgray;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.EmployeeChat .Left .tabs button {
+    font-size: 12px !important;
+    border: 0;
+    outline: 0;
+    color: #fff;
+    padding: 3px 10px;
+}
+
+.EmployeeChat .Left .tabs button:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+.EmployeeChat .Left .tabs button:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+.EmployeeChat .Center {
+    width: 100%;
+    overflow: hidden;
+}
+
+.EmployeeChat .Center .NoChat {
+    width: 100%;
+    text-align: center;
+}
+
+.EmployeeChat .Center .NoChat img {
+    animation: upDown 1s linear infinite forwards alternate;
+}
+
+@keyframes upDown {
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+.EmployeeChat .Center .ChatEmployee {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 10px 0;
+}
+
+.EmployeeChat .Center .ChatEmployee img {
+    border: 3px solid #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.EmployeeChat .Center .ChatEmployee p {
+    font-size: 11px !important;
+    margin-bottom: 0;
+}
+
+.EmployeeChat .Center .ChatContent {
+    width: 100%;
+    height: 50vh;
+    overflow: auto;
+    overflow-y: overlay;
+    border-radius: 10px;
+    padding: 20px 30px;
+    background-color: #fff;
+    border: 1px dotted lightgray;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+.EmployeeChat .Center .ChatContent .TweetBox {
+    background-color: var(--lightgray);
+    color: #000;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin: 5px 0;
+    word-break: break-all;
+    width: fit-content;
+}
+
+.EmployeeChat .Center .NewTweet {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding: 0 20px; */
+    margin-top: auto;
+}
+
+.EmployeeChat .Center .NewTweet i.la-paperclip {
+    font-size: 20px;
+    margin: auto 0;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.EmployeeChat .Center .NewTweet button {
+    border: 0;
+    outline: none;
+    height: 40px;
+    width: 45px;
+    margin-left: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: var( --dark-c-green);
+    color: #fff;
+}
+
+.EmployeeChat .Center .NewTweet .form-control {
+    height: 40px;
+    border-radius: 10px;
+    background: none;
+    font-size: 14px;
+    border: 0 !important;
+    color: rgb(91, 109, 128);
+}
+
+.EmployeeChat .Right {
+    color: #000;
+    position: relative;
+}
+
+.EmployeeChat .Right .react-calendar {
+    background: none;
+    border: 0;
+    font-family: Maersk;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-right: 0 !important;
+}
+
+.react-calendar__tile--now:enabled {
+    background: var( --orange) !important;
+    color: white !important;
+}
+
+.react-calendar__tile--active:enabled,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: var( --c-green) !important;
+    color: white !important;
+}
+
+.react-calendar__tile--active:enabled:hover {
+    background: var( --dark-c-green) !important;
+    color: white !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+    color: var( --dark-c-green) !important;
+}
+
+.EmployeeChat .RightCalender {
+    display: none;
+}
+
+.SecondDiv .RightCalender .react-calendar {
+    background: none;
+    border: 0;
+    font-family: Maersk;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-right: 0 !important;
+}
+
+.EmployeeChat .Right .Details {
+    margin-bottom: 20px;
+}
+
+.EmployeeChat .offline {
+    background-color: var( --orange);
+    color: #fff;
+    width: fit-content;
+    padding: 0 15px;
+    border-radius: 10px;
+}
+
+.EmployeeChat .online {
+    background-color: var( --c-green);
+    color: #fff;
+    width: fit-content;
+    padding: 0 15px;
+    border-radius: 10px;
+}
+
+.EmployeeChat .Right .Details .lightColor {
+    color: #5b6d80;
+}
+
+.EmployeeChat .Center .calenderdiv {
+    position: absolute;
+    right: -50px;
+    bottom: 20%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var( --dark-c-green);
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: white;
+    display: none;
+}
+
+@media only screen and (max-width: 992px) {
+    .EmployeeChat {
+        grid-template-columns: 40fr 60fr;
+    }
+    .EmployeeChat .Right {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .EmployeeChat {
+        grid-template-columns: 100fr;
+    }
+    .EmployeeChat .Center {
+        display: none;
+    }
+    .EmployeeChat .Center .calenderdiv {
+        opacity: 1;
+    }
+}
+
+@media only screen and (max-height: 992px) {
+    .EmployeeChat .Center .ChatContent {
+        height: 70vh;
+    }
+}
+
+@media only screen and (max-height: 700px) {
+    .EmployeeChat .Center .ChatContent {
+        height: 65vh;
+    }
+}
+
+@media only screen and (max-height: 640px) {
+    .EmployeeChat .Center .ChatContent {
+        height: 60vh;
+    }
+}
+
+@media only screen and (max-height: 500px) {
+    .EmployeeChat .Center .ChatContent {
+        height: 50vh;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .EmployeeChat {
+        padding: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .EmployeeChat p {
+        font-size: 15px !important;
+    }
+    .NoChat h5 {
+        font-size: 15px;
+    }
+    .EmployeeChat .Center .NewTweet {
+        padding: 0;
+    }
+}
+
+
+/* @media only screen and (max-height: 700px) {
+    .EmployeeChat .Center .ChatContent {
+        height: calc( 100vh - 28vh);
+    }
+} */

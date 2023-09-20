@@ -1,0 +1,9 @@
+.details_container {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-gap: 20px;
+}
+
+.details_container .form-control:disabled {
+    background-color: rgb(128, 128, 128, .2) !important;
+}

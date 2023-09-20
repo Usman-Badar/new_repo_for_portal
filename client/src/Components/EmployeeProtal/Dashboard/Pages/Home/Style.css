@@ -1,0 +1,120 @@
+.homepage .Widget-container .icon-div {
+    transition: .3s;
+    cursor: pointer;
+    padding: 10px 0;
+    border-radius: 10px;
+}
+
+.homepage .number {
+    background-color: rgb(211, 211, 211, .3);
+    padding: 10px 12px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.homepage .high_inwards,
+.homepage .high_outwards {
+    font-family: Poppins;
+}
+
+.homepage .Widget-container .icon-div i {
+    font-size: 40px;
+    color: var(--gray-text);
+}
+
+.homepage .Widget-container .icon-div:hover,
+.homepage .Widget-container .icon-div.active {
+    background-color: rgb(211, 211, 211, .5);
+}
+
+.homepage .react-calendar {
+    width: 100% !important;
+    border: 0 !important;
+}
+
+.homepage .inventory_view .card-item i {
+    font-size: 30px;
+}
+
+.homepage .inventory_view .card-item h3 {
+    font-family: Exo;
+    font-size: 30px;
+}
+
+.homepage .inventory_view .card-item h6 {
+    font-family: JosefinSans;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.homepage .btn {
+    background-color: var(--blue);
+    color: #fff;
+}
+.homepage .grid {
+    display: grid;
+}
+
+.homepage .grid-gap-1 {
+    grid-gap: 10px;
+}
+
+.homepage .grid-gap-2 {
+    grid-gap: 20px;
+}
+
+.homepage .grid-gap-3 {
+    grid-gap: 30px;
+}
+
+.homepage .grid-8-2 {
+    grid-template-columns: 80fr 20fr;
+}
+
+.homepage .grid-2-8 {
+    grid-template-columns: 20fr 80fr;
+}
+
+.homepage .grid-3-7 {
+    grid-template-columns: 30fr 70fr;
+}
+
+.homepage .grid-7-3 {
+    grid-template-columns: 70fr 30fr;
+}
+
+.homepage .grid-75-25 {
+    grid-template-columns: 75fr 25fr;
+}
+
+.homepage .grid-3-3-3 {
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+}
+
+.homepage .grid-4-4-4-4 {
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+}
+
+.homepage .grid-2-2 {
+    grid-template-columns: 50fr 50fr;
+}
+
+.homepage.page .image-div {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+}
+
+
+@media only screen and (max-width: 1150px) {
+    .homepage .grid-8-2 {
+        grid-template-columns: 75fr 35fr;
+    }
+    .homepage .grid-3-3-3 {
+        grid-template-columns: 50fr 50fr;
+    }
+    .homepage .grid-3-7 {
+        grid-template-columns: 40fr 60fr;
+    }
+}
+

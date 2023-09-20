@@ -1,0 +1,42 @@
+.delivery_challan {
+    padding: 0 20px;
+    font-family: Quicksand;
+}
+
+.delivery_challan .delivery_challan_container {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.delivery_challan .delivery_challan_container .main-grid {
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+    grid-gap: 10px;
+}
+
+.delivery_challan .delivery_challan_container .main-grid .vendors_list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: overlay;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+.delivery_challan .delivery_challan_container .main-grid .flex_container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.delivery_challan .delivery_challan_container .main-grid .flex_container > div {
+    width: 50%;
+}

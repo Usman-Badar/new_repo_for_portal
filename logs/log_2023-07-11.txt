@@ -1,0 +1,144 @@
+16:45:38 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:45:38 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:47:28 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:47:28 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:48:12 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:48:12 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:48:18 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:48:18 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:48:38 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:48:38 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:48:38 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:48:38 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:48:38 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:48:38 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:49:05 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:49:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:49:05 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:49:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:49:05 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:49:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:49:20 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:49:20 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:50:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:50:47 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:51:28 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:51:28 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:51:47 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:51:47 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:52:36 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:52:36 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:52:36 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: ticket is not defined
+
+16:52:36 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+

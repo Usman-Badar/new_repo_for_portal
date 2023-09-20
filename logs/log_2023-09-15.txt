@@ -1,0 +1,56 @@
+12:58:40 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (H:\IT\React\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+12:58:40 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (H:\IT\React\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+12:58:40 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:63:17
+    at H:\IT\React\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+12:58:40 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:63:17
+    at H:\IT\React\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+12:58:40 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+    at ExecutionContext._evaluateInternal (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:221:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ExecutionContext.evaluate (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:16)
+    at async Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:28)
+
+12:58:40 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+    at ExecutionContext._evaluateInternal (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:221:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ExecutionContext.evaluate (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:16)
+    at async Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:28)
+

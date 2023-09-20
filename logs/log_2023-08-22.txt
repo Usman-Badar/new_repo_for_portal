@@ -1,0 +1,25 @@
+10:22:46 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+
+10:22:46 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+
+10:22:46 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+
+10:22:46 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+
+11:14:51 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'time_in')
+
+11:29:25 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+

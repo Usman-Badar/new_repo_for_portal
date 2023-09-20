@@ -1,0 +1,97 @@
+10:24:23 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+11:57:48 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+14:30:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+14:30:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+14:30:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+14:30:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+14:30:53 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+
+16:31:41 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+

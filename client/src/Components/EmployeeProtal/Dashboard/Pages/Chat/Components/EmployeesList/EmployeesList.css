@@ -1,0 +1,32 @@
+.EmployeeChat .Left .List {
+    height: calc( 100vh - 120px);
+    width: 100%;
+    overflow: auto;
+    overflow-y: overlay;
+    position: absolute;
+}
+
+.EmployeeChat .Left .employee {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.EmployeeChat .Left .employee p {
+    font-size: 11px !important;
+    transition: .5s;
+}
+
+.EmployeeChat .Left .employee:hover {
+    background-color: rgb(211, 211, 211, .4);
+}
+
+.EmployeeChat .Left .employee:hover p {
+    transform: translateX(5px);
+}

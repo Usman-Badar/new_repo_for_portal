@@ -1,0 +1,410 @@
+.emp_tickets_container .grid_container {
+    display: grid;
+    grid-template-columns: 70fr 30fr;
+    grid-gap: 20px;
+    padding: 0 20px;
+}
+
+.emp_tickets_container .EmpTickets_container,
+.emp_tickets_container .tickets_issued,
+.bar_container .bar_container_content {
+    width: 80%;
+    background-color: #fff;
+    margin: auto;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    font-family: Roboto;
+    padding: 20px 30px;
+    font-size: 14px;
+}
+
+.bar_container .bar_container_content {
+    width: 100%;
+    font-family: Roboto-Light;
+}
+
+.emp_tickets_container .tickets_issued {
+    width: 100%;
+}
+
+.emp_tickets_container .tickets_issued .counts div {
+    background-color: var(--lightgray);
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 2px;
+    color: #fff;
+}
+
+.emp_tickets_container .tickets_issued .counts div.green {
+    background-color: var(--success);
+}
+
+.emp_tickets_container .tickets_issued .counts div.yellow {
+    background-color: var(--warning);
+}
+
+.emp_tickets_container .tickets_issued .counts div.red {
+    background-color: var(--orange);
+}
+
+.emp_tickets_container .bar {
+    width: 100%;
+    height: 20px;
+    background-color: var(--lightgray);
+    margin-bottom: 10px;
+    border-radius: 20px;
+}
+
+.emp_tickets_container .bar:last-child {
+    margin-bottom: 0;
+}
+
+.emp_tickets_container .bar .bar_filled {
+    width: 0;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.emp_tickets_container .bar .bar_filled.green {
+    background-color: var(--success);
+}
+
+.emp_tickets_container .bar .bar_filled.yellow {
+    background-color: var(--warning);
+}
+
+.emp_tickets_container .bar .bar_filled.red {
+    background-color: var(--orange);
+}
+
+.emp_tickets_container .tickets_issued .table {
+    font-family: Roboto-Light;
+    font-size: 11px;
+}
+
+.emp_tickets_container .tickets_issued .table i,
+.emp_tickets_container .Attandence_Request_Div_Content i {
+    font-size: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.emp_tickets_container .tickets_issued .table i.green,
+.emp_tickets_container .Attandence_Request_Div_Content i.green {
+    border: 2px solid var(--success);
+    color: var(--success);
+}
+
+.emp_tickets_container .tickets_issued .table i.yellow,
+.emp_tickets_container .Attandence_Request_Div_Content i.yellow {
+    border: 2px solid var(--warning);
+    color: var(--warning);
+}
+
+.emp_tickets_container .tickets_issued .table i.red,
+.emp_tickets_container .Attandence_Request_Div_Content i.red {
+    border: 2px solid var(--orange);
+    color: var(--orange);
+}
+
+.emp_tickets_container .EmpTickets_container .form-control {
+    font-size: 13px;
+    font-family: Roboto-Light;
+}
+
+.emp_tickets_container .EmpTickets_container .search_container {
+    position: relative;
+}
+
+.emp_tickets_container .EmpTickets_container .employees_list {
+    max-height: 150px;
+    width: 100%;
+    overflow: auto;
+    margin-bottom: 10px;
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+    /* opacity: 0;
+    display: none; */
+}
+
+.emp_tickets_container .EmpTickets_container .employees_list .employee {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 5px;
+    cursor: pointer;
+    transition: .5s;
+    border-bottom: 1px solid lightgray;
+    font-size: 11px;
+    font-family: Roboto-Light;
+}
+
+.emp_tickets_container .EmpTickets_container .employees_list .employee:hover {
+    background-color: rgb(238, 238, 238);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0 100px;
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket {
+    width: 100px;
+    height: 100px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    color: var(--black);
+    cursor: pointer;
+    transition: .3s box-shadow;
+    position: relative;
+    border: 2px solid #fff;
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:hover {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(1).active {
+    color: var(--success);
+    border: 2px solid var(--success);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(1) .la-check {
+    background-color: var(--success);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(1)::after {
+    content: "Green";
+    position: absolute;
+    top: 105px;
+    left: 30%;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(2).active {
+    color: var(--warning);
+    border: 2px solid var(--warning);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(2) .la-check {
+    background-color: var(--warning);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(2)::after {
+    content: "Amber";
+    position: absolute;
+    top: 105px;
+    left: 30%;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3).active {
+    color: var(--orange);
+    border: 2px solid var(--orange);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3) .la-check {
+    background-color: var(--orange);
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+    content: "Red";
+    position: absolute;
+    top: 105px;
+    left: 40%;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket .la-check {
+    font-size: 18px;
+    color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.emp_tickets_container .date_column {
+    display: none;
+}
+
+@media screen and (max-width: 992px)
+{
+    .emp_tickets_container .grid_container {
+        grid-template-columns: 65fr 35fr;
+        padding: 0 10px;
+    }
+    
+    .emp_tickets_container .tickets_issued .table {
+        font-size: 10px;
+    }
+    
+    .emp_tickets_container .tickets_issued .table i {
+        font-size: 15px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+        border-width: 1px !important;
+    }
+    
+    .emp_tickets_container .tickets_issued .table th:nth-child(1),
+    .emp_tickets_container .tickets_issued .table td:nth-child(1) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 850px)
+{
+    .emp_tickets_container .grid_container {
+        grid-template-columns: 100fr;
+    }
+
+    .bar_container .bar_container_content {
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 786px)
+{
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container {
+        padding: 0;
+    }
+    
+    .emp_tickets_container .EmpTickets_container .row {
+        margin-bottom: 0 !important;
+    }
+
+    .emp_tickets_container .EmpTickets_container .row .col-lg-6 {
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 600px)
+{
+    .emp_tickets_container .tickets_issued .heading {
+        font-size: 22px;
+    }
+
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket {
+        width: 80px;
+        height: 80px;
+        font-size: 40px;
+    }
+    
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(1)::after,
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(2)::after,
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+        top: 85px;
+        left: 25%;
+    }
+
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+        left: 35%;
+    }
+}
+
+@media screen and (max-width: 550px)
+{
+    .emp_tickets_container .tickets_issued .head {
+        display: block !important;
+    }
+    
+    .emp_tickets_container .tickets_issued .head .counts {
+        margin-top: 25px;
+    }
+    
+    .emp_tickets_container .tickets_issued .head .counts div:last-child {
+        margin: 0;
+    }
+    .emp_tickets_container .tickets_issued {
+        padding: 20px 10px;
+    }
+    .emp_tickets_container .EmpTickets_container {
+        width: 90%;
+        padding: 20px;
+    }
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket .la-check {
+        font-size: 15px;
+        width: 23px;
+        height: 23px;
+    }
+    
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(1)::after,
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(2)::after,
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+        left: 25%;
+    }
+
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+        left: 35%;
+    }
+}
+
+@media screen and (max-width: 500px)
+{
+    .emp_tickets_container .tickets_issued .table th:nth-child(5),
+    .emp_tickets_container .tickets_issued .table td:nth-child(5) {
+        display: none;
+    }
+    
+    .emp_tickets_container .date_column {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 450px)
+{
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket .la-check {
+        font-size: 12px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket {
+        width: 60px;
+        height: 60px;
+        font-size: 25px;
+    }
+    
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(1)::after,
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(2)::after,
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+        top: 65px;
+        left: 20%;
+        font-size: 10px;
+    }
+
+    .emp_tickets_container .EmpTickets_container .tickets__selection_container .ticket:nth-child(3)::after {
+        left: 30%;
+    }
+
+    .emp_tickets_container .tickets_issued .table th:nth-child(4),
+    .emp_tickets_container .tickets_issued .table td:nth-child(4) {
+        display: none;
+    }
+}

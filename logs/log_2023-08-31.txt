@@ -1,0 +1,24 @@
+10:04:17 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+
+10:04:17 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+
+10:04:17 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+
+10:04:17 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+
+15:13:33 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+
+15:15:34 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+

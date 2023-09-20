@@ -1,0 +1,38 @@
+11:06:01 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (H:\IT\React\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+11:06:01 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (H:\IT\React\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+11:06:01 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:63:17
+    at H:\IT\React\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+11:06:01 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:63:17
+    at H:\IT\React\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+

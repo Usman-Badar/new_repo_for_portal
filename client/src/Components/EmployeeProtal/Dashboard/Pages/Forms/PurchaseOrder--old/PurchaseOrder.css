@@ -1,0 +1,35 @@
+.PurchaseOrderContainer {
+    width: 100%;
+    padding: 0 20px;
+    font-family: Poppins;
+}
+
+
+/* SPECIALLY FOR CUSTOM MODAL COMPONENT */
+
+.PurchaseOrderContainer .Attandence_Request_Div .Attandence_Request_Div_Content {
+    width: 40% !important;
+}
+
+.PurchaseOrderContainer p {
+    margin-bottom: 0;
+    font-size: 11px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid {
+    display: grid;
+    grid-template-columns: 25fr 75fr;
+    grid-column-gap: 10px;
+    padding-top: 10px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Left.PreviousPurchaseOrders {
+    max-height: calc( 100vh - 120px);
+    overflow-y: auto;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow {
+    max-height: calc( 100vh - 120px);
+    overflow-y: auto;
+    padding: 0 20px;
+}

@@ -1,0 +1,292 @@
+.SubAssets {
+    width: 100%;
+}
+
+.SubAssets a {
+    color: #000;
+    text-decoration: none;
+}
+
+.SubAssets .SubAssets_Top {
+    width: 100%;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_left {
+    width: 100%;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_left .dropdown_filter {
+    width: max-content;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_left .dropdown_filter p {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right .New_button {
+    width: max-content;
+    padding: 5px 15px;
+    background-color: var( --orange );
+    color: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right .New_button p {
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right .setting_button {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(238, 238, 238);
+    font-size: large;
+    margin: 0 10px;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right .btn-group {
+    display: flex;
+    background-color: #fff;
+    border-radius: 20px;
+    margin: 0 10px;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right .btn-group .icon1 {
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+}
+
+.SubAssets .SubAssets_Top .SubAssets_Top_right .btn-group .icon1.active {
+    background-color: var( --blue );
+    color: #fff;
+}
+
+.SubAssets .SubAssets_Grid {
+    display: grid;
+    grid-template-columns: 10fr 20fr 20fr 30fr 20fr;
+    padding: 5px 0;
+    border-bottom: 1px solid rgb(175, 175, 175);
+    border-top: 1px solid rgb(175, 175, 175);
+    margin: 0 auto;
+    width: 90%;
+}
+
+.SubAssets .SubAssets_Grid_list {
+    display: grid;
+    grid-template-columns: 10fr 20fr 20fr 30fr 20fr;
+    padding: 5px 0;
+    border-bottom: 1px solid lightgray;
+    margin: 0 auto;
+    width: 90%;
+    transition: 0.3s;
+}
+
+.SubAssets .SubAssets_Grid_list:hover {
+    background-color: #f9f9ff;
+}
+
+.SubAssets .SubAssets_Grid div,
+.SubAssets .SubAssets_Grid_list div {
+    text-align: left;
+    /* font-style: italic; */
+}
+
+.SubAssets .SubAssets_Grid_list div {
+    align-items: center;
+    display: flex;
+}
+
+.SubAssets .SubAssets_Grid div p {
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.SubAssets .SubAssets_Grid_list p,
+.SubAssets .SubAssets_Grid_list a {
+    margin-bottom: 0;
+    color: gray;
+    font-size: 11px;
+    /* font-style: italic; */
+    text-decoration: none;
+}
+
+.SubAssets .grid_parent {
+    display: grid;
+    grid-template-columns: 30fr 70fr;
+    grid-gap: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.SubAssets .grid_parent .changeOnCLick {
+    display: grid;
+    grid-template-columns: 20fr 80fr;
+    width: 100%;
+}
+
+.SubAssets .SubAssets_form {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.SubAssets .SubAssets_form .SubAssets_form_grid {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-column-gap: 20px;
+    margin: 20px 0;
+}
+
+.SubAssets .SubAssets_form .SubAssets_form_grid p {
+    margin-bottom: 0;
+    font-size: 13px;
+    /* font-style: italic; */
+}
+
+.SubAssets .SubAssets_form .form-control {
+    border: 0 !important;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid rgb(128, 128, 128, .5) !important;
+    border-radius: 0;
+}
+
+.SubAssets .SubAssets_form .SubAssets_form_button {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    align-items: center;
+}
+
+.SubAssets .SubAssets_form .SubAssets_form_button .submit {
+    background-color: var(--blue);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 15px;
+    margin-left: 10px;
+}
+
+.SubAssets .SubAssets_form .SubAssets_form_button .cancle {
+    background-color: var(--orange);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 15px;
+}
+
+.SubAssets .Box {
+    padding: 0 30px;
+}
+
+.SubAssets .SubAssets_Grid_box {
+    display: grid;
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+    grid-gap: 30px;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div {
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: transparent;
+    transition: 0.3s;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #fff;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div:hover {
+    border: 1px solid var(--blue);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 50px rgb(219 219 219 / 70%);
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .CheckBox {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    opacity: 0;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div:hover .CheckBox {
+    opacity: 1;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .Grid_box_div_center {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .Icon {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blue);
+    margin-bottom: 30px;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .Icon i {
+    font-size: 30px;
+    color: #fff;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .details {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .details h6 {
+    font-size: 10px;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.SubAssets .SubAssets_Grid_box .Grid_box_div .details p {
+    font-size: 10px;
+    text-align: center;
+    margin-bottom: 0;
+}

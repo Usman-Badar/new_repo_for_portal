@@ -1,0 +1,19 @@
+[
+    {
+        "key": "height",
+        "questions": [
+            "How tall are you?",
+            "What is Your Height?",
+            "What’s your height?",
+            "How tall are you?"
+        ]
+    },
+    {
+        "key": "weight",
+        "questions": [
+            "How much do you weigh?",
+            "can you tell me about Your weight.. please?",
+            "What’s your weight?"
+        ]
+    }
+]

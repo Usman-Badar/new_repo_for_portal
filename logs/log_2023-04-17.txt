@@ -1,0 +1,13 @@
+09:33:08 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of undefined (reading 'release')
+
+09:33:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+
+11:18:12 GMT+0500 (Pakistan Standard Time)
+type: error
+SyntaxError: Invalid or unexpected token
+

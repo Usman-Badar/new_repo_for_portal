@@ -1,0 +1,58 @@
+10:22:05 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (H:\IT\React\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+10:22:05 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (H:\IT\React\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (H:\IT\React\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+10:22:05 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:63:17
+    at H:\IT\React\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+10:22:05 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at H:\IT\React\portal\Routes\Services\ReadTxtFile.js:63:17
+    at H:\IT\React\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+10:22:05 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+    at navigate (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\FrameManager.js:156:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async FrameManager.navigateFrame (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\FrameManager.js:131:21)
+    at async Frame.goto (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\FrameManager.js:512:16)
+    at async Page.goto (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Page.js:1167:16)
+    at async Client.initialize (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:112:9)
+
+11:05:25 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+    at navigate (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\FrameManager.js:156:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async FrameManager.navigateFrame (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\FrameManager.js:131:21)
+    at async Frame.goto (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\FrameManager.js:512:16)
+    at async Page.goto (H:\IT\React\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Page.js:1167:16)
+    at async Client.initialize (H:\IT\React\portal\node_modules\whatsapp-web.js\src\Client.js:112:9)
+

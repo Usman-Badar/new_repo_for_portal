@@ -1,0 +1,46 @@
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three,
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .two {
+    width: 100%;
+    display: grid;
+    grid-column-gap: 20px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three {
+    grid-template-columns: 50fr 50fr;
+    margin-bottom: 20px;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .two {
+    grid-template-columns: 50fr 50fr;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three .RequestStatusChart,
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three .Calculate {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding: 10px;
+    border-radius: 15px;
+    font-family: Poppins;
+    min-height: 320px;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three .Calculate small {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+@media only screen and (max-width: 1100px) {
+    .PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three {
+        grid-template-columns: 50fr 50fr;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .PurchaseOrderContainer .PurchaseOrderGrid .Right.MainContentWindow .Home .three {
+        width: 1000px;
+        overflow-x: auto;
+    }
+}

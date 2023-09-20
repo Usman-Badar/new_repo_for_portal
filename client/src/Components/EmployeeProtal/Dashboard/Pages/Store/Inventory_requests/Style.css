@@ -1,0 +1,123 @@
+.inventory_requests_page {
+    padding: 0 20px;
+    font-family: Roboto-Light;
+    font-size: 12px;
+}
+
+.inventory_requests_page .inventory_requests_page_content {
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+}
+
+.inventory_requests_page .table tbody tr {
+    cursor: pointer;
+    transition: .3s;
+}
+
+.inventory_requests_page .table.product_tbl {
+    min-width: 550px;
+}
+
+.inventory_requests_page .table tbody tr .status_column,
+.inventory_requests_page .table tbody tr .location_name_column,
+.inventory_requests_page .table tbody tr .sub_location_name_column,
+.inventory_requests_page .table tr .quantity_column {
+    display: none;
+}
+
+.inventory_requests_page .details .table tbody tr {
+    cursor: auto;
+}
+
+@media screen and (max-width: 992px)
+{
+    .inventory_requests_page .table.product_tbl {
+        font-size: 10px;
+    }
+
+    .inventory_requests_page .table.product_tbl tr th:nth-child(1),
+    .inventory_requests_page .table.product_tbl tr td:nth-child(1) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px)
+{
+    .inventory_requests_page .table.product_tbl tr th:nth-child(5),
+    .inventory_requests_page .table.product_tbl tr td:nth-child(5),
+    .inventory_requests_page .table.product_tbl tr th:nth-child(6),
+    .inventory_requests_page .table.product_tbl tr td:nth-child(6) {
+        display: none;
+    }
+
+    .inventory_requests_page .table tbody tr .location_name_column,
+    .inventory_requests_page .table tbody tr .sub_location_name_column {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 650px)
+{
+    .inventory_requests_page .table.tbl tr th:nth-child(1),
+    .inventory_requests_page .table.tbl tr td:nth-child(1) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px)
+{
+    .inventory_requests_page {
+        padding: 0 10px;
+    }
+
+    .inventory_requests_page .inventory_requests_page_content {
+        padding: 15px;
+    }
+
+    .inventory_requests_page .table {
+        font-size: 10px;
+    }
+
+    .inventory_requests_page .table .badge {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 550px) 
+{
+    .inventory_requests_page .products_div {
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 500px)
+{
+    .inventory_requests_page .table.tbl tr th:nth-child(4),
+    .inventory_requests_page .table.tbl tr td:nth-child(4) {
+        display: none;
+    }
+
+    .inventory_requests_page .table.tbl tbody tr .status_column {
+        display: block;
+    }
+
+    .inventory_requests_page .details h5 {
+        font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 400px)
+{
+    .inventory_requests_page .table.tbl tr th:nth-child(5),
+    .inventory_requests_page .table.tbl tr td:nth-child(5) {
+        display: none;
+    }
+
+    .inventory_requests_page .details h5 {
+        font-size: 14px;
+        font-weight: bold;
+    }
+}

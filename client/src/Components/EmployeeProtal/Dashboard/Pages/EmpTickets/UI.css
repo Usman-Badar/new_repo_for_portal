@@ -1,0 +1,437 @@
+/* .ticket .d-grid-growth-details {
+    display: grid;
+    grid-template-columns: 75fr 25fr;
+    grid-gap: 20px;
+} */
+
+.ticket .d-grid-growth-details .collapse {
+    overflow: auto;
+    width: 82vw;
+    position: relative;
+}
+
+.ticket .d-grid-growth-details .collapse .table-header {
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: Roboto-Light;
+    background-color: var(--lightgray);
+}
+
+.ticket .d-grid-growth-details .collapse .table-header:hover {
+    background-color: #dddddd;
+}
+
+.ticket .d-grid-growth-details .table th,
+.ticket .d-grid-growth-details .table td {
+    min-width: 200px;
+}
+
+.ticket .d-grid-growth-details .category {
+    border-radius: 5px;
+}
+
+.ticket .d-grid-growth-details .category.active {
+    background-color: #E2E3E5;
+}
+
+.ticket .Attandence_Request_Div_Content.Attandence_Request_Div_Content2 .table2 td, 
+.ticket .Attandence_Request_Div_Content.Attandence_Request_Div_Content2 .table2 th{
+    border: 0 !important;
+}
+
+.ticket .ticket_container .options_container {
+    display: grid;
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+    grid-gap: 30px;
+    padding-top: 10px;
+}
+
+.ticket .ticket_container .peer-grid-container {
+    display: grid;
+    grid-template-columns: 25fr 25fr 25fr 25fr;
+    grid-gap: 20px;
+}
+
+.ticket .ticket_container .peer-grid-container .item {
+    border: 1px solid #ffff;
+    background-color: var(--lightgray);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.ticket .ticket_container .peer-grid-container .item:hover {
+    border: 1px solid rgb(212, 212, 212) !important;
+    box-shadow: rgb(204, 219, 232) 2px 2px 2px 0px inset, rgba(255, 255, 255, 0.5) -2px -2px 2px 2px inset !important;
+}
+
+.ticket .ticket_container .peer-grid-container .item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    display: block;
+    margin: auto;
+    border: 1px solid lightgray;
+}
+
+.ticket .ticket_container .peer-grid-container .item .peer-status {
+    background: var(--lightgray);
+    border: 1px solid rgb(211, 211, 211, .5);
+    color: gray;
+    width: fit-content;
+    margin: auto;
+    padding: 1px 15px;
+    border-radius: 10px;
+}
+
+.ticket .ticket_container .peer-grid-container .item .peer-status.completed {
+    background: rgb(119, 196, 173, .3);
+    color: rgb(93, 164, 143);
+    border: 1px solid rgb(119, 196, 173, .5);
+}
+
+.ticket .ticket_container .peer-grid-container .item .peer-status.pending {
+    background: rgb(242, 174, 3, .2);
+    color: rgb(227, 164, 4);
+    border: 1px solid rgb(242, 174, 3, .5);
+}
+
+.ticket .ticket_container .options_container .option {
+    padding: 30px 50px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: Poppins;
+    cursor: pointer;
+    transition: .5s;
+    position: relative;
+    background-color: #ffffff;
+}
+
+.ticket .ticket_container .options_container .option .circle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.ticket .ticket_container .options_container .option:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; 
+}
+
+.ticket .ticket_container .options_container .option i {
+    font-size: 35px;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    background-color: #f1f1f1;
+    margin-bottom: 15px;
+}
+
+.ticket .ticket_container .options_container .option.selected {
+    background-color: var(--dark-black);
+    color: #ffffffff;
+}
+
+.ticket .ticket_container .options_container .option.selected i {
+    background-color: #ffffffff;
+    color: var(--dark-black);
+}
+
+.ticket .ticket_container .options_container .option.selected .circle {
+    background-color: var(--success);
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid {
+    display: grid;
+    grid-template-columns: 75fr 25fr;
+    grid-gap: 20px;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .type_container {
+    border: 1px solid lightgray;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .type_container .circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .type_container .circle:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .type_container .circle.red {
+    background-color: #F2262D;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .type_container .circle.green {
+    background-color: #01937C;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .type_container .circle.yellow {
+    background-color: #F29F24;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .employees_list_container {
+    position: relative;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .employees_list_container .employees_list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 10px 5px;
+    background-color: #fff;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    z-index: 1;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: overlay;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .employees_list_container .employees_list .employee {
+    display: flex;
+    padding: 8px 5px;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s;
+    border-radius: 10px;
+}
+
+.ticket .ticket_container .issue-to-subordinates .issue-to-subordinates-grid .employees_list_container .employees_list .employee:hover {
+    background-color: #e7e4e4;
+}
+
+.ticket .ticket_container .list_grid {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 20px;
+}
+
+.ticket .ticket_container .quarter_grid {
+    display: grid;
+    grid-template-columns: 15fr 15fr 15fr 15fr 15fr 15fr 10fr;
+    grid-gap: 20px;
+}
+
+.ticket .ticket_container .quarter_grid .item {
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: .5s;
+    border-radius: 5px;
+}
+
+.ticket .ticket_container .quarter_grid .item:hover {
+    background-color: var(--lightgray);
+}
+
+.ticket .ticket_container .quarter_grid .item span {
+    position: absolute;
+    bottom: 40%;
+    left: 26%;
+    color: #fff;
+    font-size: 13px;
+    font-family: Poppins;
+    display: block;
+}
+
+.ticket .ticket_container .quarter_grid .item .title {
+    background: var(--lightgray);
+    border: 1px solid rgb(211, 211, 211, .5);
+    color: gray;
+    width: fit-content;
+    margin: auto;
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+.ticket .ticket_container .quarter_grid .item .title.completed {
+    background: rgb(119, 196, 173, .3);
+    color: rgb(93, 164, 143);
+    border: 1px solid rgb(119, 196, 173, .5);
+}
+
+.ticket .ticket_container .quarter_grid .item .title.pending {
+    background: rgb(242, 174, 3, .2);
+    color: rgb(227, 164, 4);
+    border: 1px solid rgb(242, 174, 3, .5);
+}
+
+.ticket .ticket_container .table .las.la-check,
+.ticket .ticket_container .table .las.la-times {
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.ticket .ticket_container .table .las.la-times {
+    background-color: #F2262D;
+    margin-left: 5px;
+}
+
+.ticket .ticket_container .table .las.la-check {
+    background-color: #01937C;
+}
+
+.ticket .ticket_container .table .las.la-check.lock,
+.ticket .ticket_container .table .las.la-times.lock {
+    cursor: auto;
+    background-color: gray;
+}
+
+.ticket .ticket_container .table .btn {
+    background-color: #01937C;
+    color: #ffffff;
+    font-size: 11px !important;
+}
+
+.ticket .ticket_container .table .btn.reject {
+    background-color: #F2262D;
+    color: #ffffff;
+    font-size: 11px !important;
+}
+
+.ticket .ticket_container .table .la-trash {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ticket .Attandence_Request_Div_Content.Attandence_Request_Div_Content2 {
+    width: 50% !important;
+}
+
+.bg-status-green{
+    background-color: #C3E6CB;
+}
+
+.bg-status-blue{
+    /* background-color: #B8DAFF; */
+    background-color: #B8DAFF;
+}
+
+.bg-status-lightgray{
+    background-color: #D6D8DB;
+}
+
+.bg-status-warning{
+    background-color: #FEEEBA;
+}
+
+.bg-status-red{
+    background-color: #F5C6CB;
+}
+
+.calender_date {
+    cursor: pointer;
+    transition: .5s;
+    font-family: Roboto-Light;
+}
+
+.calender_date .status_color {
+    /* background-color: #000; */
+    border-radius: 20px;
+    text-align: center;
+    padding: 2px 20px;
+    width: max-content;
+    margin-top: 5px;
+}
+
+.calender_date .confirmed-icon {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.calender_date.off,
+.calender_date:hover {
+    /* opacity: 0.8; */
+    background-color: #f0f0f0;
+}
+
+.calender_date p {
+    margin-bottom: 0;
+    width: 90%;
+    word-break: break-all;
+}
+
+.ticket .d-grid-growth-details .collapse .Arrow_div {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    opacity: .5;
+    cursor: pointer;
+    position: fixed;
+}
+
+.ticket .d-grid-growth-details .collapse .Arrow_div:hover {
+    opacity: 1;
+}
+
+.ticket .d-grid-growth-details .collapse .Arrow_div i {
+    font-size: 30px;
+}
+
+.ticket .d-grid-growth-details .collapse .Arrow_div.left {
+    top: 50%;
+    left: 14vw;
+}
+
+.ticket .d-grid-growth-details .collapse .Arrow_div.right {
+    top: 50%;
+    right: 0;
+}
+
+@media only screen and (max-width: 1430px) {
+    .ticket .ticket_container .quarter_grid .item span {
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 1190px) {
+    .ticket .ticket_container .quarter_grid .item span {
+        bottom: 42%;
+        left: 28%;
+    }
+}
+
+@media only screen and (max-width: 1100px) {
+    .ticket .ticket_container .quarter_grid .item span {
+        bottom: 44%;
+        left: 26%;
+        font-size: 10px;
+    }
+}

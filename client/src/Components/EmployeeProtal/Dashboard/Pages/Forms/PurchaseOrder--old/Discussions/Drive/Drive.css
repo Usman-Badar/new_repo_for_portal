@@ -1,0 +1,17 @@
+.DicussionDrive {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 15px;
+}
+
+.DicussionDrive .DriveItem {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 200px;
+    width: 100%;
+}
