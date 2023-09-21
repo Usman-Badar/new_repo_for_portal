@@ -3,3 +3,4 @@ client/public/css/line-awesome/
 client/build/
 build/css/line-awesome/
 .wwebjs_auth/
+.vscode/
