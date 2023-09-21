@@ -499,7 +499,7 @@ const TempEmpDetails = ({ AccessControls, history, approveTempEmployee, loadDeta
                         <>
                             <div className='details_container'>
                                 <div className='text-center'>
-                                    <img src={process.env.REACT_APP_SERVER + '/client/public/images/employees/' + details.image} width="50%" alt="cnic_front" className='border rounded' />
+                                    <img src={process.env.REACT_APP_SERVER + '/client/images/employees/' + details.image} width="50%" alt="cnic_front" className='border rounded' />
                                 </div>
                                 <div>
                                     <label className='mb-0'><b>Employee Code</b></label><br />
@@ -565,11 +565,11 @@ const TempEmpDetails = ({ AccessControls, history, approveTempEmployee, loadDeta
                                     }
                                 </div>
                                 <div>
-                                    <img src={process.env.REACT_APP_SERVER + '/client/public/images/documents/cnic/front/' + details.cnic_front} width="100%" alt="cnic_front" className='border rounded' />
+                                    <img src={process.env.REACT_APP_SERVER + '/client/images/documents/cnic/front/' + details.cnic_front} width="100%" alt="cnic_front" className='border rounded' />
                                     <h6 className='text-center'><b>CNIC Front Image</b></h6>
                                 </div>
                                 <div>
-                                    <img src={process.env.REACT_APP_SERVER + '/client/public/images/documents/cnic/back/' + details.cnic_back} width="100%" alt="cnic_back" className='border rounded' />
+                                    <img src={process.env.REACT_APP_SERVER + '/client/images/documents/cnic/back/' + details.cnic_back} width="100%" alt="cnic_back" className='border rounded' />
                                     <h6 className='text-center'><b>CNIC Back Image</b></h6>
                                 </div>
                             </div>

@@ -1,4 +1,10 @@
-git push portal master:v3.0.5
+new field in table locations -> site_manager
+----------------------------------------------------------------
 
-cash.js
-shipping line payment
+routes/inventory/purchaserequision.js
+-> /purchase/requisition/submittion&&submit_by=employee
+-> /purchase/requisition/load/requests
+-> /purchase/requisition/details
+-> /purchase/requisition/site_approval [new added]
+-> /purchase/requisition/site_rejection [new added]
+----------------------------------------------------------------

@@ -286,10 +286,11 @@ export const PRSubmittion = ( e, history, toast, Quotations, Data, Employee, Acc
         FormFields.append( "specifications", JSON.stringify(specifications) );
         FormFields.append( "data", JSON.stringify(Data) );
         FormFields.append( "note", e.target['notes'].value );
+        FormFields.append( "emp_location", AccessControls.location_code );
         FormFields.append( "submit_to", e.target['submit_to'] ? e.target['submit_to'].value : null );
         FormFields.append( "requested_by", localStorage.getItem("EmpID") );
         FormFields.append( "requested_on_behalf", Employee );
-        FormFields.append( "key", key );
+        FormFields.append( "key", key ? 1 : 0 );
         Quotations.forEach(
             file => {
                 FormFields.append("Attachments", file.file);
@@ -478,6 +479,64 @@ export const ApproveRequisition = ( e, pr_id, requested_by, submitted_to, histor
 
 }
 
+export const SiteManagerApprovalConfirm = ( e, pr_id, requested_by, Specifications, history, code ) => {
+
+    e.preventDefault();
+    const reason = e.target['reason'].value;
+    $('fieldset').prop('disabled', true);
+    axios.post(
+        '/purchase/requisition/site_approval',
+        {
+            emp_id: localStorage.getItem('EmpID'),
+            remarks: reason,
+            pr_id: pr_id,
+            requested_by: requested_by,
+            code: code,
+            specifications: JSON.stringify(Specifications),
+        }
+    )
+    .then(res => {   
+        if ( res.data === 'success' ) {
+            setTimeout(() => {
+                history.push('/purchase/requisition/requests');
+            }, 1500);
+            $('#error_alert_approval').removeClass('d-none').text("The application has been approved.");
+        }
+    }).catch(err => {
+        $('fieldset').prop('disabled', false);
+        console.log(err);
+    });
+}
+
+export const SiteManagerRejectionConfirm = ( e, pr_id, requested_by, Specifications, history, code ) => {
+
+    e.preventDefault();
+    const reason = e.target['reason'].value;
+    $('fieldset').prop('disabled', true);
+    axios.post(
+        '/purchase/requisition/site_rejection',
+        {
+            emp_id: localStorage.getItem('EmpID'),
+            remarks: reason,
+            pr_id: pr_id,
+            requested_by: requested_by,
+            code: code,
+            specifications: JSON.stringify(Specifications),
+        }
+    )
+    .then(res => {   
+        if ( res.data === 'success' ) {
+            setTimeout(() => {
+                history.push('/purchase/requisition/requests');
+            }, 1500);
+            $('#error_alert_rejection').removeClass('d-none').text("The application has been rejected.");
+        }
+    }).catch(err => {
+        $('fieldset').prop('disabled', false);
+        console.log(err);
+    });
+}
+
 export const RejectRequisition = ( e, pr_id, requested_by, Specifications, history ) => {
 
     e.preventDefault();
@@ -619,16 +678,16 @@ export const loadRequests = ( companies, CompanyViewer, Admin, setRequests ) => 
 export const openRequestDetails = ( AccessControls, pr_id, setRequestDetails, setSpecifications, setAttachedQuotations, setQuotations, setLogs ) => {
 
     let key = false;
-    if ( AccessControls.access )
-    {
-        for ( let x = 0; x < JSON.parse(AccessControls.access).length; x++ )
-        {
-            if ( parseInt(JSON.parse(AccessControls.access)[x]) === 57 )
-            {
-                key = true;
-            }
-        }
-    }
+    // if ( AccessControls.access )
+    // {
+    //     for ( let x = 0; x < JSON.parse(AccessControls.access).length; x++ )
+    //     {
+    //         if ( parseInt(JSON.parse(AccessControls.access)[x]) === 57 )
+    //         {
+    //             key = true;
+    //         }
+    //     }
+    // }
 
     axios.post(
         '/purchase/requisition/details',

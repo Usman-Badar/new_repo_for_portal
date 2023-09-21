@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import $ from 'jquery';
-import { addRow, ApproveRequisition, RejectRequisition, CancelRequisition, openRequestDetails, loadRequests, GetLocations, PRSubmittion, SubmitPR, onAttachQuotations, GetCompanies, onContentInput, onContentEdit, onSearchEmployees, loadHods, sendForApproveRequisition, InvRejectRequisition, updatePR, PRUpdate, TotalCostCalculation, overrideRequisition } from './Functions';
+import { addRow, ApproveRequisition, RejectRequisition, CancelRequisition, openRequestDetails, loadRequests, GetLocations, PRSubmittion, SubmitPR, onAttachQuotations, GetCompanies, onContentInput, onContentEdit, onSearchEmployees, loadHods, sendForApproveRequisition, InvRejectRequisition, updatePR, PRUpdate, TotalCostCalculation, overrideRequisition, SiteManagerApprovalConfirm, SiteManagerRejectionConfirm } from './Functions';
 import { useSelector } from 'react-redux';
 const UI = lazy( () => import('./UI') );
 
@@ -161,6 +161,8 @@ function PurchaseRequisition() {
                     Logs={ Logs }
                     CompanyViewer={ CompanyViewer }
                     
+                    SiteManagerRejectionConfirm={ ( e, pr_id, requested_by, Specifications ) => SiteManagerRejectionConfirm( e, pr_id, requested_by, Specifications, history, (RequestDetails?.company_short_code + '-' + RequestDetails?.series_year + '-' + RequestDetails?.series_code) ) }
+                    SiteManagerApprovalConfirm={ ( e, pr_id, requested_by, Specifications ) => SiteManagerApprovalConfirm( e, pr_id, requested_by, Specifications, history, (RequestDetails?.company_short_code + '-' + RequestDetails?.series_year + '-' + RequestDetails?.series_code) ) }
                     overrideRequisition={ (e, type) => overrideRequisition( e, type, RequestDetails, history ) }
                     TotalCostCalculation={ TotalCostCalculation }
                     setStatus={ setStatus }

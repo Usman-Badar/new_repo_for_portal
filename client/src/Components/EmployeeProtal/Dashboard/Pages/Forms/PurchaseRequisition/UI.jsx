@@ -19,7 +19,7 @@ import Override from '../../../../../../utils/Override';
 
 import ReactTooltip from 'react-tooltip';
 
-const UI = ({ CompanyViewer, Logs, overrideRequisition, TotalCostCalculation, Status, RequestStatuses, RemovedQuotations, EditConfirmation, AccessDefined, Admin, InvRejectRequisition, setRemovedQuotations, sendForApproveRequisition, Relations, Data, HodList, setStatus, updatePR, loadHods, Employee, PRUpdate, selectEmpInBehalf, setQuotations, setEditConfirmation, onSearchEmployees, Employees, AccessControls, FilterAmount, FilterCompany, SpecKeyword, setFilterAmount, LoadedCompanies, setFilterCompany, setSpecKeyword, ApproveRequisition, AttachedQuotations, Specifications, RequestDetails, history, Requests, addRow, RejectRequisition, CancelRequisition, SubmitConfirmation, ShowQuotationModal, Quotations, Locations, Companies, SubmitPR, loadRequests, openRequestDetails, PRSubmittion, setSubmitConfirmation, onAttachQuotations, onContentInput, onContentEdit, setShowQuotationModal }) => {
+const UI = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Logs, overrideRequisition, TotalCostCalculation, Status, RequestStatuses, RemovedQuotations, EditConfirmation, AccessDefined, Admin, InvRejectRequisition, setRemovedQuotations, sendForApproveRequisition, Relations, Data, HodList, setStatus, updatePR, loadHods, Employee, PRUpdate, selectEmpInBehalf, setQuotations, setEditConfirmation, onSearchEmployees, Employees, AccessControls, FilterAmount, FilterCompany, SpecKeyword, setFilterAmount, LoadedCompanies, setFilterCompany, setSpecKeyword, ApproveRequisition, AttachedQuotations, Specifications, RequestDetails, history, Requests, addRow, RejectRequisition, CancelRequisition, SubmitConfirmation, ShowQuotationModal, Quotations, Locations, Companies, SubmitPR, loadRequests, openRequestDetails, PRSubmittion, setSubmitConfirmation, onAttachQuotations, onContentInput, onContentEdit, setShowQuotationModal }) => {
 
     return (
         <>
@@ -96,6 +96,8 @@ const UI = ({ CompanyViewer, Logs, overrideRequisition, TotalCostCalculation, St
                                     Locations={ Locations }
                                     CompanyViewer={ CompanyViewer }
 
+                                    SiteManagerRejectionConfirm={SiteManagerRejectionConfirm}
+                                    SiteManagerApprovalConfirm={SiteManagerApprovalConfirm}
                                     overrideRequisition={overrideRequisition}
                                     sendForApproveRequisition={sendForApproveRequisition}
                                     onContentEdit={onContentEdit}
@@ -822,7 +824,7 @@ const PRForm = ({ TotalCostCalculation, Employee, selectEmpInBehalf, onSearchEmp
 
 }
 
-const RequestDetailsView = ({ CompanyViewer, Locations, Logs, overrideRequisition, Admin, InvRejectRequisition, sendForApproveRequisition, Relations, ApproveRequisition, history, Quotations, Specifications, RequestDetails, CancelRequisition, RejectRequisition, openRequestDetails, onContentEdit }) => {
+const RequestDetailsView = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Locations, Logs, overrideRequisition, Admin, InvRejectRequisition, sendForApproveRequisition, Relations, ApproveRequisition, history, Quotations, Specifications, RequestDetails, CancelRequisition, RejectRequisition, openRequestDetails, onContentEdit }) => {
 
     const [View, setView] = useState("application");
 
@@ -844,7 +846,8 @@ const RequestDetailsView = ({ CompanyViewer, Locations, Logs, overrideRequisitio
                         parseInt(RequestDetails.requested_by) === parseInt(localStorage.getItem("EmpID")) ||
                         parseInt(RequestDetails.request_submitted_on_behalf) === parseInt(localStorage.getItem("EmpID")) ||
                         parseInt(RequestDetails.appr_rejct_by) === parseInt(localStorage.getItem("EmpID")) ||
-                        parseInt(RequestDetails.submitted_to) === parseInt(localStorage.getItem("EmpID"))
+                        parseInt(RequestDetails.submitted_to) === parseInt(localStorage.getItem("EmpID")) ||
+                        parseInt(RequestDetails.site_manager) === parseInt(localStorage.getItem("EmpID"))
                         ?
                         <Detailing
                             ApproveRequisition={ApproveRequisition}
@@ -865,6 +868,8 @@ const RequestDetailsView = ({ CompanyViewer, Locations, Logs, overrideRequisitio
                             onContentEdit={onContentEdit}
                             Relations={Relations}
                             sendForApproveRequisition={sendForApproveRequisition}
+                            SiteManagerApprovalConfirm={SiteManagerApprovalConfirm}
+                            SiteManagerRejectionConfirm={SiteManagerRejectionConfirm}
                         />
                         :
                         <>
@@ -881,7 +886,7 @@ const RequestDetailsView = ({ CompanyViewer, Locations, Logs, overrideRequisitio
 
 }
 
-const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApproveRequisition, Relations, pr_id, CancelRequisition, ApproveRequisition, InvRejectRequisition, RejectRequisition, history, Quotations, View, setView, RequestDetails, Specifications, onContentEdit }) => {
+const Detailing = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, Admin, Locations, Logs, overrideRequisition, sendForApproveRequisition, Relations, pr_id, CancelRequisition, ApproveRequisition, InvRejectRequisition, RejectRequisition, history, Quotations, View, setView, RequestDetails, Specifications, onContentEdit }) => {
     const onBeforeGetContentResolve = useRef();
 
     const [PrintContentLoaded, setPrintContentLoaded] = useState(false);
@@ -890,6 +895,8 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
     const [ApprovalConfirm, setApprovalConfirm] = useState(false);
     const [InvApprovalConfirm, setInvApprovalConfirm] = useState(false);
     const [InvRejectConfirm, setInvRejectConfirm] = useState(false);
+    const [siteManagerApproval, setSiteManagerApproval] = useState(false);
+    const [siteManagerRejection, setSiteManagerRejection] = useState(false);
     const [StartPrint, setStartPrint] = useState(false);
     const [EditContent, setEditContent] = useState(<></>);
     const [EditConfirm, setEditConfirm] = useState(false);
@@ -937,36 +944,13 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
         <>
             <div className="purchase_requisition_details">
                 <Modal show={EditConfirm} Hide={() => setEditConfirm(false)} content={EditContent} />
-                {
-                    CancelConfirm
-                        ?
-                        <Modal show={true} Hide={() => setCancelConfirm(false)} content={<CancelConfirmation pr_id={pr_id} CancelRequisition={CancelRequisition} />} />
-                        : null
-                }
-                {
-                    ApprovalConfirm
-                        ?
-                        <Modal show={true} Hide={() => setApprovalConfirm(false)} content={<ApprovalConfirmation submitted_to={RequestDetails.submitted_to} requested_by={RequestDetails.requested_by} pr_id={pr_id} ApproveRequisition={ApproveRequisition} />} />
-                        : null
-                }
-                {
-                    RejectConfirm
-                        ?
-                        <Modal show={true} Hide={() => setRejectConfirm(false)} content={<RejectConfirmation RequestDetails={RequestDetails} Specifications={Specifications} pr_id={pr_id} RejectRequisition={RejectRequisition} />} />
-                        : null
-                }
-                {
-                    InvApprovalConfirm
-                        ?
-                        <Modal show={true} Hide={() => setInvApprovalConfirm(false)} content={<InvApprovalConfirmation RequestDetails={RequestDetails} Relations={Relations} submitted_to={RequestDetails.submitted_to} requested_by={RequestDetails.requested_by} pr_id={pr_id} sendForApproveRequisition={sendForApproveRequisition} />} />
-                        : null
-                }
-                {
-                    InvRejectConfirm
-                        ?
-                        <Modal show={true} Hide={() => setInvRejectConfirm(false)} content={<InvRejectConfirmation RequestDetails={RequestDetails} Specifications={Specifications} pr_id={pr_id} InvRejectRequisition={InvRejectRequisition} />} />
-                        : null
-                }
+                {CancelConfirm?<Modal show={true} Hide={() => setCancelConfirm(false)} content={<CancelConfirmation pr_id={pr_id} CancelRequisition={CancelRequisition} />} />: null}
+                {ApprovalConfirm?<Modal show={true} Hide={() => setApprovalConfirm(false)} content={<ApprovalConfirmation submitted_to={RequestDetails.submitted_to} requested_by={RequestDetails.requested_by} pr_id={pr_id} ApproveRequisition={ApproveRequisition} />} />: null}
+                {RejectConfirm?<Modal show={true} Hide={() => setRejectConfirm(false)} content={<RejectConfirmation RequestDetails={RequestDetails} Specifications={Specifications} pr_id={pr_id} RejectRequisition={RejectRequisition} />} />: null}
+                {InvApprovalConfirm?<Modal show={true} Hide={() => setInvApprovalConfirm(false)} content={<InvApprovalConfirmation RequestDetails={RequestDetails} Relations={Relations} submitted_to={RequestDetails.submitted_to} requested_by={RequestDetails.requested_by} pr_id={pr_id} sendForApproveRequisition={sendForApproveRequisition} />} />: null}
+                {InvRejectConfirm?<Modal show={true} Hide={() => setInvRejectConfirm(false)} content={<InvRejectConfirmation RequestDetails={RequestDetails} Specifications={Specifications} pr_id={pr_id} InvRejectRequisition={InvRejectRequisition} />} />: null}
+                {siteManagerApproval?<Modal show={true} Hide={() => setSiteManagerApproval(false)} content={<SiteManagerApprovalModal RequestDetails={RequestDetails} Specifications={Specifications} pr_id={pr_id} SiteManagerApprovalConfirm={SiteManagerApprovalConfirm} />} />: null}
+                {siteManagerRejection?<Modal show={true} Hide={() => setSiteManagerRejection(false)} content={<SiteManagerRejectionModal RequestDetails={RequestDetails} Specifications={Specifications} pr_id={pr_id} SiteManagerRejectionConfirm={SiteManagerRejectionConfirm} />} />: null}
 
                 <div className="d-flex align-items-end justify-content-between">
                     <h4 className="heading">
@@ -1007,15 +991,23 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                         }
 
                         {
-                            RequestDetails.status === 'viewed'
-                            ?
-                            RequestDetails.submitted_to == localStorage.getItem('EmpID')
-                            ?
+                            RequestDetails.status === 'sent' ? RequestDetails.site_manager == localStorage.getItem('EmpID') ?
+                            <>
+                                <button className="btn cancle" onClick={() => setSiteManagerRejection(true)}>Reject</button>
+                                <button className="btn submit" onClick={() => setSiteManagerApproval(true)}>Proceed</button>
+                            </>
+                            :null:null
+                        }
+
+                        {
+                            RequestDetails.site_manager !== null && RequestDetails.status === 'sent'?null:
+                            RequestDetails.site_manager !== null && RequestDetails.status === 'rejected'?null:
+                            (RequestDetails.site_manager !== null && RequestDetails.status === 'waiting_for_verification') || RequestDetails.site_manager === null && RequestDetails.status === 'sent'?
                             <>
                                 <button className="btn cancle" onClick={() => setInvRejectConfirm(true)}>Reject</button>
-                                <button className="btn submit" onClick={() => setInvApprovalConfirm(true)}>Approve</button>
+                                <button className="btn submit" onClick={() => setInvApprovalConfirm(true)}>Proceed For Approval</button>
                             </>
-                            : null : null
+                            :null
                         }
 
                         {
@@ -1060,470 +1052,489 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
 
                 {
                     View === 'application'
-                        ?
-                        <>
-                            <table className='table table-borderless'>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <b>Company Name</b><br />
-                                            <span>{RequestDetails.company_name}</span><br />
-                                            <b>Delivery / Work Location</b><br />
-                                            <span className={Logs.filter(log => log.match_key === 'location_code')[0] ? "log_found" : ""}>
-                                                {RequestDetails.location_name}
+                    ?
+                    <>
+                        <table className='table table-borderless'>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Company Name</b><br />
+                                        <span>{RequestDetails.company_name}</span><br />
+                                        <b>Delivery / Work Location</b><br />
+                                        <span className={Logs.filter(log => log.match_key === 'location_code')[0] ? "log_found" : ""}>
+                                            {RequestDetails.location_name}
+                                            {
+                                                Logs.filter(log => log.match_key === 'location_code')[0]?
+                                                <div className='log_details'>
+                                                    <p className='font-weight-bold mb-0'>Original</p>
+                                                    <p className='mb-0'>{Locations?.filter(location => location.location_code == Logs.filter(log => log.match_key === 'location_code')[0]['before_value'])[0]?.location_name}</p>
+                                                    <hr className='my-1' />
+                                                    <p className='font-weight-bold mb-0'>After</p>
+                                                    {
+                                                        Logs.filter(log => log.match_key === 'location_code').map(
+                                                            ({after_value, created_at, name, remarks}, i) => {
+                                                                return (
+                                                                    <div key={i} title={remarks}>
+                                                                        <p className='mb-0'>
+                                                                            {Locations?.filter(location => location.location_code == after_value)[0]?.location_name} 
+                                                                            {Locations?.filter(location => location.location_code == after_value)[0]?.location_name === RequestDetails.location_name ? <span className='text-success pl-1'>&#40;Current&#41;</span> : ""}
+                                                                        </p>
+                                                                        <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                                        <small className='mb-0 text-right d-block text-danger'>{name}</small>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                </div>
+                                                :null
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <b>Requested By</b><br />
+                                        <span>
+                                            {RequestDetails.requested_employee_name} <br />
+                                            {new Date(RequestDetails.requested_date).toDateString()} <br />
+                                            {RequestDetails.requested_time}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {
+                                            RequestDetails.site_manager
+                                            ?
+                                            <>
+                                                <b>Submitted To</b><br />
+                                                <span>
+                                                    {RequestDetails.site_manager_name}
+                                                    {RequestDetails.site_manager == localStorage.getItem('EmpID')?<b> (You)</b>:null}
+                                                    {RequestDetails.site_act_date?<><br/>{new Date(RequestDetails.site_act_date).toDateString()}</>:null}
+                                                    {RequestDetails.site_act_time?<><br/>{RequestDetails.site_act_time}</>:null}
+                                                </span><br />
+                                                {/* <span>{RequestDetails.submit_to_employee_name}</span><br /> */}
                                                 {
-                                                    Logs.filter(log => log.match_key === 'location_code')[0]?
-                                                    <div className='log_details'>
-                                                        <p className='font-weight-bold mb-0'>Original</p>
-                                                        <p className='mb-0'>{Locations?.filter(location => location.location_code == Logs.filter(log => log.match_key === 'location_code')[0]['before_value'])[0]?.location_name}</p>
-                                                        <hr className='my-1' />
-                                                        <p className='font-weight-bold mb-0'>After</p>
-                                                        {
-                                                            Logs.filter(log => log.match_key === 'location_code').map(
-                                                                ({after_value, created_at, name, remarks}, i) => {
-                                                                    return (
-                                                                        <div key={i} title={remarks}>
-                                                                            <p className='mb-0'>
-                                                                                {Locations?.filter(location => location.location_code == after_value)[0]?.location_name} 
-                                                                                {Locations?.filter(location => location.location_code == after_value)[0]?.location_name === RequestDetails.location_name ? <span className='text-success pl-1'>&#40;Current&#41;</span> : ""}
-                                                                            </p>
-                                                                            <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                            <small className='mb-0 text-right d-block text-danger'>{name}</small>
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            )
-                                                        }
-                                                    </div>
+                                                    RequestDetails.behalf_employee_name
+                                                    ?
+                                                    <>
+                                                        <b>Employee Name (On Behalf Of)</b><br />
+                                                        <span>{RequestDetails.behalf_employee_name}</span>
+                                                    </>
                                                     :null
                                                 }
-                                            </span>
-                                        </td>
+                                            </>
+                                            :null
+                                        }
+                                    </td>
+                                    {
+                                        RequestDetails.view_date
+                                        ?
                                         <td>
-                                            <b>Requested By</b><br />
-                                            <span>
-                                                {RequestDetails.requested_employee_name} <br />
-                                                {new Date(RequestDetails.requested_date).toDateString()} <br />
-                                                {RequestDetails.requested_time}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <b>Submit To (Employee)</b><br />
+                                            <b>Verified By</b><br />
                                             <span>{RequestDetails.submit_to_employee_name}</span><br />
-                                            <b>Employee Name (On Behalf Of)</b><br />
-                                            <span>{RequestDetails.behalf_employee_name ? RequestDetails.behalf_employee_name : <span className='text-secondary'>------</span>}</span>
-                                        </td>
-                                        <td>
-                                            {
-                                                RequestDetails.view_date
-                                                    ?
-                                                    <>
-                                                        <b>Viewed By</b><br />
-                                                        <span>{RequestDetails.submit_to_employee_name}</span><br />
-                                                    </>
-                                                    : null
-                                            }
-                                            <b>View Date & Time</b><br />
                                             <span>
-                                                {
-                                                    RequestDetails.view_date
-                                                        ?
-                                                        <>
-                                                            {new Date(RequestDetails.view_date).toDateString()} <br />
-                                                            {RequestDetails.view_time}
-                                                        </>
-                                                        :
-                                                        <span className={RequestDetails.status + " text-white status_div"}>Not Viewed</span>
-                                                }
+                                                {new Date(RequestDetails.view_date).toDateString()} <br />
+                                                {RequestDetails.view_time}
                                             </span>
                                         </td>
-                                        <td>
-                                            {
-                                                RequestDetails.hod_employee_name != null
-                                                    ?
-                                                    RequestDetails.status === 'rejected'
-                                                        ?
-                                                        <>
-                                                            {
-                                                                RequestDetails.override === 1
-                                                                    ?
-                                                                    <><b className='text-danger'>Override By</b><br /></>
-                                                                    :
-                                                                    <><b>Rejected By</b><br /></>
-                                                            }
-                                                            <span>{RequestDetails.hod_employee_name}</span><br />
-                                                            <b>Date & Time</b><br />
-                                                            <span>{new Date(RequestDetails.act_date).toDateString()} at {RequestDetails.act_time}</span>
-                                                        </>
-                                                        :
-                                                        <>
-                                                            <b>{RequestDetails.status === 'canceled' || RequestDetails.status === 'canceled_by_inventory' ? "Canceled By" : RequestDetails.override === 1 ? "Override By" : "Proceed To"}</b><br />
-                                                            <span>{RequestDetails.hod_employee_name}</span><br />
-                                                            {
-                                                                RequestDetails.status === 'approved'
-                                                                    ?
-                                                                    <>
-                                                                        <b>Date & Time</b><br />
-                                                                        <span>{new Date(RequestDetails.act_date).toDateString()} at {RequestDetails.act_time}</span>
-                                                                    </>
-                                                                    :
-                                                                    <>
-                                                                        <b>Date & Time</b><br />
-                                                                        <span className='text-danger'>Not Approved Yet</span>
-                                                                    </>
-                                                            }
-                                                        </>
-                                                    : null
-                                            }
-                                        </td>
-                                        <td>
-                                            <b>Request Status</b><br />
-                                            <span className={RequestDetails.status + " text-white status_div"}>{RequestDetails.status.split('_').join(' ')}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={2}>
-                                            <b>Reason</b><br />
-                                            <span className={Logs.filter(log => log.match_key === 'reason')[0] ? "log_found" : ""}>
-                                                {RequestDetails.reason}
-                                                {
-                                                    Logs.filter(log => log.match_key === 'reason')[0]?
-                                                    <div className='log_details'>
-                                                        <p className='font-weight-bold mb-0'>Original</p>
-                                                        <p className='mb-0'>{Logs.filter(log => log.match_key === 'reason')[0]['before_value']}</p>
-                                                        <hr className='my-1' />
-                                                        <p className='font-weight-bold mb-0'>After</p>
-                                                        {
-                                                            Logs.filter(log => log.match_key === 'reason').map(
-                                                                ({after_value, created_at, name, remarks}, i) => {
-                                                                    return (
-                                                                        <div key={i} title={remarks}>
-                                                                            <p className='mb-0'>
-                                                                                {after_value} 
-                                                                                {after_value === RequestDetails.reason ? <span className='text-success pl-1'>&#40;Current&#41;</span> : ""}
-                                                                            </p>
-                                                                            <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                            <small className='mb-0 text-right d-block text-danger'>{name}</small>
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            )
-                                                        }
-                                                    </div>
-                                                    :null
-                                                }
-                                            </span>
-                                        </td>
-                                        <td colSpan={2}>
-
-                                            {
-                                                RequestDetails.remarks != null
+                                        :
+                                        <td></td>
+                                    }
+                                    <td>
+                                        {
+                                            RequestDetails.hod_employee_name != null
+                                                ?
+                                                RequestDetails.status === 'rejected'
                                                     ?
                                                     <>
-                                                        <b>{RequestDetails.status === 'canceled' || RequestDetails.status === 'canceled_by_inventory' ? "Reason To Cancel" : "Inventory's Remarks"}</b><br />
-                                                        <span>{RequestDetails.remarks}</span>
+                                                        {
+                                                            RequestDetails.override === 1
+                                                                ?
+                                                                <><b className='text-danger'>Override By</b><br /></>
+                                                                :
+                                                                <><b>Rejected By</b><br /></>
+                                                        }
+                                                        <span>{RequestDetails.hod_employee_name}</span><br />
+                                                        <span>{new Date(RequestDetails.act_date).toDateString()}<br />{RequestDetails.act_time}</span>
                                                     </>
-                                                    : null
-                                            }
-                                        </td>
-                                        <td colSpan={2}>
-                                            {
-                                                RequestDetails.hod_employee_name != null ? RequestDetails.status === 'rejected' ? null
                                                     :
                                                     <>
+                                                        <b>{RequestDetails.status === 'canceled' || RequestDetails.status === 'canceled_by_inventory' ? "Canceled By" : RequestDetails.override === 1 ? "Override By" : "Proceed To"}</b><br />
+                                                        <span>{RequestDetails.hod_employee_name}</span><br />
                                                         {
                                                             RequestDetails.status === 'approved'
                                                                 ?
                                                                 <>
-                                                                    <b>{RequestDetails.override === 1 ? "Override" : "H.O.D's"} Remarks</b><br />
-                                                                    <span>{RequestDetails.remarks_from_hod}</span>
+                                                                    <span>{new Date(RequestDetails.act_date).toDateString()}<br />{RequestDetails.act_time}</span>
                                                                 </>
-                                                                : null
+                                                                :
+                                                                <>
+                                                                    <span className='text-danger'>Not Approved Yet</span>
+                                                                </>
                                                         }
                                                     </>
-                                                    : null
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={6}>
-                                            <b>Additional Notes</b><br />
-                                            <span className={Logs.filter(log => log.match_key === 'note')[0] ? "log_found" : ""}>
-                                                {RequestDetails.note}
-                                                {
-                                                    Logs.filter(log => log.match_key === 'note')[0]?
-                                                    <div className='log_details'>
-                                                        <p className='font-weight-bold mb-0'>Original</p>
-                                                        <p className='mb-0'>{Logs.filter(log => log.match_key === 'note')[0]['before_value']}</p>
-                                                        <hr className='my-1' />
-                                                        <p className='font-weight-bold mb-0'>After</p>
-                                                        {
-                                                            Logs.filter(log => log.match_key === 'note').map(
-                                                                ({after_value, created_at, name, remarks}, i) => {
-                                                                    return (
-                                                                        <div key={i} title={remarks}>
-                                                                            <p className='mb-0'>
-                                                                                {after_value} 
-                                                                                {after_value === RequestDetails.note ? <span className='text-success pl-1'>&#40;Current&#41;</span> : ""}
-                                                                            </p>
-                                                                            <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                            <small className='mb-0 text-right d-block text-danger'>{name}</small>
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            )
-                                                        }
-                                                    </div>
-                                                    :null
-                                                }
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div className="grid_container py-3 mb-3 px-5 border-top border-bottom">
-
-                                {
-                                    RequestDetails.new_purchase === 1
-                                        ?
-                                        <div className='grid_container align-items-center'>
-                                            <b>New Purchase</b>
-                                            <input checked={true} type="checkbox" className='ml-2' />
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    RequestDetails.repair
-                                        ?
-                                        <div className='grid_container align-items-center'>
-                                            <b>Repair</b>
-                                            <input checked={true} type="checkbox" className='ml-2' />
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    RequestDetails.replace_recycle
-                                        ?
-                                        <div className='grid_container align-items-center'>
-                                            <b>Replacement / Recycle</b>
-                                            <input checked={true} type="checkbox" className='ml-2' />
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    RequestDetails.budgeted
-                                        ?
-                                        <div className='grid_container align-items-center'>
-                                            <b>Budgeted</b>
-                                            <input checked={true} type="checkbox" className='ml-2' />
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    RequestDetails.not_budgeted
-                                        ?
-                                        <div className='grid_container align-items-center'>
-                                            <b>Not Budgeted</b>
-                                            <input checked={true} type="checkbox" className='ml-2' />
-                                        </div>
-                                        : null
-                                }
-                                {
-                                    RequestDetails.invoice_attached
-                                        ?
-                                        <div className='grid_container align-items-center'>
-                                            <b>Invoice Attached</b>
-                                            <input checked={true} type="checkbox" className='ml-2' />
-                                        </div>
-                                        : null
-                                }
-
-                            </div>
-
-                            <label className="mb-1"><b>Purchase / Repair / Replacement Specifications</b></label>
-
-                            <table className="table table-borderless specifications-table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Sr.No.</th>
-                                        <th>Description</th>
-                                        <th>Quantity</th>
-                                        <th>Estimated Cost</th>
-                                        <th className='text-right'>Total Cost</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="specifications_table_body">
-                                    {
-                                        Specifications.map(
-                                            (val, index) => {
-                                                return (
-                                                    <tr id={"specification_row_" + (index + 1)} key={index} pr_id={val.pr_id} spec_id={val.specification_id}>
-                                                        <td className={Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no)[0] ? "row_log" : ""} id={"sr_no_" + (index + 1)}>
-                                                            <div className='d-flex align-items-center'>
-                                                                <span>{Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no)[0]?<div className='log_identity'></div>:""}</span>
-                                                                <span>{index + 1}</span>
-                                                            </div>
-                                                            <div className='logs'>
-                                                                <p className='font-weight-bold mb-0'>Changes</p>
-                                                                <hr className='my-1' />
-                                                                {
-                                                                    Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no).map(
-                                                                        ({additional_match_key, remarks, before_value, after_value, created_at, name, status}, i) => {
-                                                                            return (
-                                                                                <div key={i} title={remarks}>
-                                                                                    {
-                                                                                        status === 'edited'
-                                                                                        ?
-                                                                                        <p className='mb-0' style={{ fontSize: 11 }}>
-                                                                                            <b className='font-italic text-capitalize mr-1'>{additional_match_key.split("_").join(' ').replace('specification', '').trim()}</b>
-                                                                                            <span style={{ fontSize: 11 }}>has changed from <b>{before_value}</b> to <b>{after_value}</b></span>
-                                                                                        </p>
-                                                                                        :
-                                                                                        status === 'added'
-                                                                                        ?
-                                                                                        <p className='mb-0' style={{ fontSize: 11 }}>
-                                                                                            <b className='font-italic text-capitalize mr-1'>It's a new record.</b>
-                                                                                        </p>
-                                                                                        :
-                                                                                        <p className='mb-0' style={{ fontSize: 11 }}>
-                                                                                            <b className='font-italic text-capitalize mr-1'>{remarks}</b>
-                                                                                        </p>
-                                                                                    }
-                                                                                    {
-                                                                                        (i + 1) < Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no).length
-                                                                                        ?
-                                                                                        created_at.toString() === Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no)[i+1].created_at.toString()
-                                                                                        ?null
-                                                                                        :
-                                                                                        <>
-                                                                                            <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                                            <small className='mb-0 text-right d-block text-danger'>{name}</small>
-                                                                                            <hr className='my-1' />
-                                                                                        </>
-                                                                                        :
-                                                                                        <>
-                                                                                            <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                                            <small className='mb-0 text-right d-block text-danger'>{name}</small>
-                                                                                            <hr className='my-1' />
-                                                                                        </>
-                                                                                    }
-                                                                                </div>
-                                                                            )
-                                                                        }
-                                                                    )
-                                                                }
-                                                            </div>
-                                                        </td>
-                                                        <td id={"description_" + (index + 1)}> {val.description} </td>
-                                                        <td id={"quantity_" + (index + 1)}> {val.quantity} </td>
-                                                        <td id={"estimated_cost_" + (index + 1)}> Rs {val.estimated_cost.toLocaleString('en')} </td>
-                                                        <td id={"total_estimated_cost_" + (index + 1)} className='text-right'> Rs {val.total_estimated_cost.toLocaleString('en')} </td>
-                                                    </tr>
-                                                )
-                                            }
-                                        )
-                                    }
-                                </tbody>
-                                <br />
-                                <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td className='total-td'><b>Total</b></td>
-                                        <td className='text-right total-td'> Rs {RequestDetails.total_value.toLocaleString('en')} </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                            <div className='d-flex justify-content-between'>
-                                {
-                                    Logs.filter(log => log.additional_match_key !== null && log.status == 'deleted')[0]
-                                    ?
-                                    <div className='border rounded p-2'>
-                                        <h6 className='text-right mt-2'>Deleted Specifications Logs</h6>
-                                        <div style={{ width: 500, maxHeight: '200px', overflow: "auto" }}>
+                                                : null
+                                        }
+                                    </td>
+                                    <td>
+                                        <b>Request Status</b><br />
+                                        <span className={RequestDetails.status + " text-white status_div"}>{RequestDetails.status.split('_').join(' ')}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={3}>
+                                        <b>Reason</b><br />
+                                        <span className={Logs.filter(log => log.match_key === 'reason')[0] ? "log_found" : ""}>
+                                            {RequestDetails.reason}
                                             {
-                                                Logs.filter(log => log.additional_match_key !== null && log.status == 'deleted').reverse().map(
-                                                    ({before_value, remarks, created_at, name}, i) => {
-                                                        return (
+                                                Logs.filter(log => log.match_key === 'reason')[0]?
+                                                <div className='log_details'>
+                                                    <p className='font-weight-bold mb-0'>Original</p>
+                                                    <p className='mb-0'>{Logs.filter(log => log.match_key === 'reason')[0]['before_value']}</p>
+                                                    <hr className='my-1' />
+                                                    <p className='font-weight-bold mb-0'>After</p>
+                                                    {
+                                                        Logs.filter(log => log.match_key === 'reason').map(
+                                                            ({after_value, created_at, name, remarks}, i) => {
+                                                                return (
+                                                                    <div key={i} title={remarks}>
+                                                                        <p className='mb-0'>
+                                                                            {after_value} 
+                                                                            {after_value === RequestDetails.reason ? <span className='text-success pl-1'>&#40;Current&#41;</span> : ""}
+                                                                        </p>
+                                                                        <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                                        <small className='mb-0 text-right d-block text-danger'>{name}</small>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                </div>
+                                                :null
+                                            }
+                                        </span>
+                                    </td>
+                                    <td colSpan={3}>
+                                        {
+                                            RequestDetails.site_manager_remarks != null
+                                            ?
+                                            <>
+                                                <b>Site Manager's Remarks</b><br />
+                                                <span>{RequestDetails.site_manager_remarks}</span>
+                                            </>
+                                            : null
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={3}>
+                                        {
+                                            RequestDetails.remarks != null
+                                            ?
+                                            <>
+                                                <b>{RequestDetails.status === 'canceled' || RequestDetails.status === 'canceled_by_inventory' ? "Reason To Cancel" : "Inventory's Remarks"}</b><br />
+                                                <span>{RequestDetails.remarks}</span>
+                                            </>
+                                            : null
+                                        }
+                                    </td>
+                                    <td colSpan={2}>
+                                        {
+                                            RequestDetails.hod_employee_name != null ? RequestDetails.status === 'rejected' ? null
+                                                :
+                                                <>
+                                                    {
+                                                        RequestDetails.status === 'approved'
+                                                            ?
                                                             <>
-                                                                <p title={remarks} className='mb-0' style={{ fontFamily: "monospace" }} key={i}>
-                                                                    <b className='text-danger'>The row has been deleted with the following details:</b><br />{before_value}.<br />
-                                                                    <small className='text-right d-block text-danger'>{name}</small>
-                                                                    <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                </p>
+                                                                <b>{RequestDetails.override === 1 ? "Override" : "H.O.D's"} Remarks</b><br />
+                                                                <span>{RequestDetails.remarks_from_hod}</span>
                                                             </>
+                                                            : null
+                                                    }
+                                                </>
+                                                : null
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={6}>
+                                        <b>Additional Notes</b><br />
+                                        <span className={Logs.filter(log => log.match_key === 'note')[0] ? "log_found" : ""}>
+                                            {RequestDetails.note}
+                                            {
+                                                Logs.filter(log => log.match_key === 'note')[0]?
+                                                <div className='log_details'>
+                                                    <p className='font-weight-bold mb-0'>Original</p>
+                                                    <p className='mb-0'>{Logs.filter(log => log.match_key === 'note')[0]['before_value']}</p>
+                                                    <hr className='my-1' />
+                                                    <p className='font-weight-bold mb-0'>After</p>
+                                                    {
+                                                        Logs.filter(log => log.match_key === 'note').map(
+                                                            ({after_value, created_at, name, remarks}, i) => {
+                                                                return (
+                                                                    <div key={i} title={remarks}>
+                                                                        <p className='mb-0'>
+                                                                            {after_value} 
+                                                                            {after_value === RequestDetails.note ? <span className='text-success pl-1'>&#40;Current&#41;</span> : ""}
+                                                                        </p>
+                                                                        <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                                        <small className='mb-0 text-right d-block text-danger'>{name}</small>
+                                                                    </div>
+                                                                )
+                                                            }
                                                         )
                                                     }
-                                                )
+                                                </div>
+                                                :null
                                             }
-                                        </div>
-                                    </div>
-                                    :<div></div>
-                                }
-                                {
-                                    Logs.filter(log => log.match_key == 'total_value')[0]
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div className="grid_container py-3 mb-3 px-5 border-top border-bottom">
+
+                            {
+                                RequestDetails.new_purchase === 1
                                     ?
-                                    <div className='border rounded p-2'>
-                                        <h6 className='text-right mt-2'>Total Cost Logs</h6>
-                                        <div style={{ width: 500, maxHeight: '200px', overflow: "auto" }}>
-                                            {
-                                                Logs.filter(log => log.match_key == 'total_value').reverse().map(
-                                                    ({before_value, after_value, remarks, created_at}, i) => {
-                                                        return (
-                                                            <>
-                                                                <p title={remarks} className='mb-0' style={{ fontFamily: "monospace" }} key={i}>
-                                                                    <span style={{ color: "#ea8c19" }}>The total cost has been changed from <b>Rs {before_value}/-</b> to <b>Rs {after_value}/-</b> due to changes in the specifications.<br /></span>
-                                                                    <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
-                                                                </p>
-                                                            </>
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        </div>
+                                    <div className='grid_container align-items-center'>
+                                        <b>New Purchase</b>
+                                        <input checked={true} type="checkbox" className='ml-2' />
                                     </div>
-                                    :<div></div>
-                                }
-                            </div>
-                        </>
-                        :
-                        <div className='purchase_requisition_details_2' id="accordion">
-                            <div className='collapse_toogle d-flex justify-content-between' data-toggle="collapse" data-target="#attached_quotations" aria-expanded="false" aria-controls="attached_quotations">
-                                <h6 className='mb-0'>Quotations Attached</h6>
-                                <h6 className='mb-0'>({Quotations.length})</h6>
-                            </div>
-                            <div className="collapse show" id="attached_quotations" data-parent="#accordion">
-                                {
-                                    Quotations.length === 0
-                                        ?
-                                        <h6 className="text-center">No Quotation Attached</h6>
-                                        :
-                                        <div className="grid_container">
+                                    : null
+                            }
+                            {
+                                RequestDetails.repair
+                                    ?
+                                    <div className='grid_container align-items-center'>
+                                        <b>Repair</b>
+                                        <input checked={true} type="checkbox" className='ml-2' />
+                                    </div>
+                                    : null
+                            }
+                            {
+                                RequestDetails.replace_recycle
+                                    ?
+                                    <div className='grid_container align-items-center'>
+                                        <b>Replacement / Recycle</b>
+                                        <input checked={true} type="checkbox" className='ml-2' />
+                                    </div>
+                                    : null
+                            }
+                            {
+                                RequestDetails.budgeted
+                                    ?
+                                    <div className='grid_container align-items-center'>
+                                        <b>Budgeted</b>
+                                        <input checked={true} type="checkbox" className='ml-2' />
+                                    </div>
+                                    : null
+                            }
+                            {
+                                RequestDetails.not_budgeted
+                                    ?
+                                    <div className='grid_container align-items-center'>
+                                        <b>Not Budgeted</b>
+                                        <input checked={true} type="checkbox" className='ml-2' />
+                                    </div>
+                                    : null
+                            }
+                            {
+                                RequestDetails.invoice_attached
+                                    ?
+                                    <div className='grid_container align-items-center'>
+                                        <b>Invoice Attached</b>
+                                        <input checked={true} type="checkbox" className='ml-2' />
+                                    </div>
+                                    : null
+                            }
 
-                                            {
-                                                Quotations.map(
-                                                    (val, index) => {
-
-                                                        return (
-                                                            <div className='quotation_card' style={{ display: 'flex', flexDirection: 'column' }}>
-                                                                {
-                                                                    val.quotation.includes('.pdf')
-                                                                        ?
-                                                                        <iframe src={process.env.REACT_APP_SERVER + '/' + val.quotation} title="quotation_preview" key={index} width="100%" style={{ flexGrow: 1, minHeight: 500 }}></iframe>
-                                                                        :
-                                                                        <img src={process.env.REACT_APP_SERVER + '/' + val.quotation} alt="quotation_preview" key={index} />
-                                                                }
-                                                            </div>
-                                                        )
-                                                    }
-                                                )
-                                            }
-
-                                        </div>
-                                }
-                            </div>
                         </div>
+
+                        <label className="mb-1"><b>Purchase / Repair / Replacement Specifications</b></label>
+
+                        <table className="table table-borderless specifications-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No.</th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Estimated Cost</th>
+                                    <th className='text-right'>Total Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody id="specifications_table_body">
+                                {
+                                    Specifications.map(
+                                        (val, index) => {
+                                            return (
+                                                <tr id={"specification_row_" + (index + 1)} key={index} pr_id={val.pr_id} spec_id={val.specification_id}>
+                                                    <td className={Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no)[0] ? "row_log" : ""} id={"sr_no_" + (index + 1)}>
+                                                        <div className='d-flex align-items-center'>
+                                                            <span>{Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no)[0]?<div className='log_identity'></div>:""}</span>
+                                                            <span>{index + 1}</span>
+                                                        </div>
+                                                        <div className='logs'>
+                                                            <p className='font-weight-bold mb-0'>Changes</p>
+                                                            <hr className='my-1' />
+                                                            {
+                                                                Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no).map(
+                                                                    ({additional_match_key, remarks, before_value, after_value, created_at, name, status}, i) => {
+                                                                        return (
+                                                                            <div key={i} title={remarks}>
+                                                                                {
+                                                                                    status === 'edited'
+                                                                                    ?
+                                                                                    <p className='mb-0' style={{ fontSize: 11 }}>
+                                                                                        <b className='font-italic text-capitalize mr-1'>{additional_match_key.split("_").join(' ').replace('specification', '').trim()}</b>
+                                                                                        <span style={{ fontSize: 11 }}>has changed from <b>{before_value}</b> to <b>{after_value}</b></span>
+                                                                                    </p>
+                                                                                    :
+                                                                                    status === 'added'
+                                                                                    ?
+                                                                                    <p className='mb-0' style={{ fontSize: 11 }}>
+                                                                                        <b className='font-italic text-capitalize mr-1'>It's a new record.</b>
+                                                                                    </p>
+                                                                                    :
+                                                                                    <p className='mb-0' style={{ fontSize: 11 }}>
+                                                                                        <b className='font-italic text-capitalize mr-1'>{remarks}</b>
+                                                                                    </p>
+                                                                                }
+                                                                                {
+                                                                                    (i + 1) < Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no).length
+                                                                                    ?
+                                                                                    created_at.toString() === Logs.filter(log => log.additional_match_key !== null && log.match_key == val.sr_no)[i+1].created_at.toString()
+                                                                                    ?null
+                                                                                    :
+                                                                                    <>
+                                                                                        <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                                                        <small className='mb-0 text-right d-block text-danger'>{name}</small>
+                                                                                        <hr className='my-1' />
+                                                                                    </>
+                                                                                    :
+                                                                                    <>
+                                                                                        <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                                                        <small className='mb-0 text-right d-block text-danger'>{name}</small>
+                                                                                        <hr className='my-1' />
+                                                                                    </>
+                                                                                }
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                    <td id={"description_" + (index + 1)}> {val.description} </td>
+                                                    <td id={"quantity_" + (index + 1)}> {val.quantity} </td>
+                                                    <td id={"estimated_cost_" + (index + 1)}> Rs {val.estimated_cost.toLocaleString('en')} </td>
+                                                    <td id={"total_estimated_cost_" + (index + 1)} className='text-right'> Rs {val.total_estimated_cost.toLocaleString('en')} </td>
+                                                </tr>
+                                            )
+                                        }
+                                    )
+                                }
+                            </tbody>
+                            <br />
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td className='total-td'><b>Total</b></td>
+                                    <td className='text-right total-td'> Rs {RequestDetails.total_value.toLocaleString('en')} </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div className='d-flex justify-content-between'>
+                            {
+                                Logs.filter(log => log.additional_match_key !== null && log.status == 'deleted')[0]
+                                ?
+                                <div className='border rounded p-2'>
+                                    <h6 className='text-right mt-2'>Deleted Specifications Logs</h6>
+                                    <div style={{ width: 500, maxHeight: '200px', overflow: "auto" }}>
+                                        {
+                                            Logs.filter(log => log.additional_match_key !== null && log.status == 'deleted').reverse().map(
+                                                ({before_value, remarks, created_at, name}, i) => {
+                                                    return (
+                                                        <>
+                                                            <p title={remarks} className='mb-0' style={{ fontFamily: "monospace" }} key={i}>
+                                                                <b className='text-danger'>The row has been deleted with the following details:</b><br />{before_value}.<br />
+                                                                <small className='text-right d-block text-danger'>{name}</small>
+                                                                <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                            </p>
+                                                        </>
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                :<div></div>
+                            }
+                            {
+                                Logs.filter(log => log.match_key == 'total_value')[0]
+                                ?
+                                <div className='border rounded p-2'>
+                                    <h6 className='text-right mt-2'>Total Cost Logs</h6>
+                                    <div style={{ width: 500, maxHeight: '200px', overflow: "auto" }}>
+                                        {
+                                            Logs.filter(log => log.match_key == 'total_value').reverse().map(
+                                                ({before_value, after_value, remarks, created_at}, i) => {
+                                                    return (
+                                                        <>
+                                                            <p title={remarks} className='mb-0' style={{ fontFamily: "monospace" }} key={i}>
+                                                                <span style={{ color: "#ea8c19" }}>The total cost has been changed from <b>Rs {before_value}/-</b> to <b>Rs {after_value}/-</b> due to changes in the specifications.<br /></span>
+                                                                <small className='text-right d-block'>{new Date(created_at).toDateString()} at {new Date(created_at).toLocaleTimeString()}</small>
+                                                            </p>
+                                                        </>
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                :<div></div>
+                            }
+                        </div>
+                    </>
+                    :
+                    <div className='purchase_requisition_details_2' id="accordion">
+                        <div className='collapse_toogle d-flex justify-content-between' data-toggle="collapse" data-target="#attached_quotations" aria-expanded="false" aria-controls="attached_quotations">
+                            <h6 className='mb-0'>Quotations Attached</h6>
+                            <h6 className='mb-0'>({Quotations.length})</h6>
+                        </div>
+                        <div className="collapse show" id="attached_quotations" data-parent="#accordion">
+                            {
+                                Quotations.length === 0
+                                    ?
+                                    <h6 className="text-center">No Quotation Attached</h6>
+                                    :
+                                    <div className="grid_container">
+
+                                        {
+                                            Quotations.map(
+                                                (val, index) => {
+
+                                                    return (
+                                                        <div className='quotation_card' style={{ display: 'flex', flexDirection: 'column' }}>
+                                                            {
+                                                                val.quotation.includes('.pdf')
+                                                                    ?
+                                                                    <iframe src={process.env.REACT_APP_SERVER + '/' + val.quotation} title="quotation_preview" key={index} width="100%" style={{ flexGrow: 1, minHeight: 500 }}></iframe>
+                                                                    :
+                                                                    <img src={process.env.REACT_APP_SERVER + '/' + val.quotation} alt="quotation_preview" key={index} />
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                            )
+                                        }
+
+                                    </div>
+                            }
+                        </div>
+                    </div>
                 }
 
                 {
@@ -1550,26 +1561,26 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                 <br />
                                 <br />
 
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div style={{ display: 'flex' }}>
 
                                     <div style={{ width: "50%" }}>
                                         <div style={{ display: 'flex' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Company Name:</b>
-                                            <span style={{ width: '50%', padding: 5, fontSize: 17 }}>{RequestDetails.company_name}</span>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Company Name:</b>
+                                            <span style={{ width: '50%', padding: 5, fontSize: 15 }}>{RequestDetails.company_name}</span>
                                         </div>
                                         <div style={{ display: 'flex' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Delivery / Work Location:</b>
-                                            <span style={{ width: '50%', padding: 5, fontSize: 17 }}>{RequestDetails.location_name}</span>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Delivery / Work Location:</b>
+                                            <span style={{ width: '50%', padding: 5, fontSize: 15 }}>{RequestDetails.location_name}</span>
                                         </div>
                                     </div>
                                     <div style={{ width: "50%" }}>
                                         <div style={{ display: 'flex' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>PR Number:</b>
-                                            <span style={{ width: '50%', padding: 5, fontSize: 17 }}>{RequestDetails.company_short_code + '-' + RequestDetails.series_year + '-' + RequestDetails.series_code}</span>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>PR Number:</b>
+                                            <span style={{ width: '50%', padding: 5, fontSize: 15 }}>{RequestDetails.company_short_code + '-' + RequestDetails.series_year + '-' + RequestDetails.series_code}</span>
                                         </div>
                                         <div style={{ display: 'flex' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Date:</b>
-                                            <span style={{ width: '50%', padding: 5, fontSize: 17 }}>{new Date(RequestDetails.requested_date).toDateString()}</span>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Date:</b>
+                                            <span style={{ width: '50%', padding: 5, fontSize: 15 }}>{new Date(RequestDetails.requested_date).toDateString()}</span>
                                         </div>
                                     </div>
 
@@ -1581,13 +1592,13 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
 
                                     <div style={{ width: "50%" }}>
                                         <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>New Purchase</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>New Purchase</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.new_purchase === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Repair</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Repair</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.repair === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>
@@ -1595,13 +1606,13 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                     </div>
                                     <div style={{ width: "50%" }}>
                                         <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Replacement / Recycle</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Replacement / Recycle</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.replace_recycle === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Budgeted</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Budgeted</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.budgeted === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>
@@ -1609,13 +1620,13 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                     </div>
                                     <div style={{ width: "100%", display: 'flex' }}>
                                         <div style={{ width: '50%', display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Not Budgeted</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Not Budgeted</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.not_budgeted === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>
                                         </div>
                                         <div style={{ width: '50%', display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 17 }}>Invoice Attached</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Invoice Attached</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.invoice_attached === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>
@@ -1626,22 +1637,22 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
 
                                 <hr />
 
-                                <b style={{ fontSize: 17 }}>Reason For Repair / Replacement / New Purchase</b>
+                                <b style={{ fontSize: 15 }}>Reason For Repair / Replacement / New Purchase</b>
                                 <br />
-                                <span style={{ wordBreak: 'break-word', padding: 5, fontSize: 17, display: 'block', marginTop: 10, marginBottom: 10 }}>
+                                <span style={{ wordBreak: 'break-word', padding: 5, fontSize: 15, display: 'block', marginTop: 10, marginBottom: 10 }}>
                                     {RequestDetails.reason}
                                 </span>
 
-                                <b style={{ fontSize: 17 }}>Purchase / Repair / Replacement Specifications</b>
+                                <b style={{ fontSize: 15 }}>Purchase / Repair / Replacement Specifications</b>
                                 <br />
                                 <table className="table table-bordered mt-2" style={{ zIndex: 1, backgroundColor: '#fff' }}>
                                     <thead>
                                         <tr style={{ borderColor: '#000' }}>
-                                            <th style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Sr.No</th>
-                                            <th style={{ outline: '1px solid lightgray', fontSize: 15 }}>Description</th>
-                                            <th style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Quantity</th>
-                                            <th style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Estimated Cost</th>
-                                            <th style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Total Cost</th>
+                                            <th style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Sr.No</th>
+                                            <th style={{ outline: '1px solid lightgray', fontSize: 13 }}>Description</th>
+                                            <th style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Quantity</th>
+                                            <th style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Estimated Cost</th>
+                                            <th style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Total Cost</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1650,11 +1661,11 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                                 (val, index) => {
                                                     return (
                                                         <tr style={{ borderColor: '#000' }} key={index}>
-                                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>{index + 1}</td>
-                                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, maxWidth: 250, wordBreak: 'break-word' }}>{val.description}</td>
-                                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>{val.quantity}</td>
-                                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Rs {val.estimated_cost.toLocaleString('en')}</td>
-                                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Rs {val.total_estimated_cost.toLocaleString('en')}</td>
+                                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>{index + 1}</td>
+                                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, maxWidth: 250, wordBreak: 'break-word' }}>{val.description}</td>
+                                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>{val.quantity}</td>
+                                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Rs {val.estimated_cost.toLocaleString('en')}</td>
+                                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Rs {val.total_estimated_cost.toLocaleString('en')}</td>
                                                         </tr>
                                                     )
                                                 }
@@ -1663,43 +1674,54 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                     </tbody>
                                     <tfoot>
                                         <tr style={{ borderColor: '#000' }}>
-                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}></td>
-                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}></td>
-                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}></td>
-                                            <th style={{ outline: '1px solid lightgray', textAlign: 'center', border: '0', fontSize: 15 }}><b>Total</b></th>
-                                            <td style={{ outline: '1px solid lightgray', fontSize: 15, textAlign: 'center' }}>Rs {RequestDetails.total_value.toLocaleString('en')}</td>
+                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}></td>
+                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}></td>
+                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}></td>
+                                            <th style={{ outline: '1px solid lightgray', textAlign: 'center', border: '0', fontSize: 13 }}><b>Total</b></th>
+                                            <td style={{ outline: '1px solid lightgray', fontSize: 13, textAlign: 'center' }}>Rs {RequestDetails.total_value.toLocaleString('en')}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
 
                                 <div className="footer" style={{ padding: 20, width: "100%", position: 'fixed', bottom: 0, zIndex: -1 }}>
-                                    <p style={{ fontSize: 17 }}>
+                                    <p style={{ marginBottom: 0, fontSize: 13 }}>
                                         <b style={{ marginRight: 5 }}>Note: </b>
                                     </p>
-                                    <p style={{ fontSize: 17 }}>
+                                    <p style={{ marginBottom: 0, fontSize: 13 }}>
                                         - This is an electronically generated report, hence does not require a signature.
                                     </p>
                                     {
                                         RequestDetails.behalf_employee_name
                                             ?
-                                            <p style={{ fontSize: 17 }}>- This request is generated by {RequestDetails.requested_employee_name} ({RequestDetails.requested_employee_designation_name}) on behalf of the requested employee.</p>
+                                            <p style={{ marginBottom: 0, fontSize: 13 }}>- This request is generated by {RequestDetails.requested_employee_name} ({RequestDetails.requested_employee_designation_name}) on behalf of the requested employee.</p>
                                             : null
+                                    }
+                                    {
+                                        RequestDetails.site_act_date
+                                        ?
+                                        <>
+                                            <p style={{ marginBottom: 0, fontSize: 13 }}>
+                                                <b style={{ marginRight: 5 }}>Site's Remarks: </b>
+                                            </p>
+                                            <p style={{ marginBottom: 0, fontSize: 13 }}>- {RequestDetails.site_manager_remarks}</p>
+                                        </>
+                                        : null
                                     }
                                     {
                                         RequestDetails.status === "approved" || RequestDetails.status === "rejected"
                                             ?
                                             <>
-                                                <p style={{ fontSize: 17 }}>
+                                                <p style={{ marginBottom: 0, fontSize: 13 }}>
                                                     <b style={{ marginRight: 5 }}>H.O.D's Remarks: </b>
                                                 </p>
-                                                <p style={{ fontSize: 17 }}>- {RequestDetails.remarks_from_hod}</p>
+                                                <p style={{ marginBottom: 0, fontSize: 13 }}>- {RequestDetails.remarks_from_hod}</p>
                                             </>
                                             : null
                                     }
                                     <div style={{ display: 'flex' }}>
-                                        <div style={{ width: '33.33%', padding: 10 }}>
-                                            <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 17 }}>Requested By</b>
-                                            <p style={{ textAlign: 'center', fontSize: 30, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
+                                        <div style={{ width: RequestDetails.site_act_date ? '25%' : '33.33%', padding: 10 }}>
+                                            <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 13 }}>Requested By</b>
+                                            <p style={{ textAlign: 'center', fontSize: 20, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
                                                 {
                                                     RequestDetails.behalf_employee_name
                                                         ?
@@ -1708,7 +1730,7 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                                         RequestDetails.requested_employee_name
                                                 }
                                             </p>
-                                            <p style={{ marginTop: 10, marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 15 }}>
+                                            <p style={{ marginTop: 10, marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 13 }}>
                                                 {
                                                     RequestDetails.behalf_employee_designation_name
                                                         ?
@@ -1717,37 +1739,55 @@ const Detailing = ({ Admin, Locations, Logs, overrideRequisition, sendForApprove
                                                         RequestDetails.requested_employee_designation_name
                                                 }
                                             </p>
-                                            <p style={{ marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 15 }}>
+                                            <p style={{ marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 13 }}>
                                                 {new Date(RequestDetails.requested_date).toDateString()}
                                             </p>
                                         </div>
-                                        <div style={{ width: '33.33%', padding: 10 }}>
-                                            <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 15 }}>Submitted To</b>
+                                        {
+                                            RequestDetails.site_act_date
+                                            ?
+                                            <div style={{ width: RequestDetails.site_act_date ? '25%' : '33.33%', padding: 10 }}>
+                                                <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 13 }}>Submitted To</b>
+                                                <p style={{ textAlign: 'center', fontSize: 20, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
+                                                    {RequestDetails.site_manager_name}
+                                                </p>
+                                                <p style={{ marginBottom: 0, marginTop: 10, display: 'block', textAlign: 'center', fontSize: 13 }}>{RequestDetails.site_manager_designation_name}</p>
+                                                <p style={{ marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 13 }}>
+                                                    {new Date(RequestDetails.site_act_date).toDateString()}
+                                                </p>
+                                            </div>
+                                            :null
+                                        }
+                                        <div style={{ width: RequestDetails.site_act_date ? '25%' : '33.33%', padding: 10 }}>
+                                            <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 13 }}>Verified By</b>
                                             {
                                                 RequestDetails.view_date
                                                     ?
                                                     <>
-                                                        <p style={{ textAlign: 'center', fontSize: 30, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
+                                                        <p style={{ textAlign: 'center', fontSize: 20, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
                                                             {RequestDetails.submit_to_employee_name}
                                                         </p>
-                                                        <p style={{ marginTop: 10, marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 15 }}>{RequestDetails.submit_to_employee_designation_name}</p>
-                                                        <p style={{ marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 15 }}>
+                                                        <p style={{ marginTop: 10, marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 13 }}>{RequestDetails.submit_to_employee_designation_name}</p>
+                                                        <p style={{ marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 13 }}>
                                                             {new Date(RequestDetails.view_date).toDateString()}
                                                         </p>
                                                     </>
                                                     : null
                                             }
                                         </div>
-                                        <div style={{ width: '33.33%', padding: 10 }}>
-                                            <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 17 }}>{RequestDetails.status === 'rejected' ? "Rejected By" : RequestDetails.status === 'cancelled' || RequestDetails.status === 'canceled_by_inventory' ? "Cancelled By" : "Approved By"}</b>
+                                        <div style={{ width: RequestDetails.site_act_date ? '25%' : '33.33%', padding: 10 }}>
+                                            <b style={{ marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 13 }}>{RequestDetails.status === 'rejected' ? "Rejected By" : RequestDetails.status === 'cancelled' || RequestDetails.status === 'canceled_by_inventory' ? "Cancelled By" : "Approved By"}</b>
                                             {
                                                 RequestDetails.act_date
                                                     ?
                                                     <>
-                                                        <p style={{ textAlign: 'center', fontSize: 30, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
+                                                        <p style={{ textAlign: 'center', fontSize: 20, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" }}>
                                                             {RequestDetails.hod_employee_name}
                                                         </p>
-                                                        <p style={{ marginTop: 10, display: 'block', textAlign: 'center', fontSize: 17 }}>{RequestDetails.hod_employee_designation_name}</p>
+                                                        <p style={{ marginBottom: 0, marginTop: 10, display: 'block', textAlign: 'center', fontSize: 13 }}>{RequestDetails.hod_employee_designation_name}</p>
+                                                        <p style={{ marginBottom: 0, display: 'block', textAlign: 'center', fontSize: 13 }}>
+                                                            {new Date(RequestDetails.act_date).toDateString()}
+                                                        </p>
                                                     </>
                                                     : null
                                             }
@@ -1772,10 +1812,10 @@ const InvApprovalConfirmation = ({ RequestDetails, Relations, pr_id, sendForAppr
         <>
             <form className='pt-1' onSubmit={(e) => sendForApproveRequisition(e, pr_id, requested_by, submitted_to)}>
                 <fieldset>
-                    <h6 className='font-weight-bold'>Confirm To Send For Approval</h6>
+                    <h6 className='font-weight-bold'>Proceed This Request for Approval</h6>
                     <hr />
                     <div className="alert alert-success d-none" id="error_alert_approval"></div>
-                    <textarea placeholder='Add Your Remarks...' name="reason" cols="30" rows="5" className='form-control' required value={Reason} onChange={(e) => setReason(e.target.value)} minLength={30} />
+                    <textarea placeholder='Add your remarks here...' name="reason" cols="30" rows="5" className='form-control' required value={Reason} onChange={(e) => setReason(e.target.value)} minLength={30} />
                     {
                         RequestDetails
                             ?
@@ -1871,11 +1911,47 @@ const InvRejectConfirmation = ({ RequestDetails, Specifications, pr_id, InvRejec
         <>
             <form className='pt-1' onSubmit={(e) => InvRejectRequisition(e, pr_id, RequestDetails.requested_by, Specifications)}>
                 <fieldset>
-                    <h6 className='font-weight-bold'>Do you really want Reject This Request?</h6>
+                    <h6 className='font-weight-bold'>Do you want to reject this request?</h6>
                     <hr />
                     <div className="alert alert-warning d-none" id="error_alert_rejection"></div>
-                    <textarea placeholder='Any Specific Reason...' name="reason" cols="30" rows="5" className='form-control' required minLength={30} />
+                    <textarea placeholder='Enter a valid reason here...' name="reason" cols="30" rows="5" className='form-control' required minLength={30} />
+                    <button className='btn d-block ml-auto cancle mt-3'>Confirm</button>
+                </fieldset>
+            </form>
+        </>
+    )
+
+}
+
+const SiteManagerApprovalModal = ({ RequestDetails, Specifications, pr_id, SiteManagerApprovalConfirm }) => {
+
+    return (
+        <>
+            <form className='pt-1' onSubmit={(e) => SiteManagerApprovalConfirm(e, pr_id, RequestDetails.requested_by, Specifications)}>
+                <fieldset>
+                    <h6 className='font-weight-bold'>Do you want to proceed this request to the inventory department H/O?</h6>
+                    <hr />
+                    <div className="alert alert-success d-none" id="error_alert_approval"></div>
+                    <textarea placeholder='Need your remarks...' name="reason" cols="30" rows="5" className='form-control' required minLength={30} />
                     <button className='btn d-block ml-auto submit mt-3'>Confirm</button>
+                </fieldset>
+            </form>
+        </>
+    )
+
+}
+
+const SiteManagerRejectionModal = ({ RequestDetails, Specifications, pr_id, SiteManagerRejectionConfirm }) => {
+
+    return (
+        <>
+            <form className='pt-1' onSubmit={(e) => SiteManagerRejectionConfirm(e, pr_id, RequestDetails.requested_by, Specifications)}>
+                <fieldset>
+                    <h6 className='font-weight-bold'>Do you want to reject this request?</h6>
+                    <hr />
+                    <div className="alert alert-danger d-none" id="error_alert_rejection"></div>
+                    <textarea placeholder='Enter a valid reason to reject...' name="reason" cols="30" rows="5" className='form-control' required minLength={30} />
+                    <button className='btn d-block ml-auto cancle mt-3'>Confirm</button>
                 </fieldset>
             </form>
         </>
@@ -2247,7 +2323,7 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                                                                                         ?
                                                                                         "bg-danger"
                                                                                         :
-                                                                                        val.status === 'waiting_for_approval'
+                                                                                        val.status === 'waiting_for_approval' || val.status === 'waiting_for_verification'
                                                                                             ?
                                                                                             "bg-warning"
                                                                                             :
@@ -2268,7 +2344,7 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                                                                                         ?
                                                                                         "text-danger"
                                                                                         :
-                                                                                        val.status === 'waiting_for_approval'
+                                                                                        val.status === 'waiting_for_approval' || val.status === 'waiting_for_verification'
                                                                                             ?
                                                                                             "text-warning"
                                                                                             :
