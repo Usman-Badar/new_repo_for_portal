@@ -30,15 +30,15 @@ function UpdateAtt()
                         "UPDATE emp_attendance a \
                         JOIN employees b ON a.emp_id = b.emp_id \
                         SET a.status = 'Present' \
-                        WHERE b.time_in = ? AND a.time_in < ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF'; \
+                        WHERE b.time_in = ? AND a.time_in < ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND b.location_code != 4 AND b.company_code != 10; \
                         UPDATE emp_attendance a \
                         JOIN employees b ON a.emp_id = b.emp_id \
                         SET a.status = 'Present' \
-                        WHERE MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.status = 'Absent' AND a.time_in IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF'; \
+                        WHERE MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.status = 'Absent' AND a.time_in IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND b.location_code != 4 AND b.company_code != 10; \
                         UPDATE emp_attendance a \
                         JOIN employees b ON a.emp_id = b.emp_id \
                         SET a.status = 'Late' \
-                        WHERE b.time_in = ? AND a.time_in > ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_in IS NOT NULL AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF';", 
+                        WHERE b.time_in = ? AND a.time_in > ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_in IS NOT NULL AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND b.location_code != 4 AND b.company_code != 10;", 
                         [ 
                             rslt[count.length].time_in, time, d.getMonth() + 1, d.getFullYear(), 
                             d.getMonth() + 1, d.getFullYear(), 
@@ -53,7 +53,10 @@ function UpdateAtt()
                                 if ( ( count.length + 1 ) === limit )
                                 {
                                     db.query(
-                                        "UPDATE emp_attendance SET status = 'Late' WHERE MONTH(emp_date) = ? AND YEAR(emp_date) = ? AND status = 'Present' AND time_out IS NULL AND emp_date != CURDATE() AND status != 'OFF';", 
+                                        "UPDATE emp_attendance a \
+                                        JOIN employees b ON a.emp_id = b.emp_id \
+                                        SET a.status = 'Late' \
+                                        WHERE MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.status = 'Present' AND a.time_out IS NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND b.location_code != 4 AND b.company_code != 10;",
                                         [ d.getMonth() + 1, d.getFullYear() ],
                                         ( err ) => {
                                             if( err )
@@ -89,7 +92,7 @@ UpdateAtt();
 function UpdateLate()
 {
     db.query(
-        "SELECT emp_id, time_in, grace_in_minutes FROM `employees` WHERE time_in IS NOT NULL AND emp_status = 'Active';",
+        "SELECT emp_id, time_in, grace_in_minutes FROM `employees` WHERE time_in IS NOT NULL AND emp_status = 'Active' AND location_code != 4 AND company_code != 10;",
         ( err, rslt ) => {
 
             if( err )
@@ -124,6 +127,9 @@ function UpdateLate()
                                 if ( ( count.length + 1 ) === limit )
                                 {
                                     console.log( "All Lates Marked" );
+                                    setTimeout(() => {
+                                        UpdateAtt();
+                                    }, (1000 * 60) * 60);
                                 }else
                                 {
                                     console.log( "Lates Updated For (" + time + ") ", rslt[count.length].time_in);

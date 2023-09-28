@@ -340,10 +340,15 @@ router.post('/allemployeesattcompanywiseaccordingtodate', ( req, res ) => {
     if(parseInt(temporaryStaff) === 1) {
         dailyWagesStaff();
     }else {
-        if (access.includes(63)) {
+        if (access.includes(63) || access.includes(0)) {
             regularStaff();
         }else {
-            dailyWagesStaff();
+            if (access.includes(60) || access.includes(61)) {
+                dailyWagesStaff();
+            }else {
+                res.send([]);
+                res.end();
+            }
         }
     }
 
