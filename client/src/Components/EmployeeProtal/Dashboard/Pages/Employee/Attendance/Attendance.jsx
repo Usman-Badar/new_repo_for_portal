@@ -21,6 +21,7 @@ const Attendance = () => {
     const wordsToBold = ["Present", "Late", 'leave', "Absent", 'OFF'];
 
     const [ temporaryStaff, setTemporaryStaff ] = useState(false);
+    const [ loadThumbsPermission, setLoadThumbsPermission ] = useState(false);
     const [ showChangesModal, setShowChangesModal ] = useState(false);
     const [ modalContent, setModalContent ] = useState(<></>);
     const [ Name, setName ] = useState('');
@@ -46,9 +47,9 @@ const Attendance = () => {
     );
     useEffect(
         () => {
-            if (DailyAttendance.length > 0) loadThumbs(DailyAttendance);
+            if (DailyAttendance.length > 0 && loadThumbsPermission) loadThumbs(DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [ DailyAttendance ]
+        }, [ DailyAttendance, loadThumbsPermission ]
     );
     useEffect(
         () => {
@@ -78,6 +79,10 @@ const Attendance = () => {
         let dateFrom = Filters.dateFrom;
         let dateTo = Filters.dateTo;
 
+        if (dateFrom === '' && dateTo === '') {
+            return false;
+        }
+
         if ( dateFrom !== '' && dateTo !== '' && dateTo < dateFrom )
         {
             toast.dark( "Date To should greater than Date From", {
@@ -92,6 +97,15 @@ const Attendance = () => {
             return false;
         }
         if (JSON.parse(AccessControls.access).includes(0) || JSON.parse(AccessControls.access).includes(63) || JSON.parse(AccessControls.access).includes(60) || JSON.parse(AccessControls.access).includes(61)) {
+            
+            setModalContent(
+                <>
+                    <img src={LoadingIcon} alt="loading..." width="50" className='d-block mx-auto mb-3' />
+                    <h6 className='text-center mb-0'>Fetching...</h6>
+                </>
+            );
+            setShowChangesModal(true);
+
             const Data = new FormData();
             Data.append('DateFrom', dateFrom);
             Data.append('DateTo', dateTo);
@@ -104,7 +118,7 @@ const Attendance = () => {
                 setCheckedList([]);
                 setCheckedTemporaryList([]);
                 setDailyAttendance( res.data );
-                loadLogs(res.data);
+                setShowChangesModal(false);
     
             } ).catch( err => console.log(err));
         }else {
@@ -112,10 +126,39 @@ const Attendance = () => {
         }
     }
     const loadLogs = (attendance) => {
-        if (attendance.length > 0) axios.post('/attendance/update/logs', {attendance: JSON.stringify(attendance)}).then(res => setLogs( res.data )).catch(err => console.log(err));
+        setModalContent(
+            <>
+                <img src={LoadingIcon} alt="loading..." width="50" className='d-block mx-auto mb-3' />
+                <h6 className='text-center mb-1'>Loading Logs</h6>
+                {
+                    DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())).length >= 500
+                    ?
+                    <p className='text-center mb-0'>This may take a while, so please wait while we're fetching the records.</p>
+                    :null
+                }
+            </>
+        );
+        if (attendance.length > 0) axios.post('/attendance/update/logs', {attendance: JSON.stringify(attendance)}).then(res => {
+            setLogs( res.data );
+            setModalContent(<></>);
+            setShowChangesModal(false);
+        }).catch(err => console.log(err));
     }
     const loadThumbs = (attendance) => {
-        axios.post('/attendance/thumbs/records', {attendance: JSON.stringify(attendance)}).then(res => setThumbs( res.data )).catch(err => console.log(err));
+        setModalContent(
+            <>
+                <img src={LoadingIcon} alt="loading..." width="50" className='d-block mx-auto mb-3' />
+                <h6 className='text-center mb-1'>Loading Punches</h6>
+                {
+                    DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())).length >= 500
+                    ?
+                    <p className='text-center mb-0'>This may take a while, so please wait while we're fetching the records.</p>
+                    :null
+                }
+            </>
+        );
+        setShowChangesModal(true);
+        axios.post('/attendance/thumbs/records', {attendance: JSON.stringify(attendance)}).then(res => {setThumbs( res.data );loadLogs(attendance);}).catch(err => console.log(err));
     }
     const OnFilter = ( e ) => {
 
@@ -530,7 +573,7 @@ const Attendance = () => {
             '/attendance/create/excel',
             {
                 emp_id: localStorage.getItem("EmpID"),
-                data: JSON.stringify(DailyAttendance),
+                data: JSON.stringify(DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase()))),
                 logs: JSON.stringify(Logs),
                 punch: JSON.stringify(Thumbs),
             }
@@ -538,7 +581,7 @@ const Attendance = () => {
             setModalContent(
                 <>
                     <img src={SuccessIcon} alt="loading..." width="50" className='d-block mx-auto mb-3' />
-                    <h6 className='text-center mb-0'>Excel SHeet Has Been Created</h6>
+                    <h6 className='text-center mb-0'>Excel Sheet Has Been Created</h6>
                 </>
             );
             axios.get(process.env.REACT_APP_SERVER + "/assets/portal/assets/excel/attendance/" + localStorage.getItem("EmpID") + "_attendance.xlsx", {
@@ -655,16 +698,27 @@ const Attendance = () => {
                                 <input type='search' placeholder='Search By Name...' className='form-control form-control-sm bg-light' variant="standard" style={ { marginBottom: '10px' } } fullWidth onChange={ (e) => setName(e.target.value) } />
                             </div>
                         </div>
-                        <div className='d-flex align-items-center justify-content-end mt-3'>
+                        <div className='d-flex flex-column justify-content-start align-items-start mt-3'>
+                            {
+                                !temporaryStaff && (JSON.parse(AccessControls.access).includes(59) || JSON.parse(AccessControls.access).includes(0))
+                                ?
+                                <div className='d-flex align-items-center justify-content-end mb-2'>
+                                    <input type="checkbox" onChange={() => setLoadThumbsPermission(!loadThumbsPermission)} className='form-control' />
+                                    <span className='ml-2'>Load Punches & Logs</span>
+                                </div>
+                                :null
+                            }
                             {
                                 JSON.parse(AccessControls.access).includes(60) || JSON.parse(AccessControls.access).includes(0)
                                 ?
-                                <div className='d-flex align-items-center justify-content-end mr-3'>
+                                <div className='d-flex align-items-center justify-content-end'>
                                     <input type="checkbox" onChange={(e) => setTemporaryStaff(e.target.checked)} className='form-control' />
                                     <span className='ml-2'>Temporary Staff</span>
                                 </div>
                                 :null
                             }
+                        </div>
+                        <div className='d-flex align-items-center justify-content-end'>
                             {
                                 DailyAttendance.length > 0
                                 ?
@@ -693,7 +747,7 @@ const Attendance = () => {
                     :
                     <div className="Attendance page-content">
                         <div className='d-flex align-items-center justify-content-between' style={{ height: 40 }}>
-                            <h4 className='text-uppercase mb-0'>Records Found: {DailyAttendance.length}</h4>
+                            <h4 className='text-uppercase mb-0'>Records Found: {DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())).length}</h4>
                             <div>
                                 {checkedList.length > 0 ? <button className='btn light' onClick={makeViewForGroupedAttendanceChanges}>Make Changes</button> : null}
                                 {checkedTemporaryList.length > 0 ? <button id="mar_as_paid" className='btn btn-success text-white' onClick={markAsPaid}>Mark as Paid</button> : null}
