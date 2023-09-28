@@ -1842,7 +1842,7 @@ router.post('/purchase/requisition/submittion&&submit_by=employee', ( req, res )
                     );
                 }else {
                     db.query(
-                        "SELECT site_manager FROM locations WHERE location_code = ?;",
+                        "SELECT site_manager FROM locations WHERE location_code = ? AND site_manager IS NOT NULL;",
                         [ emp_location ],
                         ( err, location ) => {
                             if( err ) {
@@ -2220,8 +2220,8 @@ router.post('/purchase/requisition/update', ( req, res ) => {
                         
                                     }else
                                     {
-                                        SendWhatsappNotification( null, null, "Hi " + rslt[1][0].name, rslt[0][0].name + " have sent you a purchase order for " + arr_specifications_names.join(', ') + ". The total value of the requisition is Rs " + received_data.total_value.toLocaleString('en') + ". Kindly check", rslt[1][0].cell );
-                                        SendWhatsappNotification( null, null, "Hi " + rslt[0][0].name, "We have received your purchase order. Kindly wait while our accounts department starts working on it", rslt[0][0].cell );
+                                        SendWhatsappNotification( null, null, "Hi " + rslt[1][0].name, rslt[0][0].name + " have sent you a purchase requisition for " + arr_specifications_names.join(', ') + ". The total value of the requisition is Rs " + received_data.total_value.toLocaleString('en') + ". Kindly check", rslt[1][0].cell );
+                                        SendWhatsappNotification( null, null, "Hi " + rslt[0][0].name, "We have received your purchase requisition. Kindly wait while our accounts department starts working on it", rslt[0][0].cell );
                                     }
                         
                                 }

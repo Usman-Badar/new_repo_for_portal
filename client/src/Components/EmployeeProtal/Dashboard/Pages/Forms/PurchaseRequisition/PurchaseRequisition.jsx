@@ -127,6 +127,10 @@ function PurchaseRequisition() {
             }
         }, []
     );
+
+    if (!AccessControls) {
+        return <></>
+    }
     
     return (
         <>

@@ -95,6 +95,7 @@ const UI = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyVi
                                     Logs={ Logs }
                                     Locations={ Locations }
                                     CompanyViewer={ CompanyViewer }
+                                    AccessControls={AccessControls}
 
                                     SiteManagerRejectionConfirm={SiteManagerRejectionConfirm}
                                     SiteManagerApprovalConfirm={SiteManagerApprovalConfirm}
@@ -824,7 +825,7 @@ const PRForm = ({ TotalCostCalculation, Employee, selectEmpInBehalf, onSearchEmp
 
 }
 
-const RequestDetailsView = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Locations, Logs, overrideRequisition, Admin, InvRejectRequisition, sendForApproveRequisition, Relations, ApproveRequisition, history, Quotations, Specifications, RequestDetails, CancelRequisition, RejectRequisition, openRequestDetails, onContentEdit }) => {
+const RequestDetailsView = ({ AccessControls, SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Locations, Logs, overrideRequisition, Admin, InvRejectRequisition, sendForApproveRequisition, Relations, ApproveRequisition, history, Quotations, Specifications, RequestDetails, CancelRequisition, RejectRequisition, openRequestDetails, onContentEdit }) => {
 
     const [View, setView] = useState("application");
 
@@ -870,6 +871,7 @@ const RequestDetailsView = ({ SiteManagerRejectionConfirm, SiteManagerApprovalCo
                             sendForApproveRequisition={sendForApproveRequisition}
                             SiteManagerApprovalConfirm={SiteManagerApprovalConfirm}
                             SiteManagerRejectionConfirm={SiteManagerRejectionConfirm}
+                            AccessControls={AccessControls}
                         />
                         :
                         <>
@@ -886,7 +888,7 @@ const RequestDetailsView = ({ SiteManagerRejectionConfirm, SiteManagerApprovalCo
 
 }
 
-const Detailing = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, Admin, Locations, Logs, overrideRequisition, sendForApproveRequisition, Relations, pr_id, CancelRequisition, ApproveRequisition, InvRejectRequisition, RejectRequisition, history, Quotations, View, setView, RequestDetails, Specifications, onContentEdit }) => {
+const Detailing = ({ AccessControls, SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, Admin, Locations, Logs, overrideRequisition, sendForApproveRequisition, Relations, pr_id, CancelRequisition, ApproveRequisition, InvRejectRequisition, RejectRequisition, history, Quotations, View, setView, RequestDetails, Specifications, onContentEdit }) => {
     const onBeforeGetContentResolve = useRef();
 
     const [PrintContentLoaded, setPrintContentLoaded] = useState(false);
@@ -905,7 +907,7 @@ const Detailing = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, Ad
         () => {
             setEditContent(
                 <div>
-                    <h5>Confirm to edit this request?</h5>
+                    <h5>You want to edit this purchase requisition?</h5>
                     <button className='btn light d-block ml-auto' onClick={() => history.push('/purchase/requisition/form&&pr_id=' + window.location.href.split('/').pop().split('pr_id=').pop())}>Yes</button>
                 </div>
             );
@@ -1002,7 +1004,19 @@ const Detailing = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, Ad
                         {
                             RequestDetails.site_manager !== null && RequestDetails.status === 'sent'?null:
                             RequestDetails.site_manager !== null && RequestDetails.status === 'rejected'?null:
-                            (RequestDetails.site_manager !== null && RequestDetails.status === 'waiting_for_verification') || RequestDetails.site_manager === null && RequestDetails.status === 'sent'?
+                            (JSON.parse(AccessControls.access).includes(57) && RequestDetails.site_manager !== null && RequestDetails.status === 'waiting_for_verification') || 
+                            // (JSON.parse(AccessControls.access).includes(57) && RequestDetails.site_manager === null && RequestDetails.status === 'sent') ||
+                            (JSON.parse(AccessControls.access).includes(57) && RequestDetails.submitted_to == localStorage.getItem('EmpID') && RequestDetails.status === 'waiting_for_approval')?
+                            <>
+                                <button className="btn submit" onClick={() => setEditConfirm(true)}>Edit</button>
+                            </>
+                            : null
+                        }
+                        {
+                            RequestDetails.site_manager !== null && RequestDetails.status === 'sent'?null:
+                            RequestDetails.site_manager !== null && RequestDetails.status === 'rejected'?null:
+                            (JSON.parse(AccessControls.access).includes(57) && RequestDetails.site_manager !== null && RequestDetails.status === 'waiting_for_verification') || 
+                            (JSON.parse(AccessControls.access).includes(57) && RequestDetails.site_manager === null && RequestDetails.status === 'sent')?
                             <>
                                 <button className="btn cancle" onClick={() => setInvRejectConfirm(true)}>Reject</button>
                                 <button className="btn submit" onClick={() => setInvApprovalConfirm(true)}>Proceed For Approval</button>
@@ -1012,30 +1026,18 @@ const Detailing = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, Ad
 
                         {
                             RequestDetails.requested_by == localStorage.getItem('EmpID') &&
-                                (RequestDetails.status === 'sent' || RequestDetails.status === 'viewed')
-                                ?
-                                <>
-                                    <button className="btn cancle" onClick={() => setCancelConfirm(true)}>Cancel</button>
-                                </>
-                                : null
+                            (RequestDetails.status === 'sent' || RequestDetails.status === 'viewed')
+                            ?
+                            <>
+                                <button className="btn cancle" onClick={() => setCancelConfirm(true)}>Cancel</button>
+                            </>
+                            : null
                         }
                         {
-                            RequestDetails.requested_by == localStorage.getItem('EmpID') &&
-                                (RequestDetails.status === 'sent' || RequestDetails.status === 'viewed')
-                                ?
-                                <>
-                                    <button className="btn submit" onClick={() => setEditConfirm(true)}>Edit</button>
-                                </>
-                                : null
-                        }
-                        {
-                            RequestDetails.submitted_to == localStorage.getItem('EmpID') &&
-                                (RequestDetails.status === 'waiting_for_approval' || RequestDetails.status === 'sent' || RequestDetails.status === 'viewed')
-                                ?
-                                <>
-                                    <button className="btn submit" onClick={() => setEditConfirm(true)}>Edit</button>
-                                </>
-                                : null
+                            RequestDetails.requested_by == localStorage.getItem('EmpID') && RequestDetails.status === 'sent'
+                            ?
+                            <button className="btn submit" onClick={() => setEditConfirm(true)}>Edit</button>
+                            :null
                         }
                         <button className='btn light' onClick={printPR}>Print</button>
                         {
