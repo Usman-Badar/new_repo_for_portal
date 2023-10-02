@@ -1,0 +1,33 @@
+// leave
+
+<div className="Dashboard_links">
+                    <NavLink activeClassName="Dashboard_active" to="/dashboard" className="d-center links" onClick={() => SideBarClose()}>
+                        <div className="pr-3"><i className="las la-home"></i></div>
+                        <div className="links_txt">Back To Dashboard</div>
+                    </NavLink>
+
+                    <NavLink activeClassName="Dashboard_active" to="/leave/dashboard" className="d-center links" onClick={() => SideBarClose()}>
+                        <div className="pr-3"><i className="las la-home"></i></div>
+                        <div className="links_txt">Home</div>
+                    </NavLink>
+
+                    <NavLink activeClassName="Dashboard_active" to="/leave/leave_form" className="d-center links" onClick={() => SideBarClose()}>
+                        <div className="pr-3"><i className="las la-hand-holding-usd"></i></div>
+                        <div className="links_txt">Leave Form</div>
+                    </NavLink>
+
+                    <NavLink activeClassName="Dashboard_active" to="/leave/availed_leave_form" className="d-center links" onClick={() => SideBarClose()}>
+                        <div className="pr-3"><i className="las la-hand-holding-usd"></i></div>
+                        <div className="links_txt">Availed Leave Form</div>
+                    </NavLink>
+
+                    <NavLink activeClassName="Dashboard_active" to="/leave/short_leave_form" className="d-center links" onClick={() => SideBarClose()}>
+                        <div className="pr-3"><i className="las la-hand-holding-usd"></i></div>
+                        <div className="links_txt">Short Leave Form</div>
+                    </NavLink>
+
+                    <NavLink activeClassName="Dashboard_active" to="/leave/requests" className="d-center links" onClick={() => SideBarClose()}>
+                        <div className="pr-3"><i className="las la-hand-holding-usd"></i></div>
+                        <div className="links_txt">Leave Requests</div>
+                    </NavLink>
+                </div> 

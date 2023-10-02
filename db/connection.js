@@ -22,9 +22,7 @@ function checkConnection()
 {
     db.getConnection(
         ( err ) => {
-    
-            if ( err )
-            {
+            if ( err ) {
                 console.log( '\x1b[31m%s\x1b[0m', err.message );
                 console.log('\x1b[33m%s\x1b[0m', "MYSQL Database is not connected");
                 console.log("Retrying...");
@@ -32,11 +30,9 @@ function checkConnection()
                 setTimeout(() => {
                     checkConnection();
                 }, 2000);
-            }else
-            {
+            }else {
                 console.log('\x1b[32m%s\x1b[0m', "MYSQL Database connected.");
             }
-    
         }
     )
 }
@@ -44,44 +40,16 @@ function checkConnection()
 checkConnection();
 
 setInterval(() => {
-
     const tbl = [
         {
-            Open: db._allConnections.length,
-            Acquiring: db._acquiringConnections.length,
-            Free: db._freeConnections.length,
-            Queue: db._connectionQueue.length,
-            Date: new Date().toDateString(),
-            Time: new Date().toTimeString()
+            "Total Connections": db._allConnections.length,
+            "Acquiring Connections": db._acquiringConnections.length,
+            "Free Connections": db._freeConnections.length,
+            "Connections in Queue": db._connectionQueue.length,
+            Date: new Date().toLocaleString(),
         }
     ];
     console.table(tbl);
-    
 }, 1000 * 60);
-
-// DROP PROCEDURE IF EXISTS remove_inward;
-// DELIMITER $$ 
-
-// CREATE PROCEDURE `remove_inward`(IN _transaction_id INT) 
-//     BEGIN
-//         DECLARE `_rollback` BOOL DEFAULT 0; 
-//         DECLARE EXIT HANDLER FOR SQLEXCEPTION 
-//         BEGIN
-//             ROLLBACK;
-//             RESIGNAL;
-//         END;
-//         START TRANSACTION; 
-
-//         UPDATE tbl_inventory_products a 
-//         JOIN tbl_inventory_product_transactions b ON a.product_id = b.product_id 
-//         SET a.quantity = a.quantity - b.stored_quantity 
-//         WHERE b.transaction_id = _transaction_id; 
-//         DELETE FROM `tbl_inventory_product_attributes` WHERE transaction_id = _transaction_id; 
-//         DELETE FROM `tbl_inventory_product_transactions` WHERE transaction_id = _transaction_id; 
-
-//         COMMIT;
-//     END$$ 
-
-// DELIMITER ;
 
 module.exports = db;

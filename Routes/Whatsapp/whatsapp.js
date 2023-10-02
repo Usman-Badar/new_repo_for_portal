@@ -3,185 +3,164 @@ const router = express.Router();
 const db = require('../../db/connection');
 const fs = require('fs');
 const data = require('../../data.json');
-// const writeXlsxFile = require('write-excel-file/node');
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const txtomp3 = require("text-to-mp3");
 const moment = require('moment');
 const { removeDuplicateAttendance } = require('../Services/markEmpAbsent');
+const { settings } = require('../../include');
 const UpdateAtt = require('../Services/markEmpLateWhenNoTimeOut').UpdateAtt;
 
-const client = new Client({
-    authStrategy: new LocalAuth({
-        clientId: "portal" //Un identificador(Sugiero que no lo modifiques)
-    })
-})
-
-// Save session values to the file upon successful auth
+const client = new Client({authStrategy: new LocalAuth({clientId: "portal"})})
 client.on('authenticated', (session) => {
-    console.log('Whatsapp authenticated.');
+    console.log('\x1b[33m%s\x1b[0m', 'Whatsapp Services Authenticated!!');
 });
 
-
 client.initialize();
-console.log('Connecting To Whatsapp...');
+console.log('Connecting To Whatsapp Services...');
 client.on("qr", qr => {
     qrcode.generate(qr, { small: true });
 });
 
 client.on("ready", () => {
-    console.log("WHATSAPP MODULE IS READY TO USE");
-    client.sendMessage('923303744620@c.us', 'Whatsapp Connected!');
-
-    // client.on('message', async msg => {
-    //     const qm = await msg.getQuotedMessage()
-    //     console.log( qm );
-    //     // const fw = await qm.reply(qm.body, "1111111111@c.us", {
-    //     //     media: qm.hasMedia ? await qm.downloadMedia() : undefined
-    //     // })
-    //     // await fw.reply("should quote fw")
-    // });
+    console.log('\x1b[32m%s\x1b[0m', "[WHATSAPP MODULE IS NOW READY TO USE]");
+    client.sendMessage('923303744620@c.us', 'Server has been restarted successfully');
 
     client.on('message', message => {
+        const body = message.body.toLocaleLowerCase();
+        checkConditions(body, client, message);
+    });
+});
 
-        if( message.body.toLocaleLowerCase().includes('this is') ) {
-            message.reply('Hello!');
-            client.sendMessage(message.from, 'Welcome To Seaboard Group!');
-        }else
-        if
-        ( 
-            message.body.toLocaleLowerCase().includes('remove') &&
-            message.body.toLocaleLowerCase().includes('duplicate') &&
-            message.body.toLocaleLowerCase().includes('records') &&
-            message.body.toLocaleLowerCase().includes(':')
-        )
-        {
-            message.reply('Please Wait...');
-            if ( message.body.toLocaleLowerCase().split('-').length === 2 ) {
-                removeDuplicateAttendance(message.body.toLocaleLowerCase().split(':').pop());
-            }else {
-                client.sendMessage(message.from, 'Invalid date format!');
-            }
-        }else
-        if
-        ( 
-            message.body.toLocaleLowerCase().includes('fix') &&
-            message.body.toLocaleLowerCase().includes('all') &&
-            message.body.toLocaleLowerCase().includes('attendance')
-        )
-        {
-            UpdateAtt();
-            message.reply('Fixed 🌹');
-        }else
-        if
-        ( 
-            message.body.toLocaleLowerCase().includes('send') &&
-            message.body.toLocaleLowerCase().includes('notification') &&
-            message.body.toLocaleLowerCase().includes(':') &&
-            message.body.toLocaleLowerCase().includes('--')
-        ) 
-        {
-            client.sendMessage(message.from, '🤔');
-            message.reply('Okay.....');
+const checkConditions = (body, client, message) => {
+    if(checkIfIncludes(body, ['hello']) && (message.from.includes('3303744620') || message.from.includes('3422618990'))) {
+        if (message.from.includes('3303744620')) {
+            message.reply('Welcome Usman Badar!');
+        }else {
+            message.reply('Welcome Malahim!');
+        }
+        client.sendMessage(message.from, `*Commands List*\n\n1. remove duplicate records: [date] like 2023-09-09..\n2. fix all attendance:[month]/[year] like 9/2023...\n3. send notification: [notification_body] --[location_code] --[company_code]\n4. fix my attendance: [month]/[year] like 9/2023\n5. get my credentials\n6. get my monthly attendance: [month]/[year] like 9/2023\n7. refresh indexes`);
+    }else
+    if(checkIfIncludes(body, ['this is'])) {
+        message.reply('Hello!');
+        client.sendMessage(message.from, 'Welcome To Seaboard Group!');
+    }else
+    if (checkIfIncludes(body, ['remove', 'duplicate', 'records', ':'])) {
+        message.reply('Removing...');
+        if ( message.body.toLocaleLowerCase().split('-').length === 2 ) {
+            removeDuplicateAttendance(message.body.toLocaleLowerCase().split(':').pop());
+        }else {
+            client.sendMessage(message.from, 'Invalid date format!');
+        }
+    }else
+    if (checkIfIncludes(body, ['fix', 'all', 'attendance', ':'])) {
+        message.reply('Fixing...');
+        const monthYear = body.split(':').pop();
+        UpdateAtt(monthYear.split('/').shift(), monthYear.split('/').pop());
+        setTimeout(() => {
+            client.sendMessage(message.from, 'Attendance has been fixed');
+        }, 2000);
+    }else
+    if (checkIfIncludes(body, ['send', 'notification', ':', '--'])) {
+        message.reply('Sending notification...');
 
-            let splitting = message.body.split(':').pop();
-            let arr = splitting.split('--');
-            arr.shift();
-            let msg = arr[0];
-            let location = arr[1];
-            let company = arr[2];
-            let dont_send = arr[3] ? JSON.parse(arr[3]) : [];
-            
-            let q = "SELECT emp_id, name, cell FROM employees WHERE emp_status = 'Active'";
+        let splitting = message.body.split(':').pop();
+        let arr = splitting.split('--');
+        arr.shift();
+        let msg = arr[0];
+        let location = arr[1];
+        let company = arr[2];
+        let dont_send = arr[3] ? JSON.parse(arr[3]) : [];
+        
+        let q = "SELECT emp_id, name, cell FROM employees WHERE emp_status = 'Active'";
 
-            if ( location )
-            {
-                q = q.concat(" AND location_code = " + location );
-            }
+        if ( location )
+        {
+            q = q.concat(" AND location_code = " + location );
+        }
 
-            if ( company )
-            {
-                q = q.concat(" AND company_code = " + company );
-            }
+        if ( company )
+        {
+            q = q.concat(" AND company_code = " + company );
+        }
 
-            sendNotifications( client, message, msg, q, dont_send );
-        }else
-        if
-        ( 
-            message.body.toLocaleLowerCase().includes('fix') && 
-            message.body.toLocaleLowerCase().includes('my') &&  
-            message.body.toLocaleLowerCase().includes('attendance') &&
-            message.body.toLocaleLowerCase().includes(':') 
-        ) 
-        {
-            message.reply('Hmmm.....🙄');
-            client.sendMessage(message.from, 'Let me fix it!🤩');
-            setTimeout(() => {
-                fixAttendance(client, message.from, message);
-            }, 300);
-        }else
-        if
-        ( 
-            message.body.toLocaleLowerCase().includes('get') &&
-            message.body.toLocaleLowerCase().includes('my') &&
-            message.body.toLocaleLowerCase().includes('credentials')
-        ) 
-        {
-            message.reply('Let me identify yourself....');
-            setTimeout(() => {
-                fetchCredentials(client, message.from, message);
-            }, 300);
-        }else
-        if
-        ( 
-            message.body.toLocaleLowerCase().includes('get') && 
-            message.body.toLocaleLowerCase().includes('my') && 
-            message.body.toLocaleLowerCase().includes('monthly') && 
-            message.body.toLocaleLowerCase().includes('attendance') &&
-            message.body.toLocaleLowerCase().includes(':') 
-        )
-        {
-            message.reply('Okay.... let me fetch your data first...');
-            fetchAttendance(client, message.from, message);
-        }else
-        if( message.body.toLocaleLowerCase().includes('refresh') && message.body.toLocaleLowerCase().includes('index') ) {
-            message.reply('Refreshing...');
-            db.query(
-                "UPDATE employees SET app_status = '';",
-                ( err ) => {
-            
-                    if ( !err )
-                    {
-                        client.sendMessage(message.from, 'Indexes Refreshed!');
-                    }else
-                    {
-                        client.sendMessage(message.from, 'Error!');
-                        client.sendMessage(message.from, err);
-                    }
-            
+        sendNotifications( client, message, msg, q, dont_send );
+    }else
+    if (checkIfIncludes(body, ['fix', 'my', 'attendance', ':'])) {
+        message.reply('Please wait...');
+        client.sendMessage(message.from, 'Fixing your attendance...');
+        setTimeout(() => {
+            fixAttendance(client, message.from, message);
+        }, 300);
+    }else
+    if (checkIfIncludes(body, ['get', 'my', 'credentials'])) {
+        message.reply('Finding your employee id...');
+        setTimeout(() => {
+            fetchCredentials(client, message.from, message);
+        }, 300);
+    }else
+    if (checkIfIncludes(body, ['get', 'my', 'monthly', 'attendance', ':'])) {
+        message.reply('Finding your id...');
+        fetchAttendance(client, message.from, message);
+    }else
+    if (checkIfIncludes(body, ['refresh', 'index'])) {
+        message.reply('Refreshing...');
+        db.query(
+            "UPDATE employees SET app_status = '';",
+            ( err ) => {
+        
+                if ( !err )
+                {
+                    client.sendMessage(message.from, 'Indexes Refreshed!');
+                }else
+                {
+                    client.sendMessage(message.from, 'Error!');
+                    client.sendMessage(message.from, err);
                 }
-            )
-        }else
-        {  
-            if ( message.body.includes(',,,') )
-            {
-                let jsonData = data;
+        
+            }
+        )
+    }else
+    {  
+        if ( message.body.includes(',,,') )
+        {
+            let jsonData = data;
 
+            for ( let x = 0; x < jsonData.length; x++ )
+            {
+                if ( jsonData[x].type.toLocaleLowerCase() === message.body.split(',,,')[0].toLocaleLowerCase().trim() )
+                {
+                    jsonData[x].answers.push(message.body.split(',,,')[1].toLocaleLowerCase().trim());
+                    message.reply('answer learned for(' + jsonData[x].type.toLocaleLowerCase() + ')');
+                }
+            }
+            fs.writeFileSync("data.json",  JSON.stringify(jsonData), "utf-8");
+        }else
+        if ( message.body.includes(',,') )
+        {
+            let jsonData = data;
+
+            if ( jsonData.length === 0 )
+            {
+                jsonData.push(
+                    {
+                        questions: [message.body.split(',,')[0].toLocaleLowerCase().trim()],
+                        answers: [message.body.split(',,')[1].toLocaleLowerCase().trim()],
+                        type: message.body.split(',,')[2].toLocaleLowerCase().trim()
+                    }
+                )
+            }else
+            {
+                let found = false;
                 for ( let x = 0; x < jsonData.length; x++ )
                 {
-                    if ( jsonData[x].type.toLocaleLowerCase() === message.body.split(',,,')[0].toLocaleLowerCase().trim() )
+                    if ( jsonData[x].type.toLocaleLowerCase() === message.body.split(',,')[2].toLocaleLowerCase().trim() )
                     {
-                        jsonData[x].answers.push(message.body.split(',,,')[1].toLocaleLowerCase().trim());
-                        message.reply('answer learned for(' + jsonData[x].type.toLocaleLowerCase() + ')');
+                        jsonData[x].questions.push(message.body.split(',,')[0].toLocaleLowerCase().trim());
+                        jsonData[x].answers.push(message.body.split(',,')[1].toLocaleLowerCase().trim());
+                        found = true;
                     }
                 }
-                fs.writeFileSync("data.json",  JSON.stringify(jsonData), "utf-8");
-            }else
-            if ( message.body.includes(',,') )
-            {
-                let jsonData = data;
-
-                if ( jsonData.length === 0 )
+                if ( !found )
                 {
                     jsonData.push(
                         {
@@ -190,56 +169,24 @@ client.on("ready", () => {
                             type: message.body.split(',,')[2].toLocaleLowerCase().trim()
                         }
                     )
-                }else
-                {
-                    let found = false;
-                    for ( let x = 0; x < jsonData.length; x++ )
-                    {
-                        if ( jsonData[x].type.toLocaleLowerCase() === message.body.split(',,')[2].toLocaleLowerCase().trim() )
-                        {
-                            jsonData[x].questions.push(message.body.split(',,')[0].toLocaleLowerCase().trim());
-                            jsonData[x].answers.push(message.body.split(',,')[1].toLocaleLowerCase().trim());
-                            found = true;
-                        }
-                    }
-                    if ( !found )
-                    {
-                        jsonData.push(
-                            {
-                                questions: [message.body.split(',,')[0].toLocaleLowerCase().trim()],
-                                answers: [message.body.split(',,')[1].toLocaleLowerCase().trim()],
-                                type: message.body.split(',,')[2].toLocaleLowerCase().trim()
-                            }
-                        )
-                    }
                 }
-                fs.writeFileSync("data.json",  JSON.stringify(jsonData), "utf-8");
-                message.reply('learned');
-            }else
-            {
-                giveAnswer(message);
-            }  
-            // client.sendMessage(message.from, "😴");
-            // txtomp3.getMp3("Kindly don't send us random messages. We only reply the valid messages.", { tl: 'en' }).then(function(binaryStream){
-            // var file = require('fs').createWriteStream("./err.mp3"); // write it down the file
-            // file.write(binaryStream);
-            // file.end();
-            // file.on('finish', function() {
-            //     console.log("SUCCESS");
-            //     setTimeout(() => {
-            //         const media = MessageMedia.fromFilePath('./err.mp3');
-            //         client.sendMessage(message.from, media);
-            //         require('fs').unlinkSync('./err.mp3');
-            //     }, 300);
-            // });
-            // })
-            // .catch(function(err){
-            //     console.log("Error", err);
-            // });
+            }
+            fs.writeFileSync("data.json",  JSON.stringify(jsonData), "utf-8");
+            message.reply('learned');
+        }else
+        {
+            // giveAnswer(message);
         }
-        
-    });
-})
+    }
+}
+
+const checkIfIncludes = (keyword, arr) => {
+    let contains = false;
+    if (arr.every(el => keyword.includes(el))) {
+        contains = true;
+    }
+    return contains;
+}
 
 const giveAnswer = ( message ) => {
 
@@ -455,35 +402,6 @@ function fixingAttendance( client, messageFrom, message )
 
         }
     )
-}
-
-const SendWhatsappNotification = ( receiverID, senderID, Title, NotificationBody, cell ) => {
-
-    let standardNumber;
-    let code = '92';
-    let message;
-    let num = "";
-    if ( cell.includes('+') )
-    {
-        num = cell.replace('+', '');
-        standardNumber = num + '@c.us';
-    }else
-    {
-        num = cell.substring(1, 11);
-        standardNumber = code + num + '@c.us';
-    }
-    console.log(standardNumber)
-    message = `
-        Portal Notification\n\n
-        ${Title}\n
-        ${NotificationBody}\n
-        ---------------------\n
-        www.portal.seaboard.pk
-    `;
-    // message = "*!PORTAL NOTIFICATION!* \n \
-    // _" + Title + ": " + NotificationBody + "._";
-    client.sendMessage(standardNumber, message);
-
 }
 
 function createExcel( client, messageFrom, message, emp_id, month, year, name )
@@ -716,6 +634,25 @@ function sendNotifications( client, message, msg, q, dont_send )
                 client.sendMessage(message.from, err);
             }
     
+        }
+    )
+}
+
+const SendWhatsappNotification = ( receiverID, senderID, Title, NotificationBody, cell ) => {
+    const code = '92';
+    const message = `*Employee Portal*\n\n${Title}\n_${NotificationBody}_\n...............................\nhttps://.portal.seaboard.pk`;
+    let standardNumber;
+    if ( cell.includes('+') ) {
+        standardNumber = cell.replace('+', '') + '@c.us';
+    }else {
+        standardNumber = `${code}${cell.substring(1, 11)}@c.us`;
+    }
+    db.query(
+        "INSERT INTO `tbl_whatsapp_notifications`(`title`, `body`, `message_sent`, `whatsapp_number`) VALUES (?,?,?,?);",
+        [Title, NotificationBody, message, standardNumber],
+        () => {
+            console.log('message sent:', `number: ${standardNumber}\nmessage: ${message}`);
+            client.sendMessage(standardNumber, message);
         }
     )
 }

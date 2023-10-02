@@ -468,7 +468,7 @@ const Employee_Chat = () => {
                                         <>
                                             <div className="ChatEmployee popUps">
                                                 <img
-                                                    src={'images/employees/' + ChatEmployee.emp_image}
+                                                    src={process.env.REACT_APP_SERVER+'/images/employees/' + ChatEmployee.emp_image}
                                                     width='55'
                                                     height='55'
                                                     alt="chat employee img"

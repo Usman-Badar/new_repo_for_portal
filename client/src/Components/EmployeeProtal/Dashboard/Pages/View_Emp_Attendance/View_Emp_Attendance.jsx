@@ -350,7 +350,7 @@ const View_Emp_Attendance = () => {
                                                         <div className="Employee_info" key={index} onClick={() => showEmpDetails(DateTime, val.emp_id, val.name)}>
                                                             <div className='d-flex align-items-center'>
                                                                 <img
-                                                                    src={'images/employees/' + val.emp_image}
+                                                                    src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image}
                                                                     width='40'
                                                                     height='40'
                                                                     alt="employee img"

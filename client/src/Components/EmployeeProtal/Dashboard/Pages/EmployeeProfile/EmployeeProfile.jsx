@@ -175,7 +175,7 @@ const EmployeeProfile = () => {
 
                 <div className="profile_cover">
                     <div className='blackCover'></div>
-                    <img src={'images/employees/' + ProfileData.emp_image} alt="employee" />
+                    <img src={process.env.REACT_APP_SERVER+'/images/employees/' + ProfileData.emp_image} alt="employee" />
                     <div className="intro">
                         <h5>{ProfileData.name}</h5>
                         <h6 className='text-secondary'>{ProfileData.designation_name} in {ProfileData.department_name} Department, {ProfileData.company_name}, {ProfileData.location_name}</h6>

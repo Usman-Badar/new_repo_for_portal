@@ -178,7 +178,7 @@ const TopBar = () => {
                 <div className="icons d-center">
                     <Notifications Data={ Data } />
                     <div className="px-3 emp_img_container">
-                        <div className="emp_img" style={ { "backgroundImage" : "url('images/employees/" + Data.emp_image + "')" } }></div>
+                        <div className="emp_img" style={ { "backgroundImage" : "url('" + process.env.REACT_APP_SERVER +"/images/employees/" + Data.emp_image + "')" } }></div>
                         <div className="emp_dropdown">
                             <p className="pl-4 pb-2 mb-1 font-weight-bold border-bottom"> { encryptor.decrypt( Data.login_id ) } </p>
                             <NavLink to="/profile/personal/info" className="d-center links">

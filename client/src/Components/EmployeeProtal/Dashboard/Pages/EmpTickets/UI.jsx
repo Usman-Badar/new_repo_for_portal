@@ -1921,7 +1921,7 @@ const IssueToSubordinates = ( { history, issueTicket, Selected, Keyword, Employe
                                                         ( val, index ) => {
                                                             return (
                                                                 <div className="employee" key={index} onClick={ () => setEmployee({ emp_id: val.emp_id, name: val.name }) }>
-                                                                    <img src={ 'images/employees/' + val.emp_image } className="rounded-circle" alt="emp" width={35} height={35} />
+                                                                    <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } className="rounded-circle" alt="emp" width={35} height={35} />
                                                                     <div className="ml-2">
                                                                         <b>{ val.name }</b>
                                                                         <p className="mb-0">{ val.designation_name }</p>
@@ -2160,7 +2160,7 @@ const GrowthReviewComponent = ({ quarter, Companies, EmpGrowthReviewData, Employ
                                                                 <td>{ val.emp_id }</td>
                                                                 <td>
                                                                     <div className="d-flex align-items-center">
-                                                                        <img src={ 'images/employees/' + val.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
+                                                                        <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
                                                                         <div className="ml-2">
                                                                             <b>{ val.name }</b><br />
                                                                             <span>{ val.designation_name }</span>
@@ -3142,7 +3142,7 @@ const PeerReview = ({ history, Employees, loadPeers }) => {
                             ( val, index ) => {
                                 return (
                                     <div className="item" key={index} onClick={ () => history.push('/acr/peer-review/emp/' + val.emp_id + '&&name=' + val.name) }>
-                                        <img src={'images/employees/' + val.emp_image} alt="emp" />
+                                        <img src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image} alt="emp" />
                                         <label className="mb-0 mt-3"><b>{val.name}</b></label>
                                         <p className="mb-0">{val.designation_name}</p>
                                         {
@@ -3560,7 +3560,7 @@ const AllSelfAssessmentData = ({ Companies, ShowFilters, history, SelfSubmission
                                         <td>{ val.emp_id }</td>
                                         <td>
                                             <div className="d-flex align-items-center">
-                                                <img src={ 'images/employees/' + val.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
                                                 <div className="ml-2">
                                                     <b>{ val.name }</b><br />
                                                     <span>{ val.designation_name }</span>

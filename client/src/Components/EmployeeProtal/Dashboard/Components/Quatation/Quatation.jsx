@@ -42,7 +42,7 @@ const Quatation = () => {
                         return (
                             <>
                                 <div className="Quatation">
-                                    <div><img src={ 'images/Inventory/pr_attachments/' + val.image } alt="Quatation" /></div>
+                                    <div><img src={ process.env.REACT_APP_SERVER+'/images/Inventory/pr_attachments/' + val.image } alt="Quatation" /></div>
                                 </div>
                             </>
                         )

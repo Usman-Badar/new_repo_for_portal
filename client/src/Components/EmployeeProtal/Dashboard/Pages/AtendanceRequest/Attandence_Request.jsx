@@ -132,7 +132,7 @@ const AttRequests = ( { Requests, history } ) => {
                                             <td>{ index + 1 }</td>
                                             <td>
                                                 <div className="d-flex align-items-center">
-                                                    <img src={ 'images/employees/' + val.emp_image } alt="emp" width='40' height='40' className='rounded-circle' />
+                                                    <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="emp" width='40' height='40' className='rounded-circle' />
                                                     <div className='ml-2'>
                                                         <b>{val.sender_name}</b> <br />
                                                         <span>{val.designation_name}</span>

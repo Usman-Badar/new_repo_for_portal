@@ -100,7 +100,7 @@ const ViewByEmployees = ({ loadData, openDetailsByEmployee }) => {
                                             <td>{emp_id}</td>
                                             <td>
                                                 <div className='d-flex align-items-center'>
-                                                    <img src={'images/employees/' + emp_image} alt="employee" width="45" height="45" className='rounded-circle' />
+                                                    <img src={process.env.REACT_APP_SERVER+'/images/employees/' + emp_image} alt="employee" width="45" height="45" className='rounded-circle' />
                                                     <div className='pl-2'>
                                                         <b>{name}</b><br />
                                                         <span>{designation_name}, {department_name} Dept.</span>
@@ -209,7 +209,7 @@ const ListView = ( { Employees, Filter, setFilter, ViewDetails } ) => {
                                             <td>{ index + 1 }</td>
                                             <td>
                                                 <div className="d-flex align-items-center">
-                                                    <img src={ 'images/employees/' + val.emp_image } className="rounded-circle mr-2" alt='Employee photo' width='40' height='40' />
+                                                    <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } className="rounded-circle mr-2" alt='Employee photo' width='40' height='40' />
                                                     <div style={{ fontSize: '11px' }}>
                                                         <p className="mb-0 font-weight-bold">{ val.name }</p>
                                                         <p className="mb-0">{ val.designation_name } at { val.company_name }</p>
@@ -220,7 +220,7 @@ const ListView = ( { Employees, Filter, setFilter, ViewDetails } ) => {
                                             <td>
                                                 <div className="d-flex align-items-center justify-content-between">
                                                     <div className="d-flex align-items-center">
-                                                        <img src={ 'images/guests/' + val.guest_image } className="rounded-circle mr-2" alt='Guest photo' width='40' height='40' />
+                                                        <img src={ process.env.REACT_APP_SERVER+'/images/guests/' + val.guest_image } className="rounded-circle mr-2" alt='Guest photo' width='40' height='40' />
                                                         <div style={{ fontSize: '11px' }}>
                                                             <p className="mb-0 font-weight-bold">{ val.guest_name }</p>
                                                             <p className="mb-0">{ val.guest_phone }</p>
@@ -246,7 +246,7 @@ const ListView = ( { Employees, Filter, setFilter, ViewDetails } ) => {
                                         <td>{ index + 1 }</td>
                                         <td>
                                             <div className="d-flex align-items-center">
-                                                <img src={ 'images/employees/' + val.emp_image } className="rounded-circle mr-2" alt='Employee photo' width='40' height='40' />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } className="rounded-circle mr-2" alt='Employee photo' width='40' height='40' />
                                                 <div style={{ fontSize: '11px' }}>
                                                     <p className="mb-0 font-weight-bold">{ val.name }</p>
                                                     <p className="mb-0">{ val.designation_name } at { val.company_name }</p>
@@ -257,7 +257,7 @@ const ListView = ( { Employees, Filter, setFilter, ViewDetails } ) => {
                                         <td>
                                             <div className="d-flex align-items-center justify-content-between">
                                                 <div className="d-flex align-items-center">
-                                                    <img src={ 'images/guests/' + val.guest_image } className="rounded-circle mr-2" alt='Guest photo' width='40' height='40' />
+                                                    <img src={ process.env.REACT_APP_SERVER+'/images/guests/' + val.guest_image } className="rounded-circle mr-2" alt='Guest photo' width='40' height='40' />
                                                     <div style={{ fontSize: '11px' }}>
                                                         <p className="mb-0 font-weight-bold">{ val.guest_name }</p>
                                                         <p className="mb-0">{ val.guest_phone }</p>
@@ -318,7 +318,7 @@ const ModalContent = ( { SelectedGuestMeetings, Employee, Guests, ViewGuestDetai
                                 ( val, index ) => {
                                     return (
                                         <div className='guest' key={index} onClick={ () => ViewGuestDetails( val.id, val.emp_id ) }>
-                                            <img src={ 'images/guests/' + val.guest_image } className="rounded-circle mr-2" alt='Guest photo' width='40' height='40' />
+                                            <img src={ process.env.REACT_APP_SERVER+'/images/guests/' + val.guest_image } className="rounded-circle mr-2" alt='Guest photo' width='40' height='40' />
                                             <div>
                                                 <p className="mb-0"><b>{ val.guest_name }</b></p>
                                                 <p className="mb-0">{ val.guest_phone }</p>

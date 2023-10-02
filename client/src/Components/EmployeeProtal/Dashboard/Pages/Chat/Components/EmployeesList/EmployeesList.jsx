@@ -86,7 +86,7 @@ const Employee = ( { val, index, GetThatEmpChat } ) => {
                 <div key={index} className="employee animate__animated animate__fadeInLeft" onClick={() => GetThatEmpChat(val.emp_id, index)}>
                     <div>
                         <img
-                            src={'images/employees/' + val.emp_image}
+                            src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image}
                             alt="empImg"
                             width='40'
                             height='40'

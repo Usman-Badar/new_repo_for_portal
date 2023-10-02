@@ -43,7 +43,7 @@ const Vouchers = () => {
                         return (
                             <>
                                 <div className="Vouchers">
-                                    <div><img src={ 'images/Inventory/po_vouchers/' + val.voucher } alt="voucher" /></div>
+                                    <div><img src={ process.env.REACT_APP_SERVER+'/images/Inventory/po_vouchers/' + val.voucher } alt="voucher" /></div>
                                 </div>
                             </>
                         )

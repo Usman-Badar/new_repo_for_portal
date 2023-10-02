@@ -1,6 +1,6 @@
 {
     "name": "portal-server",
-    "version": "3.0.4",
+    "version": "3.0.3",
     "description": "NODE JS SERVER APPLICATION FOR THE EMPLOYEE PORTAL",
     "main": "server.js",
     "scripts": {
@@ -8,19 +8,17 @@
         "start": "node server.js",
         "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
     },
+    "keywords": [],
     "nodemonConfig": {
         "ignore": [
             "*.json"
         ]
     },
-    "keywords": [],
     "author": "Usman Badar",
     "license": "ISC",
     "dependencies": {
         "adm-zip": "^0.5.9",
         "alert": "^5.0.10",
-        "axios": "^1.3.4",
-        "brain.js": "^2.0.0-beta.18",
         "cluster": "^0.7.7",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
@@ -41,13 +39,11 @@
         "nodejs-nodemailer-outlook": "^1.2.4",
         "nodemailer": "^6.7.0",
         "qrcode-terminal": "^0.12.0",
+        "redis-server": "^1.2.2",
         "simple-encryptor": "^4.0.0",
         "socket.io": "^4.4.0",
         "text-to-mp3": "^1.0.4",
-        "text2wav": "^0.0.13",
-        "translate-google": "^1.5.0",
-        "wbm": "^1.1.16",
-        "whatsapp-web.js": "1.19.4",
-        "write-excel-file": "^1.4.21"
+        "winston": "^3.10.0",
+        "whatsapp-web.js": "https://github.com/Julzk/whatsapp-web.js/tarball/jkr_hotfix_7"
     }
 }

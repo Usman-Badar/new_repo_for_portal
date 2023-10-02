@@ -91,8 +91,8 @@ router.post('/attendance/update/status', ( req, res ) => {
                 }else
                 {
                     db.query(
-                        "UPDATE emp_attendance SET status = ? WHERE id = ?;",
-                        [new_status, pared_list[count.length].id],
+                        "UPDATE emp_attendance SET status = ?, edit_by = ?, edit_date = ?, edit_time = ? WHERE id = ?;",
+                        [new_status, emp_id, new Date(), new Date().toTimeString(), pared_list[count.length].id],
                         (err) => {
                             if (err) {
                                 console.log(err);
@@ -137,8 +137,8 @@ router.post('/attendance/update/record', ( req, res ) => {
         parameters.push(`The status has been changed from ${parsed_value.status} to ${new_status}.`);
         parameters.push('status');
 
-        sub_query = "UPDATE emp_attendance SET status = ? WHERE id = ?;";
-        sub_parameters = [new_status, parsed_value.id]
+        sub_query = "UPDATE emp_attendance SET status = ?, edit_by = ?, edit_date = ?, edit_time = ? WHERE id = ?;";
+        sub_parameters = [new_status, emp_id, new Date(), new Date().toTimeString(), parsed_value.id]
     }
     if (parsed_changes.time_out) {
         query = query.concat("INSERT INTO `tbl_attendance_logs`(`attendance_record_id`, `before_value`, `after_value`, `edited_by`, `message`, `match_key`) VALUES (?,?,?,?,?,?);");
@@ -149,12 +149,12 @@ router.post('/attendance/update/record', ( req, res ) => {
         parameters.push(`The time OUT has been changed from ${parsed_value.time_out} to ${new_time_out}.`);
         parameters.push('time_out');
         
-        sub_query = "UPDATE emp_attendance SET time_out = ? WHERE id = ?;";
-        sub_parameters = [new_time_out === '' && parsed_value.time_out == null ? null : new_time_out, parsed_value.id]
+        sub_query = "UPDATE emp_attendance SET time_out = ?, edit_by = ?, edit_date = ?, edit_time = ? WHERE id = ?;";
+        sub_parameters = [new_time_out === '' && parsed_value.time_out == null ? null : new_time_out, emp_id, new Date(), new Date().toTimeString(), parsed_value.id]
     }
     if (parsed_changes.status && parsed_changes.time_out) {
-        sub_query = "UPDATE emp_attendance SET status = ?, time_out = ? WHERE id = ?;";
-        sub_parameters = [new_status, new_time_out === '' && parsed_value.time_out == null ? null : new_time_out, parsed_value.id]
+        sub_query = "UPDATE emp_attendance SET status = ?, time_out = ?, edit_by = ?, edit_date = ?, edit_time = ? WHERE id = ?;";
+        sub_parameters = [new_status, new_time_out === '' && parsed_value.time_out == null ? null : new_time_out, emp_id, new Date(), new Date().toTimeString(), parsed_value.id]
     }
 
     db.query(
@@ -165,7 +165,7 @@ router.post('/attendance/update/record', ( req, res ) => {
                 console.log(err);
             }else
             {
-                let adhasdgashgdahs = db.query(
+                db.query(
                     sub_query,
                     sub_parameters,
                     (err) => {

@@ -170,11 +170,11 @@ const Admin_View_Employees = () => {
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">CNIC Front Image</p>
-                                            <img src={'images/documents/cnic/front/' + val.cnic_front_image} alt="" style={{ width: '30%' }} />
+                                            <img src={process.env.REACT_APP_SERVER+'/images/documents/cnic/front/' + val.cnic_front_image} alt="" style={{ width: '30%' }} />
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">CNIC Back Image</p>
-                                            <img src={'images/documents/cnic/back/' + val.cnic_back_image} alt="" style={{ width: '30%' }} />
+                                            <img src={process.env.REACT_APP_SERVER+'/images/documents/cnic/back/' + val.cnic_back_image} alt="" style={{ width: '30%' }} />
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">Guest Meetable</p>
@@ -218,7 +218,7 @@ const Admin_View_Employees = () => {
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">User Image</p>
-                                            <img src={'images/users/' + val.user_image} alt="" style={{ width: '30%' }} />
+                                            <img src={process.env.REACT_APP_SERVER+'/images/users/' + val.user_image} alt="" style={{ width: '30%' }} />
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">ID</p>
@@ -234,15 +234,15 @@ const Admin_View_Employees = () => {
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">Emp Image</p>
-                                            <img src={'images/employees/' + val.emp_image} alt="" style={{ width: '30%' }} />
+                                            <img src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image} alt="" style={{ width: '30%' }} />
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">Emp CV</p>
-                                            <img src={'images/documents/cv/' + val.cv} alt="" style={{ width: '30%' }} />
+                                            <img src={process.env.REACT_APP_SERVER+'/images/documents/cv/' + val.cv} alt="" style={{ width: '30%' }} />
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">Emp proof of address</p>
-                                            <img src={'images/documents/address/' + val.proof_of_address} alt="" style={{ width: '30%' }} />
+                                            <img src={process.env.REACT_APP_SERVER+'/images/documents/address/' + val.proof_of_address} alt="" style={{ width: '30%' }} />
                                         </div>
                                         <div>
                                             <p className="font-weight-bold mb-0">Emp armed license</p>
@@ -251,7 +251,7 @@ const Admin_View_Employees = () => {
                                                 ?
                                                 <p>misssing</p>
                                                 :
-                                                <img src={'images/documents/licenses/armed/' + val.armed_license} alt="" style={{ width: '30%' }} />   
+                                                <img src={process.env.REACT_APP_SERVER+'/images/documents/licenses/armed/' + val.armed_license} alt="" style={{ width: '30%' }} />   
                                             }
                                         </div>
                                         <div>
@@ -261,7 +261,7 @@ const Admin_View_Employees = () => {
                                                 ?
                                                 <p>misssing</p>
                                                 :
-                                                <img src={'images/documents/licenses/driving/' + val.driving_license} alt="" style={{ width: '30%' }} />   
+                                                <img src={process.env.REACT_APP_SERVER+'/images/documents/licenses/driving/' + val.driving_license} alt="" style={{ width: '30%' }} />   
                                             }
                                         </div>
                                         <div>

@@ -85,7 +85,7 @@ const DailyChat = React.memo(
                                                             props.encryptor.decrypt(val.chat_body).includes('/***')
                                                                 ?
                                                                 <img
-                                                                    src={'images/drive/' + src}
+                                                                    src={process.env.REACT_APP_SERVER+'/images/drive/' + src}
                                                                     width="100%"
                                                                     height="auto"
                                                                     alt="drive attachment"
@@ -127,7 +127,7 @@ const DailyChat = React.memo(
                                                                 props.encryptor.decrypt(val.chat_body).includes('/***')
                                                                     ?
                                                                     <img
-                                                                        src={'images/drive/' + src}
+                                                                        src={process.env.REACT_APP_SERVER+'/images/drive/' + src}
                                                                         width="100%"
                                                                         height="auto"
                                                                         alt="drive attachment"

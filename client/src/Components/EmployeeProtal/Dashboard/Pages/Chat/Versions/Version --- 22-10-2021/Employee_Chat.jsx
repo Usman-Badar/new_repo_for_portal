@@ -333,7 +333,7 @@ const Employee_Chat = () => {
                                                     <div onClick={ ShowHideChat }>
                                                         <div className="DIV1 d-flex emplist" onClick={() => GetThatEmpChat(val.emp_id, index)}>
                                                             <div>
-                                                                <img src={'images/employees/' + val.emp_image} alt="DP" className="empImgs" />
+                                                                <img src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image} alt="DP" className="empImgs" />
                                                             </div>
                                                             <div className="d-flex align-items-center">
                                                                 <div>
@@ -361,7 +361,7 @@ const Employee_Chat = () => {
                                 <div className="Emp_Chat_2">
                                     <div className="Emp_Chat_Div">
                                         <div className="d-flex Emp_Chat_Header px-3 py-2">
-                                            <div className="mr-3"><img src={ 'images/employees/' + ChatEmployee.emp_image } onClick={ GoBack } alt="employee Img" /></div>
+                                            <div className="mr-3"><img src={ process.env.REACT_APP_SERVER+'/images/employees/' + ChatEmployee.emp_image } onClick={ GoBack } alt="employee Img" /></div>
                                             <div>
                                                 <div className="d-block" style={ { fontSize: '12px' } }>
                                                     <p className="font-weight-bolder mb-0"> { ChatEmployee.name } </p>
@@ -379,7 +379,7 @@ const Employee_Chat = () => {
                                                                 {
                                                                     val.sender_id !== EmpID
                                                                     ?
-                                                                        <div className="Chat_Box_Container_left"><img src={ 'images/employees/' + ChatEmployee.emp_image } alt="dp" className="mr-1" />
+                                                                        <div className="Chat_Box_Container_left"><img src={ process.env.REACT_APP_SERVER+'/images/employees/' + ChatEmployee.emp_image } alt="dp" className="mr-1" />
                                                                             <div className="Chat_Box_Message">
                                                                                 <p> { val.chat_body } </p>
                                                                                 <div className="d-flex justify-content-end" style={{ fontSize: '12px' }}>
@@ -392,7 +392,7 @@ const Employee_Chat = () => {
                                                                                 <p> { val.chat_body } </p>
                                                                                 <div className="d-flex justify-content-end" style={{ fontSize: '12px' }}>
                                                                                     <p>{ val.send_time }</p><i className="las la-check ml-1"></i></div>
-                                                                            </div><img src={ 'images/employees/' + CurrentEmployeeData.emp_image } alt="dp" className="ml-1" /></div>
+                                                                            </div><img src={ process.env.REACT_APP_SERVER+'/images/employees/' + CurrentEmployeeData.emp_image } alt="dp" className="ml-1" /></div>
                                                                 }
                                                             </>
                                                         )

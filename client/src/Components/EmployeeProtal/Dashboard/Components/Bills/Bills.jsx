@@ -42,7 +42,7 @@ const Bills = () => {
                         return (
                             <>
                                 <div className="Bills">
-                                    <div><img src={ 'images/Inventory/po_attachments/' + val.image } alt="Bills" /></div>
+                                    <div><img src={ process.env.REACT_APP_SERVER + '/images/Inventory/po_attachments/' + val.image } alt="Bills" /></div>
                                 </div>
                             </>
                         )

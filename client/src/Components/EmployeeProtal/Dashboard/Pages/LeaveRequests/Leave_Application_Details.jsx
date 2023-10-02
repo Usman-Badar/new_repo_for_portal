@@ -719,7 +719,7 @@ const Leave_Application_Details = () => {
                                                 leaveType='Short Leave' 
                                                 status={ val.request_status } 
                                                 requestDate={ val.requested_date.substring(0,10) } 
-                                                image={ 'images/employees/' + val.emp_image } 
+                                                image={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } 
                                                 Employee={ val.name } 
                                                 leaveFrom={ val.leave_time } 
                                                 reason={ val.leave_purpose }
@@ -732,7 +732,7 @@ const Leave_Application_Details = () => {
                                                 leaveType='Leave' 
                                                 status={ val.request_status } 
                                                 requestDate={ val.requested_date.substring(0,10) } 
-                                                image={ 'images/employees/' + val.emp_image } 
+                                                image={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } 
                                                 Employee={ val.name } 
                                                 leaveFrom={ val.leave_from.substring(0,10) } 
                                                 leaveTo={ val.leave_to === null ? 'Single Day Leave' : val.leave_to.substring(0,10) }
@@ -789,7 +789,7 @@ const Leave_Application_Details = () => {
                                             <div className="Leave_Emp_Info">
                                                 <div className="d-flex align-items-center pb-2">
                                                     <div>
-                                                        <img src={ 'images/employees/' + val.emp_image } alt="DP" />
+                                                        <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="DP" />
                                                     </div>
                                                     <div className="ml-3 py-2">
                                                         <p className="font-weight-bolder mb-0">{ val.name }</p>

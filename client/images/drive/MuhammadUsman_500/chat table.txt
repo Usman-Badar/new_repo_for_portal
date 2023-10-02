@@ -1,0 +1,16 @@
+
+id auto id
+send date
+send time
+text
+senderid ---empid
+receiverid ---empid
+
+sender status
+receiver status
+Read date
+Read time
+
+Read Status --Read/Not read
+Group_Chat (Y/N)
+Group_ID

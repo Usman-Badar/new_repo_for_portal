@@ -8,11 +8,9 @@ setInterval(() => {
     
     if ( d.getHours() === 23 && d.getMinutes() === 1 )
     {
-
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const dayName = days[d.getDay()];
         const iso_d = d.toISOString().slice(0, 10).replace('T', ' ');
-
         db.query(
             "SELECT DISTINCT employees.emp_id, employees.additional_off \
             FROM employees \
@@ -75,7 +73,6 @@ setInterval(() => {
                 }
             }
         )
-
     }
     
 }, 1000);

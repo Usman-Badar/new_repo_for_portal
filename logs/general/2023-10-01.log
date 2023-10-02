@@ -1,0 +1,74 @@
+2023-10-01T14:31:15.596Z [uncaughtException] info: ReferenceError: port is not defined
+    at Object.<anonymous> (F:\IT\Web Development\MERN\portal\server.js:84:18)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:86:12)
+    at node:internal/main/run_main_module:23:47
+2023-10-01T15:32:22.170Z [unhandledRejection] error: Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:221:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:16)
+    at async Client.sendMessage (F:\IT\Web Development\MERN\portal\node_modules\whatsapp-web.js\src\Client.js:869:28)
+2023-10-01T15:32:22.173Z [unhandledRejection] error: Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:221:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:16)
+    at async Client.sendMessage (F:\IT\Web Development\MERN\portal\node_modules\whatsapp-web.js\src\Client.js:869:28)
+2023-10-01T15:32:22.180Z [unhandledRejection] error: Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
+    at __puppeteer_evaluation_script__:2:42
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:221:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:16)
+    at async Client.sendMessage (F:\IT\Web Development\MERN\portal\node_modules\whatsapp-web.js\src\Client.js:869:28)
+2023-10-01T17:38:49.282Z [unhandledRejection] error: ProtocolError: Protocol error (Runtime.callFunctionOn): Target closed.
+    at F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:230:24
+    at new Promise (<anonymous>)
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:226:16)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluateHandle (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:155:21)
+    at WaitTask.rerun (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:551:37)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2023-10-02T05:09:44.239Z [unhandledRejection] error: Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:218:35)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:27)
+    at DOMWorld.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:97:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2023-10-02T05:09:45.191Z [unhandledRejection] error: Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:218:35)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:27)
+    at DOMWorld.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:97:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2023-10-02T05:09:45.622Z [uncaughtException] info: ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:63:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+2023-10-02T05:09:46.884Z [unhandledRejection] error: Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:218:35)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:27)
+    at DOMWorld.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:97:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2023-10-02T05:09:47.425Z [unhandledRejection] error: Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:218:35)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:27)
+    at DOMWorld.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:97:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2023-10-02T05:09:47.970Z [uncaughtException] info: ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:63:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+2023-10-02T05:09:48.335Z [uncaughtException] info: ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:63:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+2023-10-02T05:09:48.844Z [uncaughtException] info: ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:63:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)

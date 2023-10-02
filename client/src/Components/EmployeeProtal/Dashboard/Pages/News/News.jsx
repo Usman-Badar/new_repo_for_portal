@@ -95,7 +95,7 @@ const News = () => {
                                                     <>
                                                         <div className='Employee_Portal_news_divs popUps' key={index} onClick={() => { GoToNewsPaper(val.id) }}>
                                                             <div className='d-flex flex-column justify-content-between h-100 w-100'>
-                                                                <img src={'images/news_papers/' + val.news_papers_title_image} alt="news papers" />
+                                                                <img src={process.env.REACT_APP_SERVER+'/images/news_papers/' + val.news_papers_title_image} alt="news papers" />
                                                                 <p className='mb-0' style={ { fontSize: '12px' } }>{val.news_papers_name}</p>
                                                             </div>
                                                         </div>

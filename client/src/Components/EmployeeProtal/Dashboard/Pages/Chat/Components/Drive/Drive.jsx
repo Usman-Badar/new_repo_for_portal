@@ -26,7 +26,7 @@ const Drive = ( props ) => {
                                 className="DriveItem"
                                 style={
                                     {
-                                        backgroundImage: "url('images/drive/" + val.name + "')"
+                                        backgroundImage: "url('"+process.env.REACT_APP_SERVER+"/images/drive/" + val.name + "')"
                                     }
                                 }
                                 onClick={ () => props.AttachDrive( val.name ) }

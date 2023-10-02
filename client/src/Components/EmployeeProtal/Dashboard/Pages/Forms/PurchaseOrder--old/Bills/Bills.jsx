@@ -61,7 +61,7 @@ const Bills = ( props ) => {
                 <div className="Preview"
                     style={
                         {
-                            backgroundImage: "url('" + ( BillPreview.length > 0 ? BillPreview[0].image ? ( 'images/Inventory/po_attachments/' + BillPreview[0].image ) : URL.createObjectURL( BillPreview[0].file ) : null ) + "')"
+                            backgroundImage: "url('" + ( BillPreview.length > 0 ? BillPreview[0].image ? ( process.env.REACT_APP_SERVER+'/images/Inventory/po_attachments/' + BillPreview[0].image ) : URL.createObjectURL( BillPreview[0].file ) : null ) + "')"
                         }
                     }
                 >
@@ -84,7 +84,7 @@ const Bills = ( props ) => {
                             let image;
                             if ( val.image )
                             {
-                                image = 'images/Inventory/po_attachments/' + val.image;
+                                image = process.env.REACT_APP_SERVER+'/images/Inventory/po_attachments/' + val.image;
                             }else
                             {
                                 image = URL.createObjectURL( val.file )

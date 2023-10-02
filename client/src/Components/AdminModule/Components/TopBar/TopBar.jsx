@@ -62,7 +62,7 @@ const TopBar = () => {
                 <div className=" d-450-block"></div>
                 <div className="icons d-center">
                     <div className="px-3 emp_img_container">
-                        <div className="emp_img" style={ { "backgroundImage" : "url('images/users/" + sessionStorage.getItem('UserImg') + "')" } }></div>
+                        <div className="emp_img" style={ { "backgroundImage" : "url(" + process.env.REACT_APP_SERVER + "'/images/users/" + sessionStorage.getItem('UserImg') + "')" } }></div>
                         {/* <div className="emp_dropdown">
                             <p className="pl-4 pb-2 mb-1 font-weight-bold border-bottom"> { sessionStorage.getItem('userName') } </p>
                             <NavLink to="/profile/personal/info" className="d-center links">

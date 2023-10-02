@@ -1141,7 +1141,7 @@ const View = ({ RequestList }) => {
                                     return (
                                         <tr key={index}>
                                             { newBadge }
-                                            <td> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> <img className="d-block mx-auto" src={ 'images/employees/' + val.emp_image } alt="" /></NavLink>  </td>
+                                            <td> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> <img className="d-block mx-auto" src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="" /></NavLink>  </td>
                                             <td className='column-sm'> 
                                                 <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.sender_name}</NavLink>
                                                 <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink>  
@@ -1467,7 +1467,7 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                     <div className='top'>
                         <div className='View2_grid' >
                             <div className='View2_image'>
-                                <img src={'images/employees/' + RequestDetails.emp_info.emp_image} alt="" />
+                                <img src={process.env.REACT_APP_SERVER+'/images/employees/' + RequestDetails.emp_info.emp_image} alt="" />
                             </div>
                             <div>
                                 <h4 className='mb-3'>Employee Details</h4>

@@ -63,7 +63,7 @@ const Descussion = () => {
                             return (
                                     <div className="previous_descussions animate__animated animate__fadeInDown" key={ index }>
                                         <div className="d-flex justify-content-start align-items-center mb-3">
-                                            <div className="emp_img" style={{ 'backgroundImage': "url('images/employees/" + val.emp_image + "')" }}></div>
+                                            <div className="emp_img" style={{ 'backgroundImage': "url('"+process.env.REACT_APP_SERVER+"/images/employees/" + val.emp_image + "')" }}></div>
                                             <div className="pl-3">
                                                 <p className="mb-0 color-c-green font-weight-light">{ val.name + ' ' + val.father_name }</p>
                                                 <p className="mb-0 text-secondary">{ d.getDate() + ' ' + monthNames[d.getMonth()] + ' ' + d.getFullYear() + ' at ' + cTime }</p>

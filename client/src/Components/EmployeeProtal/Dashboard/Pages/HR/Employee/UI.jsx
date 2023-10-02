@@ -194,7 +194,7 @@ const EmployeeList = ( { Location, Company, Companies, Locations, setLocation, S
                                                 <td>{ val.emp_id }</td>
                                                 <td className='text-capitalize'>
                                                     <div className='d-flex align-items-center'>
-                                                        <img src={ 'images/employees/' + val.emp_image } alt="emp" width={ 40 } height={ 40 } className='rounded-circle' />
+                                                        <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="emp" width={ 40 } height={ 40 } className='rounded-circle' />
                                                         <div className='ml-2'>
                                                             <b>{ val.name }</b> <br />
                                                             <span>{ val.designation_name }</span>
@@ -257,7 +257,7 @@ const EmployeeDetails = ({ Data, Employee, history, fetchDetails }) => {
                 <>
                     <div className="d-flex align-items-center justify-content-between">
                         <div className='d-flex align-items-center justify-content-start'>
-                            <img src={ 'images/employees/' + Employee.emp_image } alt="emp" width="60" height="60" />
+                            <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + Employee.emp_image } alt="emp" width="60" height="60" />
                             <h3 className="heading ml-2">
                                 { Employee.name }
                                 <sub>{ Employee.designation_name }</sub>
@@ -427,11 +427,11 @@ const EmployeeDetails = ({ Data, Employee, history, fetchDetails }) => {
                                 </td>
                                 <td>
                                     <b>CNIC Front Image</b> <br />
-                                    <img src={ 'images/documents/cnic/front/' + Employee.cnic_front_image } alt="CNIC photo" width="70%" className='border' />
+                                    <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/front/' + Employee.cnic_front_image } alt="CNIC photo" width="70%" className='border' />
                                 </td>
                                 <td>
                                     <b>CNIC Back Image</b> <br />
-                                    <img src={ 'images/documents/cnic/back/' + Employee.cnic_back_image } alt="CNIC photo" width="70%" className='border' />
+                                    <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/back/' + Employee.cnic_back_image } alt="CNIC photo" width="70%" className='border' />
                                 </td>
                             </tr>
                             <tr>
@@ -446,9 +446,9 @@ const EmployeeDetails = ({ Data, Employee, history, fetchDetails }) => {
                                     {
                                         Employee.cv.includes('.pdf')
                                         ?
-                                        <iframe src={ 'images/documents/cv/' + Employee.cv } width="100%" height="500" className='border'></iframe>
+                                        <iframe src={ process.env.REACT_APP_SERVER+'/images/documents/cv/' + Employee.cv } width="100%" height="500" className='border'></iframe>
                                         :
-                                        <img src={ 'images/documents/cv/' + Employee.cv } alt="CV preview" width="100%" height="500" className='border' />
+                                        <img src={ process.env.REACT_APP_SERVER+'/images/documents/cv/' + Employee.cv } alt="CV preview" width="100%" height="500" className='border' />
                                     }
                                 </td>
                                 <td>
@@ -456,9 +456,9 @@ const EmployeeDetails = ({ Data, Employee, history, fetchDetails }) => {
                                     {
                                         Employee.proof_of_address.includes('.pdf')
                                         ?
-                                        <iframe src={ 'images/documents/address/' + Employee.proof_of_address } width="100%" height="500" className='border'></iframe>
+                                        <iframe src={ process.env.REACT_APP_SERVER+'/images/documents/address/' + Employee.proof_of_address } width="100%" height="500" className='border'></iframe>
                                         :
-                                        <img src={ 'images/documents/address/' + Employee.proof_of_address } alt="proof_of_address preview" width="100%" height="500" className='border' />
+                                        <img src={ process.env.REACT_APP_SERVER+'/images/documents/address/' + Employee.proof_of_address } alt="proof_of_address preview" width="100%" height="500" className='border' />
                                     }
                                 </td>
                             </tr>

@@ -33,7 +33,7 @@ const Requests = ( props ) => {
         <div className="ViewPoRequests_div" key={ props.key }>
             <div className="d-flex align-items-center justify-content-between">
                 <div className="d-flex align-items-center w-75">
-                    <img src={'images/employees/' + props.data.emp_image} alt="" />
+                    <img src={process.env.REACT_APP_SERVER+'/images/employees/' + props.data.emp_image} alt="" />
                     <div>
                         <p className="font-weight-bolder"> {props.data.name} </p>
                         <p> {props.data.designation_name + ' in ' + props.data.department_name + ' Department, ' + props.data.company_name} </p>

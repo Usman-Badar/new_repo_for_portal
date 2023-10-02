@@ -178,8 +178,8 @@ const Employee_Drive = () => {
         let link = document.createElement("a");
         // If you don't know the name or want to use
         // the webserver default set name = ''
-        link.setAttribute('download', 'images/drive/' + Drive[index].name);
-        link.href = 'images/drive/' + Drive[index].name;
+        link.setAttribute('download', process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name);
+        link.href = process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name;
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -248,7 +248,7 @@ const Employee_Drive = () => {
             Drive[index].doc_type.toLowerCase() === 'gif'
             )
         {
-            content = <img src={ 'images/drive/' + Drive[index].name } width='100%' alt='images' />
+            content = <img src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } width='100%' alt='images' />
         }else
         if ( 
             Drive[index].doc_type.toLowerCase() === 'mov' || 
@@ -261,28 +261,28 @@ const Employee_Drive = () => {
             )
         {
             content = <video width="100%" controls autoPlay muted>
-                        <source src={ 'images/drive/' + Drive[index].name } type="video/mp4" />
+                        <source src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
         }else
         if (Drive[index].doc_type.toLowerCase() === 'html' || Drive[index].doc_type.toLowerCase() === 'htm' || Drive[index].doc_type.toLowerCase() === 'xml') {
-            content = <iframe src={ 'images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
+            content = <iframe src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
         } else
 
             if (Drive[index].doc_type.toLowerCase() === 'css' || Drive[index].doc_type.toLowerCase() === 'scss' || Drive[index].doc_type.toLowerCase() === 'sass' || Drive[index].doc_type.toLowerCase() === 'less') {
-                content = <iframe src={ 'images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
+                content = <iframe src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
             } else
 
                 if (Drive[index].doc_type.toLowerCase() === 'js' || Drive[index].doc_type.toLowerCase() === 'jsx') {
-                    content = <iframe src={ 'images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
+                    content = <iframe src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
                 } else
 
                     if (Drive[index].doc_type.toLowerCase() === 'php') {
-                        content = <iframe src={ 'images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
+                        content = <iframe src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
                     } else
 
                         if (Drive[index].doc_type.toLowerCase() === 'pdf') {
-                            content = <iframe src={ 'images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
+                            content = <iframe src={ process.env.REACT_APP_SERVER+'/images/drive/' + Drive[index].name } width="100%" height="500" title="description"></iframe>
                         }else
                         {
                             content = <h4 className="text-center">Format Not Supported</h4>

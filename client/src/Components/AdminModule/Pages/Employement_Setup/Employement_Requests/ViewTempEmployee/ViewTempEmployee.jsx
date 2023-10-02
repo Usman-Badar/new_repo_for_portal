@@ -71,7 +71,7 @@ const ViewTempEmployee = () => {
                                         <h4 className="text-center">Personal Information</h4>
                                         <div className="row py-5">
                                             <div className="col-lg-4 col-md-6 col-sm-12 text-center">
-                                                <img src={ 'images/employees/' + val.emp_image } className="emp_img" alt="Employee Img" />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } className="emp_img" alt="Employee Img" />
                                             </div>
                                             <div className="col-lg-8 col-md-6 col-sm-12 d-center">
                                                 <div className="w-100">
@@ -103,11 +103,11 @@ const ViewTempEmployee = () => {
                                         <h4 className="text-center">CNIC Information</h4>
                                         <div className="row py-5">
                                             <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ 'images/documents/cnic/front/' + val.cnic_front_image } className="cnic_images emp_front_cnic" alt="CNIC Front Img" />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/front/' + val.cnic_front_image } className="cnic_images emp_front_cnic" alt="CNIC Front Img" />
                                                 <b className="d-block pt-2">CNIC Front Image</b>
                                             </div>
                                             <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ 'images/documents/cnic/back/' + val.cnic_back_image } className="cnic_images emp_back_cnic" alt="CNIC Back Img" />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/back/' + val.cnic_back_image } className="cnic_images emp_back_cnic" alt="CNIC Back Img" />
                                                 <b className="d-block pt-2">CNIC Back Image</b>
                                             </div>
                                             <div className="col-lg-12 col-md-12 col-sm-12">
@@ -140,11 +140,11 @@ const ViewTempEmployee = () => {
                                         <h4 className="text-center">Other Documents Information</h4>
                                         <div className="row py-5">
                                             <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ 'images/documents/cv/' + val.cv } className="emp_docs_images" alt="CV Img" />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/cv/' + val.cv } className="emp_docs_images" alt="CV Img" />
                                                 <b className="d-block pt-2">CV Image</b>
                                             </div>
                                             <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ 'images/documents/address/' + val.proof_of_address } className="emp_docs_images" alt="Address Img" />
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/address/' + val.proof_of_address } className="emp_docs_images" alt="Address Img" />
                                                 <b className="d-block pt-2">Address Image</b>
                                             </div>
                                             {
@@ -153,7 +153,7 @@ const ViewTempEmployee = () => {
                                                 null
                                                 :
                                                 <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                    <img src={'images/documents/licenses/armed/' + val.armed_license} className="emp_docs_images" alt="CV Img" />
+                                                    <img src={process.env.REACT_APP_SERVER+'/images/documents/licenses/armed/' + val.armed_license} className="emp_docs_images" alt="CV Img" />
                                                     <b className="d-block pt-2">Armed License Image</b>
                                                 </div>
                                             }
@@ -163,7 +163,7 @@ const ViewTempEmployee = () => {
                                                 null
                                                 :
                                                 <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                    <img src={'images/documents/licenses/driving/' + val.driving_license} className="emp_docs_images" alt="CV Img" />
+                                                    <img src={process.env.REACT_APP_SERVER+'/images/documents/licenses/driving/' + val.driving_license} className="emp_docs_images" alt="CV Img" />
                                                     <b className="d-block pt-2">Driving License Image</b>
                                                 </div>
                                             }

@@ -1,0 +1,78 @@
+18:48:03 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (F:\IT\Web Development\MERN\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+18:48:03 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read properties of null (reading 'evaluate')
+    at Client.sendMessage (F:\IT\Web Development\MERN\portal\node_modules\whatsapp-web.js\src\Client.js:686:47)
+    at SendWhatsappNotification (F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js:485:12)
+    at SendWhatsappNotification (F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js:725:90)
+    at notifyITDept (F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:58:9)
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:40:17
+    at Array.forEach (<anonymous>)
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:36:17
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+18:48:03 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:63:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+18:48:03 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:63:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:200:23)
+
+19:28:03 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Navigation failed because browser has disconnected!
+    at F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\LifecycleWatcher.js:51:147
+    at F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\vendor\mitt\src\index.js:51:62
+    at Array.map (<anonymous>)
+    at Object.emit (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\vendor\mitt\src\index.js:51:43)
+    at CDPSession.emit (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\EventEmitter.js:72:22)
+    at CDPSession._onClosed (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:271:14)
+    at Connection._onMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:105:25)
+    at WebSocket.<anonymous> (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\node\NodeWebSocketTransport.js:13:32)
+    at WebSocket.onMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\event-target.js:199:18)
+    at WebSocket.emit (node:events:517:28)
+    at Receiver.receiverOnMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\websocket.js:1137:20)
+    at Receiver.emit (node:events:517:28)
+    at Receiver.dataMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:528:14)
+    at Receiver.getData (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:446:17)
+    at Receiver.startLoop (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:148:22)
+    at Receiver._write (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:83:10)
+
+19:28:03 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: Navigation failed because browser has disconnected!
+    at F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\LifecycleWatcher.js:51:147
+    at F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\vendor\mitt\src\index.js:51:62
+    at Array.map (<anonymous>)
+    at Object.emit (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\vendor\mitt\src\index.js:51:43)
+    at CDPSession.emit (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\EventEmitter.js:72:22)
+    at CDPSession._onClosed (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:271:14)
+    at Connection._onMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:105:25)
+    at WebSocket.<anonymous> (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\node\NodeWebSocketTransport.js:13:32)
+    at WebSocket.onMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\event-target.js:199:18)
+    at WebSocket.emit (node:events:517:28)
+    at Receiver.receiverOnMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\websocket.js:1137:20)
+    at Receiver.emit (node:events:517:28)
+    at Receiver.dataMessage (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:528:14)
+    at Receiver.getData (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:446:17)
+    at Receiver.startLoop (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:148:22)
+    at Receiver._write (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\node_modules\ws\lib\receiver.js:83:10)
+

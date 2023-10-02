@@ -26,10 +26,6 @@ router.post('/servers/connectivity', ( req, res ) => {
         );
     }
 } );
-setInterval(() => {
-    checkServersConnectivity();
-}, 1000);
-
 const checkServersConnectivity = () => {
     const date = new Date().toISOString().substring(0,10);
     fileRead.readdir('./servers', (_, servers) => {
@@ -66,6 +62,9 @@ const checkServersConnectivity = () => {
         );
     }
 }
+setInterval(() => {
+    checkServersConnectivity();
+}, 1000);
 
 
 

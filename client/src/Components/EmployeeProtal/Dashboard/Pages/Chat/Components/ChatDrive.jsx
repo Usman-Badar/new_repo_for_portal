@@ -37,7 +37,7 @@ function ChatDrive( props ) {
                                                     val.doc_type.toLowerCase() === 'png' ||
                                                     val.doc_type.toLowerCase() === 'gif'
                                                     ?
-                                                    ('images/drive/' + val.name)
+                                                    (process.env.REACT_APP_SERVER+'/images/drive/' + val.name)
                                                     :
                                                     InsteadImg
                                                 :
@@ -61,7 +61,7 @@ function ChatDrive( props ) {
                                                         val.doc_type.toLowerCase() === 'png' ||
                                                         val.doc_type.toLowerCase() === 'gif'
                                                         ?
-                                                        ('images/drive/' + val.name)
+                                                        (process.env.REACT_APP_SERVER+'/images/drive/' + val.name)
                                                         :
                                                         InsteadImg
                                                     :
@@ -73,27 +73,27 @@ function ChatDrive( props ) {
 
                                             if (val.doc_type.toLowerCase() === 'html' || val.doc_type.toLowerCase() === 'htm' || val.doc_type.toLowerCase() === 'xml') {
                                                 icon = <i className="lar la-file-code"></i>
-                                                title = <iframe src={'images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
+                                                title = <iframe src={process.env.REACT_APP_SERVER+'/images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
                                             } else
 
                                                 if (val.doc_type.toLowerCase() === 'css' || val.doc_type.toLowerCase() === 'scss' || val.doc_type.toLowerCase() === 'sass' || val.doc_type.toLowerCase() === 'less') {
                                                     icon = <i className="lab la-css3"></i>
-                                                    title = <iframe src={'images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
+                                                    title = <iframe src={process.env.REACT_APP_SERVER+'/images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
                                                 } else
 
                                                     if (val.doc_type.toLowerCase() === 'js' || val.doc_type.toLowerCase() === 'jsx') {
                                                         icon = <i className="lab la-node-js"></i>
-                                                        title = <iframe src={'images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
+                                                        title = <iframe src={process.env.REACT_APP_SERVER+'/images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
                                                     } else
 
                                                         if (val.doc_type.toLowerCase() === 'php') {
                                                             icon = <i className="lab la-php"></i>
-                                                            title = <iframe src={'images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
+                                                            title = <iframe src={process.env.REACT_APP_SERVER+'/images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
                                                         } else
 
                                                             if (val.doc_type.toLowerCase() === 'pdf') {
                                                                 icon = <i className="las la-file-pdf"></i>
-                                                                title = <iframe src={'images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
+                                                                title = <iframe src={process.env.REACT_APP_SERVER+'/images/drive/' + val.name} width="100%" height="500" title="description"></iframe>
                                                             } else
 
                                                                 if (
@@ -112,7 +112,7 @@ function ChatDrive( props ) {
                                                                                 val.doc_type.toLowerCase() === 'png' ||
                                                                                 val.doc_type.toLowerCase() === 'gif'
                                                                                 ?
-                                                                                ('images/drive/' + val.name)
+                                                                                (process.env.REACT_APP_SERVER+'/images/drive/' + val.name)
                                                                                 :
                                                                                 InsteadImg
                                                                             :
@@ -138,7 +138,7 @@ function ChatDrive( props ) {
                                                                                     val.doc_type.toLowerCase() === 'png' ||
                                                                                     val.doc_type.toLowerCase() === 'gif'
                                                                                     ?
-                                                                                    ('images/drive/' + val.name)
+                                                                                    (process.env.REACT_APP_SERVER+'/images/drive/' + val.name)
                                                                                     :
                                                                                     InsteadImg
                                                                                 :
@@ -159,7 +159,7 @@ function ChatDrive( props ) {
                                                                         ) {
                                                                             icon = <i className="las la-video"></i>
                                                                             title = <video width="100%">
-                                                                                <source src={'images/drive/' + val.name} type="video/mp4" />
+                                                                                <source src={process.env.REACT_APP_SERVER+'/images/drive/' + val.name} type="video/mp4" />
                                                                                 Your browser does not support the video tag.
                                                                             </video>
                                                                         } else {
@@ -171,7 +171,7 @@ function ChatDrive( props ) {
                                                                                         val.doc_type.toLowerCase() === 'png' ||
                                                                                         val.doc_type.toLowerCase() === 'gif'
                                                                                         ?
-                                                                                        ('images/drive/' + val.name)
+                                                                                        (process.env.REACT_APP_SERVER+'/images/drive/' + val.name)
                                                                                         :
                                                                                         InsteadImg
                                                                                     :

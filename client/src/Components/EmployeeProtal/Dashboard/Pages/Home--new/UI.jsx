@@ -1596,7 +1596,7 @@ const ACContent = ({ history, Employee, Requests }) => {
         <>
             <div className='d-flex align-items-end justify-content-between'>
                 <div className='d-flex align-items-center'>
-                    <img src={'images/employees/' + Employee.emp_image} alt="emp" width="50" height="50" className='rounded-circle' />
+                    <img src={process.env.REACT_APP_SERVER+'/images/employees/' + Employee.emp_image} alt="emp" width="50" height="50" className='rounded-circle' />
                     <div className='ml-2'>
                         <b>{Employee.name}</b><br />
                         <span>{Employee.designation_name} in  {Employee.company_name}</span>

@@ -1717,7 +1717,7 @@ const CommentBox = ({ data, index }) => {
         <>
             <div className='comment popUps' key={index}>
                 <div className='d-flex align-items-center pb-2'>
-                    <img src={'images/employees/' + data.emp_image} className='emp_img' alt="employee" />
+                    <img src={process.env.REACT_APP_SERVER+'/images/employees/' + data.emp_image} className='emp_img' alt="employee" />
                     <div className='ml-2 d-flex align-items-center justify-content-between w-100'>
                         <div>
                             <b>{data.name}</b><br />

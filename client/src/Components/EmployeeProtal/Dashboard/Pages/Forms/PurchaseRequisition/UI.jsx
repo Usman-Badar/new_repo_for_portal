@@ -283,7 +283,7 @@ const PRFormForEditing = ({ Quotations, updatePR, RequestDetails, Specifications
                                                                 {
                                                                     content = (
                                                                         <div className="emp_item" key={ index } onClick={ () => selectEmpInBehalf( val.emp_id, val.name ) }>
-                                                                            <img src={ 'images/employees/' + val.emp_image } alt="emp" />
+                                                                            <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="emp" />
                                                                             <div>
                                                                                 <b>{ val.name }</b>
                                                                                 <p className="mb-0">{ val.designation_name }</p>
@@ -714,7 +714,7 @@ const PRForm = ({ TotalCostCalculation, Employee, selectEmpInBehalf, onSearchEmp
                                                             if (val.emp_id != localStorage.getItem('EmpID')) {
                                                                 content = (
                                                                     <div className="emp_item" key={index} onClick={() => selectEmpInBehalf(val.emp_id, val.name)}>
-                                                                        <img src={'images/employees/' + val.emp_image} alt="emp" />
+                                                                        <img src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image} alt="emp" />
                                                                         <div>
                                                                             <b>{val.name}</b>
                                                                             <p className="mb-0">{val.designation_name}</p>
