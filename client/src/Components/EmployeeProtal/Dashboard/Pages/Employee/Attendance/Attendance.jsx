@@ -784,6 +784,7 @@ const Attendance = () => {
                                     {
                                         DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())).map(
                                             (val, index) => {
+                                                console.log(val)
                                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                 const d = new Date(val.emp_date.toString().substring(0, 10));
                                                 const dayName = days[d.getDay()];
@@ -931,13 +932,13 @@ const Attendance = () => {
                                                             ?
                                                             <td onClick={() => makeViewForRecordUpdate(val)}> 
                                                                 {
-                                                                    val.status === 'leave' && val.time_in === null && val.time_out === null && val.break_in === null && val.break_out === null
+                                                                val.status === 'leave' && val.leave_ref.includes('leave/')
                                                                 ?
                                                                 <>
                                                                 { val.status }
                                                                 </>
                                                                 :
-                                                                val.status === 'leave' && (val.time_in !== null || val.time_out !== null || val.break_in !== null || val.break_out !== null)
+                                                                val.status === 'leave' && val.leave_ref.includes('short/')
                                                                 ?
                                                                 <>
                                                                     Short Leave

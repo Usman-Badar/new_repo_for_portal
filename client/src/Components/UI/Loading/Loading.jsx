@@ -37,7 +37,7 @@ const Loading = ( props ) => {
                                 SEABOARD
                             </p>
                             {/* LOADING TEXT */}
-                            <p className='text-center text-light mb-0'>
+                            <p className='text-center text-light mb-0' style={{fontSize: 18}}>
                                 <Typewriter
                                     options={{
                                         strings: [props.txt, 'Please Wait...', "Loading Content..."],

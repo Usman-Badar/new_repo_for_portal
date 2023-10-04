@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-lone-blocks */
 import React, { useEffect, useState } from 'react';
@@ -15,6 +16,9 @@ import socket from '../../../../../io';
 import { useSelector } from 'react-redux';
 import Modal from '../../../../UI/Modal/Modal';
 import Mail from '../../../../UI/Mail/Mail';
+import JSAlert from 'js-alert';
+
+import LoadingImg from '../../../../../images/loadingIcons/icons8-iphone-spinner.gif';
 
 const Attandence_Request = () => {
 
@@ -472,61 +476,61 @@ const Attandence_Request = () => {
         // shahzad IF TIME OUT IS GREATER THAN TIME IN
         if ( Form.request_type === 'insert' && RecordFound )
         {
-            alert( 'Record of this date is already exist. Select request type [Update]' )
+            JSAlert.alert("Your attendance of this date has already exists, instead of add timings, kindly select update option from the request type field.", "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
         
         if ( Form.request_type === 'insert' && !Marking.mark_time_in )
         {
-            alert( 'Iime IN must be checked when request type is [Insert]' )
+            JSAlert.alert('Shift (Start) option must be true/checked when the request type is [Insert].', "Warning", JSAlert.Icons.Warning);
             pass = false;
         } 
 
         if ( Form.request_type === 'insert' && Marking.mark_time_in && ( NewAttendance.time_in === '' || NewAttendance.time_in === null ) )
         {
-            alert( 'Iime IN must be entered when request type is [INSERT]' )
+            JSAlert.alert('Shift (Start) option must be true/checked when the request type is [Insert].', "Warning", JSAlert.Icons.Warning);
             pass = false;
         } 
         
         // IF TIME OUT IS GREATER THAN TIME IN
         if ( Marking.mark_time_in && Marking.mark_time_out && NewAttendance.time_out < NewAttendance.time_in )
         {
-            alert( 'time_out should be greater than time_in' )
+            JSAlert.alert('Shift (End) time should be greater than Shift (Start) time.', "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
 
         // IF BREAK OUT IS GREATER THAN BREAK IN
         if ( Marking.mark_break_in && Marking.mark_break_out && NewAttendance.break_out < NewAttendance.break_in )
         {
-            alert( 'break_out should be greater than break_in' )
+            JSAlert.alert('Break (End) time should be greater than Break (Start) time.', "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
 
         // IF BREAK OUT IS GREATER THAN TIME OUT
         if ( Marking.mark_time_out && Marking.mark_break_out && NewAttendance.break_out > NewAttendance.time_out )
         {
-            alert( 'break_out should be less than time_out' )
+            JSAlert.alert('Break (End) time could not be greater than Shift (End) time.', "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
 
         // IF BREAK IN IS GREATER THAN TIME OUT
         if ( Marking.mark_time_out && Marking.mark_break_in && NewAttendance.break_in > NewAttendance.time_out )
         {
-            alert( 'break_in should be less than time_out' )
+            JSAlert.alert('Break (Start) time could not be greater than Shift (End) time.', "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
 
         // IF BREAK IN IS LESS THAN TIME IN
         if ( Marking.mark_time_in && Marking.mark_break_in && NewAttendance.break_in < NewAttendance.time_in )
         {
-            alert( 'break_in should be greater than time_in' )
+            JSAlert.alert('Break (Start) time should be greater than Shift (Start) time.', "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
 
         // IF BREAK OUT IS LESS THAN TIME IN
         if ( Marking.mark_time_in && Marking.mark_break_out && NewAttendance.break_out < NewAttendance.time_in )
         {
-            alert( 'break_out should be greater than time_in' )
+            JSAlert.alert('Break (End) time should be greater than Shift (Start) time.', "Warning", JSAlert.Icons.Warning);
             pass = false;
         }
 
@@ -537,12 +541,18 @@ const Attandence_Request = () => {
     const Submit = (e) => {
 
         e.preventDefault();
-
-        let pass = Validation();
-
+        const pass = Validation();
         if ( pass )
         {
-            $('button[type=submit]').prop('disabled', true);
+            setContent(
+                <>
+                    <div className='d-flex flex-column justify-content-center align-items-center'>
+                        <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                        <p className='mb-0 mt-2'>Please Wait....</p>
+                    </div>
+                </>
+            );
+            setShowModal( true );
             const Data = new FormData();
             Data.append('time_in', NewAttendance.time_in)
             Data.append('time_out', NewAttendance.time_out)
@@ -562,10 +572,10 @@ const Attandence_Request = () => {
                 Data
             ).then(
                 () => {
-    
-                    ShowNotification("Request sent", 'top-center');
+                    setContent(<></>);
+                    setShowModal(false);
+                    JSAlert.alert("Request has been submitted successfully.", "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
                     setOpenForm(false);
-    
                     setForm({
                         date: '',
                         reason: '',
@@ -618,37 +628,35 @@ const Attandence_Request = () => {
                     Data2.append('Title', localStorage.getItem('name'));
                     Data2.append('NotificationBody', localStorage.getItem('name') + ' has sent an attendance request on the portal.');
                     axios.post('/newnotification', Data2).then(() => {
-    
-                        axios.post('/sendmail', Data2).then(() => {
-    
-                        })
+                        axios.post('/sendmail', Data2)
                     })
     
                     setTimeout(() => {
                         socket.emit('NewNotification', Form.submit_to);
                         socket.emit('newattendancerequest', '');
                         history.replace('/attendance_request');
-                    }, 500);
+                    }, 2000);
     
                 }
             ).catch(
                 err => {
-    
-                    console.log(err)
-    
+                    setContent(<></>);
+                    setShowModal(false);
+                    JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 4);
                 }
             )
+        }else {
+            return false;
         }
-
     }
 
-    const buttonslideSnapeshot = () => {
-        if ($('.buttonslideSnapeshot').html() === 'Hide') {
-            $('.buttonslideSnapeshot').html('Show');
-        } else {
-            $('.buttonslideSnapeshot').html('Hide');
-        }
-        $('.slideSnapeshot').slideToggle();
+    const buttonslideSnapeshot = (snapshot) => {
+        setContent(
+            <>
+                <img src={snapshot} alt="snapshot" width='100%' />
+            </>
+        );
+        setShowModal(true);
     }
 
     const d = new Date();
@@ -701,13 +709,14 @@ const Attandence_Request = () => {
         setRequestAction(val);
     }
 
-    const OpenRemarks = ( id, request_id ) => {
+    const OpenRemarks = ( id, request_id, remarks ) => {
 
         const content = 
         <form className="w-100 text-right" onSubmit={ ( e ) => TakeAction( e, id, request_id ) }>
-            <textarea name="remarks" className="form-control" placeholder='remarks' required minLength='10'></textarea>
-            <button className="btn btn-outline-dark btn-sm mt-2">
-                submit
+            <h6 className='text-left'>Do you want to proceed?</h6>
+            <textarea name="remarks" style={{minHeight: '80px'}} className="form-control" defaultValue={remarks?remarks:''} placeholder='Your remarks....' required minLength='10' />
+            <button className="btn submit mt-2">
+                Confirm
             </button>
         </form>
 
@@ -719,7 +728,22 @@ const Attandence_Request = () => {
     const TakeAction = ( e, id, request_id ) => {
 
         e.preventDefault();
-        let status = document.getElementById('record_status');
+        const status = document.getElementById('record_status');
+        const remarks = e.target['remarks'].value;
+
+        if (remarks.trim().length < 10) {
+            JSAlert.alert("Remarks should be greater than 10 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+
+        setContent(
+            <>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                    <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                    <p className='mb-0 mt-2'>Please Wait....</p>
+                </div>
+            </>
+        );
 
         axios.post(
             '/performactionforattrequest',
@@ -730,7 +754,7 @@ const Attandence_Request = () => {
                 date_time: new Date().toString(),
                 status: RequestAction.request_action,
                 forward_to: RequestAction.request_send_to,
-                remarks: e.target['remarks'].value,
+                remarks: remarks,
                 time_in: NewAttendance.time_in,
                 time_out: NewAttendance.time_out,
                 break_in: NewAttendance.break_in,
@@ -741,11 +765,12 @@ const Attandence_Request = () => {
                 break_out_check: NewAttendance.break_out_check,
                 request_type: RequestDetails.request_info.request_type,
                 request_by: RequestDetails.reviews[0].request_by,
-                record_date: new Date( RequestDetails.request_info.date ).toString(),
+                record_date: RequestDetails.request_info.date,
                 record_status: status ? status.value : null
             }
         ).then(
             () => {
+                JSAlert.alert(`Request has been updated.`, "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
 
                 setRequestDetails(
                     {
@@ -809,9 +834,8 @@ const Attandence_Request = () => {
             }
         ).catch(
             err => {
-
-                console.log(err)
-
+                OpenRemarks(id, request_id, remarks);
+                JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 4);
             }
         )
 
@@ -883,167 +907,143 @@ const Attandence_Request = () => {
             <Mail
                 data={ MailData }
             />
-            <Modal show={ ShowModal } Hide={ onCLose } content={ Content } />
-            <div className="Attandence_Request">
-                <div className="Attandence_Request_Top" >
-                    <div className="Attandence_Request_Top_left">
-
-                        <div className="dropdown_filter">
-                            <p className="font-weight-bold">Attandence Requests</p>
-                        </div>
-
-                    </div>
-                    <div className="Attandence_Request_Top_right">
-                        
-                        {
-                            RequestDetails.emp_info.name
-                            ?
-                            RequestList.map(
-                                ( val ) => {
-
-                                    if ( parseInt( window.location.href.split('/').pop().split('_').pop() ) === val.id )
-                                    {
-                                        let options = [];
-                                        if ( parseInt( val.request_by ) === parseInt( localStorage.getItem('EmpID') ) )
+            <Modal width="50%" show={ ShowModal } Hide={ onCLose } content={ Content } />
+            <div className='page'>
+                <div className="Attandence_Request page-content">
+                    <div className="d-flex align-items-center justify-content-between">
+                        <h3 className="heading">
+                            Attendance Correction
+                            <sub>Update Your Attendance</sub>
+                        </h3>
+                        <div className='d-flex align-items-center'>
+                            {
+                                RequestDetails.emp_info.name
+                                ?
+                                RequestList.map(
+                                    ( val ) => {
+                                        if ( parseInt( window.location.href.split('/').pop().split('_').pop() ) === val.id )
                                         {
-                                            if ( CheckCancellation() )
+                                            let options = [];
+                                            if ( parseInt( val.request_by ) === parseInt( localStorage.getItem('EmpID') ) )
                                             {
-                                                options.push(<option value="cancel">Cancel</option>);
-                                                Marking( options );
+                                                if ( CheckCancellation() )
+                                                {
+                                                    options.push(<option value="cancel">Cancel</option>);
+                                                    Marking( options );
+                                                }
+                                            }else
+                                            {
+                                                if ( val.request_status === 'sent' && val.request_to == localStorage.getItem("EmpID") )
+                                                {
+                                                    Marking( options );
+                                                    options.push(<option value="reject">Reject</option>);
+                                                }else
+                                                if ( val.request_status === 'approve & forward' )
+                                                {
+                                                    Marking( options );
+                                                }else
+                                                if ( val.request_status === 'approve' )
+                                                {
+                                                    Marking( options );
+                                                }
+
                                             }
+
+                                            function Marking( options )
+                                            {
+
+                                                if ( AccessControls.access && CheckCancellation() )
+                                                {
+                                                    if ( val.request_to == localStorage.getItem("EmpID") && (JSON.parse(AccessControls.access).includes(19) || JSON.parse(AccessControls.access).includes(0)) )
+                                                    {
+                                                        options.push(<option value="mark">Mark</option>);
+                                                    }
+                                                }
+                                                return options;
+
+                                            }
+
+                                            function CheckCancellation()
+                                            {
+                                                let val = true;
+                                                for ( let x = 0; x < RequestDetails.reviews.length; x++ )
+                                                {
+
+                                                    if ( RequestDetails.reviews[x].request_status === 'cancel' || RequestDetails.reviews[x].request_status === 'mark' || RequestDetails.reviews[x].request_status === 'mark_&_forward' )
+                                                    {
+                                                        val = false;
+                                                    }
+
+                                                }
+                                                return val;
+                                            }
+
+                                            return (
+                                                <>
+                                                    {
+                                                        val.request_status === 'mark_&_forward'
+                                                        ?
+                                                        null
+                                                        :
+                                                        <select name="request_action" id="" className='form-control mr-2 request_action' onChange={OnChangeSelect}>
+                                                            <option value="">Select Option</option>
+                                                            { options }
+                                                        </select>
+                                                    }
+                                                    {
+                                                        RequestAction.request_action === "approve_&_forward" || RequestAction.request_action === "reject_&_forward" || RequestAction.request_action === "mark_&_forward"
+                                                        ?
+                                                        <select name="request_send_to" id="" className='form-control mr-2 request_send_to' onChange={OnChangeSelect}>
+                                                            <option value="">select</option>
+                                                            {
+                                                                Relations.map(
+                                                                    (val, index) => {
+
+                                                                        let option;
+                                                                        if ( val.category === 'all' || val.category.includes('attendance_request') )
+                                                                        {
+                                                                            option = <option value={val.sr} key={index}> {val.name} </option>;
+                                                                        }
+
+                                                                        return option;
+                                                                    }
+                                                                )
+                                                            }
+                                                        </select>
+                                                        :
+                                                        null
+                                                    }
+                                                    {
+                                                        RequestAction.request_action === ''
+                                                        ?
+                                                        null
+                                                        :
+                                                        RequestAction.request_send_to === 0 && ( RequestAction.request_action === "approve_&_forward" || RequestAction.request_action === "reject_&_forward" )
+                                                        ?
+                                                        null
+                                                        :
+                                                        <div onClick={ () => OpenRemarks( val.id, val.request_id ) } className="btn green mr-2">Confirm</div>
+                                                    }
+
+                                                </>
+                                            )
                                         }else
                                         {
-                                            if ( val.request_status === 'sent' )
-                                            {
-                                                Marking( options );
-                                                
-                                                
-                                                {/* options.push(<option value="approve">Approve</option>);
-                                                options.push(<option value="approve_&_forward">Approve & Forward</option>); */}
-                                                options.push(<option value="reject">Reject</option>);
-                                                {/* options.push(<option value="reject_&_forward">Reject & Forward</option>); */}
-                                            }else
-                                            if ( val.request_status === 'approve & forward' )
-                                            {
-                                                Marking( options );
-                                            }else
-                                            if ( val.request_status === 'approve' )
-                                            {
-                                                Marking( options );
-                                                // eslint-disable-next-line no-lone-blocks
-                                                {/* options.push(<option value="approve_&_forward">Approve & Forward</option>); */}
-                                            }else
-                                            if ( val.request_status === 'reject' )
-                                            {
-                                                {/* options.push(<option value="reject_&_forward">Reject & Forward</option>); */}
-                                            }
-
+                                            return false;
                                         }
 
-                                        function Marking( options )
-                                        {
-
-                                            if ( AccessControls.access && CheckCancellation() )
-                                            {
-                                                if ( JSON.parse(AccessControls.access).includes(19) || JSON.parse(AccessControls.access).includes(0) )
-                                                {
-                                                    options.push(<option value="mark">Mark</option>);
-                                                    {/* options.push(<option value="mark_&_forward">Mark & Forward</option>); */}
-                                                }
-                                            }
-                                            return options;
-
-                                        }
-
-                                        function CheckCancellation()
-                                        {
-                                            let val = true;
-                                            for ( let x = 0; x < RequestDetails.reviews.length; x++ )
-                                            {
-
-                                                if ( RequestDetails.reviews[x].request_status === 'cancel' || RequestDetails.reviews[x].request_status === 'mark' || RequestDetails.reviews[x].request_status === 'mark_&_forward' )
-                                                {
-                                                    val = false;
-                                                }
-
-                                            }
-                                            return val;
-                                        }
-
-                                        return (
-                                            <>
-                                                {
-                                                    val.request_status === 'mark_&_forward'
-                                                    ?
-                                                    null
-                                                    :
-                                                    <select name="request_action" id="" className='form-control col-sm-3 mr-2 form-control-sm request_action' onChange={OnChangeSelect}>
-                                                        <option value="">select</option>
-                                                        { options }
-                                                    </select>
-                                                }
-
-                                                {
-                                                    RequestAction.request_action === "approve_&_forward" || RequestAction.request_action === "reject_&_forward" || RequestAction.request_action === "mark_&_forward"
-                                                    ?
-                                                    <select name="request_send_to" id="" className='form-control col-sm-3 mr-2 form-control-sm request_send_to' onChange={OnChangeSelect}>
-                                                        <option value="">select</option>
-                                                        {
-                                                            Relations.map(
-                                                                (val, index) => {
-
-                                                                    let option;
-                                                                    if ( val.category === 'all' || val.category.includes('attendance_request') )
-                                                                    {
-                                                                        option = <option value={val.sr} key={index}> {val.name} </option>;
-                                                                    }
-
-                                                                    return option;
-                                                                }
-                                                            )
-                                                        }
-                                                    </select>
-                                                    :
-                                                    null
-                                                }
-                                                {
-                                                    RequestAction.request_action === ''
-                                                    ?
-                                                    null
-                                                    :
-                                                    RequestAction.request_send_to === 0 && ( RequestAction.request_action === "approve_&_forward" || RequestAction.request_action === "reject_&_forward" )
-                                                    ?
-                                                    null
-                                                    :
-                                                    <div onClick={ () => OpenRemarks( val.id, val.request_id ) } className="btn sendbutton">Send</div>
-                                                }
-
-                                            </>
-                                        )
-                                    }else
-                                    {
-                                        return false;
                                     }
-
-                                }
-                            )
-                            :
-                            null
-                        }
-
-
-
-
-                        <NavLink to='/attendance_request/new' className="btn New_button"> <i class="las la-plus"></i> <p>New</p></NavLink>
-
+                                )
+                                :
+                                null
+                            }
+                            <button className='btn submit' onClick={() => history.push('/attendance_request/new')}>New</button>
+                        </div>
                     </div>
-                </div>
-
-                {
-                    OpenForm
-
+                    <br />
+                    {
+                        OpenForm
                         ?
-
                         <AttRequestForm
                             OnChangeHandler={OnChangeHandler}
                             OnTimeChange={OnTimeChange}
@@ -1062,44 +1062,30 @@ const Attandence_Request = () => {
                             Marking={ Marking }
                             NewAttendance={ NewAttendance }
                         />
-
                         :
-
                         <>
-
-                            <div className="Attandence_Request_breadcrums">
-                                <div className='d-flex'>
-                                    <p>
-                                        Total Requests :
-                                    </p>
-                                    <p className='ml-2' style={{color: 'gray'}} >{RequestList.length}</p>
-                                </div>
-                            </div>
-
                             {
                                 DetailsView
-                                    ?
-                                    <View2
-                                        RequestList={RequestList}
-                                        RequestDetails={RequestDetails}
-                                        NewAttendance={ NewAttendance }
-                                        AccessControls={ AccessControls }
+                                ?
+                                <View2
+                                    RequestList={RequestList}
+                                    RequestDetails={RequestDetails}
+                                    NewAttendance={ NewAttendance }
+                                    AccessControls={ AccessControls }
 
-                                        buttonslideSnapeshot={buttonslideSnapeshot}
-                                        OnTimeChange={ OnTimeChange }
-                                    />
-                                    :
-                                    <View
-                                        View={View}
-                                        RequestList={RequestList}
-                                    />
+                                    buttonslideSnapeshot={buttonslideSnapeshot}
+                                    OnTimeChange={ OnTimeChange }
+                                />
+                                :
+                                <View
+                                    View={View}
+                                    RequestList={RequestList}
+                                />
 
                             }
-
-
                         </>
-                }
-
+                    }
+                </div>
             </div>
         </>
     )
@@ -1107,19 +1093,18 @@ const Attandence_Request = () => {
 export default Attandence_Request;
 
 const View = ({ RequestList }) => {
+    const history = useHistory();
 
     return (
         <>
-            <div>
+            <div className=' popUps'>
 
-                <table className="table table-sm table-hover">
+                <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Request By</th>
-                            <th className='column-lg'>Date</th>
-                            <th>Status</th>
+                            <th>Requested By</th>
+                            <th>Requested Date</th>
+                            <th>Request Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1129,26 +1114,45 @@ const View = ({ RequestList }) => {
 
                                     const d = new Date(val.request_date);
                                     let newBadge = <p className="newBadge dontSHow"></p>;
-
-                                    if ( d )
-                                    {
-                                        if ( new Date().getDate() === d.getDate() )
-                                        {
-                                            newBadge = <p className="newBadge">new</p>;
-                                        }
+                                    if ( d && new Date().getDate() === d.getDate() ) {
+                                        newBadge = <p className="newBadge">new</p>;
                                     }
 
                                     return (
-                                        <tr key={index}>
-                                            { newBadge }
-                                            <td> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> <img className="d-block mx-auto" src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="" /></NavLink>  </td>
-                                            <td className='column-sm'> 
-                                                <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.sender_name}</NavLink>
-                                                <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink>  
+                                        <tr className='pointer' key={index} onClick={() => history.push('/attendance_request/' + val.request_id + '_' + val.id)}>
+                                            <td>
+                                                { newBadge }
+                                                <div className='d-flex align-items-center justify-content-start'>
+                                                    <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="" />
+                                                    <div className='pl-2'>
+                                                        <p className='mb-0'>{val.sender_name}</p>
+                                                        <p className='mb-0 text-secondary'>{val.designation_name}</p>
+                                                    </div>
+                                                </div>
                                             </td>
-                                            <td className='column-lg'> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.sender_name}</NavLink>  </td>
-                                            <td className='column-lg'> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink>  </td>
-                                            <td> <NavLink style={ { backgroundColor: "var(--black)" } } className="text-white px-3 rounded-pill" to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.request_status}</NavLink>  </td>
+                                            <td className='text-secondary'>
+                                                {d ? d.toDateString() : null}<br />
+                                                {val.request_time}
+                                            </td>
+                                            <td>
+                                                {
+                                                    val.request_status === 'sent'
+                                                    ?
+                                                    <div className='status_div text-white sent'>
+                                                        {val.request_status}
+                                                    </div>
+                                                    :
+                                                    val.request_status === 'mark' || val.request_status === 'approved'
+                                                    ?
+                                                    <div className='status_div text-white approved'>
+                                                        {val.request_status}
+                                                    </div>
+                                                    :
+                                                    <div className='status_div text-white rejected'>
+                                                        {val.request_status}
+                                                    </div>
+                                                }
+                                            </td>
                                         </tr>
                                     )
                                 }
@@ -1183,37 +1187,24 @@ const AttRequestForm = (props) => {
     )
 
     return (
-        <form className="Attandence_Request_form" onSubmit={props.Submit}>
+        <form className="Attandence_Request_form popUps" onSubmit={props.Submit}>
 
-            <h5 className="font-weight-bold">Add New Request</h5>
+            <h5 className="font-weight-bold">Create New Request</h5>
 
             <div className="Attandence_Request_form_div">
 
                 <div>
-                    <p>Request type</p>
-                    <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='request_type' required >
-                        <option value="">select</option>
-                        <option value='update'>Update</option>
-                        <option value='insert'>Insert</option>
+                    <p className='font-weight-bold'>Request type</p>
+                    <select id="" className="form-control" onChange={props.OnChangeHandler} name='request_type' required >
+                        <option value="">Select Your Request Type</option>
+                        <option value='update'>I want to correct my timings (Update)</option>
+                        <option value='insert'>I want to add my timings (Insert)</option>
                     </select>
                 </div>
 
                 <div className='my-3'>
-                    <p>Date</p>
-                    {/* <input type="date" onChange={props.OnChangeHandler} className="form-control form-control-sm" name='date' required /> */}
-                    <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='date' required >
-                        <option value={ new Date().toString() }>{ new Date().toDateString() }</option>
-                        {
-                            props.Dates.map(
-                                val => {
-
-                                    return <option value={ new Date(val.date).toString() }>{ new Date(val.date).toDateString() }</option>
-
-                                }
-                            )
-                        }
-                    </select>
-
+                    <p className='font-weight-bold'>Date</p>
+                    <input type="date" className="form-control" onChange={props.OnChangeHandler} name='date' required />
                 </div>
 
                 {
@@ -1222,17 +1213,19 @@ const AttRequestForm = (props) => {
                     null
                     :
                     <>
-                        <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_time_in' onChange={props.onMarkChange} /> <span className="pl-2">Mark time in</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_time_out' onChange={props.onMarkChange} /> <span className="pl-2">Mark time out</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_break_in' onChange={props.onMarkChange} /> <span className="pl-2">Mark break in</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_break_out' onChange={props.onMarkChange} /> <span className="pl-2">Mark break out</span>
+                        <div style={{display: 'grid', gridTemplateColumns: '50fr 50fr', gridGap: 10}} className='my-2'>
+                            <div className="d-flex align-items-center">
+                                <input type="checkbox" name='mark_time_in' onChange={props.onMarkChange} /> <span className="pl-2">Update Shift (Start)</span>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <input type="checkbox" name='mark_time_out' onChange={props.onMarkChange} /> <span className="pl-2">Update Shift (End)</span>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <input type="checkbox" name='mark_break_in' onChange={props.onMarkChange} /> <span className="pl-2">Update Break (Start)</span>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <input type="checkbox" name='mark_break_out' onChange={props.onMarkChange} /> <span className="pl-2">Update Break (End)</span>
+                            </div>
                         </div>
                     </>
                 }
@@ -1240,21 +1233,21 @@ const AttRequestForm = (props) => {
                 {
                     props.Marking.mark_time_in
                     ?
-                    <div>
+                    <div className='my-2'>
                         <div className='d-flex'>
                             <div className='w-100 mr-1'>
-                                <p>Time In</p>
+                                <p className='font-weight-bold'>Current Time (Start)</p>
                                 <input type="time" disabled className="form-control form-control-sm" name="time_in" value={Attendance.time_in} />
                             </div>
                             <div className='w-100 ml-1'>
-                                <p>New Time In</p>
+                                <p className='font-weight-bold'>Enter New Time (Start)</p>
                                 <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_in} name="time_in" id="time_in" />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='time_in' onChange={props.onChangeCheck} />
                             <label for="time_in"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1266,18 +1259,18 @@ const AttRequestForm = (props) => {
                     <div className='my-2'>
                         <div className='d-flex'>
                             <div className='w-100 mr-1'>
-                                <p>Time Out</p>
+                                <p className='font-weight-bold'>Current Time (End)</p>
                                 <input type="time" disabled className="form-control form-control-sm" name="time_out" value={Attendance.time_out} />
                             </div>
                             <div className='w-100 ml-1'>
-                                <p>New Time Out</p>
+                                <p className='font-weight-bold'>Enter New Time (End)</p>
                                 <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_out} name="time_out" id="time_out" />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='time_out' onChange={props.onChangeCheck} />
                             <label for="time_out"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1286,21 +1279,21 @@ const AttRequestForm = (props) => {
                 {
                     props.Marking.mark_break_in
                     ?
-                    <div className='mb-2'>
+                    <div className='my-2'>
                         <div className='d-flex'>
                             <div className='w-100 mr-1'>
-                                <p>Break In</p>
+                                <p className='font-weight-bold'>Current Break (Start)</p>
                                 <input type="time" disabled className="form-control form-control-sm" name="break_in" value={Attendance.break_in} />
                             </div>
                             <div className='w-100 ml-1'>
-                                <p>New Break In</p>
+                                <p className='font-weight-bold'>Enter New Break (Start)</p>
                                 <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_in} name="break_in" id='break_in' />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='break_in' onChange={props.onChangeCheck} />
                             <label for="break_in"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1309,29 +1302,30 @@ const AttRequestForm = (props) => {
                 {
                     props.Marking.mark_break_out
                     ?
-                    <div>
+                    <div className='my-2'>
                         <div className='d-flex'>
                             <div className='w-100 mr-1'>
-                                <p>Break Out</p>
+                                <p className='font-weight-bold'>Current Break (End)</p>
                                 <input type="time" disabled className="form-control form-control-sm" name="break_out" value={Attendance.break_out} />
                             </div>
                             <div className='w-100 ml-1'>
-                                <p>New Break Out</p>
+                                <p className='font-weight-bold'>Enter New Break (End)</p>
                                 <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_out} name="break_out" id='break_out' />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='break_out' onChange={props.onChangeCheck} />
                             <label for="break_out"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
                 }
 
                 <div className='my-3'>
-                    <p>Reason</p>
-                    <textarea onChange={props.OnChangeHandler} value={props.reason} className="form-control form-control-sm" name='reason' required />
+                    <p className='font-weight-bold'>Reason</p>
+                    <textarea onChange={props.OnChangeHandler} value={props.Form.reason} className="form-control form-control-sm" name='reason' minLength={20} required />
+                    <small>{props.Form.reason.trim().length}/20</small>
                 </div>
                 <div>
 
@@ -1339,20 +1333,20 @@ const AttRequestForm = (props) => {
                         props.SnapShot !== null
                             ?
                             <div className='d-flex justify-content-between'>
-                                <p className='mb-2'>Snapshot <sub>(Optional)</sub></p>
+                                <p className='mb-0 font-weight-bold'>Snapshot <sup>(Optional)</sup></p>
                                 <i class="las la-times-circle" onClick={props.closebutton} style={{ fontSize: '20px', cursor: 'pointer' }} ></i>
                             </div>
                             :
                             <div>
-                                <p className='mb-2'>Snapshot <sub>(Optional)</sub></p>
+                                <p className='mb-0 font-weight-bold'>Snapshot <sup>(Optional)</sup></p>
                             </div>
                     }
                     {
                         props.SnapShot !== null
-                            ?
-                            <img src={props.SnapShot} width='100%' alt="snap" />
-                            :
-                            <input type="file" onChange={props.onUploadSnap} />
+                        ?
+                        <img className='border rounded' src={props.SnapShot} width='100%' alt="snap" />
+                        :
+                        <input type="file" className='form-control' onChange={props.onUploadSnap} />
                     }
                 </div>
             </div>
@@ -1360,9 +1354,9 @@ const AttRequestForm = (props) => {
             <div className="Attandence_Request_form_button" >
 
                 <div className=''>
-                    <span>Submit to :
+                    <span className='font-weight-bold'>Submit to
                         <select name="submit_to" onChange={props.OnChangeHandler} id="" className="form-control form-control-sm" required>
-                            <option value=''> select </option>
+                            <option value=''>Select Option</option>
                             {
                                 props.Relations.map(
                                     (val, index) => {
@@ -1381,13 +1375,13 @@ const AttRequestForm = (props) => {
                 </div>
 
                 <div className="d-flex">
-                    <NavLink to="/attendance_request" className="btn btn-sm cancle" type="reset" >Cancel</NavLink>
+                    <NavLink to="/attendance_request" className="btn cancle" type="reset" >Cancel</NavLink>
                     {
                         props.Form.submit_to === ''
                         ?
                         null
                         :
-                        <button className="btn btn-sm submit" type="submit">Submit</button>
+                        <button className="btn submit ml-2" type="submit">Submit</button>
                     }
                 </div>
             </div>
@@ -1398,7 +1392,7 @@ const AttRequestForm = (props) => {
 }
 
 const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange, NewAttendance, AccessControls }) => {
-
+    const history = useHistory();
     const [ Marked, setMarked ] = useState(false);
 
     useEffect(
@@ -1431,11 +1425,10 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
     return (
         <>
 
-            <div className='View2'>
-
+            <div className='View2 popUps'>
                 <div className='View2_left'>
 
-                    <table className="table table-sm table-hover">
+                    <table className="table table-hover">
                         <thead>
                             <tr>
                                 <th>Request By</th>
@@ -1450,9 +1443,15 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                                         const d = new Date(val.request_date);
 
                                         return (
-                                            <tr key={index} >
-                                                <td> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.sender_name}</NavLink>  </td>
-                                                <td> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink>  </td>
+                                            <tr className={val.id == window.location.href.split('/').pop().split('_').pop() ? 'pointer pointer-hover bg-highlight' : 'pointer pointer-hover'} key={index} onClick={() => history.push('/attendance_request/' + val.request_id + '_' + val.id)}>
+                                                <td>
+                                                    {val.sender_name}<br />
+                                                    <span className='text-secondary'>{val.designation_name}</span>
+                                                </td>
+                                                <td className='text-secondary'>
+                                                    {d ? d.toDateString() : null}<br />
+                                                    {val.request_time}
+                                                </td>
                                             </tr>
                                         )
                                     }
@@ -1462,32 +1461,31 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                     </table>
 
                 </div>
-
                 <div className='View2_right'>
                     <div className='top'>
                         <div className='View2_grid' >
                             <div className='View2_image'>
-                                <img src={process.env.REACT_APP_SERVER+'/images/employees/' + RequestDetails.emp_info.emp_image} alt="" />
+                                <img src={process.env.REACT_APP_SERVER+'/images/employees/' + RequestDetails.emp_info.emp_image} alt="employee" className='rounded' />
                             </div>
                             <div>
-                                <h4 className='mb-3'>Employee Details</h4>
+                                <h5 className='mb-3'>Employee Details</h5>
                                 <div className='details'>
-                                    <p className='mr-2'>Name :</p>
+                                    <p className='mr-2'>Name</p>
                                     <p className='ml-2' style={{ color: 'gray' }} >{RequestDetails.emp_info.name}</p>
                                 </div>
 
                                 <div className='details'>
-                                    <p className='mr-2'>Designation :</p>
+                                    <p className='mr-2'>Designation</p>
                                     <p className='ml-2' style={{ color: 'gray' }} >{RequestDetails.emp_info.designation_name}</p>
                                 </div>
 
                                 <div className='details'>
-                                    <p className='mr-2'>Department :</p>
+                                    <p className='mr-2'>Department</p>
                                     <p className='ml-2' style={{ color: 'gray' }} >{RequestDetails.emp_info.department_name}</p>
                                 </div>
 
                                 <div className='details'>
-                                    <p className='mr-2'>Company :</p>
+                                    <p className='mr-2'>Company</p>
                                     <p className='ml-2' style={{ color: 'gray' }} >{RequestDetails.emp_info.company_name}</p>
                                 </div>
 
@@ -1500,39 +1498,32 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
 
                     <div className='bottom mb-4'>
 
-                        <div>
-                            <h4>Request Details</h4>
-                        </div>
+                        <h5>Request Details</h5>
 
                         <div className='details'>
-                            <p>Reason : </p>
-                            <p style={{ color: 'gray' }} >{RequestDetails.request_info.reason}</p>
-                        </div>
-
-                        <div className='details'>
-                            <p>Date : </p>
-                            <p style={{ color: 'gray' }} >{new Date(RequestDetails.request_info.date).toDateString()}</p>
-                        </div>
-
-                        <div className='details'>
-                            <p >Request Type : </p>
+                            <p >Request Type</p>
                             <p style={{ color: 'gray' }} >{RequestDetails.request_info.request_type}</p>
                         </div>
 
                         <div className='details'>
-                            <p>Snapshot : </p>
+                            <p>Requested Date</p>
+                            <p style={{ color: 'gray' }} >{new Date(RequestDetails.reviews[0]?.request_date).toDateString()} at {RequestDetails.reviews[0]?.request_time}</p>
+                        </div>
+
+                        <div className='details'>
+                            <p>Reason</p>
+                            <p style={{ color: 'gray' }} >{RequestDetails.request_info.reason}</p>
+                        </div>
+
+                        <div className='details'>
+                            <p>Snapshot</p>
                             <div>
                                 {
                                     RequestDetails.request_info.snapshot === null
                                         ?
                                         <p style={{ color: 'gray' }}>No Snapshot</p>
                                         :
-                                        <>
-                                            <div className='buttonslideSnapeshot' onClick={buttonslideSnapeshot}>show</div>
-                                            <div className='slideSnapeshot' >
-                                                <img src={RequestDetails.request_info.snapshot} alt="" />
-                                            </div>
-                                        </>
+                                        <div className='buttonslideSnapeshot' onClick={() => buttonslideSnapeshot(RequestDetails.request_info.snapshot)}>show</div>
 
                                 }
                             </div>
@@ -1554,32 +1545,50 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                                     {
                                         content = (
                                             <div className='' key={ index }>
-                                                <p>{ sender.join(' ') } timings : </p>
+                                                <div className='d-flex justify-content-between'>
+                                                    <h5>Requested To Update</h5>
+                                                    <h5>{new Date(RequestDetails.request_info.date).toDateString()}</h5>
+                                                </div>
                                                 <div>
-                                                    <table className="table table-sm">
-
-                                                        <thead>
-                                                            <tr>
-
-                                                                <th> Time in </th>
-                                                                <th> Time out </th>
-                                                                <th> Break in </th>
-                                                                <th> Break out </th>
-
-                                                            </tr>
-                                                        </thead>
-
+                                                    <table className="table mb-0">
                                                         <tbody>
-                                                            <tr>
-
-                                                                <td> { val.time_in } </td>
-                                                                <td> { val.time_out } </td>
-                                                                <td> { val.break_in } </td>
-                                                                <td> { val.break_out } </td>
-
-                                                            </tr>
+                                                            {
+                                                                val.time_in
+                                                                ?
+                                                                <tr>
+                                                                    <th>Shift (Start)</th>
+                                                                    <td>{val.time_in}</td>
+                                                                </tr>
+                                                                :null
+                                                            }
+                                                            {
+                                                                val.time_out
+                                                                ?
+                                                                <tr>
+                                                                    <th>Shift (End)</th>
+                                                                    <td>{val.time_out}</td>
+                                                                </tr>
+                                                                :null
+                                                            }
+                                                            {
+                                                                val.break_in
+                                                                ?
+                                                                <tr>
+                                                                    <th>Break (Start)</th>
+                                                                    <td>{val.break_in}</td>
+                                                                </tr>
+                                                                :null
+                                                            }
+                                                            {
+                                                                val.break_out
+                                                                ?
+                                                                <tr>
+                                                                    <th>Break (End)</th>
+                                                                    <td>{val.break_out}</td>
+                                                                </tr>
+                                                                :null
+                                                            }
                                                         </tbody>
-
                                                     </table>
                                                 </div>
                                             </div>
@@ -1591,116 +1600,12 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                                 }
                             )
                         }
-
-                        {
-                            Marked
-                            ?
-                            null
-                            :
-                            AccessControls.access && RequestDetails.reviews.length > 0 //&& RequestDetails.reviews[0].request_by !== parseInt( localStorage.getItem('EmpID') )
-                            ?
-                            JSON.parse(AccessControls.access).includes(19) || JSON.parse(AccessControls.access).includes(0)
-                            ?
-                            <div className='details'>
-                                <p>Your timings : </p>
-                                <div>
-                                    <table className="table table-sm">
-
-                                        <tbody>
-                                            <tr>
-
-                                                <td className="text-left">
-                                                    <input type='time' name="time_in" id="time_in_check" value={ NewAttendance.time_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
-                                                    <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="time_in_check" /> <span> Set to null </span>
-                                                    </div>
-                                                </td>
-                                                <td className="text-left">
-                                                    <input type='time' name="time_out" id="time_out_check" value={ NewAttendance.time_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
-                                                    <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="time_out_check" /> <span> Set to null </span>
-                                                    </div>
-                                                </td>
-                                                <td className="text-left">
-                                                    <input type='time' name="break_in" id="break_in_check" value={ NewAttendance.break_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
-                                                    <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="break_in_check" /> <span> Set to null </span>
-                                                    </div>
-                                                </td>
-                                                <td className="text-left">
-                                                    <input type='time' name="break_out" id="break_out_check" value={ NewAttendance.break_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
-                                                    <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="break_out_check" /> <span> Set to null </span>
-                                                    </div>
-                                                </td>
-                                                <td className="text-left">
-                                                    <select name="" id="record_status" defaultValue='Present'>
-                                                        <option value="Present">Present</option>
-                                                        <option value="Late">Late</option>
-                                                        <option value="Absent">Absent</option>
-                                                        <option value="Holiday">Holiday</option>
-                                                        <option value="OFF">OFF</option>
-                                                    </select>
-                                                </td>
-
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-                            :
-                            null
-                            :
-                            null
-                        }
-
-                        {
-                            RequestDetails.request_info.marked_time_in === null &&
-                            RequestDetails.request_info.marked_time_out === null &&
-                            RequestDetails.request_info.marked_break_in === null &&
-                            RequestDetails.request_info.marked_break_out === null
-                            ?
-                            null
-                            :
-                            <div className='details'>
-                                <p>Marked timings : </p>
-                                <div>
-                                    <table className="table table-sm">
-
-                                        <thead>
-                                            <tr>
-
-                                                <th> Time in </th>
-                                                <th> Time out </th>
-                                                <th> Break in </th>
-                                                <th> Break out </th>
-
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-
-                                                <td> { RequestDetails.request_info.marked_time_in } </td>
-                                                <td> { RequestDetails.request_info.marked_time_out } </td>
-                                                <td> { RequestDetails.request_info.marked_break_in } </td>
-                                                <td> { RequestDetails.request_info.marked_break_out } </td>
-
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                            </div>
-                        }
-
                     </div>
 
                     <div className='bottom'>
 
                         <div>
-                            <h4>Review / Comments</h4>
+                            <h5>Review / Comments</h5>
                         </div>
 
 
@@ -1732,28 +1637,28 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                                                 <div>
 
                                                     <div className='details' key={index}>
-                                                        <small className='mr-2 d-block'>From : </small>
-                                                        <small className='ml-2 d-block' style={{ color: 'gray' }} >{val.sender_name}</small>
+                                                        <p className='mb-0 mr-2 d-block'>From : </p>
+                                                        <p className='mb-0 ml-2 d-block' style={{ color: 'gray' }} >{val.sender_name}</p>
                                                     </div>
 
                                                     <div className='details' key={index}>
-                                                        <small className='mr-2 d-block'>To : </small>
-                                                        <small className='ml-2 d-block' style={{ color: 'gray' }} >{val.receiver_name}</small>
+                                                        <p className='mb-0 mr-2 d-block'>To : </p>
+                                                        <p className='mb-0 ml-2 d-block' style={{ color: 'gray' }} >{val.receiver_name}</p>
                                                     </div>
 
                                                     <div className='details'>
-                                                        <small className='mr-2 d-block'> { receiver.join(' ') } remarks : </small>
-                                                        <small className='ml-2 d-block' style={{ color: 'gray' }} >{val.remarks === null ? 'No remrks yet' : val.remarks}</small>
+                                                        <p className='mb-0 mr-2 d-block'> { receiver.join(' ') } remarks : </p>
+                                                        <p className='mb-0 ml-2 d-block' style={{ color: 'gray' }} >{val.remarks === null ? 'No remrks yet' : val.remarks}</p>
                                                     </div>
                                                 </div>
                                                 <div>
 
                                                     <div>
-                                                        <p>{new Date(val.request_date).toDateString()}</p>
+                                                        <p>{val.request_time}, {new Date(val.request_date).toDateString()}</p>
                                                     </div>
 
-                                                    <div className='statusbox'>
-                                                        <p>{val.request_status}</p>
+                                                    <div className='status_div text-white sent'>
+                                                        {val.request_status}
                                                     </div>
 
                                                 </div>

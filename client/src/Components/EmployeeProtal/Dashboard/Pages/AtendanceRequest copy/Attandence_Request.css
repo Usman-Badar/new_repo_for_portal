@@ -4,7 +4,6 @@
 
 .Attandence_Request .Attandence_Request_Top {
     width: 100%;
-    padding: 20px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -86,42 +85,28 @@
     color: gray;
 }
 
-.Attandence_Request .table {
-    margin: 0 auto;
-    width: 90%;
-}
-
 .Attandence_Request .table tr {
     position: relative;
+    font-size: 13px;
 }
 
 .Attandence_Request .table tr .newBadge {
     position: absolute;
-    background-color: var(--c-green);
-    color: #fff;
+    background-image: linear-gradient(to right, #92fe9d 0%, #00c9ff 100%);
     padding: 0 10px;
     border-radius: 10px;
-    font-size: 10px;
     top: calc( 50% - 10px);
-    right: 0;
+    right: 100px;
+    font-weight: normal;
 }
 
 .Attandence_Request .table tr .newBadge.dontSHow {
     padding: 0;
 }
 
-.Attandence_Request .table th {
-    text-align: center;
-    font-size: 11px;
-    padding: 5px 0;
-}
-
 .Attandence_Request .table td {
     vertical-align: middle;
-    text-align: center;
-    font-size: 11px;
     font-weight: bold;
-    padding: 5px 0;
 }
 
 .Attandence_Request .table td a {
@@ -138,10 +123,9 @@
 .Attandence_Request_form {
     border-radius: 5px;
     padding: 20px;
-    width: 40%;
+    width: 50%;
     margin: 0 auto;
-    background-color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border: 1px solid lightgray;
 }
 
 .Attandence_Request_form .Attandence_Request_form_div {
@@ -159,27 +143,19 @@
     font-size: 12px;
 }
 
+.bg-highlight {
+    background-color: var(--lightgray);
+}
+
 .Attandence_Request_form .Attandence_Request_form_button {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    align-items: center;
+    align-items: flex-end;
 }
 
 .Attandence_Request_form .Attandence_Request_form_button span {
     font-size: small;
-}
-
-.Attandence_Request_form .Attandence_Request_form_button .submit {
-    background-color: var(--blue);
-    color: #fff;
-    margin-left: 10px;
-}
-
-.Attandence_Request_form .Attandence_Request_form_button .cancle {
-    background-color: var(--orange);
-    color: #fff;
-    margin-right: 10px;
 }
 
 .Attandence_Request_form input,
@@ -194,19 +170,19 @@
 .View2 {
     display: grid;
     grid-template-columns: 30fr 70fr;
+    grid-gap: 20px;
 }
 
 .View2 .View2_right {
-    margin-right: 20px;
     position: relative;
 }
 
 .View2 .View2_right .top {
-    background-color: #fff;
+    background-color: var(--lightgray);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 1.95px 1.95px 2.6px rgb(0 0 0 / 15%);
+    border: 1px solid lightgray;
 }
 
 .View2 .View2_right .top .View2_grid {
@@ -257,10 +233,10 @@
 }
 
 .View2 .View2_right .bottom {
-    background-color: #fff;
+    background-color: var(--lightgray);
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 1.95px 1.95px 2.6px rgb(0 0 0 / 15%);
+    border: 1px solid lightgray;
 }
 
 .View2 .View2_right .bottom p {
@@ -284,7 +260,6 @@
 .View2 .View2_right .bottom .ReviewsGrid .statusbox p {
     margin-bottom: 0;
     color: #fff;
-    font-size: 12px;
 }
 
 .View2 .View2_right .View2_right_cancle {

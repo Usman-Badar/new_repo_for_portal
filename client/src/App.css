@@ -280,22 +280,19 @@ input[type='checkbox'] {
 }
 
 .btn.cancle {
-    background-color: var(--orange);
+    background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
 }
 
 .btn.submit {
-    background-color: var(--blue);
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
 }
 
 .btn.green {
-    background-color: var(--dark-c-green);
-    color: #fff !important;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
 }
 
 .btn.light {
-    border: 1px solid #d3d3d3;
-    background-color: #f8f9fa;
-    box-shadow: inset 1px 1px 1px 0 #ccdbe8, inset -1px -1px 1px 1px hsla(0, 0%, 100%, .5);
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }
 
 [contenteditable] {
@@ -371,7 +368,7 @@ input,
 select,
 textarea {
     border: 1px solid rgb(212, 212, 212) !important;
-    border-radius: 5px !important;
+    border-radius: 2px !important;
     box-shadow: rgb(204, 219, 232) 1px 1px 1px 0px inset, rgba(255, 255, 255, 0.5) -1px -1px 1px 1px inset !important;
     background-color: rgb(240, 240, 240, 0.5) !important;
     font-family: Roboto-Light;
@@ -587,19 +584,19 @@ td {
 }
 
 .status_div.authorized {
-    background: var(--dark-c-green);
+    background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
 }
 
 .status_div.sent {
-    background: var(--dark-black);
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
 }
 
 .status_div.accepted {
-    background: var(--success);
+    background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
 }
 
 .status_div.rejected {
-    background: var(--orange);
+    background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
 }
 
 .status_div.canceled,
@@ -609,7 +606,7 @@ td {
 }
 
 .status_div.waiting_for_approval {
-    background: var(--warning);
+    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
     color: #fff !important;
 }
 
@@ -619,7 +616,7 @@ td {
 }
 
 .status_div.approved {
-    background: var(--success);
+    background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
     color: #fff !important;
 }
 

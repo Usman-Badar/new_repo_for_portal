@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
+const moment = require('moment');
 const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNotification;
 
 router.post('/applyshortleave', (req, res) => {
@@ -29,6 +30,43 @@ router.post('/applyshortleave', (req, res) => {
                     SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has sent you a short leave on portal, " + result[0][0].name + " will leave at around " + ShortLeaveTime + " on " + ShortLeaveDate + " under reason '" + ShortLeaveReason + "'. Kindly view", result[1][0].cell );
                 }
     
+            }
+        );
+    }
+    function insertAttendanceRecord(leave_id)
+    {
+        db.query(
+            "SELECT id FROM emp_attendance WHERE emp_date = ?;",
+            [ShortLeaveDate],
+            ( err, rslt ) => {
+                if( err ) {
+                    res.send('err');
+                    res.end();
+                }else {
+                    if (rslt.length > 0) {
+                        db.query(
+                            "UPDATE emp_attendance SET status = 'Applied For Short Leave', leave_ref = ? WHERE id = ?;",
+                            [`short/${leave_id}`, rslt[0].id],
+                            ( err ) => {
+                                if( err ) {
+                                    res.send('err');
+                                    res.end();
+                                }
+                            }
+                        );
+                    }else {
+                        db.query(
+                            "INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?);",
+                            [RequestedBy, 'Applied For Short Leave', ShortLeaveDate, `short/${leave_id}`],
+                            ( err ) => {
+                                if( err ) {
+                                    res.send('err');
+                                    res.end();
+                                }
+                            }
+                        );
+                    }
+                }
             }
         );
     }
@@ -73,6 +111,7 @@ router.post('/applyshortleave', (req, res) => {
                                                     }else
                                                     {
                                                         notification();
+                                                        insertAttendanceRecord(rslt.insertId);
                                                         connection.release();
                                                         res.send(rslt);
                                                         res.end();
@@ -278,80 +317,147 @@ router.post('/applyleave', (req, res) => {
 
     let attName = null;
 
-    db.query(
-        "INSERT INTO emp_leave_applications (unique_id, leave_type, availed, one_day_leave, leave_purpose, leave_from, leave_to, days, attachement) VALUES (?,?,?,?,?,?,?,?,?)",
-        [code, leaveType, Availed, parseInt(onDayLeave), Purpose, parseInt(onDayLeave) === 1 ? leaveDate : leaveFrom, leaveTo === '' ? null : leaveTo, parseInt(NoOfDays), attName],
-        (err, rslt) => {
-
-            if (err) {
-
-                console.log(err)
-                res.status(500).send(err);
-                res.end();
-
-            } else {
-
-                db.query(
-                    "SELECT leave_id FROM emp_leave_applications WHERE unique_id = ?",
-                    [ code ],
-                    (err, rslt) => {
-
-                        if (err) {
-
-                            console.log(err)
-                            res.status(500).send(err);
-                            res.end();
-
-                        } else {
-                            db.query(
-                                "INSERT INTO emp_leave_application_refs (leave_id, requested_by, requested_date, requested_time, request_status, received_by) VALUES (?,?,?,?,?,?)",
-                                [rslt[0].leave_id, RequestedBy, d, d.toTimeString(), 'sent', RequestedTo],
-                                (err, rslt) => {
-
-                                    if (err) {
-
-                                        console.log(err)
-                                        res.status(500).send(err);
-                                        res.end();
-
-                                    } else {
-
-                                        if (AttachementName !== '') {
-
-                                            const { AttachementFile } = req.files;
-
-                                            attName = AttachementName + '.' + (AttachementFile.mimetype.split('/')[1]).toString();
-
-                                            AttachementFile.mv('client/public/images/leave_attatchments/' + attName, (err) => {
-
-                                                if (!err) {
-                                                    
-                                                    res.send(rslt);
-                                                    res.end();
-                                                }
-
-                                            });
-
-                                        } else {
-
-                                            res.send(rslt);
-                                            res.end();
+    db.getConnection(
+        ( err, connection ) => {
+            connection.beginTransaction(
+                ( err ) => {
+                    if ( err )
+                    {
+                        connection.rollback(() => {console.log(err);connection.release();});
+                    }else
+                    {
+                        connection.query(
+                            "INSERT INTO emp_leave_applications (unique_id, leave_type, availed, one_day_leave, leave_purpose, leave_from, leave_to, days, attachement) VALUES (?,?,?,?,?,?,?,?,?)",
+                            [code, leaveType, Availed, parseInt(onDayLeave), Purpose, parseInt(onDayLeave) === 1 ? leaveDate : leaveFrom, leaveTo === '' ? null : leaveTo, parseInt(NoOfDays), attName],
+                            ( err ) => {
+                                if( err )
+                                {
+                                    connection.rollback(() => {console.log(err);connection.release();});
+                                    res.send( err );
+                                    res.end();
+                                }else {
+                                    connection.query(
+                                        "SELECT leave_id FROM emp_leave_applications WHERE unique_id = ?",
+                                        [ code ],
+                                        ( err, rslt ) => {
+                                            if( err )
+                                            {
+                                                connection.rollback(() => {console.log(err);connection.release();});
+                                                res.send( err );
+                                                res.end();
+                                            }else {
+                                                connection.query(
+                                                    "INSERT INTO emp_leave_application_refs (leave_id, requested_by, requested_date, requested_time, request_status, received_by) VALUES (?,?,?,?,?,?)",
+                                                    [rslt[0].leave_id, RequestedBy, d, d.toTimeString(), 'sent', RequestedTo],
+                                                    ( err ) => {
+                                                        if( err )
+                                                        {
+                                                            connection.rollback(() => {console.log(err);connection.release();});
+                                                            res.send( err );
+                                                            res.end();
+                                                        }else {
+                                                            if (AttachementName !== '') {
+                                                                const { AttachementFile } = req.files;
+                                                                attName = AttachementName + '.' + (AttachementFile.mimetype.split('/')[1]).toString();
+                                                                AttachementFile.mv('client/images/leave_attachments/' + attName, (err) => {
+                                                                    if (!err) {
+                                                                        commitChanges(connection, rslt);
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                commitChanges(connection, rslt);
+                                                            }
+                                                        }
+                                                    }
+                                                );
+                                            }
                                         }
-
-                                    }
-
+                                    );
                                 }
-                            )
-
-                        }
-
+                            }
+                        );
                     }
-                )
-
-            }
-
+                }
+            )
         }
     )
+    const commitChanges = (connection, rslt) => {
+        connection.commit((err) => {
+            if ( err ) {
+                connection.rollback(() => {console.log(err);connection.release();});
+                res.send('err');
+                res.end();
+            }else
+            {
+                connection.release();
+                insertAttendanceRecords(rslt[0].leave_id);
+                res.send(rslt);
+                res.end();
+            }
+        });
+    }
+    const getDates = (startDate, stopDate) => {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push( moment(currentDate).format('YYYY-MM-DD') )
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
+    const datesArr = parseInt(onDayLeave) === 1 ? [leaveDate] : getDates(leaveFrom, leaveTo);
+    const limit = datesArr.length;
+    const count = [];
+    function insertAttendanceRecords(leave_id)
+    {
+        db.query(
+            "SELECT id FROM emp_attendance WHERE emp_date = ?;",
+            [datesArr[count.length]],
+            ( err, rslt ) => {
+                if( err ) {
+                    res.send('err');
+                    res.end();
+                }else {
+                    if (rslt.length > 0) {
+                        db.query(
+                            "UPDATE emp_attendance SET status = 'Applied For Leave', leave_ref = ? WHERE id = ?;",
+                            [`leave/${leave_id}`, rslt[0].id],
+                            ( err ) => {
+                                if( err ) {
+                                    res.send('err');
+                                    res.end();
+                                }else {
+                                    checkAllRecordsInserted(leave_id);   
+                                }
+                            }
+                        );
+                    }else {
+                        db.query(
+                            "INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?);",
+                            [RequestedBy, 'Applied For Leave', datesArr[count.length], `leave/${leave_id}`],
+                            ( err ) => {
+                                if( err ) {
+                                    res.send('err');
+                                    res.end();
+                                }else {
+                                    checkAllRecordsInserted(leave_id);   
+                                }
+                            }
+                        );
+                    }
+                }
+            }
+        );
+    }
+    function checkAllRecordsInserted(leave_id) {
+        if ( ( count.length + 1 ) === limit ) {
+            console.log("Records inserted!!");
+        }else {
+            count.push(1);
+            insertAttendanceRecords(leave_id);
+        }
+    }
 
 });
 
@@ -630,238 +736,105 @@ router.post('/updateleavestatustowaiting', (req, res) => {
 });
 
 router.post('/markshortleave', (req, res) => {
-
-    const { empID, leave_id } = req.body;
+    const { requestedBy, leaveDate, empID } = req.body;
 
     db.query(
-        'SELECT \
-        employees.emp_id,\
-        employees.time_in, \
-        employees.time_out, \
-        emp_short_leave_application_refs.*, \
-        emp_short_leave_applications.* \
-        FROM employees \
-        RIGHT OUTER JOIN emp_short_leave_application_refs ON emp_short_leave_application_refs.requested_by = employees.emp_id \
-        LEFT OUTER JOIN emp_short_leave_applications ON emp_short_leave_applications.leave_id = emp_short_leave_application_refs.leave_id  \
-        WHERE emp_short_leave_applications.leave_id = ' + leave_id,
-        (err, rslt) => {
-
-            if (err) {
-
-                res.status(500).send(err);
+        "SELECT id FROM emp_attendance WHERE emp_date = ?;",
+        [leaveDate],
+        ( err, rslt ) => {
+            if( err ) {
+                res.send('err');
                 res.end();
-
-            } else {
-
-                let leaveFor = rslt[0].leave_for;
-                let date = rslt[0].date;
-
+            }else {
                 db.query(
-                    'SELECT time_in FROM emp_attendance WHERE emp_id = ' + empID + " AND emp_date = ?",
-                    [date],
-                    (err, results) => {
-
-                        if (err) {
-
-                            res.status(500).send(err);
+                    "UPDATE emp_attendance SET status = 'leave' WHERE id = ?;",
+                    [rslt[0].id],
+                    ( err ) => {
+                        if( err ) {
+                            res.send('err');
                             res.end();
-
-                        } else {
-                            let q = null;
-
-                            if (results[0]) {
-
-                                q = {
-                                    sql: "UPDATE emp_attendance SET status = 'leave', leave_ref = '" + 'short/' + leave_id + "' WHERE emp_id = " + empID + " AND emp_attendance.emp_date = ?",
-                                    values: [date]
-                                };
-
-                                db.query(
-                                    q,
-                                    [date],
-                                    (err) => {
-
-                                        if (err) {
-
-                                            res.status(500).send(err);
-                                            res.end();
-
-                                        } else {
-
-                                            res.send('success');
-                                            res.end();
-
-                                        }
-
-                                    }
-                                )
-
-                            } else {
-
-                                q = {
-                                    sql: 'INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?)',
-                                    values: [empID, 'leave', date, 'short/' + leave_id]
+                        }else {
+                            db.query(
+                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                [ requestedBy, empID ],
+                                ( err, rslt ) => {
+                                    SendWhatsappNotification(null, null, "Hi " + rslt[0][0].name, "Your short leave request has been authorized successfully.", rslt[0][0].cell);
+                                    SendWhatsappNotification(null, null, "Hi " + rslt[1][0].name, "You have successfully authorized a short leave request.", rslt[1][0].cell );
+                                    res.send('success');
+                                    res.end();
                                 }
-
-                                db.query(
-                                    q,
-                                    (err) => {
-
-                                        if (err) {
-
-                                            res.status(500).send(err);
-                                            res.end();
-
-                                        } else {
-
-                                            res.send('success');
-                                            res.end();
-
-                                        }
-
-                                    }
-                                )
-                            }
-
+                            );
                         }
-
                     }
-                )
-
+                );
             }
-
         }
-    )
-
+    );
 });
 
 router.post('/markleave', (req, res) => {
 
-    const { empID, leaveID, leaveFrom, oneDayLeave, dates } = req.body;
-
-    let leaveDates = JSON.parse(dates);
-    let date = new Date( leaveFrom ).toISOString().slice(0, 10).replace('T', ' ');
-
-    if (parseInt(oneDayLeave) === 1) {
-
-        let q1 = db.query(
-            'SELECT id FROM emp_attendance WHERE emp_date = ? AND emp_id = ?;',
-            [ date, empID ],
-            (err, rslt) => {
-
-                console.log( 'q1: ', q1.sql );
-
-                if (err) {
-
-                    console.log(err);
-                    res.status(500).send(err);
+    const { requestedBy, empID, leaveID, leaveFrom, oneDayLeave, leaveTo } = req.body;
+    const getDates = (startDate, stopDate) => {
+        var dateArray = [];
+        var currentDate = moment(startDate);
+        var stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateArray.push( moment(currentDate).format('YYYY-MM-DD') )
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+        return dateArray;
+    }
+    const datesArr = parseInt(oneDayLeave) === 1 ? [leaveFrom] : getDates(leaveFrom, leaveTo);
+    const limit = datesArr.length;
+    const count = [];
+    function updateAttendanceRecords(leave_id)
+    {
+        db.query(
+            "SELECT id FROM emp_attendance WHERE emp_date = ?;",
+            [datesArr[count.length]],
+            ( err, rslt ) => {
+                if( err ) {
+                    res.send('err');
                     res.end();
-
-                } else {
-
-                    let q = "";
-                    let parameters = [];
-                    if ( rslt[0] )
-                    {
-                        q = "UPDATE emp_attendance SET status = ?, leave_ref = ? WHERE emp_id = ? AND emp_date = ?;";
-                        parameters = [ 'leave', 'leave/' + leaveID, empID, date ];
-                    }else
-                    {
-                        q = "INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?);";
-                        parameters = [empID, 'leave', date, 'leave/' + leaveID];
-                    }
-                    
-                    let q2 = db.query(
-                        q,
-                        parameters,
-                        (err) => {
-            
-                            console.log( 'q2: ', q2.sql );
-                            if (err) {
-            
-                                console.log(err);
-                                res.status(500).send(err);
+                }else {
+                    db.query(
+                        "UPDATE emp_attendance SET status = 'leave' WHERE id = ?;",
+                        [rslt[0].id],
+                        ( err ) => {
+                            if( err ) {
+                                res.send('err');
                                 res.end();
-            
-                            } else {
-            
-                                res.send('success');
-                                res.end();
-            
+                            }else {
+                                checkAllRecordsUpdated(leave_id);   
                             }
-            
                         }
                     );
-
                 }
-
             }
         );
-
-    } else {
-
-        for (let x = 0; x < leaveDates.length; x++) 
-        {
-
-            let date2 = new Date( leaveDates[x] ).toISOString().slice(0, 10).replace('T', ' ');
-            let q3 = db.query(
-                'SELECT id FROM emp_attendance WHERE emp_date = ? AND emp_id = ?;',
-                [ date2, empID ],
-                (err, rslt) => {
-    
-                    console.log( 'q3: ', q3.sql );
-                    if (err) {
-    
-                        console.log(err);
-                        res.status(500).send(err);
-                        res.end();
-    
-                    } else {
-    
-                        let q = "";
-                        let parameters = [];
-                        if ( rslt[0] )
-                        {
-                            q = "UPDATE emp_attendance SET status = ?, leave_ref = ? WHERE emp_id = ? AND emp_date = ?;";
-                            parameters = [ 'leave', 'leave/' + leaveID, empID, date2 ];
-                        }else
-                        {
-                            q = "INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?);";
-                            parameters = [empID, 'leave', date2, 'leave/' + leaveID];
-                        }
-                        
-                        let q4 = db.query(
-                            q,
-                            parameters,
-                            (err) => {
-                
-                                console.log( 'q4: ', q4.sql );
-                                if (err) {
-                
-                                    console.log(err);
-                                    res.status(500).send(err);
-                                    res.end();
-                
-                                }
-                
-                            }
-                        );
-    
-                    }
-    
+    }
+    function checkAllRecordsUpdated(leave_id) {
+        if ( ( count.length + 1 ) === limit ) {
+            console.log("Records updated!!");
+            db.query(
+                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                [ requestedBy, empID ],
+                ( err, rslt ) => {
+                    SendWhatsappNotification(null, null, "Hi " + rslt[0][0].name, "Your leave request has been authorized successfully.", rslt[0][0].cell);
+                    SendWhatsappNotification(null, null, "Hi " + rslt[1][0].name, "You have successfully authorized a leave request.", rslt[1][0].cell );
+                    res.send('success');
+                    res.end();
                 }
             );
-
-            if ( ( x + 1 ) === leaveDates.length )
-            {
-                res.send('success');
-                res.end();
-            }
-
+        }else {
+            count.push(1);
+            updateAttendanceRecords(leave_id);
         }
-
     }
-
+    updateAttendanceRecords(leaveID);
 });
 
 router.post('/getmyleavedetails', (req, res) => {
@@ -969,10 +942,40 @@ router.post('/cancel_leave', (req, res) => {
     {
         leave_type = 'short leave';
         q = "UPDATE emp_short_leave_application_refs SET cancel_date = ?, cancel_time = ?, remarks = ?, request_status = ? WHERE leave_id = ?;";
+        function updateAttendanceRecords(id)
+        {
+            db.query(
+                "UPDATE emp_attendance SET status = ? WHERE status = ? AND leave_ref = ? AND emp_date < CURDATE();" +
+                "DELETE FROM emp_attendance WHERE status = ? AND leave_ref = ? AND emp_date >= CURDATE();",
+                ['Short Leave Cancelled', 'Applied For Short Leave', `short/${id}`, 'Applied For Short Leave', `short/${id}`],
+                ( err ) => {
+                    if( err ) {
+                        res.send('err');
+                        res.end();
+                    }
+                }
+            );
+        }
+        updateAttendanceRecords(leave_id);
     }else
     {
         leave_type = 'leave';
         q = "UPDATE emp_leave_application_refs SET cancel_date = ?, cancel_time = ?, remarks = ?, request_status = ? WHERE leave_id = ?;";
+        function updateAttendanceRecords(id)
+        {
+            db.query(
+                "UPDATE emp_attendance SET status = ? WHERE status = ? AND leave_ref = ? AND emp_date < CURDATE();" +
+                "DELETE FROM emp_attendance WHERE status = ? AND leave_ref = ? AND emp_date >= CURDATE();",
+                ['Leave Cancelled', 'Applied For Leave', `leave/${id}`, 'Applied For Leave', `leave/${id}`],
+                ( err ) => {
+                    if( err ) {
+                        res.send('err');
+                        res.end();
+                    }
+                }
+            );
+        }
+        updateAttendanceRecords(leave_id);
     }
 
     db.query(
@@ -1029,10 +1032,40 @@ router.post('/reject_leave', (req, res) => {
     {
         leave_type = 'short leave';
         q = "UPDATE emp_short_leave_application_refs SET approved_by = ?, approval_date = ?, approval_time = ?, comments = ?, request_status = ? WHERE leave_id = ?;";
+        function updateAttendanceRecords(id)
+        {
+            db.query(
+                "UPDATE emp_attendance SET status = ? WHERE status = ? AND leave_ref = ? AND emp_date < CURDATE();" +
+                "DELETE FROM emp_attendance WHERE status = ? AND leave_ref = ? AND emp_date >= CURDATE();",
+                ['Short Leave Rejected', 'Applied For Short Leave', `short/${id}`, 'Applied For Short Leave', `short/${id}`],
+                ( err ) => {
+                    if( err ) {
+                        res.send('err');
+                        res.end();
+                    }
+                }
+            );
+        }
+        updateAttendanceRecords(leave_id);
     }else
     {
         leave_type = 'leave';
         q = "UPDATE emp_leave_application_refs SET approved_by = ?, approval_date = ?, approval_time = ?, comments = ?, request_status = ? WHERE leave_id = ?;";
+        function updateAttendanceRecords(id)
+        {
+            db.query(
+                "UPDATE emp_attendance SET status = ? WHERE status = ? AND leave_ref = ? AND emp_date < CURDATE();" +
+                "DELETE FROM emp_attendance WHERE status = ? AND leave_ref = ? AND emp_date >= CURDATE();",
+                ['Leave Rejected', 'Applied For Leave', `leave/${id}`, 'Applied For Leave', `leave/${id}`],
+                ( err ) => {
+                    if( err ) {
+                        res.send('err');
+                        res.end();
+                    }
+                }
+            );
+        }
+        updateAttendanceRecords(leave_id);
     }
 
     db.query(

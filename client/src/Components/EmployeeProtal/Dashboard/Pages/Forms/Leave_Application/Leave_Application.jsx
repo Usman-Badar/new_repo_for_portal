@@ -1,8 +1,9 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import './Leave_Application.css';
-import Menu from '../../../../../UI/Menu/Menu';
+import JSAlert from 'js-alert';
 import EmployeeLeaveApplicationForm from './Component/Employee_Leave_Application_Form/Employee_Leave_Application_Form';
 
 import axios from '../../../../../../axios';
@@ -16,12 +17,14 @@ import Mail from '../../../../../UI/Mail/Mail';
 import { useHistory } from 'react-router-dom';
 import printJS from 'print-js';
 import Model from '../../../../../UI/Modal/Modal';
+import LoadingImg from '../../../../../../images/loadingIcons/icons8-iphone-spinner.gif';
 
 const Leave_Application = () => {
 
     const moment = require('moment');
     const history = useHistory();
     const Relations = useSelector((state) => state.EmpAuth.Relations);
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     const [ModalShow, setModalShow] = useState(false);
     const [ModalContent, setModalContent] = useState();
@@ -166,8 +169,30 @@ const Leave_Application = () => {
     const OnTakeShortLeave = (e) => {
 
         e.preventDefault();
+        if ( ShortLeaveData.ShortLeaveTime === '' || ShortLeaveData.ShortLeaveDate === '' || ShortLeaveData.ShortLeaveReason === '' ) {
+            JSAlert.alert("Please fill all the fields", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+        if (days[new Date(ShortLeaveData.ShortLeaveDate).getDay()] === 'Sunday') {
+            JSAlert.alert("Sunday could not be selected as a date.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+        if (ShortLeaveData.ShortLeaveReason.trim().length < 30) {
+            JSAlert.alert("Reason should be greater than 30 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+
         setStartLoading(true);
         $('fieldset').prop('disabled', true);
+        setModalContent(
+            <>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                    <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                    <p className='mb-0 mt-2'>Please Wait....</p>
+                </div>
+            </>
+        );
+        setModalShow(true);
 
         const Data = new FormData();
         Data.append('ShortLeaveTime', ShortLeaveData.ShortLeaveTime);
@@ -178,39 +203,19 @@ const Leave_Application = () => {
         Data.append('RequestedTo', ShortLeaveData.submit_to);
 
         axios.post('/applyshortleave', Data).then(() => {
-
+            JSAlert.alert("Request has been sent successfully.", "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
             setStartLoading(false);
-            toast.dark('Request Submitted', {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
+            setModalContent(<></>);
+            setModalShow(false);
             $('fieldset').prop('disabled', false);
             $('button[type=reset]').trigger('click');
-            $('#mail_form').trigger('click');
-
         }).catch(err => {
-
             $('fieldset').prop('disabled', false);
             setStartLoading(false);
-            toast.dark(err.toString(), {
-                position: 'bottom-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            console.log(err);
-
+            setModalContent(<></>);
+            setModalShow(false);
+            JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 4);
         });
-
     }
 
     const GetHistorySorted = (type) => {
@@ -391,6 +396,12 @@ const Leave_Application = () => {
     const cancelRequest = (e, obj) => {
 
         e.preventDefault();
+        const remarks = e.target['remarks'].value.trim();
+        if (remarks.length < 10) {
+            JSAlert.alert("Remarks should be greater than 10 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+
         const objects = {
             leave_id: obj.leave_id,
             remarks: e.target['remarks'].value,
@@ -398,36 +409,45 @@ const Leave_Application = () => {
             submit_by: obj.requested_by,
             submit_to: obj.received_by
         }
+        setModalContent(
+            <>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                    <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                    <p className='mb-0 mt-2'>Please Wait....</p>
+                </div>
+            </>
+        )
+
         axios.post('/cancel_leave', objects).then(() => {
-
-            ShowHistory();
-            $('#mail_form').trigger('click');
-
+            JSAlert.alert(`Request has been cancelled.`, "Success", JSAlert.Icons.Information).dismissIn(1000 * 2);
+            setTimeout(() => {
+                ShowHistory();
+            }, 2000);
         }).catch(
             err => {
-
-                console.log(err);
-
+                JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                ShowHideModal();
+                cancelLeave(obj, remarks);
             }
         )
 
     }
 
-    const cancelLeave = (obj) => {
+    const cancelLeave = (obj, remarks) => {
 
         ShowHideModal();
         setModalContent(
             <>
-                <p>
+                <h6>
                     Do You Want To Cancel This Request?
-                </p>
-                <div className="up py-2 text-right">
-                    <button className="px-3 btn btn-sm green" onClick={() => openClose('down', 'up')}>Yes</button>
+                </h6>
+                <div className="up text-right">
+                    <button className="px-3 btn green" onClick={() => openClose('down', 'up')}>Yes</button>
                 </div>
-                <div className="down py-2 text-right">
+                <div className="down text-right">
                     <form onSubmit={(e) => cancelRequest(e, obj)}>
-                        <textarea className="form-control mb-3" name="remarks" minLength={10} placeholder="Add Remarks" required></textarea>
-                        <button type='submit' className="px-3 btn btn-sm green">Send</button>
+                        <textarea className="form-control" name="remarks" minLength={10} defaultValue={remarks?remarks:''} placeholder="Your remarks..." required></textarea>
+                        <button type='submit' className="px-3 btn green mt-3">Confirm</button>
                     </form>
                 </div>
             </>
@@ -455,43 +475,62 @@ const Leave_Application = () => {
     const rejectRequest = (e, obj) => {
 
         e.preventDefault();
+        const remarks = e.target['remarks'].value.trim();
+
+        if (remarks.length < 10) {
+            JSAlert.alert("Remarks should be greater than 10 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+
         const objects = {
             leave_id: obj.leave_id,
             remarks: e.target['remarks'].value,
             type: history.location.pathname.split('/').pop().split('_').pop(),
             emp_id: localStorage.getItem('EmpID'),
-            submit_by: obj.requested_by
+            submit_by: obj.requested_by,
+            leaveFrom: obj.leave_from,
+            leaveTo: obj.leave_to,
+            date: obj.date,
+            oneDayLeave: obj.one_day_leave
         }
+        setModalContent(
+            <>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                    <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                    <p className='mb-0 mt-2'>Please Wait....</p>
+                </div>
+            </>
+        )
         axios.post('/reject_leave', objects).then(() => {
-
-            ShowHistory();
-            $('#mail_form').trigger('click');
-
+            JSAlert.alert(`Request has been rejected.`, "Success", JSAlert.Icons.Information).dismissIn(1000 * 2);
+            setTimeout(() => {
+                ShowHistory();
+            }, 2000);
         }).catch(
             err => {
-
-                console.log(err);
-
+                JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                ShowHideModal();
+                rejectLeave(obj, remarks);
             }
         )
 
     }
 
-    const rejectLeave = (obj) => {
+    const rejectLeave = (obj, remarks) => {
 
         ShowHideModal();
         setModalContent(
             <>
-                <p>
+                <h6>
                     Do You Want To Reject This Request?
-                </p>
-                <div className="up py-2 text-right">
-                    <button className="px-3 btn btn-sm btn-primary" onClick={() => openClose('down', 'up')}>Yes</button>
+                </h6>
+                <div className="up text-right">
+                    <button className="px-3 btn submit" onClick={() => openClose('down', 'up')}>Yes</button>
                 </div>
-                <div className="down py-2 text-right">
+                <div className="down text-right">
                     <form onSubmit={(e) => rejectRequest(e, obj)}>
-                        <textarea className="form-control" name="remarks" minLength={10} placeholder="Add Remarks" required></textarea>
-                        <button type='submit' className="px-3 btn btn-sm btn-primary">Send</button>
+                        <textarea className="form-control" name="remarks" defaultValue={remarks?remarks:''} minLength={10} placeholder="Your remarks...." required></textarea>
+                        <button type='submit' className="px-3 btn cancle mt-3">Confirm</button>
                     </form>
                 </div>
             </>
@@ -500,8 +539,20 @@ const Leave_Application = () => {
     }
 
     const approveRequest = (e, obj) => {
-
         e.preventDefault();
+        const remarks = e.target['remarks'].value.trim();
+        const submit_to = e.target['submit_to'].value;
+
+        if (remarks.length < 10) {
+            JSAlert.alert("Remarks should be greater than 10 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+
+        if (submit_to === '') {
+            JSAlert.alert("[Submit To] field should not be empty.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+
         const objects = {
             leave_id: obj.leave_id,
             remarks: e.target['remarks'].value,
@@ -510,34 +561,43 @@ const Leave_Application = () => {
             submit_to: e.target['submit_to'].value,
             submit_by: obj.requested_by,
         }
+        setModalContent(
+            <>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                    <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                    <p className='mb-0 mt-2'>Please Wait....</p>
+                </div>
+            </>
+        )
         axios.post('/approve_leave', objects).then(() => {
-
-            ShowHistory();
-
+            JSAlert.alert(`Request has been approved and forwarded for authorization.`, "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
+            setTimeout(() => {
+                ShowHistory();
+            }, 2000);
         }).catch(
             err => {
-
-                console.log(err);
-
+                JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                ShowHideModal();
+                approveLeave(obj, remarks);
             }
         )
 
     }
 
-    const approveLeave = (obj) => {
+    const approveLeave = (obj, remarks) => {
 
         ShowHideModal();
         setModalContent(
             <>
-                <p>
+                <h6>
                     Do You Want To Approve This Request?
-                </p>
-                <div className="up py-2 text-right">
-                    <button className="px-3 btn btn-sm btn-primary" onClick={() => openClose('down', 'up')}>Yes</button>
+                </h6>
+                <div className="up text-right">
+                    <button className="px-3 btn submit" onClick={() => openClose('down', 'up')}>Yes</button>
                 </div>
-                <div className="down py-2 text-right">
+                <div className="down text-right">
                     <form onSubmit={(e) => approveRequest(e, obj)}>
-                        <textarea className="form-control" name="remarks" minLength={10} placeholder="Add Remarks" required></textarea>
+                        <textarea className="form-control" name="remarks" defaultValue={remarks ? remarks : ''} minLength={10} placeholder="Your remarks..." required />
                         <select name="submit_to" id="" className="form-control my-3" required>
                             <option value=''> submit to </option>
                             {
@@ -553,7 +613,7 @@ const Leave_Application = () => {
                                 )
                             }
                         </select>
-                        <button type='submit' className="px-3 btn btn-sm btn-primary">Send</button>
+                        <button type='submit' className="px-3 btn submit">Forward</button>
                     </form>
                 </div>
             </>
@@ -564,6 +624,11 @@ const Leave_Application = () => {
     const authorizeRequest = (e, obj) => {
 
         e.preventDefault();
+        const remarks = e.target['remarks'].value.trim();
+        if (remarks.length < 10) {
+            JSAlert.alert("Remarks should be greater than 10 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
         const objects = {
             leave_id: obj.leave_id,
             remarks: e.target['remarks'].value,
@@ -571,17 +636,26 @@ const Leave_Application = () => {
             emp_id: localStorage.getItem('EmpID'),
             submit_by: obj.requested_by
         }
+        setModalContent(
+            <>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                    <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                    <p className='mb-0 mt-2'>Please Wait....</p>
+                </div>
+            </>
+        )
         axios.post('/authorize_leave', objects).then(() => {
-
             if (history.location.pathname.split('/').pop().split('_').pop() === 'short') {
                 const Data2 = new FormData();
-                Data2.append('empID', obj.requested_by);
+                Data2.append('requestedBy', obj.requested_by);
+                Data2.append('empID', localStorage.getItem("EmpID"));
                 Data2.append('leave_id', obj.leave_id);
+                Data2.append('leaveDate', obj.date);
                 axios.post('/markshortleave', Data2).then(() => {
-
-                    ShowHistory();
-
-                    $('#mail_form').trigger('click');
+                    JSAlert.alert(`Request has been authorized.`, "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
+                    setTimeout(() => {
+                        ShowHistory();
+                    }, 2000);
                     const Data2 = new FormData();
                     Data2.append('eventID', 2);
                     Data2.append('whatsapp', true);
@@ -589,42 +663,25 @@ const Leave_Application = () => {
                     Data2.append('senderID', localStorage.getItem('EmpID'));
                     Data2.append('Title', localStorage.getItem('name'));
                     Data2.append('NotificationBody', localStorage.getItem('name') + ' has authorize your short leave on the portal');
-                    axios.post('/newnotification', Data2).then(() => {
-
-                    })
-
+                    axios.post('/newnotification', Data2)
                 }).catch(err => {
-
-                    console.log(err);
-
+                    JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                    ShowHideModal();
+                    authorizeLeave(obj, remarks);
                 });
             } else {
-                let dates = null;
-
-                function getDates(startDate, stopDate) {
-                    var dateArray = [];
-                    var currentDate = moment(startDate);
-                    var stopDate = moment(stopDate);
-                    while (currentDate <= stopDate) {
-                        dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
-                        currentDate = moment(currentDate).add(1, 'days');
-                    }
-                    return dateArray;
-                }
-
-                dates = getDates(obj.leave_from === null ? '0000-00-00' : new Date(obj.leave_from), obj.leave_to === null ? '0000-00-00' : new Date(obj.leave_to));
-
                 const Data2 = new FormData();
-                Data2.append('empID', obj.requested_by);
+                Data2.append('requestedBy', obj.requested_by);
+                Data2.append('empID', localStorage.getItem("EmpID"));
                 Data2.append('leaveID', obj.leave_id);
-                Data2.append('leaveFrom', moment(obj.leave_from).add(1, 'days'));
+                Data2.append('leaveFrom', obj.leave_from);
+                Data2.append('leaveTo', obj.leave_to);
                 Data2.append('oneDayLeave', obj.one_day_leave);
-                Data2.append('dates', JSON.stringify(dates));
                 axios.post('/markleave', Data2).then(() => {
-
-                    ShowHistory();
-
-                    $('#mail_form').trigger('click');
+                    JSAlert.alert(`Request has been authorized.`, "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
+                    setTimeout(() => {
+                        ShowHistory();
+                    }, 2000);
                     const Data2 = new FormData();
                     Data2.append('eventID', 2);
                     Data2.append('whatsapp', true);
@@ -632,45 +689,38 @@ const Leave_Application = () => {
                     Data2.append('senderID', localStorage.getItem('EmpID'));
                     Data2.append('Title', localStorage.getItem('name'));
                     Data2.append('NotificationBody', localStorage.getItem('name') + ' has authorize your leave request on the portal');
-                    axios.post('/newnotification', Data2).then(() => {
-
-                        // axios.post('/sendmail', Data2).then(() => {
-
-                        // })
-                    })
-
+                    axios.post('/newnotification', Data2)
                 }).catch(err => {
-
-                    console.log(err);
-
+                    JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                    ShowHideModal();
+                    authorizeLeave(obj, remarks);
                 });
             }
-
         }).catch(
             err => {
-
-                console.log(err);
-
+                JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                ShowHideModal();
+                authorizeLeave(obj, remarks);
             }
         )
 
     }
 
-    const authorizeLeave = (obj) => {
+    const authorizeLeave = (obj, remarks) => {
 
         ShowHideModal();
         setModalContent(
             <>
-                <p>
+                <h6>
                     Do You Want To Authorize This Request?
-                </p>
-                <div className="up py-2 text-right">
-                    <button className="px-3 btn btn-sm btn-primary" onClick={() => openClose('down', 'up')}>Yes</button>
+                </h6>
+                <div className="up text-right">
+                    <button className="px-3 btn submit" onClick={() => openClose('down', 'up')}>Yes</button>
                 </div>
-                <div className="down py-2 text-right">
+                <div className="down text-right">
                     <form onSubmit={(e) => authorizeRequest(e, obj)}>
-                        <textarea className="form-control" name="remarks" minLength={10} placeholder="Add Remarks" required></textarea>
-                        <button type='submit' className="px-3 btn btn-sm btn-primary">Send</button>
+                        <textarea className="form-control" name="remarks" defaultValue={remarks?remarks:''} minLength={10} placeholder="Your remarks..." required></textarea>
+                        <button type='submit' className="px-3 btn submit mt-3">Authorize</button>
                     </form>
                 </div>
             </>
@@ -722,11 +772,11 @@ const Leave_Application = () => {
 
                                     <div className="grid_container">
                                         <div>
-                                            <label className='mb-0'>Leave Time</label>
+                                            <label className='mb-0'>Your Leaving Time</label>
                                             <input onChange={onChangeHandler} required name="ShortLeaveTime" type="time" className="form-control mb-2" />
                                         </div>
                                         <div>
-                                            <label className='mb-0'>Leave End Time (optional)</label>
+                                            <label className='mb-0'>Your Again Arrival Time <sup>(optional)</sup></label>
                                             <input onChange={onChangeHandler} name="ShortLeaveEndTime" disabled={ ShortLeaveData.ShortLeaveTime === '' } type="time" min={ ShortLeaveData.ShortLeaveTime } className="form-control mb-2" />
                                         </div>
                                         <div>
@@ -736,7 +786,8 @@ const Leave_Application = () => {
                                     </div>
                                     <div>
                                         <label className='mb-0'>Reason For Leave</label>
-                                        <textarea onChange={onChangeHandler} required name="ShortLeaveReason" minLength="30" style={{ height: '80px' }} placeholder="Describe your reason in detail" className="form-control mb-2" />
+                                        <textarea onChange={onChangeHandler} required name="ShortLeaveReason" minLength="30" style={{ height: '80px' }} placeholder="Describe your reason in detail" className="form-control" />
+                                        <small className='mb-3'>{ShortLeaveData.ShortLeaveReason.trim().length}/30</small>
                                     </div>
                                     
                                     <label className='mb-0'>Submit Application To</label>
@@ -1047,7 +1098,7 @@ const PrevLeaveApp = ({ Type, PrevLeave, printLeave, cancelLeave, approveLeave, 
                                 <tr>
 
                                     <td>
-                                        {PrevLeave.comments ? PrevLeave.comments : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}
+                                        {PrevLeave.comments ? PrevLeave.comments : 'No Remarks'}
                                     </td>
 
                                 </tr>
@@ -1091,7 +1142,7 @@ const PrevLeaveApp = ({ Type, PrevLeave, printLeave, cancelLeave, approveLeave, 
                                             <tr>
 
                                                 <td>
-                                                    {PrevLeave.comments2 ? PrevLeave.comments2 : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}
+                                                    {PrevLeave.comments2 ? PrevLeave.comments2 : 'No Remarks'}
                                                 </td>
 
                                             </tr>
@@ -1143,7 +1194,7 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
     return (
         <>
 
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3 className="heading">
                     Recent Leaves
                     <sub>Requests</sub>
@@ -1155,8 +1206,6 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                 </select>
 
             </div>
-
-            <hr />
 
             <div className='showBigScreen'>
                 {
@@ -1170,10 +1219,9 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
 
                                     <th className='border-top-0'>Sr.No</th>
                                     <th className='border-top-0'>Description</th>
-                                    <th className='border-top-0'>Leave Type</th>
                                     <th className='border-top-0'>Request Date & Time</th>
-                                    <th className='border-top-0'>Leave Date</th>
                                     <th className='border-top-0'>Status</th>
+                                    <th className='border-top-0'>Leave Date</th>
 
                                 </tr>
                             </thead>
@@ -1187,60 +1235,33 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                                 <tr style={ { cursor: "pointer" } } title='Double Click' onDoubleClick={() => openLeave(index, val.date ? "short" : 'leave', 'recent')}>
 
                                                     <td>{index + 1}</td>
-                                                    <td style={{ width: "40%" }}>
+                                                    <td>
                                                         {
                                                             parseInt(val.requested_by) !== parseInt(localStorage.getItem('EmpID'))
-                                                                ?
-                                                                <>
-                                                                    <b>{val.name}</b>
-                                                                    <br />
-                                                                </>
-                                                                : null
+                                                            ?
+                                                            <>
+                                                                <b>{val.name}</b>
+                                                                <br />
+                                                            </>
+                                                            : null
                                                         }
                                                         {val.leave_purpose}
-                                                    </td>
-                                                    <td>
-                                                        {val.leave_type}
                                                     </td>
                                                     <td>
                                                         {new Date(val.requested_date).toDateString()} <br />
                                                         at {val.requested_time}
                                                     </td>
-                                                    {
-                                                        val.date
-                                                            ?
-                                                            <td>
-                                                                {new Date(val.date).toDateString()} <br />
-                                                                at {val.leave_time}
-                                                            </td>
-                                                            :
-                                                            <td>
-                                                                {new Date(val.leave_from).toDateString()}
-                                                                <br />
-                                                                {
-                                                                    val.leave_to
-                                                                        ?
-                                                                        <>
-                                                                            To
-                                                                            <br />
-                                                                        </>
-                                                                        : null
-                                                                }
-                                                                {val.leave_to ? new Date(val.leave_to).toDateString() : ''}
-                                                            </td>
-                                                    }
-
                                                     <td>
                                                         {
                                                             val.request_status === 'Accepted'
                                                             ?
-                                                            <div className={ val.authorized_to == localStorage.getItem('EmpID') ? 'status_div text-white rejected' : 'status_div text-white accepted' }>
-                                                                { val.authorized_to == localStorage.getItem('EmpID') || val.requested_by == localStorage.getItem('EmpID') ? "Pending For Authorization" : val.request_status }
+                                                            <div className={ val.authorized_to == localStorage.getItem('EmpID') ? 'status_div text-white waiting_for_approval' : 'status_div text-white accepted' }>
+                                                                { val.authorized_to == localStorage.getItem('EmpID') ? "Pending For Authorization" : val.request_status }
                                                             </div>
                                                             :
                                                             val.request_status === 'sent'
                                                             ?
-                                                            <div className={ val.received_by == localStorage.getItem('EmpID') ? 'status_div text-white rejected' : 'status_div text-white sent' }>
+                                                            <div className={ val.received_by == localStorage.getItem('EmpID') ? 'status_div text-white waiting_for_approval' : 'status_div text-white sent' }>
                                                                 { val.received_by == localStorage.getItem('EmpID') ? "Pending For Approval" : val.request_status }
                                                             </div>
                                                             :
@@ -1266,51 +1287,31 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                                                 {val.request_status}
                                                             </div>
                                                         }
-                                                        <div className="d-flex align-items-start justify-content-between leave_status_date">
-                                                            <b>
-                                                                Reuqest Date:
-                                                            </b>
-                                                            <div>
-                                                                <span>
-                                                                    {new Date(val.requested_date).toDateString()}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        {
-                                                            val.date
-                                                            ?
-                                                            <div className="d-flex align-items-start justify-content-between leave_status_date">
-                                                                <b>
-                                                                    Leave Date/Time:
-                                                                </b>
-                                                                <div>
-                                                                    <span>
-                                                                        {new Date(val.date).toDateString()}
-                                                                    </span>
-                                                                    <br />
-                                                                    <span>
-                                                                        {val.leave_time}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            :
-                                                            <div className="d-flex align-items-start justify-content-between leave_status_date">
-                                                                <b>
-                                                                    Leave {val.leave_to ? "Dates" : "Date" }:
-                                                                </b>
-                                                                <div>
-                                                                    <span>
-                                                                        {new Date(val.leave_from).toDateString()}
-                                                                    </span>
-                                                                    {val.leave_to ? <br /> : null}
-                                                                    <span>
-                                                                        {val.leave_to ? new Date(val.leave_to).toDateString() : ''}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        }
                                                     </td>
+                                                    {
+                                                        val.date
+                                                            ?
+                                                            <td>
+                                                                {new Date(val.date).toDateString()} <br />
+                                                                at {val.leave_time}
+                                                            </td>
+                                                            :
+                                                            <td>
+                                                                {new Date(val.leave_from).toDateString()}
+                                                                <br />
+                                                                {
+                                                                    val.leave_to
+                                                                        ?
+                                                                        <>
+                                                                            To
+                                                                            <br />
+                                                                        </>
+                                                                        : null
+                                                                }
+                                                                {val.leave_to ? new Date(val.leave_to).toDateString() : ''}
+                                                            </td>
+                                                    }
+
                                                 </tr>
                                             )
 
@@ -1334,8 +1335,8 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                     <th>Sr.No</th>
                                     <th>Description</th>
                                     <th>Request Date & Time</th>
-                                    <th>Leave Date</th>
                                     <th>Status</th>
+                                    <th>Leave Date</th>
 
                                 </tr>
                             </thead>
@@ -1364,6 +1365,44 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                                         {new Date(val.requested_date).toDateString()} <br />
                                                         at {val.requested_time}
                                                     </td>
+
+                                                    <td>
+                                                        {
+                                                            val.request_status === 'Accepted'
+                                                            ?
+                                                            <div className={ val.authorized_to == localStorage.getItem('EmpID') ? 'status_div text-white waiting_for_approval' : 'status_div text-white accepted' }>
+                                                                { val.authorized_to == localStorage.getItem('EmpID') ? "Pending For Authorization" : val.request_status }
+                                                            </div>
+                                                            :
+                                                            val.request_status === 'sent'
+                                                            ?
+                                                            <div className={ val.received_by == localStorage.getItem('EmpID') ? 'status_div text-white waiting_for_approval' : 'status_div text-white sent' }>
+                                                                { val.received_by == localStorage.getItem('EmpID') ? "Pending For Approval" : val.request_status }
+                                                            </div>
+                                                            :
+                                                            val.request_status === 'rejected'
+                                                            ?
+                                                            <div className='status_div text-white rejected'>
+                                                                {val.request_status}
+                                                            </div>
+                                                            :
+                                                            val.request_status === 'Authorized'
+                                                            ?
+                                                            <div className='status_div authorized text-white' >
+                                                                {val.request_status}
+                                                            </div>
+                                                            :
+                                                            val.request_status === 'canceled'
+                                                            ?
+                                                            <div className='status_div canceled'>
+                                                                {val.request_status}
+                                                            </div>
+                                                            :
+                                                            <div className='status_div waiting_for_approval'>
+                                                                {val.request_status}
+                                                            </div>
+                                                        }
+                                                    </td>
                                                     {
                                                         val.date
                                                         ?
@@ -1387,88 +1426,6 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                                             {val.leave_to ? new Date(val.leave_to).toDateString() : ''}
                                                         </td>
                                                     }
-
-                                                    <td>
-                                                        {
-                                                            val.request_status === 'Accepted'
-                                                            ?
-                                                            <div className={ val.authorized_to == localStorage.getItem('EmpID') ? 'status_div text-white rejected' : 'status_div text-white accepted' }>
-                                                                { val.authorized_to == localStorage.getItem('EmpID') || val.requested_by == localStorage.getItem('EmpID') ? "Pending For Authorization" : val.request_status }
-                                                            </div>
-                                                            :
-                                                            val.request_status === 'sent'
-                                                            ?
-                                                            <div className={ val.received_by == localStorage.getItem('EmpID') ? 'status_div text-white rejected' : 'status_div text-white sent' }>
-                                                                { val.received_by == localStorage.getItem('EmpID') ? "Pending For Approval" : val.request_status }
-                                                            </div>
-                                                            :
-                                                            val.request_status === 'rejected'
-                                                            ?
-                                                            <div className='status_div text-white rejected'>
-                                                                {val.request_status}
-                                                            </div>
-                                                            :
-                                                            val.request_status === 'Authorized'
-                                                            ?
-                                                            <div className='status_div authorized text-white' >
-                                                                {val.request_status}
-                                                            </div>
-                                                            :
-                                                            val.request_status === 'canceled'
-                                                            ?
-                                                            <div className='status_div canceled'>
-                                                                {val.request_status}
-                                                            </div>
-                                                            :
-                                                            <div className='status_div canceled'>
-                                                                {val.request_status}
-                                                            </div>
-                                                        }
-                                                        <div className="d-flex align-items-start justify-content-between leave_status_date">
-                                                            <b>
-                                                                Reuqest Date:
-                                                            </b>
-                                                            <div>
-                                                                <span>
-                                                                    {new Date(val.requested_date).toDateString()}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-
-                                                        {
-                                                            val.date
-                                                            ?
-                                                            <div className="d-flex align-items-start justify-content-between leave_status_date">
-                                                                <b>
-                                                                    Leave Date/Time:
-                                                                </b>
-                                                                <div>
-                                                                    <span>
-                                                                        {new Date(val.date).toDateString()}
-                                                                    </span>
-                                                                    <br />
-                                                                    <span>
-                                                                        {val.leave_time}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            :
-                                                            <div className="d-flex align-items-start justify-content-between leave_status_date">
-                                                                <b>
-                                                                    Leave {val.leave_to ? "Dates" : "Date" }:
-                                                                </b>
-                                                                <div>
-                                                                    <span>
-                                                                        {new Date(val.leave_from).toDateString()}
-                                                                    </span>
-                                                                    {val.leave_to ? <br /> : null}
-                                                                    <span>
-                                                                        {val.leave_to ? new Date(val.leave_to).toDateString() : ''}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    </td>
                                                 </tr>
                                             )
 

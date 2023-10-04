@@ -1,8 +1,7 @@
 .Leave_container{
-    width: 90%;
+    width: 95%;
     margin: auto;
     transition: .5s;
-    font-family: Roboto-Light;
 }
 
 .Leave_container .grid_container {
@@ -45,10 +44,6 @@
 .History .table td,
 .History .table th {
     font-size: 12px;
-}
-
-.History .table td b {
-    font-family: Roboto;
 }
 
 .History .checkmark__circle {

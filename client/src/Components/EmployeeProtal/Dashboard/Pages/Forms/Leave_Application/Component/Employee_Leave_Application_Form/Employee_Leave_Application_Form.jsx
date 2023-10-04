@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import './Employee_Leave_Application_Form.css';
 import axios from '../../../../../../../../axios';
-
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Mail from '../../../../../../../UI/Mail/Mail';
-import moment from 'moment';
+import JSAlert from 'js-alert';
+import Modal from '../../../../../../../UI/Modal/Modal';
+import LoadingImg from '../../../../../../../../images/loadingIcons/icons8-iphone-spinner.gif';
 
 const Employee_Leave_Application_Form = ( props ) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
     const [ LeaveData, setLeaveData ] = useState(
         {
@@ -26,6 +26,8 @@ const Employee_Leave_Application_Form = ( props ) => {
             message: ""
         }
     );
+    const [ showModal, setShowModal ] = useState(false);
+    const [ modalContent, setModalContent ] = useState(<></>);
     const [ LeavesAvailed, setLeavesAvailed ] = useState(0);
     const [ Attachement, setAttachement ] = useState(
         {
@@ -112,7 +114,6 @@ const Employee_Leave_Application_Form = ( props ) => {
         {
             if ( name === 'leaveType' && value === 'Sick' )
             {
-                // $("input[name='attachement']").attr('required', true);
                 $('.Medical_Prove').show(500);
             }else
             {
@@ -121,19 +122,9 @@ const Employee_Leave_Application_Form = ( props ) => {
             }
         }
 
-        // if ( name === 'leaveType' )
-        // {
-        //     if ( value === 'Privilege' ) document.getElementsByName("leaveFrom")[0].setAttribute('min', moment(moment(), "DD-MM-YYYY").add(14, 'days').toISOString().split('T')[0]);
-        //     if ( value === 'Casual' )
-        //     {
-        //         document.getElementsByName("leaveFrom")[0].setAttribute('min', moment(moment(), "DD-MM-YYYY").toISOString().split('T')[0]);
-        //         document.getElementsByName("leaveTo")[0].setAttribute('max', moment(moment(), "DD-MM-YYYY").add(3, 'days').toISOString().split('T')[0]);
-        //     }
-        // }
-
         const val = {
             ...LeaveData,
-            [name]: value
+            [name]: value.trim()
         }
 
         setLeaveData( val );
@@ -226,63 +217,55 @@ const Employee_Leave_Application_Form = ( props ) => {
     }
 
     const onTakeLeave = ( e ) => {
-
         e.preventDefault();
         let noError = false;
 
         if ( LeaveData.leaveType === '' )
         {
-
-            toast.dark( 'Please Fill all The Fields' , {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-                    
+            JSAlert.alert("Please fill all the fields", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
             noError = true;
-
         }
-
-            if ( $('input[name=OnDayLeave]').prop('checked') )
+        if ( $('input[name=OnDayLeave]').prop('checked') )
+        {
+            if ( LeaveData.leaveDate === '' )
             {
-                if ( LeaveData.leaveDate === '' )
-                {
-                    toast.dark( 'Please Fill all The Date Fields' , {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-
-                    noError = true;
-                }
-            }else
-            {
-                if ( LeaveData.leaveFrom === '' || LeaveData.leaveTo === '' )
-                {
-                    toast.dark( 'Please Fill all The Date Fields' , {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-
-                    noError = true;
-                }
+                JSAlert.alert("Please fill the date field", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+                noError = true;
             }
+        }else
+        {
+            if ( LeaveData.leaveFrom === '' || LeaveData.leaveTo === '' )
+            {
+                JSAlert.alert("Please fill the date fields", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+                noError = true;
+            }
+            if ( LeaveData.leaveTo < LeaveData.leaveFrom )
+            {
+                JSAlert.alert("[Leave To] date should be greater than [leave from] date.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+                noError = true;
+            }
+        }
+        if ( days[new Date(LeaveData.leaveDate).getDay()] === 'Sunday' || days[new Date(LeaveData.leaveFrom).getDay()] === 'Sunday' || days[new Date(LeaveData.leaveTo).getDay()] === 'Sunday' )
+        {
+            JSAlert.alert("Sunday could not be selected as a date.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            noError = true;
+        }
+        if (LeaveData.Purpose.trim().length < 30) {
+            JSAlert.alert("Reason should be greater than 30 characters.", "Warning", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            noError = true;
+        }
 
         if ( !noError )
         {
+            setModalContent(
+                <>
+                    <div className='d-flex flex-column justify-content-center align-items-center'>
+                        <img src={LoadingImg} width="50" height="50" alt="Loading..." />
+                        <p className='mb-0 mt-2'>Please Wait....</p>
+                    </div>
+                </>
+            );
+            setShowModal(true);
             const Data = new FormData();
             Data.append('RequestedBy', localStorage.getItem('EmpID'));
             Data.append('RequestedTo', LeaveData.submit_to);
@@ -298,16 +281,9 @@ const Employee_Leave_Application_Form = ( props ) => {
             Data.append('Availed', $('input[type=number]').val());
     
             axios.post('/applyleave', Data).then( () => {
-
-                toast.dark( 'Request Submitted' , {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                setModalContent(<></>);
+                setShowModal(false);
+                JSAlert.alert("Request has been sent successfully", "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
                 $('button[type=reset]').trigger('click');
                 $('.Medical_Prove').hide(500);
                 $('#mail_form').trigger('click');
@@ -337,27 +313,14 @@ const Employee_Leave_Application_Form = ( props ) => {
                 Data2.append('senderID', localStorage.getItem('EmpID'));
                 Data2.append('Title', localStorage.getItem('name'));
                 Data2.append('NotificationBody', localStorage.getItem('name') + ' has applied apply for a leave on the portal');
-                axios.post('/newnotification', Data2).then(() => {
-                    
-                })
+                axios.post('/newnotification', Data2)
     
             } ).catch( err => {
-    
-                toast.dark( err.toString() , {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-    
-            } )
+                setModalContent(<></>);
+                setShowModal(false);
+                JSAlert.alert(`Something went wrong: ${err}`, "Error Found", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+            });
         }
-            
-        
-
     }
 
     const onDayLeave = () => {
@@ -390,9 +353,8 @@ const Employee_Leave_Application_Form = ( props ) => {
 
     return (
         <>
-            <Mail
-                data={ MailData }
-            />
+            <Mail data={ MailData } />
+            <Modal show={ showModal } Hide={ () => setShowModal(!showModal) } content={modalContent} />
             <div className={ props.LeaveForm ? "Employee_Leave_Application_Form" : "Employee_Leave_Application_Form availedform" }>
                 <div className="Application_Form" style={ { animationDelay: ( 0 + '.' + 1 ).toString() + 's' } }>
                     <form onSubmit={ onTakeLeave }>
@@ -490,6 +452,7 @@ const Employee_Leave_Application_Form = ( props ) => {
                         
                         <label className='mb-0 mt-3'>Reason To Avail Leave</label>
                         <textarea name="Purpose" onChange={ onChangeHandler } required minLength='30' placeholder="Describe your reason in detail..." style={{height: '80px'}} className="form-control" />
+                        <small>{LeaveData.Purpose.length}/30</small>
                         
                         <div className="Medical_Prove">
                             <div className="Leave_Purpose_Heading" >

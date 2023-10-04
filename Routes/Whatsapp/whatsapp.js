@@ -640,7 +640,7 @@ function sendNotifications( client, message, msg, q, dont_send )
 
 const SendWhatsappNotification = ( receiverID, senderID, Title, NotificationBody, cell ) => {
     const code = '92';
-    const message = `*Employee Portal*\n\n${Title}\n_${NotificationBody}_\n...............................\nhttps://.portal.seaboard.pk`;
+    const message = `*Employee Portal*\n\n${Title}\n_${NotificationBody}_\n...............................\nhttps://portal.seaboard.pk`;
     let standardNumber;
     if ( cell.includes('+') ) {
         standardNumber = cell.replace('+', '') + '@c.us';

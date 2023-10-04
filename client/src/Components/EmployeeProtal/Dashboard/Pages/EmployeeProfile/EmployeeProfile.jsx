@@ -1077,7 +1077,6 @@ const Attendance = () => {
                         {
                             Sheet.map(
                                 (val, index) => {
-
                                     let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                     let d = new Date(val.emp_date);
                                     let dayName = days[d.getDay()];
@@ -1098,8 +1097,16 @@ const Attendance = () => {
                                             <td>{val.break_in}</td>
                                             <td>{val.break_out}</td>
                                             <td>{val.time_out}</td>
-                                            <td>{ val.time_in === null || val.time_out === null ? '---' : <>{hours}:{minutes}</> }</td>
-                                            <td>{val.status}</td>
+                                            <td>{val.time_in === null || val.time_out === null ? '---' : <>{hours}:{minutes}</>}</td>
+                                            <td>
+                                                {
+                                                    val.status === 'leave' && val.leave_ref.includes('short/')
+                                                    ?
+                                                    "Short Leave"
+                                                    :
+                                                    val.status
+                                                }
+                                            </td>
 
                                         </tr>
                                     )

@@ -8,7 +8,7 @@
 
 .Dashboard .Dashboard_main_content {
     width: 100%;
-    background-color: var( --lightgray);
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     transition: .3s;
 }
 
