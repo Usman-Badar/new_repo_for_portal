@@ -126,7 +126,7 @@ router.post('/getemptimein', ( req, res ) => {
 
 router.post('/getallattendancerequests', ( req, res ) => {
 
-    const { emp_id } = req.body;
+    const { emp_id, correction } = req.body;
 
     db.query(
         "SELECT  \
@@ -140,7 +140,8 @@ router.post('/getallattendancerequests', ( req, res ) => {
         LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
         LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
         LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
-        WHERE request_by = ? OR request_to = ? OR act_by = ? ORDER BY tbl_attendance_request_refs.id DESC LIMIT 10;",
+        LEFT OUTER JOIN tbl_attendance_requests ON tbl_attendance_request_refs.request_id = tbl_attendance_requests.id \
+        WHERE (request_by = ? OR request_to = ? OR act_by = ?) AND " + (correction || parseInt(correction) === 1 ? " tbl_attendance_requests.latitude IS NULL" : "tbl_attendance_requests.latitude IS NOT NULL") + " ORDER BY tbl_attendance_request_refs.id DESC LIMIT 10;",
         [ emp_id, emp_id, emp_id ],
         ( err, rslt ) => {
 

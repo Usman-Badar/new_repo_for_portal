@@ -24,6 +24,7 @@ import Loading from '../../UI/Loading/Loading';
 import LoadingIcon from '../../../images/loadingIcons/icons8-loading-circle.gif';
 // CREATING SOCKET
 import socket from '../../../io';
+import Middleware from '../../UI/Middleware/Middleware';
 
 const SideBar = lazy( () => import('./Components/SideBar/SideBar') );
 const TopBar = lazy( () => import('./Components/TopBar/TopBar') );
@@ -121,7 +122,7 @@ const Dashboard = () => {
     const Menu = useSelector( ( state ) => state.EmpAuth.Menu );
     
     const history = useHistory();
-    let key = 'real secret keys should be long and random';
+    const key = 'real secret keys should be long and random';
     const encryptor = require('simple-encryptor')(key);
 
     const dispatch = useDispatch();
@@ -335,7 +336,23 @@ const Dashboard = () => {
 
     const Sus = ( props ) => {
 
-        return <Suspense fallback={ Load }> { props.content } </Suspense>
+        return (
+            <Suspense fallback={ Load }>
+                <Middleware 
+                    admin={props.admin}
+                    guarded={props.guarded} 
+                    hasAccess={props.access} 
+                    user={AccessControls}
+                    authorization={props.authorization}
+                    authorizationMethod={props.authorizationMethod}
+                    authorization_key={props.authorization_key}
+                    authorization_value={props.authorization_value}
+                    authorization_expression={props.authorization_expression}
+                >
+                    { props.content }
+                </Middleware>
+            </Suspense>
+        )
 
     }
 
@@ -390,9 +407,9 @@ const Dashboard = () => {
                             :
                             <div className='popUps'>
                                 <ChatBotNotification  />
-                                <Route exact path='/dashboard' render={ () => <Sus content={ <Home /> } /> } />
+                                <Route exact path='/dashboard' render={ () => <Sus content={ <Home /> } guarded access={0} /> } />
 
-                                <Route exact path='/chat' render={ () => <Sus content={ <Chat /> } /> } />
+                                <Route exact path='/chat' render={ () => <Sus content={ <Chat /> } admin guarded access={2} /> } />
 
                                 <Route exact path='/attdevices' render={ () => <Sus content={ <Devices /> } /> } />
                                 <Route exact path='/guests/view/guests' render={ () => <Sus content={ <Guests /> } /> } />
@@ -436,7 +453,7 @@ const Dashboard = () => {
                                 <Route exact path="/acr/self-assessment/details/:id" render={ () => <Sus content={ <EmpTickets /> } /> } />
                                 <Route exact path="/acr/growth-review/new/:emp_id" render={ () => <Sus content={ <EmpTickets /> } /> } />
                                 <Route exact path="/acr/growth-review/details/:id" render={ () => <Sus content={ <EmpTickets /> } /> } />
-                                <Route exact path="/acr/growth-review/:emp_id" render={ () => <Sus content={ <EmpTickets /> } /> } />
+                                <Route exact path="/acr/growth-review/:emp_id" render={ () => <Sus content={ <EmpTickets /> } admin guarded access={5} authorization authorizationMethod="matchAuthKey" authorization_key={sessionStorage.getItem('authorization_key')} authorization_value={parseInt(window.location.href.split('/').pop())} authorization_expression={"equal"} /> } />
                                 {/* <Route exact path="/acr/growth-review" render={ () => <Sus content={ <GrowthReview /> } /> } /> */}
                                 <Route exact path="/acr/peer-review/:emp_id" render={ () => <Sus content={ <PeerReview /> } /> } />
                                 <Route exact path="/acr/peer-review/emp/:emp_id" render={ () => <Sus content={ <EmpTickets /> } /> } />

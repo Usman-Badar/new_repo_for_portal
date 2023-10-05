@@ -13,11 +13,11 @@ import loading from '../../../../../images/loadingIcons/icons8-iphone-spinner.gi
 import Modal from '../../../../UI/Modal/Modal';
 import BreadCrumb from "../../Components/BreadCrumb";
 import axios from "../../../../../axios";
-// import Joyride, { STATUS } from 'react-joyride';
-
+import { Menu, MenuItem, SubMenu } from '@szhsin/react-menu';
+import "@szhsin/react-menu/dist/index.css";
 import ReactTooltip from 'react-tooltip';
 
-const UI = ( { GrowthCategories, addNewCategory, enterReply, deleteTicket, loadAllTickets, AllTickets, nextQuarter, setList, addRow, rejectAssignedTask, loadPeerReviewDetails, PeerReviewDetails, PeerReviewData, loadEmpPeerReview, loadPeers, SelfSubmissions, loadAllSubmissions, setCompleteTask, loadSubordinatesForGrowthReview, GrowthReviewDetails, loadGrowthReviewDetails, EmpGrowthReviewData, GrowthReviewData, setInCompleteTask, acceptAssignedTask, loadGrowthReviewData, Companies, loadEmpGrowthReviewData, SelfAssessmentDetails, SelfAssessmentData, Status, AccessControls, List, Content, SubmitConfirm, loadSelfAssessmentData, loadSubordinates, setSubmitConfirm, issueTicket, Selected, loadSelfAssessmentDetails, Keyword, Employees, Ticket, loadTicketIssued, loadSeniors, setTicket, setEmployee, setStatus, setKeyword } ) => {
+const UI = ( { updateCategory, GrowthCategories, addNewCategory, enterReply, deleteTicket, loadAllTickets, AllTickets, nextQuarter, setList, addRow, rejectAssignedTask, loadPeerReviewDetails, PeerReviewDetails, PeerReviewData, loadEmpPeerReview, loadPeers, SelfSubmissions, loadAllSubmissions, setCompleteTask, loadSubordinatesForGrowthReview, GrowthReviewDetails, loadGrowthReviewDetails, EmpGrowthReviewData, GrowthReviewData, setInCompleteTask, acceptAssignedTask, loadGrowthReviewData, Companies, loadEmpGrowthReviewData, SelfAssessmentDetails, SelfAssessmentData, Status, AccessControls, List, Content, SubmitConfirm, loadSelfAssessmentData, loadSubordinates, setSubmitConfirm, issueTicket, Selected, loadSelfAssessmentDetails, Keyword, Employees, Ticket, loadTicketIssued, loadSeniors, setTicket, setEmployee, setStatus, setKeyword } ) => {
     
     const today = new Date();
     const quarter = Math.floor((today.getMonth() + 3) / 3);
@@ -152,7 +152,9 @@ const UI = ( { GrowthCategories, addNewCategory, enterReply, deleteTicket, loadA
                             nextQuarter={ nextQuarter }
                             quarter={ quarter }
                             GrowthCategories={ GrowthCategories }
+                            AccessControls={AccessControls}
 
+                            updateCategory={updateCategory}
                             addNewCategory={ addNewCategory }
                             setList={ setList }
                             addRow={ addRow }
@@ -706,57 +708,25 @@ const SelfAssessmentDetailsComponent = ({ history, SelfAssessmentDetails, loadSe
     )
 }
 
-const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarter, nextQuarter, setList, List, addRow, history, GrowthReviewDetails, rejectAssignedTask, acceptAssignedTask, setCompleteTask, loadGrowthReviewDetails, setInCompleteTask }) => {
+const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCategories, addNewCategory, quarter, nextQuarter, setList, List, addRow, history, GrowthReviewDetails, rejectAssignedTask, acceptAssignedTask, setCompleteTask, loadGrowthReviewDetails, setInCompleteTask }) => {
     const lastMonthsOfTheQuarter = [3, 6, 9, 12];
     const currentMonth = new Date().getMonth() + 1;
     const lastAboveDays = 15;
-    let openLock = false;
-    if ( lastMonthsOfTheQuarter.includes(currentMonth) && new Date().getDate() > lastAboveDays )
-    {
-        openLock = true;
-    }
-    
-    // const [ { run, steps }, setState ] = useState(
-    //     {
-    //         run: true,
-    //         steps: [
-    //             {
-    //                 content: (
-    //                     <>
-    //                         <h4 className="text-left">General Tasks</h4>
-    //                         <p className="mb-0 text-left" style={{ textAlign: "justify" }}>Uncategorized tasks refer to general tasks that have not been assigned to a specific category. They might cover various aspects of work that don't fall under a particular project or department but are still essential for overall productivity and organization.</p>
-    //                     </>
-    //                 ),
-    //                 locale: { skip: <strong>SKIP</strong> },
-    //                 target: '.category'
-    //             },
-    //             {
-    //                 content: (
-    //                     <>
-    //                         <h4 className="text-left">Add New Tasks</h4>
-    //                         <p className="mb-0 text-left" style={{ textAlign: "justify" }}>To streamline task assignments for the selected employee, simply click the button below. By doing so, you will access an intuitive interface that allows you to assign tasks efficiently and effectively.</p>
-    //                     </>
-    //                 ),
-    //                 locale: { skip: <strong>SKIP</strong> },
-    //                 target: '#addNewTasks'
-    //             }
-    //         ]
-    //     }
-    // );
     const [ EditMode, setEditMode ] = useState(false);
     const [ AcceptanceContent, setAcceptanceContent ] = useState();
     const [ ConfirmAcceptance, setConfirmAcceptance ] = useState(false);
     const [ ActionContent, setActionContent ] = useState(<></>);
     const [ ConfirmAction, setConfirmAction ] = useState(false);
-    const [ Category, setCategory ] = useState();
     const [ Collaborators, setCollaborators ] = useState([]);
     const [ ShowModal, setShowModal ] = useState(false);
     const [ Calender, setCalender ] = useState();
     const [ Content, setContent ] = useState();
     const [ Task, setTask ] = useState();
     const [ CalenderViewPosition, setCalenderViewPosition ] = useState();
+    const [ RemarksBoxID, setRemarksBoxID ] = useState('');
+    const [ categoryModal, setCategoryModal ] = useState();
+    const [ addTasksList, setAddTasksList ] = useState([]);
     
-
     useEffect(
         () => {
             loadGrowthReviewDetails(window.location.href.split('/').pop());
@@ -764,13 +734,17 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
     );
     useEffect(
         () => {
-            setShowModal(false);
-            setContent();
             if ( GrowthReviewDetails )
             {
-                setTimeout(() => {
-                    $('.react-joyride__beacon').trigger('click');
-                }, 1000);
+                setShowModal(true);
+                setContent(
+                    <>
+                        <div className='d-flex flex-column justify-content-center align-items-center'>
+                            <img src={loading} width="50" height="50" alt="Loading..." />
+                            <p className='mb-0 mt-2'>Just a minute....</p>
+                        </div>
+                    </>
+                );
                 let names = [];
                 for ( let x = 0; x < GrowthReviewDetails.length; x++ )
                 {
@@ -785,6 +759,9 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
     );
     useEffect(
         () => {
+            if (GrowthCategories) {
+                setShowModal(false);
+            }
             if (GrowthReviewDetails && Calender && GrowthCategories) {
                 if( $('#today').length ) setCalenderViewPosition($('#today').position().left);
             }
@@ -795,31 +772,19 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
             if (CalenderViewPosition) $('#generalTasks').animate({scrollLeft: CalenderViewPosition}, 500);
         }, [CalenderViewPosition]
     )
-    useEffect(
-        () => {
-            if (Content || AcceptanceContent || ActionContent) {
-                setShowModal(!ShowModal);
-            }
-        }, [ ConfirmAcceptance, ConfirmAction ]
-    )
-
-    const moveRight = () => {
-        let currPosition = CalenderViewPosition;
-        currPosition = currPosition + 200;
-        setCalenderViewPosition(currPosition);
-    }
-
-    const moveLeft = () => {
-        let currPosition = CalenderViewPosition;
-        currPosition = currPosition - 200;
-        setCalenderViewPosition(currPosition);
-    }
+    // useEffect(
+    //     () => {
+    //         if (Content || AcceptanceContent || ActionContent) {
+    //             setShowModal(!ShowModal);
+    //         }
+    //     }, [ ConfirmAcceptance, ConfirmAction ]
+    // )
 
     const acceptTask = (id) => {
         setConfirmAcceptance(true);
         setAcceptanceContent(
             <>
-                <h6>Do you want to accept this task?</h6>
+                <h6><b>Do you want to accept this task?</b></h6>
                 <button className="btn submit d-block ml-auto" id="confirmBtn" onClick={() => acceptAssignedTask(id, window.location.href.split('/').pop(), setConfirmAcceptance, setAcceptanceContent)}>Yes</button>
             </>
         );
@@ -830,9 +795,9 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
             <>
                 <form onSubmit={(e) => rejectAssignedTask(e, id, window.location.href.split('/').pop(), setConfirmAcceptance, setAcceptanceContent)}>
                     <fieldset>
-                        <h6>Do you want to reject this task?</h6>
-                        <textarea name="remarks" className="form-control" placeholder="Your Remarks..." required minLength={20} />
-                        <button className="btn submit d-block ml-auto mt-3" id="confirmBtn">Yes</button>
+                        <h6><b>Do you want to reject this task?</b></h6>
+                        <textarea name="remarks" className="form-control" placeholder="Enter a valid reason here..." required minLength={20} />
+                        <button className="btn cancle d-block ml-auto mt-3" id="confirmBtn">Yes</button>
                     </fieldset>
                 </form>
             </>
@@ -846,8 +811,14 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
         setConfirmAction(true);
         setActionContent(
             <form onSubmit={(e) => setInCompleteTask(e, id, window.location.href.split('/').pop(), setConfirmAction, setActionContent, confirmed)}>
-                <h6>Do you want to set this task to incomplete?</h6>
-                <textarea placeholder="Your Remarks Here...." name="remarks" className="form-control mb-3" minLength={15} required />
+                {
+                    confirmed === undefined
+                    ?
+                    <h6><b>Oh! You couldn't complete this task?</b></h6>
+                    :
+                    <h6><b>You want to confirm this task as incomplete?</b></h6>
+                }
+                <textarea placeholder="Enter a valid reason..." name="remarks" className="form-control mb-3" minLength={20} required />
                 <button className="btn cancle d-block ml-auto" id="confirmBtn">Yes</button>
             </form>
         );
@@ -860,8 +831,14 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
         setConfirmAction(true);
         setActionContent(
             <form onSubmit={(e) => setCompleteTask(e, id, window.location.href.split('/').pop(), setConfirmAction, setActionContent, confirmed)}>
-                <h6>Do you want to set this task to complete?</h6>
-                <textarea placeholder="Your Remarks Here...." name="remarks" className="form-control mb-3" minLength={15} required />
+                {
+                    confirmed === undefined
+                    ?
+                    <h6><b>Have you completed the task?</b></h6>
+                    :
+                    <h6><b>You want to confirm this task as completed?</b></h6>
+                }
+                <textarea placeholder="Your remarks..." name="remarks" className="form-control mb-3" minLength={20} required />
                 <button className="btn submit d-block ml-auto" id="confirmBtn">Yes</button>
             </form>
         );
@@ -876,37 +853,137 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
         const arr = List.filter((val, i) => i !== index);
         setList(arr);
     }
-    const additionalTasks = () => {
-        document.getElementById('growthreviewsubmitbtn').setAttribute('disabled', true);
+    const AssignTasks = () => {
+        setAcceptanceContent(
+            <>
+                <h6 className="font-weight-bold p-3 text-center">Assigning Tasks...</h6>
+            </>
+        );
         axios.post(
             '/acr/growth-review/additional-tasks',
             {
-                tasks: JSON.stringify(List),
+                tasks: JSON.stringify(addTasksList),
                 submit_by: localStorage.getItem('EmpID'),
                 emp_id: window.location.href.split('/').pop(),
             }
         ).then(
             res => {
+                setConfirmAcceptance(false);
+                setAcceptanceContent(<></>);
                 if ( res.data === 'success' ) {
-                    JSAlert.alert("Tasks Has Been Added").dismissIn(1000 * 2);
-                    setList();
+                    JSAlert.alert("Tasks has been assigned to the employee.", 'Tasks Assigned', JSAlert.Icons.Success).dismissIn(1000 * 2);
+                    setAddTasksList([]);
                     setEditMode(false);
                     loadGrowthReviewDetails(window.location.href.split('/').pop());
                 }else
                 {
-                    document.getElementById('growthreviewsubmitbtn').setAttribute('disabled', 'false');
-                    JSAlert.alert("Something went wrong!!!").dismissIn(1000 * 2);
+                    JSAlert.alert(`Something went wrong.`, 'Request Failed', JSAlert.Icons.Failed);
                 }
             }
         ).catch(
             err => {
-                document.getElementById('growthreviewsubmitbtn').setAttribute('disabled', 'false');
-                console.log( err );
+                setConfirmAcceptance(false);
+                setAcceptanceContent(<></>);
+                console.log(err);
+                JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
             }
         )
     }
-    const newCategory = (e) => {
-        addNewCategory(e.target['categoryInput'].value);
+    const assignIndividually = (e, id) => {
+        e.preventDefault();
+        const task = e.target['task'].value;
+        const start_date = e.target['start_date'].value;
+        const deadline = e.target['deadline'].value;
+
+        if (task.trim().length < 10) {
+            JSAlert.alert("Task must contains 10 characters.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (start_date.trim().length === 0) {
+            JSAlert.alert("Start Date is required", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (deadline.trim().length === 0) {
+            JSAlert.alert("Deadline is required", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (start_date < new Date().toISOString().slice(0, 10).replace('T', ' ')) {
+            JSAlert.alert("Start Date should be same or greater than the current date.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (deadline < new Date().toISOString().slice(0, 10).replace('T', ' ')) {
+            JSAlert.alert("Deadline should be same or greater than the current date.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (deadline < start_date) {
+            JSAlert.alert("Deadline should be same or greater than the start date.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+        setCategoryModal(
+            <>
+                <h6 className="font-weight-bold p-3 text-center mb-0">Assigning Task...</h6>
+            </>
+        );
+        const data = {
+            task: task,
+            start_date: start_date,
+            deadline: deadline
+        }
+
+        axios.post(
+            '/acr/growth-review/individual-tasks',
+            {
+                category_id: id,
+                task: JSON.stringify(data),
+                submit_by: localStorage.getItem('EmpID'),
+                emp_id: window.location.href.split('/').pop(),
+            }
+        ).then(
+            res => {
+                setCategoryModal();
+                if ( res.data === 'success' ) {
+                    JSAlert.alert("Task has been assigned to the employee.", 'Tasks Assigned', JSAlert.Icons.Success).dismissIn(1000 * 2);
+                    loadGrowthReviewDetails(window.location.href.split('/').pop());
+                }else
+                {
+                    JSAlert.alert(`Something went wrong.`, 'Request Failed', JSAlert.Icons.Failed);
+                }
+            }
+        ).catch(
+            err => {
+                setCategoryModal();
+                console.log(err);
+                JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
+            }
+        )
+    }
+    const createANewCategory = () => {
+        setCategoryModal(
+            <>
+                <h6><b>Create Category</b></h6>
+                <form onSubmit={(e) => addNewCategory(e, setCategoryModal)}>
+                    <fieldset>
+                        <label className="mb-0 font-weight-bold">Category Name</label>
+                        <input className="form-control" name='category' required />
+                        <button className="btn submit d-block ml-auto mt-2">Create</button>
+                    </fieldset>
+                </form>
+            </>
+        )
+    }
+    const editCategory = (id, name) => {
+        setCategoryModal(
+            <>
+                <h6><b>Edit Category</b></h6>
+                <form onSubmit={(e) => updateCategory(e, id, setCategoryModal)}>
+                    <fieldset>
+                        <label className="mb-0 font-weight-bold">Category Name</label>
+                        <input className="form-control" name='category' defaultValue={name} required />
+                        <button className="btn submit d-block ml-auto mt-2">Update</button>
+                    </fieldset>
+                </form>
+            </>
+        )
     }
     const enumerateDaysBetweenDates = (startDate, endDate) => {
         let dates = [];
@@ -1164,9 +1241,82 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
         )
         setShowModal(true);
     }
-
     const resetFilters = () => {
         setDateFilter("");
+    }
+    const addNewTaskInTheList = (e) => {
+        e.preventDefault();
+        const category = e.target['category'].value;
+        let category_name = 'General';
+        const task = e.target['task'].value;
+        const start_date = e.target['start_date'].value;
+        const deadline = e.target['deadline'].value;
+
+        if (category.trim().length === 0) {
+            JSAlert.alert("Category is required!", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (task.trim().length < 10) {
+            JSAlert.alert("Task must contains 10 characters.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (start_date.trim().length === 0) {
+            JSAlert.alert("Start Date is required", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (deadline.trim().length === 0) {
+            JSAlert.alert("Deadline is required", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (start_date < new Date().toISOString().slice(0, 10).replace('T', ' ')) {
+            JSAlert.alert("Start Date should be same or greater than the current date.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (deadline < new Date().toISOString().slice(0, 10).replace('T', ' ')) {
+            JSAlert.alert("Deadline should be same or greater than the current date.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }else
+        if (deadline < start_date) {
+            JSAlert.alert("Deadline should be same or greater than the start date.", "Validation Error", JSAlert.Icons.Warning).dismissIn(1000 * 4);
+            return false;
+        }
+        if (category !== 'General') {
+            category_name = GrowthCategories.filter(val => val.id == category)[0].category;
+        }
+        $('#taskResetBtn').trigger('click');
+        setAddTasksList([...addTasksList, {category_name: category_name, category:category=='General'?null:category, task:task, start_date:start_date, deadline:deadline}]);
+    }
+    const confirmAssigningTasks = () => {
+        setAcceptanceContent(
+            <>
+                <h6 className="font-weight-bold">Kindly Confirm To Assign Tasks</h6>
+                <hr />
+                <button className="d-block ml-auto btn submit" onClick={AssignTasks}>Confirm</button>
+            </>
+        );
+        setConfirmAcceptance(true);
+    }
+    const addTaskIndividually = (id, category) => {
+        setCategoryModal(
+            <>
+                <h6 className="font-weight-bold text-capitalize">Add New Task in {category} Category</h6>
+                <hr />
+                <form onSubmit={(e) => assignIndividually(e, id)}>
+                    <fieldset>
+                        <label className="mb-0"><b>Task</b></label>
+                        <input className="form-control mb-2" name="task" required minLength={10} />
+                        <label className="mb-0"><b>Start Date</b></label>
+                        <input type="date" className="form-control mb-2" name="start_date" required />
+                        <label className="mb-0"><b>Deadline</b></label>
+                        <input type="date" className="form-control" name="deadline" required />
+
+                        <div className="d-flex justify-content-end mt-3">
+                            <button className="btn cancle">Assign</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </>
+        )
     }
 
     const [ DateFilter, setDateFilter ] = useState('');
@@ -1174,47 +1324,31 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
     const d = moment(moment()).format('YYYY-MM-DD');
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+    if (!sessionStorage.getItem('growth-review-emp-data') && window.location.href.split('/').pop() != localStorage.getItem('EmpID')) {
+        throw new Error("Invalid Growth Review Parameters, try to go back to the previous page and access this page again.");
+    }
+
     if (GrowthReviewDetails) {
         let assigning_dates_arr = [];
         let deadline_arr = [];
         GrowthReviewDetails.forEach(val => {deadline_arr.push(val.deadline); assigning_dates_arr.push(val.start_date)});
-
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
         const min_date = assigning_dates_arr.sort()[0];
         const max_date = deadline_arr.sort().reverse()[0];
         if ( !Calender ) enumerateDaysBetweenDates(min_date, max_date);
-
         const taskStatus = (confirmed, ) => {
-            let status = <></>;
-            
+            let status = <></>;   
             return status;
         }
         
         return (
             <>
+                {categoryModal?<Modal show={true} Hide={() => setCategoryModal()} content={categoryModal} />:null}
                 <Modal show={ ConfirmAcceptance } Hide={ () => setConfirmAcceptance(!ConfirmAcceptance) } content={AcceptanceContent} />
                 <Modal show={ ConfirmAction } Hide={ () => setConfirmAction(!ConfirmAction) } content={ActionContent} />
                 <Modal show={ ShowModal } Hide={ () => setShowModal(!ShowModal) } content={ Content } />
                 <BreadCrumb links={[{label: 'Performance Review', href: '/acr/options'}]} currentLabel="Growth Review Details" />
-                {/* <Joyride
-                    wrapperOptions={{
-                        class: "teste"
-                    }}
-                    steps={steps}
-                    run={run}
-                    continuous={true}
-                    scrollToFirstStep={true}
-                    showSkipButton
-                    styles={{
-                        buttonNext: {
-                            background: '#272F3E'
-                        },
-                        options: {
-                            primaryColor: '#272F3E',
-                        }
-                    }}
-                /> */}
-                <div className="d-grid-growth-details">
+                <div className="d-grid-growth-details page pb-3">
                     <div className="ticket_container page-content">
                         <div className="d-flex align-items-center justify-content-between">
                             <h3 className="heading">
@@ -1222,21 +1356,18 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
                                 <sub>List of All Assigned Tasks</sub>
                             </h3>
                             <div className="d-flex">
-                                <button className='btn light mr-2' onClick={() => history.goBack()}>Back</button>
+                                <button className='btn light' onClick={() => history.goBack()}>Back</button>
                                 {
-                                    window.location.href.split('/').pop() == localStorage.getItem("EmpID")
-                                        ? null
-                                        :
-                                        EditMode
-                                            ?
-                                            <button onClick={() => setEditMode(false)} className="btn light">Back To Details View</button>
-                                            :
-                                            <>
-                                                <button onClick={() => setEditMode(true)} className="btn submit" id="addNewTasks">Add New Task</button>
-                                                <button onClick={() => setEditMode(true)} className="btn light ml-2">Create Category</button>
-                                            </>
+                                    window.location.href.split('/').pop() == localStorage.getItem("EmpID") ?null
+                                    :EditMode?
+                                    <button onClick={() => setEditMode(false)} className="btn cancle ml-2">Cancel</button>
+                                    :
+                                    <>
+                                        <button onClick={createANewCategory} className="btn green ml-2">Create Category</button>
+                                        <button onClick={() => setEditMode(true)} className="btn submit ml-2" id="addNewTasks">Add Tasks</button>
+                                    </>
                                 }
-                                 <button className="btn submit px-2 filter-emit" onClick={() => setShowFilters(!ShowFilters)} type='button'>
+                                {/* <button className="btn submit px-2 filter-emit ml-2" onClick={() => setShowFilters(!ShowFilters)} type='button'>
                                     {
                                         ShowFilters
                                             ?
@@ -1258,428 +1389,106 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
                                                 </ReactTooltip>
                                             </div>
                                     }
-                                </button>
+                                </button> */}
                             </div>
                         </div>
-                        <br />
-                            {
-                                ShowFilters
-                                    ?
-                                    <>
-                                        <div className='filter-content popUps'>
-                                            <div className='flex'>
-                                                <div className='w-75 d-block mb-2'>
-                                                    <label className="font-weight-bold mb-0">Select Month</label>
-                                                    <input type="month" className="form-control" id="" name="" />
-                                                </div>
-                                                <button className='btn w-25 green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
-                                            </div>
-                                        </div>
-                                        <br />
-                                    </>
-                                    : null
-                            }
                         <hr />
-    
                         {
-                            !Calender || !GrowthCategories
-                            ?
-                            <div>
-                                <h5 className="text-center font-italic" style={{ fontFamily: "Roboto-Light", textTransform: "underline" }}>Building Calender...</h5>
-                            </div>
-                            :
-                            EditMode
+                            ShowFilters
                             ?
                             <>
-                                <div 
-                                    className="alert alert-secondary pointer pointer-hover p-2 px-2 d-flex justify-content-between category"
-                                    data-toggle="collapse" href="#addRowForm" role="button" aria-expanded="false" aria-controls="addRowForm"
-                                >
-                                    <h6 className="mb-0"><b className="text-capitalize">General Tasks</b></h6>
-                                    <h6 className="mb-0"><span>{ List?.filter(val => val.category === null).length }</span></h6>
-                                </div>
-                                <form onSubmit={ (e) => addRow( e, null ) } id="addRowForm" className="collapse show popUps mt-2 rounded">
-                                    <div className="d-flex" style={{ gap: '15px' }}>
-                                        <div className="w-50">
-                                            <p className="mb-1 font-weight-bold">Task</p>
-                                            <input className="form-control" placeholder="Enter the task in detail...." name="task" required />
+                                <div className='filter-content popUps'>
+                                    <div className='flex'>
+                                        <div className='w-75 d-block mb-2'>
+                                            <label className="font-weight-bold mb-0">Select Month</label>
+                                            <input type="month" className="form-control" id="" name="" />
                                         </div>
-                                        <div className="w-50">
-                                            <p className="mb-1 font-weight-bold">Start Date</p>
-                                            <input type="date" className="form-control" name="start_date" required />
-                                        </div>
-                                        <div className="w-50">
-                                            <p className="mb-1 font-weight-bold">Deadline</p>
-                                            <input type="date" className="form-control" name="deadline" required />
-                                        </div>
+                                        <button className='btn w-25 green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
                                     </div>
-                                    <button className="btn submit d-block ml-auto mt-2" type="submit">Add</button>
-                                </form>
-                                {
-                                    List && List.filter(val => val.category === null).length > 0
-                                    ?
-                                    <>
-                                        <table className="table mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th className="border-top-0">Sr.No</th>
-                                                    <th className="border-top-0">Tasks</th>
-                                                    <th className="border-top-0">Start Date</th>
-                                                    <th className="border-top-0">Deadline</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                </div>
+                                <br />
+                            </>
+                            : null
+                        }
+                        <table className="table table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <td style={{verticalAlign: 'middle'}}>
+                                        {
+                                            window.location.href.split('/').pop() != localStorage.getItem('EmpID')
+                                            ?
+                                            <div className="d-flex align-items-center">
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + JSON.parse(sessionStorage.getItem('growth-review-emp-data'))?.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
+                                                <div className="ml-2">
+                                                    <b>{ JSON.parse(sessionStorage.getItem('growth-review-emp-data'))?.name }</b><br />
+                                                    <span>{ JSON.parse(sessionStorage.getItem('growth-review-emp-data'))?.designation_name }</span>
+                                                </div>
+                                            </div>
+                                            :
+                                            <div className="d-flex align-items-center">
+                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + AccessControls.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
+                                                <div className="ml-2">
+                                                    <b>{ AccessControls.name }</b><br />
+                                                    <span>{ AccessControls.designation_name }</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td style={{verticalAlign: 'middle'}}>
+                                        <div className="d-flex justify-content-end">
+                                            <Menu menuButton={<div className="badge pointer pointer-hover" title="Click Me"><b>Collaborators: </b>{Collaborators.length}</div>}>
                                                 {
-                                                    List.filter(val => val.category === null).map(
-                                                        ( val, index ) => {
-                                                            return (
-                                                                <tr key={index}>
-                                                                    <td>{index + 1}</td>
-                                                                    <td>
-                                                                        <textarea name='task' className="contentEditableInput form-control" onChange={ (e) => onChangeHandler( e, index ) } value={ val.task } />
-                                                                    </td>
-                                                                    <td>
-                                                                        <input name='start_date' type="date" className="contentEditableInput form-control" value={ val.start_date } onChange={ (e) => onChangeHandler( e, index ) } />
-                                                                    </td>
-                                                                    <td style={{ position: 'relative' }}>
-                                                                        <div className="d-flex align-items-center pr-5">
-                                                                            <input name='deadline' type="date" className="contentEditableInput form-control" value={ val.deadline } onChange={ (e) => onChangeHandler( e, index ) } />
-                                                                            <i className="las la-trash text-danger" onDoubleClick={ () => removeTask( index ) }></i>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            )
+                                                    Collaborators.map(
+                                                        (collaborator, i) => {
+                                                            return <MenuItem key={i}>{collaborator}</MenuItem>
                                                         }
                                                     )
                                                 }
-                                            </tbody>
-                                        </table>
-                                    </>
-                                    :null
-                                }
-                                {
-                                    !GrowthCategories?
-                                    <b>Please Wait...</b>
-                                    :
-                                    GrowthCategories.length === 0?
-                                    <b>No Category Found</b>
-                                    :
-                                    <>
-                                        <br />
-                                        {
-                                            GrowthCategories.map(
-                                            ({ id, category, tasks, created_by }, index) => {
-                                                return (
-                                                    <>
-                                                        <div 
-                                                            key={index} 
-                                                            className={ "alert alert-secondary pointer pointer-hover p-2 px-2 d-flex justify-content-between category " + ( Category && Category.id === id ? "active" : "" ) }
-                                                            data-toggle="collapse" href={ "#" + category.split(' ').join('_') + id } role="button" aria-expanded="false" aria-controls={ category.split(' ').join('_') + id }
-                                                        >
-                                                            <h6 className="mb-0"><b className="text-capitalize">{ category }</b></h6>
-                                                            <h6 className="mb-0"><span>{ List?.filter(val => val.category !== null && val.category === id).length }</span></h6>
-                                                        </div>
-                                                        <div class="collapse border p-2 mb-3" id={ category.split(' ').join('_') + id }>
-                                                            <form onSubmit={ (e) => addRow( e, id ) } id={ "addRowForm" + id } className="popUps mt-2 rounded">
-                                                                <div className="d-flex" style={{ gap: '15px' }}>
-                                                                    <div className="w-50">
-                                                                        <p className="mb-1 font-weight-bold text-capitalize">{category} Task</p>
-                                                                        <input className="form-control" placeholder="Enter the task in detail...." name="task" required />
-                                                                    </div>
-                                                                    <div className="w-50">
-                                                                        <p className="mb-1 font-weight-bold">Start Date</p>
-                                                                        <input type="date" className="form-control" name="start_date" required />
-                                                                    </div>
-                                                                    <div className="w-50">
-                                                                        <p className="mb-1 font-weight-bold">Deadline</p>
-                                                                        <input type="date" className="form-control" name="deadline" required />
-                                                                    </div>
-                                                                </div>
-                                                                <button className="btn submit d-block ml-auto mt-2" type="submit">Add</button>
-                                                            </form>
-                                                            <hr />
-                                                            {
-                                                                List && List.filter(val => val.category !== null && val.category === id).length > 0
-                                                                ?
-                                                                <>
-                                                                    <table className="table mb-0">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th className="border-top-0">Sr.No</th>
-                                                                                <th className="border-top-0">Tasks</th>
-                                                                                <th className="border-top-0">Start Date</th>
-                                                                                <th className="border-top-0">Deadline</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            {
-                                                                                List.filter(val => val.category !== null && val.category === id).map(
-                                                                                    ( val, index ) => {
-                                                                                        return (
-                                                                                            <tr key={index}>
-                                                                                                <td>{index + 1}</td>
-                                                                                                <td>
-                                                                                                    <textarea name='task' className="contentEditableInput form-control" onChange={ (e) => onChangeHandler( e, index ) } value={ val.task } />
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    <input name='start_date' type="date" className="contentEditableInput form-control" value={ val.start_date } onChange={ (e) => onChangeHandler( e, index ) } />
-                                                                                                </td>
-                                                                                                <td style={{ position: 'relative' }}>
-                                                                                                    <div className="d-flex align-items-center pr-5">
-                                                                                                        <input name='deadline' type="date" className="contentEditableInput form-control" value={ val.deadline } onChange={ (e) => onChangeHandler( e, index ) } />
-                                                                                                        <i className="las la-trash text-danger" onDoubleClick={ () => removeTask( index ) }></i>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        )
-                                                                                    }
-                                                                                )
-                                                                            }
-                                                                        </tbody>
-                                                                    </table>
-                                                                </>
-                                                                :null
-                                                            }
-                                                        </div>
-                                                    </>
-                                                )
-                                            }
-                                        )
-                                        }
-                                    </>
-                                }
-                                {
-                                    List && List.length > 0
-                                    ?
-                                    <button className="btn submit d-block ml-auto mt-3" id="growthreviewsubmitbtn" onClick={ additionalTasks }>Assign Tasks</button>
-                                    :null
-                                }
-                            </>
-                            :
-                            <>
-                                <div className="collapse show" id="generalTasks">
-                                    {/* <div className="Arrow_div left" onClick={moveLeft} ><i class="las la-angle-left"></i></div>
-                                    <div className="Arrow_div right" onClick={moveRight} ><i class="las la-angle-right"></i></div> */}
-                                    <table class="table table-bordered">
+                                            </Menu>
+                                        </div>
+                                        {/* <Menu menuButton={<div className="badge pointer pointer-hover ml-3" title="Click Me"><b>Tasks Summary</b></div>}>
+                                            <MenuItem>New File</MenuItem>
+                                        </Menu> */}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {
+                        EditMode
+                        ?
+                        <div className="page-content mt-3">
+                            <div className="d-flex align-items-center justify-content-between">
+                                <h5 className="mb-0">Assign New Tasks</h5>
+                                {addTasksList.length > 0?<button className="btn green" onClick={confirmAssigningTasks}>Assign</button>:null}
+                            </div>
+                            <hr />
+                            {
+                                addTasksList.length > 0
+                                ?
+                                <>
+                                    <h6 className="font-weight-bold">Added Tasks List</h6>
+                                    <table className="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Categories</th>
-                                                {
-                                                    Calender.map(
-                                                        (date, i) => {
-                                                            const d = moment(date).format("YYYY-MM-DD");
-                                                            const dd = new Date(date);
-                                                            const today_date = new Date();
-                                                            return (
-                                                                <th className="table-header" id={ today_date.getDate() === dd.getDate() && today_date.getMonth() === dd.getMonth() && today_date.getFullYear() === dd.getFullYear() ? "today" : "" } key={i} scope="col" onClick={() => openList(d)} >
-                                                                    {days[date.getDay()]} {date.getDate()} {months[date.getMonth()]} {today_date.getDate() === dd.getDate() ? <span className="font-weight-normal text-success">&#40;Today&#41;</span> : ""}
-                                                                </th>
-                                                            )
-                                                        }
-                                                    )
-                                                }
+                                                <th>Sr.No</th>
+                                                <th>Category</th>
+                                                <th>Task</th>
+                                                <th>Start Date</th>
+                                                <th>Deadline</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <h6 className="mb-0"><b className="text-capitalize">General Tasks</b></h6>
-                                                    <h6 className="mb-0"><span className="text-capitalize">Total Tasks: {GrowthReviewDetails.filter(val => val.category_id === null).length}</span></h6>
-                                                </td>
-                                                {
-                                                    Calender.map(
-                                                        (date, i) => {
-                                                            const d = moment(date).format("YYYY-MM-DD");
-                                                            return (
-                                                                <td key={i} className="p-0">
-                                                                    {
-                                                                        GrowthReviewDetails.filter(val => val.category_id === null && val.deadline >= d && val.start_date <= d).length > 0
-                                                                        ?
-                                                                        GrowthReviewDetails.filter(val => val.category_id === null && val.deadline >= d && val.start_date <= d).slice(0,3).map(
-                                                                            ({id, task, deadline, confirmed, accepted, completed}, ii) => {
-                                                                                const iso_deadline = new Date(deadline).toISOString().slice(0, 10).replace('T', ' ');
-                                                                                return (
-                                                                                    <div key={ii} className={ "p-3 calender_date " + ( days[new Date(d).getDay()] === 'Sun' ? "off" : "" ) } onClick={() => openDetailsModel(id, "General")}>
-                                                                                        <p>{task.substring(0, 20)}...</p>
-                                                                                        <small>{iso_deadline}</small><br />
-                                                                                        <div className="d-flex align-item-center justify-content-between">
-                                                                                            <div className={
-                                                                                                "status_color " +
-                                                                                                (
-                                                                                                    accepted === null && completed === null
-                                                                                                        ?
-                                                                                                        "bg-status-warning"
-                                                                                                        :
-                                                                                                        accepted === 1 && completed === null
-                                                                                                            ?
-                                                                                                            "bg-status-blue"
-                                                                                                            :
-                                                                                                            accepted === 0 && completed === null
-                                                                                                                ?
-                                                                                                                "bg-status-red"
-                                                                                                                :
-                                                                                                                completed === 0 ?
-                                                                                                                    "bg-status-lightgray"
-                                                                                                                    :
-                                                                                                                    completed === 1
-                                                                                                                        ?
-                                                                                                                        "bg-status-green"
-                                                                                                                        :
-                                                                                                                        "bg-light"
-                                                                                                )
-                                                                                            }
-                                                                                            >
-                                                                                                <small className="text-dark font-weight-bold" style={{ fontFamily: "Quicksand" }}>
-                                                                                                    {
-                                                                                                        accepted === null && completed === null
-                                                                                                            ?
-                                                                                                            "Not Accepted"
-                                                                                                            :
-                                                                                                            accepted === 1 && completed === null
-                                                                                                                ?
-                                                                                                                "Accepted"
-                                                                                                                :
-                                                                                                                accepted === 0 && completed === null
-                                                                                                                    ?
-                                                                                                                    "Rejected"
-                                                                                                                    :
-                                                                                                                    completed === 0 ?
-                                                                                                                        "Incomplete"
-                                                                                                                        :
-                                                                                                                        completed === 1
-                                                                                                                            ?
-                                                                                                                            "Completed"
-                                                                                                                            :
-                                                                                                                            ""
-                                                                                                    }
-                                                                                                </small>
-                                                                                            </div>
-                                                                                            {
-                                                                                                accepted === 1 && completed === 1 && confirmed === null
-                                                                                                ?
-                                                                                                <div className="confirmed-icon bg-status-warning border" data-tip data-for='notconfirmed'>
-                                                                                                    <i className="las la-exclamation"></i>
-                                                                                                    <ReactTooltip id='notconfirmed' place="top">
-                                                                                                        Not Confirmed
-                                                                                                    </ReactTooltip>
-                                                                                                </div>
-                                                                                                :
-                                                                                                null
-                                                                                            }
-                                                                                        </div>
-                                                                                    </div>
-                                                                                )
-                                                                            }
-                                                                        )
-                                                                        :null
-                                                                    }
-                                                                </td>
-                                                            )
-                                                        }
-                                                    )
-                                                }
-                                            </tr>
                                             {
-                                                GrowthCategories.filter(val => val.category_id !== null).map(
-                                                    ({category, id}, i) => {
+                                                addTasksList.map(
+                                                    ({category_name, task, start_date, deadline}, i) => {
                                                         return (
                                                             <tr key={i}>
-                                                                <td>
-                                                                    <h6 className="mb-0"><b className="text-capitalize">{category.split(' ').join('_')}</b></h6>
-                                                                    <h6 className="mb-0"><span className="text-capitalize">Total Tasks: { GrowthReviewDetails.filter(val => val.category_id !== null && val.category_id === id).length }</span></h6>
-                                                                </td>
-                                                                {
-                                                                    Calender.map(
-                                                                        (date, i) => {
-                                                                            const d = moment(date).format("YYYY-MM-DD");
-                                                                            return (
-                                                                                <td key={i} className="p-0">
-                                                                                    {
-                                                                                        GrowthReviewDetails.filter(val => val.category_id !== null && val.category_id === id && val.deadline >= d && val.start_date <= d).length > 0
-                                                                                            ?
-                                                                                            GrowthReviewDetails.filter(val => val.category_id !== null && val.category_id === id && val.deadline >= d && val.start_date <= d).slice(0, 3).map(
-                                                                                                ({ id, task, deadline, confirmed, accepted, completed }, ii) => {
-                                                                                                    const iso_deadline = new Date(deadline).toISOString().slice(0, 10).replace('T', ' ');
-                                                                                                    return (
-                                                                                                        <div key={ii} className="p-3 calender_date " onClick={() => openDetailsModel(id, category.split(' ').join('_'))}>
-                                                                                                            <p>{task.substring(0, 20)}...</p>
-                                                                                                            <small>{iso_deadline}</small><br />
-                                                                                                            <div className="d-flex align-item-center justify-content-between">
-                                                                                                                <div className={
-                                                                                                                    "status_color " +
-                                                                                                                    (
-                                                                                                                        accepted === null && completed === null
-                                                                                                                            ?
-                                                                                                                            "bg-status-warning"
-                                                                                                                            :
-                                                                                                                            accepted === 1 && completed === null
-                                                                                                                                ?
-                                                                                                                                "bg-status-blue"
-                                                                                                                                :
-                                                                                                                                accepted === 0 && completed === null
-                                                                                                                                    ?
-                                                                                                                                    "bg-status-red"
-                                                                                                                                    :
-                                                                                                                                    completed === 0 ?
-                                                                                                                                        "bg-status-lightgray"
-                                                                                                                                        :
-                                                                                                                                        completed === 1
-                                                                                                                                            ?
-                                                                                                                                            "bg-status-green"
-                                                                                                                                            :
-                                                                                                                                            "bg-light"
-                                                                                                                    )
-                                                                                                                }
-                                                                                                                >
-                                                                                                                    <small className="text-dark font-weight-bold" style={{ fontFamily: "Quicksand" }}>
-                                                                                                                        {
-                                                                                                                            accepted === null && completed === null
-                                                                                                                                ?
-                                                                                                                                "Not Accepted"
-                                                                                                                                :
-                                                                                                                                accepted === 1 && completed === null
-                                                                                                                                    ?
-                                                                                                                                    "Accepted"
-                                                                                                                                    :
-                                                                                                                                    accepted === 0 && completed === null
-                                                                                                                                        ?
-                                                                                                                                        "Rejected"
-                                                                                                                                        :
-                                                                                                                                        completed === 0 ?
-                                                                                                                                            "Incomplete"
-                                                                                                                                            :
-                                                                                                                                            completed === 1
-                                                                                                                                                ?
-                                                                                                                                                "Completed"
-                                                                                                                                                :
-                                                                                                                                                ""
-                                                                                                                        }
-                                                                                                                    </small>
-                                                                                                                </div>
-                                                                                                                {
-                                                                                                                    accepted === 1 && completed === 1 && confirmed === null
-                                                                                                                    ?
-                                                                                                                    <div className="confirmed-icon bg-status-warning border" data-tip data-for='notconfirmed'>
-                                                                                                                        <i className="las la-exclamation"></i>
-                                                                                                                        <ReactTooltip id='notconfirmed' place="top">
-                                                                                                                            Not Confirmed
-                                                                                                                        </ReactTooltip>
-                                                                                                                    </div>
-                                                                                                                    :
-                                                                                                                    null
-                                                                                                                }
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    )
-                                                                                                }
-                                                                                            )
-                                                                                            : null
-                                                                                    }
-                                                                                </td>
-                                                                            )
-                                                                        }
-                                                                    )
-                                                                }
+                                                                <td>{i+1}</td>
+                                                                <td>{category_name}</td>
+                                                                <td>{task}</td>
+                                                                <td>{start_date}</td>
+                                                                <td>{deadline}</td>
                                                             </tr>
                                                         )
                                                     }
@@ -1687,116 +1496,424 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
                                             }
                                         </tbody>
                                     </table>
-                                    
-                                    {/* <td className="table-primary" data-tip data-for='deadline'>
-                                        Need to update advance cash user interface
-                                        <br />
-                                        <br />
-                                        <b>Muhammad Usman</b>
-                                        <br />
-                                        Mon Jun 26 2023
-                                        <ReactTooltip id='deadline' place="top">
-                                            <b>Deadline</b>
-                                            <br />
-                                            Mon Jun 26 2023
-                                        </ReactTooltip>
-                                    </td> */}
-                                    {/* {
-                                        GrowthReviewDetails && GrowthReviewDetails.filter(val => val.category_id === null).length > 0
+                                </>
+                                :null
+                            }
+                            <form className="tasks-grid" onSubmit={addNewTaskInTheList}>
+                                <div>
+                                    <label className="mb-0 font-weight-bold">Category</label>
+                                    <select name="category" className="form-control" defaultValue='General' required>
+                                        <option value='General'>General</option>
+                                        {
+                                            GrowthCategories && GrowthCategories.map(
+                                                ({category, id}, i) => {
+                                                    return <option key={i} value={id}>{category}</option>
+                                                }
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="mb-0 font-weight-bold">Task</label>
+                                    <input name="task" className="form-control" minLength={10} required />
+                                </div>
+                                <div>
+                                    <label className="mb-0 font-weight-bold">Start Date</label>
+                                    <input type="date" name="start_date" className="form-control" required />
+                                </div>
+                                <div>
+                                    <label className="mb-0 font-weight-bold">Deadline</label>
+                                    <input type="date" name="deadline" className="form-control" required />
+                                </div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div className="text-right">
+                                    <button type="reset" className="btn d-none" id="taskResetBtn">Reset</button>
+                                    <button className="btn submit">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                        :
+                        <>
+                            <ReactTooltip place="top" />
+                            <div className="d-flex align-items-center justify-content-between mt-3">
+                                <h6 className="text-uppercase text-secondary font-weight-bold mb-0">General</h6>
+                                <div className="pr-2">
+                                    {
+                                        window.location.href.split('/').pop() != localStorage.getItem("EmpID")
                                         ?
-                                        <>
-                                            <table className="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Sr.No</th>
-                                                        <th>Task</th>
-                                                        <th>Assigned By</th>
-                                                        <th>Deadline</th>
-                                                        <th>Status</th>
-                                                        <th>Remarks</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        GrowthReviewDetails.filter(val => val.category_id === null).map(
-                                                            ( val, index ) => {
-                                                                const deadline = new Date(val.deadline);
-                                                                const currDate = new Date();
-                                                                return (
-                                                                    <tr key={index}>
-                                                                        <td>{ index + 1 }</td>
-                                                                        <td>{ val.task }</td>
-                                                                        <td>
-                                                                            <b>{ val.assigned_emp_name }</b><br />
-                                                                            { val.assigning_date !== null ? new Date(val.assigning_date).toDateString() : null }
-                                                                        </td>
-                                                                        <td>{ new Date(val.deadline).toDateString() }</td>
-                                                                        {
-                                                                            val.accepted === null && val.emp_id == localStorage.getItem('EmpID')
-                                                                            ?
-                                                                            <td colSpan={2}>
-                                                                                <button className="btn" onClick={ () => acceptTask( val.id ) }>Accept</button>
-                                                                                <button className="btn reject ml-2" onClick={ () => rejectTask( val.id ) }>Reject</button>
-                                                                            </td>
-                                                                            :
+                                        <i onClick={() => addTaskIndividually(null, "General")} style={{fontSize: 20}} data-tip="Add New Task" className="las la-plus-circle pointer"></i>
+                                        :null
+                                    }
+                                </div>
+                            </div>
+                            {
+                                GrowthReviewDetails && GrowthReviewDetails.filter(val => val.category_id === null).length > 0
+                                ?
+                                GrowthReviewDetails.filter(val => val.category_id === null).map(
+                                    ({ assigned_by, id, emp_id, confirmed_remarks, remarks, task, assigning_date, start_date, deadline, confirmed_date, confirmed_time, accepted_date, accepted_time, completion_date, assigned_by_profile_image, assigned_to_profile_image, assigned_emp_name, designation_name, accepted, confirmed, completed }, i) => {
+                                        // const start = moment(start_date, "YYYY-MM-DD");
+                                        // const end = moment(deadline, "YYYY-MM-DD");
+                                        return (
+                                            <div key={i} className="task page-content mb-2">
+                                                <div className="task-grid">
+                                                    <div>
+                                                        <i className="las la-file-alt la-3x"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 className="text-capitalize font-weight-bold">{task}</h6>
+                                                        <div className="badge"><b>Task Created: </b>{assigning_date ? new Date(assigning_date).toLocaleDateString() : <span className="text-secondary">Not Assigned</span>}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div><b>Date Assigned: </b><br />{start_date ? new Date(start_date).toLocaleDateString() : new Date(assigning_date).toLocaleDateString()}</div>
+                                                        <div><b>Date {accepted===0?"Declined":"Accepted"}: </b><br />{accepted_date ? new Date(accepted_date).toLocaleDateString() : <span className="text-secondary">Not Accepted</span>}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div><b>Date {completed===0||confirmed===0?"Submitted":"Completed"}: </b><br />{completion_date ? new Date(completion_date).toLocaleDateString() : <span className="text-secondary">Not Completed</span>}</div>
+                                                        <div><b>Date Confirmed: </b><br />{confirmed_date ? new Date(confirmed_date).toLocaleDateString() : <span className="text-secondary">Not Confirmed</span>}</div>
+                                                    </div>
+                                                    <div>
+                                                        <>
+                                                            {
+                                                                confirmed === 1
+                                                                ?
+                                                                <div className={"p-3 d-flex align-items-center border " + (completed === 0 ? "text-danger" : "text-success")} style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>{completed === 0?"Confirmed Incomplete":"Completed"}</b>
+                                                                </div>
+                                                                :
+                                                                confirmed === 0
+                                                                ?
+                                                                <div className="p-3 d-flex align-items-center border text-danger" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Need Amendment</b>
+                                                                </div>
+                                                                :
+                                                                completed === 1
+                                                                ?
+                                                                <div className="p-3 d-flex align-items-center border text-warning" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>In Review</b>
+                                                                </div>
+                                                                :
+                                                                completed === 0
+                                                                ?
+                                                                <div className="p-3 d-flex align-items-center border text-danger" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Incomplete</b>
+                                                                </div>
+                                                                :
+                                                                accepted === 1
+                                                                ?
+                                                                <div className="p-3 d-flex align-items-center border text-primary" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>In Progress</b>
+                                                                </div>
+                                                                :
+                                                                accepted === 0
+                                                                ?
+                                                                <div className="p-3 d-flex align-items-center border text-danger" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Declined</b>
+                                                                </div>
+                                                                :
+                                                                <div className="p-3 d-flex align-items-center border text-warning" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                    <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                    <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Waiting For Acceptance</b>
+                                                                </div>
+                                                            }
+                                                        </>
+                                                    </div>
+                                                    <div></div>
+                                                    <div className="d-flex align-items-center justify-content-between">
+                                                        <div className="d-flex align-items-center justify-content-start">
+                                                            <img src={`${process.env.REACT_APP_SERVER}/client/images/employees/${assigned_by_profile_image}`} width="50" height="50" className="rounded-circle" alt="employee" />
+                                                            <div className="pl-2">
+                                                                <h6 className="mb-0 font-weight-bold">{assigned_emp_name}</h6>
+                                                                <p className="mb-0">{designation_name}</p>
+                                                            </div>
+                                                        </div>
+                                                        {
+                                                            !remarks && !confirmed_remarks ? null
+                                                            :
+                                                            <div className="remarks_container">
+                                                                <i className="pointer las la-comments la-2x" onClick={() => setRemarksBoxID(`remarks_box_${id}`)}></i>
+                                                                {
+                                                                    RemarksBoxID === `remarks_box_${id}`
+                                                                    ?
+                                                                    <>
+                                                                        <div className="remarks_box popUps">
+                                                                            <div className="d-flex p-relative">
+                                                                                <img src={`${process.env.REACT_APP_SERVER}/client/images/employees/${assigned_to_profile_image}`} width="40" height="40" className="rounded-circle" alt="employee" />
+                                                                                <div className="d-flex pl-1">
+                                                                                    <div className="arrow-left mt-2"></div>
+                                                                                    <div className="p-2" style={{backgroundColor: "var(--lightgray)", wordBreak: 'break-all', borderRadius: "0 5px 5px 5px"}}>{remarks}</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <small className="d-block text-right">{new Date(accepted_date).toLocaleDateString()} at {accepted_time}</small>
+                                                                            {
+                                                                                confirmed_remarks
+                                                                                ?
+                                                                                <>
+                                                                                    <br />
+                                                                                    <div className="d-flex p-relative">
+                                                                                        <div className="d-flex pr-1">
+                                                                                            <div className="p-2" style={{backgroundColor: "var(--lightgray)", wordBreak: 'break-all', borderRadius: "5px 0 5px 5px"}}>{confirmed_remarks}</div>
+                                                                                            <div className="arrow-right mt-2"></div>
+                                                                                        </div>
+                                                                                        <img src={`${process.env.REACT_APP_SERVER}/client/images/employees/${assigned_by_profile_image}`} width="40" height="40" className="rounded-circle" alt="employee" />
+                                                                                    </div>
+                                                                                    <small className="d-block">{new Date(confirmed_date).toLocaleDateString()} at {confirmed_time}</small>
+                                                                                </>
+                                                                                :null
+                                                                            }
+                                                                        </div>
+                                                                        <div className="remarks_box_back" onClick={() => setRemarksBoxID('')}></div>
+                                                                    </>
+                                                                    :null
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <h6 className="mb-0 font-weight-bold">{new Date(deadline).toDateString()}</h6>
+                                                        <p>Deadline</p>
+                                                    </div>
+                                                    <div></div>
+                                                    <div className="text-center">
+                                                        {
+                                                            confirmed === null && accepted === 1 && completed !== null && assigned_by == localStorage.getItem('EmpID')
+                                                            ?
+                                                            <fieldset>
+                                                                <button className="btn cancle mr-1" onClick={() => setTaskInComplete(id, new Date() > deadline, false)}>Decline</button>
+                                                                <button className="btn submit ml-1" onClick={() => setTaskComplete(id, new Date() > deadline, true)}>Confirm</button>
+                                                            </fieldset>
+                                                            :
+                                                            accepted === 1 && completed === null && emp_id == localStorage.getItem('EmpID')
+                                                            ?
+                                                            <fieldset>
+                                                                <button className="btn cancle mr-1" onClick={() => setTaskInComplete(id, new Date() > deadline)}>Incomplete</button>
+                                                                <button className="btn submit ml-1" onClick={() => setTaskComplete(id, new Date() > deadline)}>Complete</button>
+                                                            </fieldset>
+                                                            :
+                                                            accepted === null && emp_id == localStorage.getItem('EmpID')
+                                                            ?
+                                                            <fieldset>
+                                                                <button className="btn cancle mr-1" onClick={ () => rejectTask( id ) }>Decline</button>
+                                                                <button className="btn submit ml-1" onClick={ () => acceptTask( id ) }>Accept</button>
+                                                            </fieldset>
+                                                            :null
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                ):
+                                <div className="page-content">
+                                    <h5 className="mb-0">No Task Added</h5>
+                                </div>
+                            }
+                            {
+                                GrowthCategories
+                                ?
+                                GrowthCategories.map(
+                                    ({category, id}, i) => {
+                                        return (
+                                            <div key={i} className="mt-3">
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <h6 className="text-uppercase text-secondary font-weight-bold mb-0">{category}</h6>
+                                                    <div className="pr-2">
+                                                        {
+                                                            window.location.href.split('/').pop() != localStorage.getItem("EmpID")
+                                                            ?
+                                                            <>
+                                                                <i style={{fontSize: 20}} data-tip="Edit Category Name" className="las la-edit pointer mr-2" onClick={() => editCategory(id, category)}></i>
+                                                                <i onClick={() => addTaskIndividually(id, category)} style={{fontSize: 20}} data-tip="Add New Task" className="las la-plus-circle pointer"></i>
+                                                            </>
+                                                            :null
+                                                        }
+                                                    </div>
+                                                </div>
+                                                {
+                                                    GrowthReviewDetails
+                                                    ?
+                                                    GrowthReviewDetails.filter(val => val.category_id === id).length === 0
+                                                    ?
+                                                    <div className="page-content">
+                                                        <h5 className="mb-0">No Task Added</h5>
+                                                    </div>
+                                                    :
+                                                    GrowthReviewDetails.filter(val => val.category_id === id).map(
+                                                        ({ assigned_by, id, emp_id, confirmed_remarks, remarks, task, start_date, deadline, assigning_date, confirmed_date, confirmed_time, accepted_date, accepted_time, completion_date, assigned_by_profile_image, assigned_to_profile_image, assigned_emp_name, designation_name, accepted, confirmed, completed }, i) => {
+                                                            // const start = moment(start_date, "YYYY-MM-DD");
+                                                            // const end = moment(deadline, "YYYY-MM-DD");
+                                                            return (
+                                                                <div key={i} className="task page-content mb-2">
+                                                                    <div className="task-grid">
+                                                                        <div>
+                                                                            <i className="las la-file-alt la-3x"></i>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h6 className="text-capitalize font-weight-bold">{task}</h6>
+                                                                            <div className="badge"><b>Task Created: </b>{assigning_date ? new Date(assigning_date).toLocaleDateString() : <span className="text-secondary">Not Assigned</span>}</div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div><b>Date Assigned: </b><br />{start_date ? new Date(start_date).toLocaleDateString() : new Date(assigning_date).toLocaleDateString()}</div>
+                                                                            <div><b>Date {accepted===0?"Declined":"Accepted"}: </b><br />{accepted_date ? new Date(accepted_date).toLocaleDateString() : <span className="text-secondary">Not Accepted</span>}</div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div><b>Date {completed===0||confirmed===0?"Submitted":"Completed"}: </b><br />{completion_date ? new Date(completion_date).toLocaleDateString() : <span className="text-secondary">Not Completed</span>}</div>
+                                                                            <div><b>Date Confirmed: </b><br />{confirmed_date ? new Date(confirmed_date).toLocaleDateString() : <span className="text-secondary">Not Confirmed</span>}</div>
+                                                                        </div>
+                                                                        <div>
                                                                             <>
-                                                                                <td>
+                                                                                {
+                                                                                    confirmed === 1
+                                                                                    ?
+                                                                                    <div className={"p-3 d-flex align-items-center border " + (completed === 0 ? "text-danger" : "text-success")} style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>{completed === 0?"Confirmed Incomplete":"Completed"}</b>
+                                                                                    </div>
+                                                                                    :
+                                                                                    confirmed === 0
+                                                                                    ?
+                                                                                    <div className="p-3 d-flex align-items-center border text-danger" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Need Amendment</b>
+                                                                                    </div>
+                                                                                    :
+                                                                                    completed === 1
+                                                                                    ?
+                                                                                    <div className="p-3 d-flex align-items-center border text-warning" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>In Review</b>
+                                                                                    </div>
+                                                                                    :
+                                                                                    completed === 0
+                                                                                    ?
+                                                                                    <div className="p-3 d-flex align-items-center border text-danger" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Incomplete</b>
+                                                                                    </div>
+                                                                                    :
+                                                                                    accepted === 1
+                                                                                    ?
+                                                                                    <div className="p-3 d-flex align-items-center border text-primary" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>In Progress</b>
+                                                                                    </div>
+                                                                                    :
+                                                                                    accepted === 0
+                                                                                    ?
+                                                                                    <div className="p-3 d-flex align-items-center border text-danger" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Declined</b>
+                                                                                    </div>
+                                                                                    :
+                                                                                    <div className="p-3 d-flex align-items-center border text-warning" style={{borderRadius: '0 10px 10px 10px' }}>
+                                                                                        <i className="las la-circle" style={{fontSize: 22}}></i>
+                                                                                        <b className="ml-2" style={{fontFamily: "Roboto-Light"}}>Waiting For Acceptance</b>
+                                                                                    </div>
+                                                                                }
+                                                                            </>
+                                                                        </div>
+                                                                        <div></div>
+                                                                        <div className="d-flex align-items-center justify-content-between">
+                                                                            <div className="d-flex align-items-center justify-content-start">
+                                                                                <img src={`${process.env.REACT_APP_SERVER}/client/images/employees/${assigned_by_profile_image}`} width="50" height="50" className="rounded-circle" alt="employee" />
+                                                                                <div className="pl-2">
+                                                                                    <h6 className="mb-0 font-weight-bold">{assigned_emp_name}</h6>
+                                                                                    <p className="mb-0">{designation_name}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            {
+                                                                                !remarks && !confirmed_remarks ? null
+                                                                                :
+                                                                                <div className="remarks_container">
+                                                                                    <i className="pointer las la-comments la-2x" onClick={() => setRemarksBoxID(`remarks_box_${id}`)}></i>
                                                                                     {
-                                                                                        val.completed === null && val.emp_id == localStorage.getItem("EmpID")
+                                                                                        RemarksBoxID === `remarks_box_${id}`
                                                                                         ?
                                                                                         <>
-                                                                                            {
-                                                                                                val.accepted === 1 && val.completed === null
-                                                                                                ?
-                                                                                                <>
-                                                                                                    <i title="Set Task To Complete" className={  currDate > deadline ? "las la-check" : "las la-check lock" } onClick={ () => setTaskComplete( val.id, currDate > deadline ) }></i>
-                                                                                                    <i title="Set Task To Incomplete" className={  currDate > deadline ? "las la-times" : "las la-times lock" } onClick={ () => setTaskInComplete( val.id, currDate > deadline ) }></i>
-                                                                                                </>
-                                                                                                :
-                                                                                                val.accepted === 0
-                                                                                                ?
-                                                                                                <span className="text-danger"><b>Rejected</b><br />By Employee</span>
-                                                                                                :
-                                                                                                <span className="text-danger">Not Accepted By Employee</span>
-                                                                                            }
+                                                                                            <div className="remarks_box popUps">
+                                                                                                <div className="d-flex p-relative">
+                                                                                                    <img src={`${process.env.REACT_APP_SERVER}/client/images/employees/${assigned_to_profile_image}`} width="40" height="40" className="rounded-circle" alt="employee" />
+                                                                                                    <div className="d-flex pl-1">
+                                                                                                        <div className="arrow-left mt-2"></div>
+                                                                                                        <div className="p-2" style={{backgroundColor: "var(--lightgray)", wordBreak: 'break-all', borderRadius: "0 5px 5px 5px"}}>{remarks}</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <small className="d-block text-right">{new Date(accepted_date).toLocaleDateString()} at {accepted_time}</small>
+                                                                                                {
+                                                                                                    confirmed_remarks
+                                                                                                    ?
+                                                                                                    <>
+                                                                                                        <br />
+                                                                                                        <div className="d-flex p-relative">
+                                                                                                            <div className="d-flex pr-1">
+                                                                                                                <div className="p-2" style={{backgroundColor: "var(--lightgray)", wordBreak: 'break-all', borderRadius: "5px 0 5px 5px"}}>{confirmed_remarks}</div>
+                                                                                                                <div className="arrow-right mt-2"></div>
+                                                                                                            </div>
+                                                                                                            <img src={`${process.env.REACT_APP_SERVER}/client/images/employees/${assigned_by_profile_image}`} width="40" height="40" className="rounded-circle" alt="employee" />
+                                                                                                        </div>
+                                                                                                        <small className="d-block">{new Date(confirmed_date).toLocaleDateString()} at {confirmed_time}</small>
+                                                                                                    </>
+                                                                                                    :null
+                                                                                                }
+                                                                                            </div>
+                                                                                            <div className="remarks_box_back" onClick={() => setRemarksBoxID('')}></div>
                                                                                         </>
-                                                                                        :
-                                                                                        val.completed === 0
-                                                                                        ?<span className="text-danger">Incomplete</span>
-                                                                                        :val.completed === 1
-                                                                                        ?<span className="text-success">Completed</span>
-                                                                                        :
-                                                                                        val.accepted === 0
-                                                                                        ?
-                                                                                        <span className="text-danger">Rejected</span>
-                                                                                        :
-                                                                                        val.accepted === 1
-                                                                                        ?
-                                                                                        <span className="text-success">Accepted</span>
-                                                                                        :
-                                                                                        <span className="text-warning">Waiting For Acceptance</span>
+                                                                                        :null
                                                                                     }
-                                                                                </td>
-                                                                                <td>
-                                                                                    { val.remarks ? val.remarks : "-----" }
-                                                                                </td>
-                                                                            </>
-                                                                        }
-                                                                    </tr>
-                                                                )
-                                                            }
-                                                        )
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </>
-                                        :null
-                                    } */}
-                                </div>
-                            </>
-                        }
-                        
-                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                        <div>
+                                                                            <h6 className="mb-0 font-weight-bold">{new Date(deadline).toDateString()}</h6>
+                                                                            <p>Deadline</p>
+                                                                        </div>
+                                                                        <div></div>
+                                                                        <div className="text-center">
+                                                                            {
+                                                                                confirmed === null && accepted === 1 && completed !== null && assigned_by == localStorage.getItem('EmpID')
+                                                                                ?
+                                                                                <fieldset>
+                                                                                    <button className="btn cancle mr-1" onClick={() => setTaskInComplete(id, new Date() > deadline, false)}>Decline</button>
+                                                                                    <button className="btn submit ml-1" onClick={() => setTaskComplete(id, new Date() > deadline, true)}>Confirm</button>
+                                                                                </fieldset>
+                                                                                :
+                                                                                accepted === 1 && completed === null && emp_id == localStorage.getItem('EmpID')
+                                                                                ?
+                                                                                <fieldset>
+                                                                                    <button className="btn cancle mr-1" onClick={() => setTaskInComplete(id, new Date() > deadline)}>Incomplete</button>
+                                                                                    <button className="btn submit ml-1" onClick={() => setTaskComplete(id, new Date() > deadline)}>Complete</button>
+                                                                                </fieldset>
+                                                                                :
+                                                                                accepted === null && emp_id == localStorage.getItem('EmpID')
+                                                                                ?
+                                                                                <fieldset>
+                                                                                    <button className="btn cancle mr-1" onClick={ () => rejectTask( id ) }>Decline</button>
+                                                                                    <button className="btn submit ml-1" onClick={ () => acceptTask( id ) }>Accept</button>
+                                                                                </fieldset>
+                                                                                :null
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    ):null
+                                                }
+                                            </div>
+                                        )
+                                    }
+                                )
+                                :null
+                            }
+                        </>
+                    }
                     {/* <div className="page-content">
                         <h6 className="mb-0 collaborators"><b>Collaborators</b></h6>
                         <hr className="my-1" />
@@ -1835,9 +1952,8 @@ const GrowthReviewDetailsComponent = ({ GrowthCategories, addNewCategory, quarte
     }else {
         return (
             <>
-                <div className="ticket_container page-content">
-                    <img src={loading} alt="loading..." width='50' height='50' className='d-block mx-auto' />
-                </div>
+                <h6 className="text-center p-3 bg-white font-weight-bold">Loading Tasks...</h6>
+                <Modal show={ ShowModal } Hide={ () => setShowModal(!ShowModal) } content={ Content } />
             </>
         )
     }
@@ -1969,6 +2085,9 @@ const IssueToSubordinates = ( { history, issueTicket, Selected, Keyword, Employe
 }
 
 const GrowthReviewComponent = ({ quarter, Companies, EmpGrowthReviewData, Employees, history, loadEmpGrowthReviewData, loadSubordinatesForGrowthReview }) => {
+    const key = 'real secret keys should be long and random';
+    const encryptor = require('simple-encryptor')(key);
+
     const [ Your, setYour ] = useState(true);
     const [ ShowFiltersSubordinates, setShowFiltersSubordinates ] = useState(false);
     const [ Keyword, setKeyword ] = useState('');
@@ -2074,6 +2193,20 @@ const GrowthReviewComponent = ({ quarter, Companies, EmpGrowthReviewData, Employ
         }
     }
     const Arr = Employees ? Employees.filter(val => {return val.name.toLowerCase().includes(Keyword.toLowerCase()) && val.emp_id !== parseInt(localStorage.getItem("EmpID")) }) : null;
+    function redirection(emp_id, emp_image, name, designation_name) {
+        if (emp_image && name && designation_name) {
+            sessionStorage.setItem(
+                'growth-review-emp-data',
+                JSON.stringify({
+                    emp_image: emp_image,
+                    name: name,
+                    designation_name: designation_name
+                })
+            );
+        }
+        sessionStorage.setItem('authorization_key', encryptor.encrypt(emp_id));
+        history.push("/acr/growth-review/" + emp_id);
+    }
 
     return (
         <>
@@ -2082,7 +2215,7 @@ const GrowthReviewComponent = ({ quarter, Companies, EmpGrowthReviewData, Employ
                 <div className="d-flex">
                     <div className="btn-group">
                         <button onClick={ () => { setYour(true); sessionStorage.setItem("GrowthReviewYours", '1') } } className={ Your ? "btn submit" : "btn light" }>Tasks Assigned By You</button>
-                        <button onClick={ () => history.push('/acr/growth-review/' + localStorage.getItem("EmpID")) } className={ Your ? "btn light" : "btn submit" }>Tasks Assigned To You</button>
+                        <button onClick={ () => redirection(localStorage.getItem("EmpID")) } className={ Your ? "btn light" : "btn submit" }>Tasks Assigned To You</button>
                     </div>
                     {/* <button className="btn submit ml-2" onClick={() => history.push('/acr/growth-review')}>New</button> */}
                 </div>
@@ -2092,94 +2225,94 @@ const GrowthReviewComponent = ({ quarter, Companies, EmpGrowthReviewData, Employ
                 ?
                 <>
                     {
-                        Arr
+                    Arr
+                    ?
+                    <>
+                        <div className="d-flex align-items-center justify-content-between">
+                            <h6 className="mb-0" style={{ fontFamily: "Roboto" }}><b>Employees ({Arr.length})</b></h6>
+                            <button className="btn light px-2 ml-2 filter-emit" onClick={() => setShowFiltersSubordinates(!ShowFiltersSubordinates)} type='button'>
+                                {
+                                    ShowFilters
+                                        ?
+                                        <>
+                                            <i className="las la-times"></i>
+                                        </>
+                                        :
+                                        <div data-tip data-for='filter'>
+                                            {
+                                                Keyword !== ''
+                                                    ?
+                                                    <div className='filterisOpen'></div>
+                                                    :
+                                                    null
+                                            }
+                                            <i className="las la-filter"></i>
+                                            <ReactTooltip id='filter' place="top">
+                                                Filters
+                                            </ReactTooltip>
+                                        </div>
+                                }
+                            </button>
+                        </div>
+                        {
+                        ShowFiltersSubordinates
                         ?
                         <>
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <h6 className="mb-0" style={{ fontFamily: "Roboto" }}><b>Employees ({Arr.length})</b></h6>
-                                        <button className="btn light px-2 ml-2 filter-emit" onClick={() => setShowFiltersSubordinates(!ShowFiltersSubordinates)} type='button'>
-                                            {
-                                                ShowFilters
-                                                    ?
-                                                    <>
-                                                        <i className="las la-times"></i>
-                                                    </>
-                                                    :
-                                                    <div data-tip data-for='filter'>
-                                                        {
-                                                            Keyword !== ''
-                                                                ?
-                                                                <div className='filterisOpen'></div>
-                                                                :
-                                                                null
-                                                        }
-                                                        <i className="las la-filter"></i>
-                                                        <ReactTooltip id='filter' place="top">
-                                                            Filters
-                                                        </ReactTooltip>
-                                                    </div>
-                                            }
-                                        </button>
+                            <div className='filter-content mt-3 popUps'>
+                                <div className='flex'>
+                                    <div className='w-100'>
+                                        <label className="font-weight-bold mb-0">Search Employee</label>
+                                        <input placeholder='Search Keywords...' type="search" value={Keyword} onChange={(e) => { setKeyword(e.target.value); sessionStorage.setItem('ACRGrowthReviewSearchEmpByName', e.target.value) }} className='form-control form-control-sm mb-2' />
                                     </div>
-                            {
-                                ShowFiltersSubordinates
-                                ?
-                                            <>
-                                                <div className='filter-content mt-3 popUps'>
-                                                    <div className='flex'>
-                                                        <div className='w-100'>
-                                                            <label className="font-weight-bold mb-0">Search Employee</label>
-                                                            <input placeholder='Search Keywords...' type="search" value={Keyword} onChange={(e) => { setKeyword(e.target.value); sessionStorage.setItem('ACRGrowthReviewSearchEmpByName', e.target.value) }} className='form-control form-control-sm mb-2' />
-                                                        </div>
-                                                        <button className='btn green d-block ml-auto mt-2' type='reset'>Reset All</button>
-                                                    </div>
-                                                </div>
-                                            </>
-                                            :null
-                            }
-                            {
-                                Arr.length === 0
-                                ?
-                                <h6 className="text-center">No Subordinate Found</h6>
-                                :
-                                <>
-                                    <table className="table mt-3">
-                                        <thead>
-                                            <tr>
-                                                <th>Employee Code</th>
-                                                <th>Employee</th>
-                                                <th>Company</th>
-                                            </tr>   
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                Arr.map(
-                                                    ( val, index ) => {
-                                                        return (
-                                                            <tr key={index} className="pointer pointer-hover" onClick={ () => history.push("/acr/growth-review/" + val.emp_id) }>
-                                                                <td>{ val.emp_id }</td>
-                                                                <td>
-                                                                    <div className="d-flex align-items-center">
-                                                                        <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
-                                                                        <div className="ml-2">
-                                                                            <b>{ val.name }</b><br />
-                                                                            <span>{ val.designation_name }</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>{ val.company_name }</td>
-                                                            </tr>
-                                                        )
-                                                    }
+                                    <button className='btn green d-block ml-auto mt-2' type='reset'>Reset All</button>
+                                </div>
+                            </div>
+                        </>
+                        :null
+                        }
+                        {
+                        Arr.length === 0
+                        ?
+                        <h6 className="text-center">No Subordinate Found</h6>
+                        :
+                        <>
+                            <table className="table mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Employee Code</th>
+                                        <th>Employee</th>
+                                        <th>Company</th>
+                                    </tr>   
+                                </thead>
+                                <tbody>
+                                    {
+                                        Arr.map(
+                                            ( val, index ) => {
+                                                return (
+                                                    <tr key={index} className="pointer pointer-hover" onClick={() => redirection(val.emp_id, val.emp_image, val.name, val.designation_name)}>
+                                                        <td>{ val.emp_id }</td>
+                                                        <td>
+                                                            <div className="d-flex align-items-center">
+                                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } alt="employee" width="40" height="40" className="rounded-circle" />
+                                                                <div className="ml-2">
+                                                                    <b>{ val.name }</b><br />
+                                                                    <span>{ val.designation_name }</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{ val.company_name }</td>
+                                                    </tr>
                                                 )
                                             }
-                                        </tbody>
-                                    </table>
-                                </>
-                            }
+                                        )
+                                    }
+                                </tbody>
+                            </table>
                         </>
-                        :
-                        <img src={loading} alt="loading..." width='50' height='50' className='d-block mx-auto' />
+                        }
+                    </>
+                    :
+                    <img src={loading} alt="loading..." width='50' height='50' className='d-block mx-auto' />
                     }
                 </>
                 :

@@ -4,26 +4,21 @@ import './App.css';
 
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Loading from './Components/UI/Loading/Loading';
-import POPrintUI from './Components/EmployeeProtal/Dashboard/Components/PO_PrintUI/PO_PrintUI';
-import PRprintUI from './Components/EmployeeProtal/Dashboard/Components/PR_printUI/PR_printUI';
 import Vouchers from './Components/EmployeeProtal/Dashboard/Components/Vouchers/Vouchers';
 import Quatation from './Components/EmployeeProtal/Dashboard/Components/Quatation/Quatation';
 import Bills from './Components/EmployeeProtal//Dashboard/Components/Bills/Bills';
-
 import LoadingIcon from './images/loadingIcons/icons8-loading-circle.gif';
+import { ErrorBoundary } from "react-error-boundary";
+import Error from './Components/UI/Error/Error';
 
 const Login = lazy( () => import( './Components/EmployeeProtal/Auth/Login/Login' ) );
 const Dashboard = lazy( () => import( './Components/EmployeeProtal/Dashboard/Dashboard' ) );
 const Logout = lazy( () => import( './Components/EmployeeProtal/Auth/Logout/Logout' ) );
-
 const AdminModule = lazy( () => import( './Components/AdminModule/AdminModule' ) );
 const AdminLogin = lazy( () => import( './Components/AdminModule/Admin_login/Admin_login' ) );
 const AdminLogout = lazy( () => import( './Components/AdminModule/Admin_Logout/Admin_Logout' ) );
-
 const OutOfLocation = lazy( () => import( './Components/EmployeeProtal/OutOfLocation/OutOfLocation' ) );
-
 const InventoryDashboard = lazy( () => import( './Components/Inventory/Inventory' ) );
-
 // const Leave = lazy( () => import( './Components/Leave/Leave' ) );
 
 const App = () => {
@@ -48,9 +43,13 @@ const App = () => {
         />
 
         const Sus = ( props ) => {
-
-            return <Suspense fallback={ Load }> { props.content } </Suspense>
-
+            return (
+                <Suspense fallback={ Load }>
+                    <ErrorBoundary FallbackComponent={Error}>
+                        { props.content }
+                    </ErrorBoundary>
+                </Suspense>
+            )
         }
     
         return ( 

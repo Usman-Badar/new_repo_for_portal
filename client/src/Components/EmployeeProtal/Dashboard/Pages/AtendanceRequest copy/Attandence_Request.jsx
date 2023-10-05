@@ -175,7 +175,7 @@ const Attandence_Request = () => {
                 }
             )
 
-            GetDates();
+            // GetDates();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []
@@ -317,6 +317,7 @@ const Attandence_Request = () => {
                 '/getallattendancerequests',
                 {
                     emp_id: localStorage.getItem('EmpID'),
+                    correction: 1
                 }
             ).then(
                 res => {

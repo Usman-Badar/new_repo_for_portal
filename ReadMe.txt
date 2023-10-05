@@ -15,3 +15,10 @@ F:\IT\Web Development\MERN\portal\Routes\Employee\leave.js
 ----------------------------------------------------------------
 F:\IT\Web Development\MERN\portal\Routes\Employee\attendance_requests.js
 -> /performactionforattrequest
+-> /getallattendancerequests [post]
+----------------------------------------------------------------
+F:\IT\Web Development\MERN\portal\Routes\Employee\employee.js
+-> /acr/growth-review/details
+-> /acr/growth-review/category/update [new post api added]
+-> /acr/growth-review/additional-tasks
+-> /acr/growth-review/individual-tasks [new post api added]

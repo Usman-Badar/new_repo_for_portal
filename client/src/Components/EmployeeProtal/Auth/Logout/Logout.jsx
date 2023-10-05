@@ -17,6 +17,9 @@ const Logout = () => {
         localStorage.removeItem('name');
         localStorage.removeItem('EmpID');
 
+        localStorage.clear();
+        sessionStorage.clear();
+
 
     }
 

@@ -639,6 +639,13 @@ td {
     color: #ffff;
 }
 
+.badge {
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
 .switch {
     position: relative;
     display: inline-block;
@@ -817,10 +824,15 @@ td .iconic:hover {
 
 .pointer-hover {
     transition: .5s;
+    transition: background-image .5s ease-in-out;
+    -webkit-transition: background-image .5s ease-in-out;
+    -moz-transition: background-image .5s ease-in-out;
+    -o-transition: background-image .5s ease-in-out;
 }
 
 .pointer-hover:hover {
     background-color: rgb(211, 211, 211, .3);
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .comments-container {
