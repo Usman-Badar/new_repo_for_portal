@@ -130,7 +130,7 @@ const Dashboard = () => {
 
     useEffect(
         () => {
-
+            
             if ( localStorage.getItem("Token") === undefined || localStorage.getItem("Token") === null )
             {
                 history.replace("/login");
@@ -407,7 +407,7 @@ const Dashboard = () => {
                             :
                             <div className='popUps'>
                                 <ChatBotNotification  />
-                                <Route exact path='/dashboard' render={ () => <Sus content={ <Home /> } guarded access={0} /> } />
+                                <Route exact path='/dashboard' render={ () => <Sus content={ <Home /> } /> } />
 
                                 <Route exact path='/chat' render={ () => <Sus content={ <Chat /> } admin guarded access={2} /> } />
 

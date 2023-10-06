@@ -57,7 +57,7 @@
     font-size: 18px;
 }
 
-.Dashboard_active {
+.Admin_Dashboard_active {
     background-color: var(--black);
     color: #f1f9fb !important;
     border-left: 2px solid #f1f9fb !important;

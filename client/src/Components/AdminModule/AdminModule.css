@@ -6,6 +6,7 @@
 }
 
 .AdminModule .Admin_Dashboard_main_content {
+    padding-top: 20px;
     height: auto;
     width: 85vw;
     margin-left: 15vw;
@@ -17,9 +18,9 @@
 
 .AdminModule .Admin_Dashboard_main_content .content {
     width: 100%;
-    min-height: 100vh;
-    padding-top: 55px;
-    overflow: auto hidden !important;
+    height: calc( 100vh - 45px);
+    padding-top: 56.5px;
+    overflow-y: scroll !important;
 }
 
 @media only screen and (max-width: 1400px) {

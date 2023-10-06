@@ -46,7 +46,7 @@ router.post('/updateprofile', ( req, res ) => {
                         q = q.concat("UPDATE emp_cv SET cv = ? WHERE emp_id = ?;");
                         pera.push(CVName + '.' + CV.name.split('.').pop());
                         pera.push(emp_id);
-                        CV.mv('client/public/images/documents/cv/' + CVName + '.' + CV.name.split('.').pop(), (err) => {
+                        CV.mv('client/images/documents/cv/' + CVName + '.' + CV.name.split('.').pop(), (err) => {
             
                             if (err) {
                     
@@ -62,7 +62,7 @@ router.post('/updateprofile', ( req, res ) => {
                         q = q.concat("UPDATE emp_prf_address SET proof_of_address = ? WHERE emp_id = ?;");
                         pera.push(PRFName + '.' + PRF.name.split('.').pop());
                         pera.push(emp_id);
-                        PRF.mv('client/public/images/documents/address/' + PRFName + '.' + PRF.name.split('.').pop(), (err) => {
+                        PRF.mv('client/images/documents/address/' + PRFName + '.' + PRF.name.split('.').pop(), (err) => {
             
                             if (err) {
                     

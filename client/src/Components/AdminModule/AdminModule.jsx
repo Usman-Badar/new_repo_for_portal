@@ -4,8 +4,10 @@ import './AdminModule.css';
 // REACT REDUX
 import { useDispatch } from 'react-redux';
 import { Route, useHistory, NavLink } from 'react-router-dom';
-// REDUX ACTIONS/METHDS
 import { ShowSideBar } from '../../Redux/Actions/Action';
+import Loading from '../UI/Loading/Loading';
+import LoadingIcon from '../../images/loadingIcons/icons8-loading-circle.gif';
+import Middleware from '../UI/Middleware/Middleware';
 
 const Sidebar = lazy( () => import('./Components/SideBar/SideBar') );
 const TopBar = lazy( () => import('./Components/TopBar/TopBar') );
@@ -28,6 +30,7 @@ const AdminLogbook = lazy( () => import('./Pages/AdminLogbook/AdminLogbook') );
 const AttRequest_Config = lazy( () => import('./Pages/AttRequest_Config/AttRequest_Config') );
 const MenuSetup = lazy( () => import('./Pages/MenuSetup/MenuSetup') );
 const MiscSetup = lazy( () => import('./Pages/MiscSetup/MiscSetup') );
+const AccessManagement = lazy( () => import('./Pages/AccessManagement/AccessManagement') );
 
 const AdminModule = () => {
 
@@ -37,34 +40,23 @@ const AdminModule = () => {
 
     useEffect(
         () => {
-
             if (sessionStorage.getItem('UserID') === undefined || sessionStorage.getItem('UserID') === null) {
+                console.log('sessionStorage.getItem(UserID)', sessionStorage.getItem('UserID'))
                 history.replace('/admin_login');
             }
-
         }, [history]
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const SideBarClose = () => {
-
         dispatch( ShowSideBar( false ) );
-
     }
 
     const ShowSide = () => {
-
-        if ( ShowBar )
-        {
-            setShowBar( false );
-        }else
-        {
-            setShowBar( true );
-        }
-
+        setShowBar(!ShowBar);
     }
 
-    let content = (
+    const content = (
         <div className="Dashboard_links">
             <NavLink activeClassName="Admin_Dashboard_active" to="/admin_module" className="d-center links">
                 <div className="pr-3"><i className="las la-home"></i></div>
@@ -77,6 +69,10 @@ const AdminModule = () => {
             <NavLink activeClassName="Admin_Dashboard_active" to="/admin_employement_requests/admin_employement_setup" className="d-center links">
                 <div className="pr-3"><i class="las la-building"></i></div>
                 <div className="links_txt">Employee Form</div>
+            </NavLink>
+            <NavLink activeClassName="Admin_Dashboard_active" to="/admin/access/management" className="d-center links">
+                <div className="pr-3"><i class="las la-building"></i></div>
+                <div className="links_txt">Access Management</div>
             </NavLink>
             <NavLink activeClassName="Admin_Dashboard_active" to="/admin_companies" className="d-center links">
                 <div className="pr-3"><i class="las la-building"></i></div>
@@ -119,38 +115,73 @@ const AdminModule = () => {
                 <div className="links_txt">MISC Setup</div>
             </NavLink>
         </div> 
-    )
+    );
+    const Load = <Loading 
+        display={ true }
+        styling={
+            {
+                zIndex: 100000
+            }
+        }
+        icon={ 
+            <img 
+                src={ LoadingIcon }
+                className="LoadingImg"
+                alt="LoadingIcon"
+            /> 
+        }
+        txt="Please Wait"
+    />
+    const Sus = ( props ) => {
+        return (
+            <Suspense fallback={Load}>
+                <Middleware 
+                    admin={props.admin}
+                    guarded={props.guarded} 
+                    hasAccess={props.access} 
+                    user={{}}
+                    authorization={props.authorization}
+                    authorizationMethod={props.authorizationMethod}
+                    authorization_key={props.authorization_key}
+                    authorization_value={props.authorization_value}
+                    authorization_expression={props.authorization_expression}
+                >
+                    { props.content }
+                </Middleware>
+            </Suspense>
+        )
+    }
 
     return (
         <>
             <div className='AdminModule'>
-                <Sidebar title="Admin Module" Data={ content } show={ ShowBar } SideBarClose={ SideBarClose } />
-
+                <Sidebar title="Admin Portal" Data={ content } show={ ShowBar } SideBarClose={ SideBarClose } />
                 <div className="Admin_Dashboard_main_content">
                     {/* TopBar Start From Here */}
                     <TopBar sideBarTrue={ ShowSide } />
                     {/* TopBar End here */}
                     <div className="content">
                         {/* <Breadcrumbs /> */}
-                        <Route exact path='/admin_module' render={ () => <Suspense fallback={ <div>Loading....</div> }><Home /></Suspense> } />
-                        <Route exact path='/admin_employement_requests' render={ () => <Suspense fallback={ <div>Loading....</div> }><EmploymentRequests /></Suspense> } />
-                        <Route exact path='/admin_employement_requests/admin_employement_setup' render={ () => <Suspense fallback={ <div>Loading....</div> }><EmployeeForm /></Suspense> } />
-                        <Route exact path='/admin_employement_requests/admin_view_temp_employee/:id' render={ () => <Suspense fallback={ <div>Loading....</div> }><ViewTempEmployees /></Suspense> } />
-                        <Route exact path='/admin_employement_requests/confirmapproval/:id' render={ () => <Suspense fallback={ <div>Loading....</div> }><ConfirmApproval /></Suspense> } />
-                        <Route exact path='/admin_view_employees' render={ () => <Suspense fallback={ <div>Loading....</div> }><Admin_View_Employees /></Suspense> } />
-                        <Route exact path='/admin_companies' render={ () => <Suspense fallback={ <div>Loading....</div> }><Companies /></Suspense> } />
-                        <Route exact path='/admin_locations' render={ () => <Suspense fallback={ <div>Loading....</div> }><Locations /></Suspense> } />
-                        <Route exact path='/admin_locations/:id&&find=sublocation' render={ () => <Suspense fallback={ <div>Loading....</div> }><SubLocations /></Suspense> } />
-                        <Route exact path='/admin_departments' render={ () => <Suspense fallback={ <div>Loading....</div> }><Departments /></Suspense> } />
-                        <Route exact path='/admin_departments/admin_designations/:id' render={ () => <Suspense fallback={ <div>Loading....</div> }><Designations /></Suspense> } />
-                        <Route exact path='/admin_users' render={ () => <Suspense fallback={ <div>Loading....</div> }><Users /></Suspense> } />
-                        <Route exact path='/createuser' render={ () => <Suspense fallback={ <div>Loading....</div> }><CreateUser /></Suspense> } />
-                        <Route exact path='/admin_emp_attendance' render={ () => <Suspense fallback={ <div>Loading....</div> }>< EmployeesAttendance /></Suspense>  } />
-                        <Route exact path='/admin_logbook' render={ () => <Suspense fallback={ <div>Loading....</div> }>< AdminLogbook /></Suspense>  } />
-                        <Route exact path='/configure_attendance_request' render={ () => <Suspense fallback={ <div>Loading....</div> }><AttRequest_Config /></Suspense> } />
+                        <Route exact path='/admin/access/management' render={ () => <Sus content={ <AccessManagement /> } /> } />
+                        <Route exact path='/admin_module' render={ () => <Sus content={<Home />} /> } />
+                        <Route exact path='/admin_employement_requests' render={ () => <Sus content={<EmploymentRequests />} /> } />
+                        <Route exact path='/admin_employement_requests/admin_employement_setup' render={ () => <Sus content={<EmployeeForm />} /> } />
+                        <Route exact path='/admin_employement_requests/admin_view_temp_employee/:id' render={ () => <Sus content={<ViewTempEmployees />} /> } />
+                        <Route exact path='/admin_employement_requests/confirmapproval/:id' render={ () => <Sus content={<ConfirmApproval />} /> } />
+                        <Route exact path='/admin_view_employees' render={ () => <Sus content={<Admin_View_Employees />} /> } />
+                        <Route exact path='/admin_companies' render={ () => <Sus content={<Companies />} /> } />
+                        <Route exact path='/admin_locations' render={ () => <Sus content={<Locations />} /> } />
+                        <Route exact path='/admin_locations/:id&&find=sublocation' render={ () => <Sus content={<SubLocations />} /> } />
+                        <Route exact path='/admin_departments' render={ () => <Sus content={<Departments />} /> } />
+                        <Route exact path='/admin_departments/admin_designations/:id' render={ () => <Sus content={<Designations />} /> } />
+                        <Route exact path='/admin_users' render={ () => <Sus content={<Users />} /> } />
+                        <Route exact path='/createuser' render={ () => <Sus content={<CreateUser />} /> } />
+                        <Route exact path='/admin_emp_attendance' render={ () => <Sus content={<EmployeesAttendance />} /> } />
+                        <Route exact path='/admin_logbook' render={ () => <Sus content={<AdminLogbook />} /> } />
+                        <Route exact path='/configure_attendance_request' render={ () => <Sus content={<AttRequest_Config />} /> } />
 
-                        <Route exact path='/menu_setup' render={ () => <Suspense fallback={ <div>Loading....</div> }><MenuSetup /></Suspense> } />
-                        <Route exact path='/misc_setup' render={ () => <Suspense fallback={ <div>Loading....</div> }><MiscSetup /></Suspense> } />
+                        <Route exact path='/menu_setup' render={ () => <Sus content={<MenuSetup />} /> } />
+                        <Route exact path='/misc_setup' render={ () => <Sus content={<MiscSetup />} /> } />
                         
                     </div>
                 </div>

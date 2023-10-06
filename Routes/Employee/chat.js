@@ -534,7 +534,7 @@ router.post('/downloaddrive', ( req, res ) => {
 
 //         response = JSON.parse( myCache.get( Key + '===' ) );
 
-//         var uploadDir = fs.readdirSync( 'client/public/images/drive/' + response[1][0].name.split('/')[0] ); 
+//         var uploadDir = fs.readdirSync( 'client/images/drive/' + response[1][0].name.split('/')[0] ); 
 //         const zip = new AdmZip();
 
 //         for (var i = 0; i < response[1].length;i++){
@@ -549,7 +549,7 @@ router.post('/downloaddrive', ( req, res ) => {
             
 //             if ( file[0] )
 //             {
-//                 zip.addLocalFile( 'client/public/images/drive/' + response[1][0].name.split('/')[0] + '/' + file[0] );
+//                 zip.addLocalFile( 'client/images/drive/' + response[1][0].name.split('/')[0] + '/' + file[0] );
 //             }
 
 //         }
@@ -560,7 +560,7 @@ router.post('/downloaddrive', ( req, res ) => {
 //         const data = zip.toBuffer();
         
 //         // save file zip in root directory
-//         zip.writeZip( 'client/public/images/drive/' + response[1][0].name.split('/')[0] + '/' + downloadName );
+//         zip.writeZip( 'client/images/drive/' + response[1][0].name.split('/')[0] + '/' + downloadName );
 
 //         res.set('Content-Type', 'application/octet-stream');
 //         res.set('Content-Disposition', `attachment; filename=${downloadName}`);

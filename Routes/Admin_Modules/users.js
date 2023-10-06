@@ -77,7 +77,7 @@ router.post('/createuser', ( req, res ) => {
                         }else 
                         {
             
-                            UsrImg.mv('client/public/images/users/' + imgName, (err) => {
+                            UsrImg.mv('client/images/users/' + imgName, (err) => {
             
                                 if (err) {
                         

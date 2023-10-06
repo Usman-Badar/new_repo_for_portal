@@ -1,168 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import './Employement_Requests.css';
+import { useHistory } from 'react-router-dom';
 import axios from '../../../../../axios';
-
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import JSAlert from 'js-alert';
 
 const Employement_Requests = () => {
 
     const [ Employee, setEmployee ] = useState([]);
-    const [ Search, setSearch ] = useState(
-        {
-            SrchKey: '', SrchBy: 'name'
-        }
-    );
-
-    let key = 'real secret keys should be long and random';
+    const history  = useHistory();
+    const key = 'real secret keys should be long and random';
     const encryptor = require('simple-encryptor')(key);
 
-    useEffect(
-        () => {
-
-            getAllTempEmp();
-
-            setInterval(() => {
-                getAllTempEmp();
-            }, 1000);
-
-        }, []
-    );
-
+    useEffect(() => {getAllTempEmp()}, []);
     const getAllTempEmp = () => {
-
         axios.get('/getalltempemployee').then( response => {
-
             setEmployee( response.data );
-
         } ).catch( err => {
-
-            toast.dark( err , {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });;
-
+            console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, "Failed To Fetch", JSAlert.Icons.Failed);
         } );
-
-    }
-
-    // Call on change function to store input field data into usestate()
-    const OnChangeHandler = ( e ) => {
-
-        const { name, value } = e.target;
-        const setValues = {
-            ...Search,
-            [name]: value
-        }
-
-        setSearch(setValues);
-
-    }
-
-    const OnSearchEmployee = ( e ) => {
-
-        e.preventDefault();
-
-        const Data = new FormData();
-        Data.append('SearchKey', Search.SrchKey);
-        Data.append('SearchBy', Search.SrchBy);
-
-        axios.post('/srchtempemp', Data).then( response => {
-
-            setEmployee( response.data );
-
-        } ).catch( err => {
-
-            toast.dark( err , {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });;
-
-        } )
-
     }
 
     return (
         <>
-            <div className="Employement_Requests d-center">
-                <div className="Employement_Requests-content">
-
-                    <h3>Employment Requests</h3>
-                    <form className="search-content" onSubmit={ OnSearchEmployee }>
-                        <div className="d-flex align-items-center w-75">
-                            <input type="text" className="form-control mr-1" placeholder="Search Keywords" name="SrchKey" onChange={ OnChangeHandler } required />
-                            <select className="form-control ml-1" onChange={ OnChangeHandler } name="SrchBy">
-                                <option value="name">Search By</option>
-                                <option value="name">Employee Name</option>
-                                <option value="user_name">User</option>
-                            </select>
-                            <button className="btn searchBtn btn-dark px-4 mx-3">Search</button>
+            <div className='page'>
+                <div className='page-content'>
+                    <div className="d-flex align-items-center justify-content-between">
+                        <h3 className="heading">
+                            Employment Requests
+                            <sub>View All Employment Requests</sub>
+                        </h3>
+                        <div>
+                            <button className='btn submit' onClick={() => history.push('/admin_employement_requests/admin_employement_setup')}>Create Employee</button>
                         </div>
-                        <div className="w-50 text-center d-flex">
-                            <Link className="btn btn-primary mx-1" to='/admin_view_employees' >View Employees</Link>
-                            <Link className="btn btn-info mx-1" to={ sessionStorage.getItem('userName') === 'UsmanBadar' ? "/admin_employement_requests/admin_employement_setup" : '/admin_employement_requests/admin_employement_setup' }>Create Employee</Link>
-                        </div>
-                    </form>
-
+                    </div>
+                    <hr />
                     {
-                        sessionStorage.getItem('userName') === 'UsmanBadar'
-                        ?
-                        <h3 className="text-uppercase" style={ { 'color' : 'rgb(128, 128, 128, .5)' } }>Requests</h3>
-                        :
-                        null
-                    }
-
-                    {
-                        sessionStorage.getItem('userName') === 'UsmanBadar'
-                        ?
                         Employee.length === 0
                         ?
-                        <h3 className="text-center">No Request Found</h3>
+                        <h6 className='text-center'>No Request Found</h6>
                         :
-                        Employee.map(
-                            ( val, index ) => {
-
-                                return (
-                                    <div className="Requests" key={ index }>
-                                        <div className='index'>
-                                            { index + 1 }
-                                        </div>
-                                        <div className='colums'>
-                                            <span>Employee Name</span>
-                                            <p className="mb-0"> { val.name } </p>
-                                        </div>
-                                        <div className='colums'>
-                                            <span>Created By</span>
-                                            <p className="mb-0"> { encryptor.decrypt( val.user_name ) } </p>
-                                        </div>
-                                        <div className='colums'>
-                                            <span>Created Date</span>
-                                            <p className="mb-0"> { val.created_at.substring(0,10) } </p>
-                                        </div>
-                                        <div className='colums text-right'>
-                                            <Link className="btn btn-primary btn-sm" to={ "/admin_employement_requests/admin_view_temp_employee/" + val.emp_id }>View Details</Link>
-                                        </div>
-                                    </div>
-                                )
-                            }
-                        )
-                        :
-                        null
+                        <table className='table'>
+                            <thead>
+                                <tr>
+                                    <th className='border-top-0'>Sr.No</th>
+                                    <th className='border-top-0'>Name</th>
+                                    <th className='border-top-0'>Created By</th>
+                                    <th className='border-top-0'>Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    Employee.filter(val => {return (sessionStorage.getItem('userName') === 'UsmanBadar' ? val : encryptor.decrypt(val.user_name) === sessionStorage.getItem('userName'))}).map(
+                                        ({name, user_name, created_at, emp_id}, i) => {
+                                            return (
+                                                <tr className='pointer pointer-hover' key={i} onClick={() => history.push("/admin_employement_requests/admin_view_temp_employee/" + emp_id)}>
+                                                    <td>{i+1}</td>
+                                                    <td>{name}</td>
+                                                    <td>{encryptor.decrypt(user_name)}</td>
+                                                    <td>{new Date(created_at).toDateString()}</td>
+                                                </tr>
+                                            )
+                                        }
+                                    )
+                                }
+                            </tbody>
+                        </table>
                     }
-
                 </div>
             </div>
         </>

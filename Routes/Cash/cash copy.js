@@ -435,7 +435,7 @@ router.post('/cash/load/thumbs', ( req, res ) => {
     const cashierThumbs = [];
     for ( let x = 0; x < fingerpos.length; x++ )
     {
-        const img = 'client/public/images/thumbs/' + cashier + '/' + fingerpos[x] + "_" + cashier + ".txt";
+        const img = 'client/images/thumbs/' + cashier + '/' + fingerpos[x] + "_" + cashier + ".txt";
         var imageAsBase64 = fs.readFileSync(img, 'utf8');
         cashierThumbs.push(imageAsBase64);
     }
@@ -689,11 +689,11 @@ router.post('/cash/request/clearance', ( req, res ) => {
 //         }
 //     }
 
-//     fs.writeFile("client/public/images/thumbs/1001/test.png", template_1, 'base64', function(err) {
+//     fs.writeFile("client/images/thumbs/1001/test.png", template_1, 'base64', function(err) {
 //         console.log(err);
 //         console.log("Finger Print Saved");
     
-//         compareImages("client/public/images/thumbs/1000/LEFT_INDEX_1001.png", "client/public/images/thumbs/1001/test.png").then(result => {
+//         compareImages("client/images/thumbs/1000/LEFT_INDEX_1001.png", "client/images/thumbs/1001/test.png").then(result => {
 //             console.log(result)
 //         }).catch(err => {
 //             console.log(err)

@@ -339,8 +339,8 @@ const PRFormForEditing = ({ Quotations, updatePR, RequestDetails, Specifications
                                     <input defaultChecked={RequestDetails.not_budgeted === 1} type="checkbox" value="Not Budgeted" name="not_budgeted" className='ml-2' />
                                 </div>
                                 <div className='grid_container align-items-center'>
-                                    <span>Invoice Attached</span>
-                                    <input defaultChecked={RequestDetails.invoice_attached === 1} type="checkbox" value="Invoice Attached" name="invoice_attached" className='ml-2' />
+                                    <span>Quotation Attached</span>
+                                    <input defaultChecked={RequestDetails.invoice_attached === 1} type="checkbox" value="Quotation Attached" name="invoice_attached" className='ml-2' />
                                 </div>
 
                             </div>
@@ -766,8 +766,8 @@ const PRForm = ({ TotalCostCalculation, Employee, selectEmpInBehalf, onSearchEmp
                             <input type="checkbox" value="Not Budgeted" name="not_budgeted" className='ml-2' />
                         </div>
                         <div className='grid_container align-items-center'>
-                            <span>Invoice Attached</span>
-                            <input type="checkbox" value="Invoice Attached" name="invoice_attached" className='ml-2' />
+                            <span>Quotation Attached</span>
+                            <input type="checkbox" value="Quotation Attached" name="invoice_attached" className='ml-2' />
                         </div>
 
                     </div>
@@ -1345,7 +1345,7 @@ const Detailing = ({ AccessControls, SiteManagerRejectionConfirm, SiteManagerApp
                                 RequestDetails.invoice_attached
                                     ?
                                     <div className='grid_container align-items-center'>
-                                        <b>Invoice Attached</b>
+                                        <b>Quotation Attached</b>
                                         <input checked={true} type="checkbox" className='ml-2' />
                                     </div>
                                     : null
@@ -1628,7 +1628,7 @@ const Detailing = ({ AccessControls, SiteManagerRejectionConfirm, SiteManagerApp
                                             </span>
                                         </div>
                                         <div style={{ width: '50%', display: 'flex', alignItems: 'flex-end' }}>
-                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Invoice Attached</b>
+                                            <b style={{ width: '50%', padding: 5, fontSize: 15 }}>Quotation Attached</b>
                                             <span style={{ width: '50%', padding: 5 }}>
                                                 <input checked={RequestDetails.invoice_attached === 1 ? true : false} type="checkbox" style={{ fontSize: 17, width: 20, height: 20 }} />
                                             </span>

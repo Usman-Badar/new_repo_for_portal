@@ -179,7 +179,7 @@ export const loadData = ( setDataLoaded, setACNotCleared, setACCleared, setACDat
                         return val.status.includes(res.data[5][x].status.toLowerCase())
                     }
                 );
-                res.data[5][x].color = color[0] ? color[0].color : "#000";
+                res.data[5][x].color = color[0] ? color[0].color : "#99d2e5";
                 res.data[5][x].label = res.data[5][x].status;
                 res.data[5][x].y = res.data[5][x].count;
             }

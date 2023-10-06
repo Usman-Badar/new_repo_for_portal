@@ -1,6 +1,6 @@
 .Dashboard_topbar {
     width: 85vw;
-    height: min-content;
+    height: 56.5px;
     justify-content: space-between !important;
     padding: 10px 15px 10px 30px;
     background-color: var(--dark-black);

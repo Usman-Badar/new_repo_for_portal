@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-
 import { NavLink } from 'react-router-dom';
-// import './SideBar.css';
+import './SideBar.css';
 import $ from 'jquery';
 
 const SideBar = (props) => {

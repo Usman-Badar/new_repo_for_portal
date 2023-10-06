@@ -1,177 +1,117 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useEffect, useState } from 'react';
 
 import './ViewTempEmployee.css';
 import axios from '../../../../../../axios';
-import { Link } from 'react-router-dom';
-
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useHistory } from 'react-router-dom';
+import JSAlert from 'js-alert';
 
 const ViewTempEmployee = () => {
-
+    const history = useHistory();
     const [ Employee, setEmployee ] = useState([]);
-    const [ Status, setStatus ] = useState();
 
     useEffect(
         () => {
-
             const Data = new FormData();
             Data.append('empID', window.location.href.split('/').pop());
             axios.post('/gettempemployeedetails', Data).then( response => {
-
                 setEmployee( response.data );
-                setStatus( response.data[0].emp_status );
-
             } ).catch( err => {
-
-                toast.dark( err , {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });;
-
+                console.log(err);
+                JSAlert.alert(`Something went wrong. ${err}`, "Failed To Fetch", JSAlert.Icons.Failed);
             } );
-
         }, []
     )
 
     return (
         <>
-            <div className='ViewTempEmployee d-center'>
-                <div className="ViewTempEmployee-content">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                        <Link to="/admin_employement_requests" className="text-dark"><i className="las la-arrow-left"></i> Go Back</Link>
-                        {
-
-                            Status === 'Waiting For Approval'
-                            ?
-                            <Link to={ "/admin_employement_requests/confirmapproval/" + window.location.href.split('/').pop() } className="btn btn-sm btn-info">Confirm Approval</Link>
-                            :
-                            null
-
-                        }
+            <div className='page'>
+                <div className='page-content'>
+                    <div className="d-flex align-items-center justify-content-between">
+                        <h3 className="heading">
+                            Employee Details
+                            <sub>View The Employee Details</sub>
+                        </h3>
+                        <div>
+                            <button className='btn light' onClick={() => history.goBack()}>Back</button>
+                            {
+                                sessionStorage.getItem('userName') === 'UsmanBadar' || sessionStorage.getItem('userName') === 'MMalahim'
+                                ?
+                                <button className='btn submit ml-2' onClick={() => history.push(`/admin_employement_requests/confirmapproval/${window.location.href.split('/').pop()}`)}>Proceed</button>
+                                :null
+                            }
+                        </div>
                     </div>
-                    <h2 className="text-center mb-4">Employee Details</h2>
+                    <hr />
                     {
                         Employee.length === 0
                         ?
                         <h4 className="text-center">No Record Found</h4>
                         :
                         Employee.map(
-                            ( val, index ) => {
-
+                            ({emp_image, name, cnic, cv, proof_of_address, cnic_place_of_issue, father_name, date_of_birth, place_of_birth, cnic_front_image, cnic_back_image}, i) => {
                                 return (
-                                    <div key={ index }>
-                                    <div className="container-fluid">
-                                        <h4 className="text-center">Personal Information</h4>
-                                        <div className="row py-5">
-                                            <div className="col-lg-4 col-md-6 col-sm-12 text-center">
-                                                <img src={ process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image } className="emp_img" alt="Employee Img" />
-                                            </div>
-                                            <div className="col-lg-8 col-md-6 col-sm-12 d-center">
-                                                <div className="w-100">
-                                                    <div className="d-flex align-items-center mb-2">
-                                                        <div className="w-50 mr-1">
-                                                            <span>Name</span>
-                                                            <input type="text" className="form-control" value={val.name} readOnly />
-                                                        </div>
-                                                        <div className="w-50 ml-1">
-                                                            <span>Father Name</span>
-                                                            <input type="text" className="form-control" value={val.father_name} readOnly />
-                                                        </div>
-                                                    </div>
-                                                    <div className="d-flex align-items-center mb-2">
-                                                        <div className="w-50 mr-1">
-                                                            <span>Date Of Birth</span>
-                                                            <input type="date" className="form-control" value={val.date_of_birth.substring(0,10)} readOnly />
-                                                        </div>
-                                                        <div className="w-50 ml-1">
-                                                            <span>Place Of Birth</span>
-                                                            <input type="text" className="form-control" value={val.place_of_birth} readOnly />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="container-fluid">
-                                        <h4 className="text-center">CNIC Information</h4>
-                                        <div className="row py-5">
-                                            <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/front/' + val.cnic_front_image } className="cnic_images emp_front_cnic" alt="CNIC Front Img" />
-                                                <b className="d-block pt-2">CNIC Front Image</b>
-                                            </div>
-                                            <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/back/' + val.cnic_back_image } className="cnic_images emp_back_cnic" alt="CNIC Back Img" />
-                                                <b className="d-block pt-2">CNIC Back Image</b>
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12">
-                                                <div className="d-flex align-items-center pt-4">
-                                                    <div className="w-50 mr-1">
-                                                        <span>CNIC</span>
-                                                        <input type="text" className="form-control" value={val.cnic} readOnly />
-                                                    </div>
-                                                    <div className="w-50 ml-1">
-                                                        <span>CNIC Place Of Issue</span>
-                                                        <input type="text" className="form-control" value={val.cnic_place_of_issue} readOnly />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12 col-md-12 col-sm-12">
-                                                <div className="d-flex align-items-center pt-4">
-                                                    <div className="w-50 mr-1">
-                                                        <span>CNIC Issue Date</span>
-                                                        <input type="date" className="form-control" value={val.cnic_date_of_issue.substring(0,10)} readOnly />
-                                                    </div>
-                                                    <div className="w-50 ml-1">
-                                                        <span>CNIC Expiry Date</span>
-                                                        <input type="date" className="form-control" value={val.cnic_date_of_expiry.substring(0,10)} readOnly />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="container-fluid">
-                                        <h4 className="text-center">Other Documents Information</h4>
-                                        <div className="row py-5">
-                                            <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/cv/' + val.cv } className="emp_docs_images" alt="CV Img" />
-                                                <b className="d-block pt-2">CV Image</b>
-                                            </div>
-                                            <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                <img src={ process.env.REACT_APP_SERVER+'/images/documents/address/' + val.proof_of_address } className="emp_docs_images" alt="Address Img" />
-                                                <b className="d-block pt-2">Address Image</b>
-                                            </div>
-                                            {
-                                                val.armed_license === null
-                                                ?
-                                                null
-                                                :
-                                                <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                    <img src={process.env.REACT_APP_SERVER+'/images/documents/licenses/armed/' + val.armed_license} className="emp_docs_images" alt="CV Img" />
-                                                    <b className="d-block pt-2">Armed License Image</b>
-                                                </div>
-                                            }
-                                            {
-                                                val.driving_license === null
-                                                ?
-                                                null
-                                                :
-                                                <div className="col-lg-6 col-md-6 col-sm-12 text-center">
-                                                    <img src={process.env.REACT_APP_SERVER+'/images/documents/licenses/driving/' + val.driving_license} className="emp_docs_images" alt="CV Img" />
-                                                    <b className="d-block pt-2">Driving License Image</b>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                    </div>
+                                    <table key={i} className='table table-borderless'>
+                                        <tbody>
+                                            <tr>
+                                                <td className='text-center'>
+                                                    <img className='rounded border' src={`${process.env.REACT_APP_SERVER}/client/images/employees/${emp_image}`} width='200' alt="Employee Img" />
+                                                </td>
+                                                <td>
+                                                    <b>Employee Name</b><br />
+                                                    <span>{name}</span>
+                                                    <br /><br />
+                                                    <b>Date of Birth</b><br />
+                                                    <span>{date_of_birth}</span>
+                                                </td>
+                                                <td>
+                                                    <b>Father Name</b><br />
+                                                    <span>{father_name}</span>
+                                                    <br /><br />
+                                                    <b>Place of Birth</b><br />
+                                                    <span>{place_of_birth}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5 className='mb-3'>CNIC Information</h5>
+                                                    <b>CNIC Number</b><br />
+                                                    <span>{cnic}</span>
+                                                    <br /><br />
+                                                    <b>CNIC Place of Issue</b><br />
+                                                    <span>{cnic_place_of_issue}</span>
+                                                </td>
+                                                <td className='text-center'>
+                                                    <img className='rounded border' src={`${process.env.REACT_APP_SERVER}/client/images/documents/cnic/front/${cnic_front_image}`} width='100%' alt="CNIC Front Img" />
+                                                    <p className='mb-0 font-weight-bold'>CNIC Front Image</p>
+                                                </td>
+                                                <td className='text-center'>
+                                                    <img className='rounded border' src={`${process.env.REACT_APP_SERVER}/client/images/documents/cnic/back/${cnic_back_image}`} width='100%' alt="CNIC Back Img" />
+                                                    <p className='mb-0 font-weight-bold'>CNIC Back Image</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h5>Documents Information</h5>
+                                                </td>
+                                                <td className='text-center'>
+                                                    {
+                                                        cv.includes('.pdf')
+                                                        ?
+                                                        <iframe className='rounded border' src={`${process.env.REACT_APP_SERVER}/client/images/documents/cv/${cv}`} width='100%'></iframe>
+                                                        :
+                                                        <img className='rounded border' src={`${process.env.REACT_APP_SERVER}/client/images/documents/cv/${cv}`} width='100%' alt="CV" />
+                                                    }
+                                                    <p className='mb-0 font-weight-bold'>Employee CV</p>
+                                                </td>
+                                                <td className='text-center'>
+                                                    <img className='rounded border' src={`${process.env.REACT_APP_SERVER}/client/images/documents/address/${proof_of_address}`} width='100%' alt="Employee Proof of Address" />
+                                                    <p className='mb-0 font-weight-bold'>Employee Proof of Address</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 )
-
                             }
                         )
                     }

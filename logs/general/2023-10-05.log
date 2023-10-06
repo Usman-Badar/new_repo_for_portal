@@ -486,3 +486,25 @@
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
     at async ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:16)
     at async Client.sendMessage (F:\IT\Web Development\MERN\portal\node_modules\whatsapp-web.js\src\Client.js:870:28)
+2023-10-06T01:22:42.417Z [unhandledRejection] error: Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:218:35)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:27)
+    at DOMWorld.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:97:24)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2023-10-06T01:22:42.626Z [unhandledRejection] error: Error: Protocol error (Runtime.callFunctionOn): Session closed. Most likely the page has been closed.
+    at CDPSession.send (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\Connection.js:218:35)
+    at ExecutionContext._evaluateInternal (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:204:50)
+    at ExecutionContext.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\ExecutionContext.js:110:27)
+    at DOMWorld.evaluate (F:\IT\Web Development\MERN\portal\node_modules\puppeteer\lib\cjs\puppeteer\common\DOMWorld.js:97:24)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+2023-10-06T01:22:42.770Z [uncaughtException] info: ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:59:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:189:23)
+2023-10-06T01:22:42.900Z [uncaughtException] info: ReferenceError: res is not defined
+    at F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js:59:17
+    at F:\IT\Web Development\MERN\portal\node_modules\graceful-fs\graceful-fs.js:61:14
+    at FSReqCallback.oncomplete (node:fs:189:23)

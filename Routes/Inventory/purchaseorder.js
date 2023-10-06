@@ -1305,7 +1305,7 @@ router.post('/purchase_order/new', ( req, res ) => {
                                                         }else 
                                                         {
                                             
-                                                            fs.mkdir('client/public/images/Inventory/po_attachments/' + folderName,
+                                                            fs.mkdir('client/images/Inventory/po_attachments/' + folderName,
                                                                 { recursive: true },
                                                                 (err) => {
                                                                     if (err) {
@@ -1317,7 +1317,7 @@ router.post('/purchase_order/new', ( req, res ) => {
                                                                     }
                                                                     else {
                 
-                                                                        arr[x].mv('client/public/images/Inventory/po_attachments/' + folderName + '/' + arr[x].name, 
+                                                                        arr[x].mv('client/images/Inventory/po_attachments/' + folderName + '/' + arr[x].name, 
                                                                             (err) => {
                 
                                                                                 if (err) {
@@ -1481,7 +1481,7 @@ router.post('/purchase_order/new', ( req, res ) => {
                                                 
                             //                 }else
                             //                 {
-                            //                     fs.mkdir('client/public/images/Inventory/po_attachments/' + nm,
+                            //                     fs.mkdir('client/images/Inventory/po_attachments/' + nm,
                             //                     { recursive: true },
                             //                     (err) => {
                             //                         if (err) {
@@ -1491,7 +1491,7 @@ router.post('/purchase_order/new', ( req, res ) => {
                             //                             connection.release();
                             //                             }
                             //                             else {
-                            //                                 Attachments[x].mv('client/public/images/Inventory/po_attachments/' + nm + '/' + Attachments[x].name, (err) => {
+                            //                                 Attachments[x].mv('client/images/Inventory/po_attachments/' + nm + '/' + Attachments[x].name, (err) => {
 
                             //                                     if (err) {
 
@@ -2035,7 +2035,7 @@ router.post(
                                                     for ( let x = 0; x < vouchers.length; x++ )
                                                     {
                 
-                                                        fs.mkdir('client/public/images/Inventory/po_vouchers/' + folder,
+                                                        fs.mkdir('client/images/Inventory/po_vouchers/' + folder,
                                                             { recursive: true },
                                                             (err) => {
                                                                 if (err) {
@@ -2045,7 +2045,7 @@ router.post(
                                                                     connection.release();
                                                                 }
                                                                 else {
-                                                                    vouchers[x].mv('client/public/images/Inventory/po_vouchers/' + folder + '/' + vouchers[x].name, (err) => {
+                                                                    vouchers[x].mv('client/images/Inventory/po_vouchers/' + folder + '/' + vouchers[x].name, (err) => {
 
                                                                         if (err) {
 
@@ -2799,7 +2799,7 @@ router.post('/setpotoapprove', ( req, res ) => {
                                             }else 
                                             {
                                 
-                                                fs.mkdir('client/public/images/Inventory/po_vouchers/' + folderName,
+                                                fs.mkdir('client/images/Inventory/po_vouchers/' + folderName,
                                                     { recursive: true },
                                                     (err) => {
                                                         if (err) {
@@ -2811,7 +2811,7 @@ router.post('/setpotoapprove', ( req, res ) => {
                                                         }
                                                         else {
     
-                                                            arr[x].mv('client/public/images/Inventory/po_vouchers/' + folderName + '/' + arr[x].name, 
+                                                            arr[x].mv('client/images/Inventory/po_vouchers/' + folderName + '/' + arr[x].name, 
                                                                 (err) => {
     
                                                                     if (err) {

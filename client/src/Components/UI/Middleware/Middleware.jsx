@@ -4,7 +4,7 @@ const key = 'real secret keys should be long and random';
 const encryptor = require('simple-encryptor')(key);
 
 const Middleware = ({admin, children, hasAccess, user, guarded, authorization, authorizationMethod, authorization_key, authorization_value, authorization_expression}) => {
-    const userAccess = JSON.parse(user.access);
+    const userAccess = user.access ? JSON.parse(user.access) : {};
     if (!guarded || userAccess.includes(hasAccess) || (admin && userAccess.includes(0))) {
         if (checkIfUserHasAccess(authorization, authorizationMethod, user, userAccess, authorization_key, authorization_value, authorization_expression))
         return (
