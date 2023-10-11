@@ -91,13 +91,9 @@ function UpdateLate(month, year)
         "SELECT emp_id, time_in, grace_in_minutes FROM `employees` WHERE time_in IS NOT NULL AND emp_status = 'Active' AND location_code != 4 AND company_code != 10;",
         ( err, rslt ) => {
 
-            if( err )
-            {
-
+            if( err ) {
                 console.log( err );
-
-            }else 
-            {
+            }else {
                 
                 let limit = rslt.length;
                 let count = [];

@@ -115,6 +115,7 @@ const CSCRefund = lazy( () => import('./Pages/Refunds/CSCRefund/CSCRefund') );
 
 const ShippingLinePayment = lazy( () => import('./Pages/Forms/ShippingLinePayment/ShippingLinePayment') );
 const TemporaryEmployees = lazy( () => import('./Pages/HR/TemporaryEmployees/TemporaryEmployees') );
+const AdminNotification = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
 
 const Dashboard = () => {
     
@@ -495,6 +496,8 @@ const Dashboard = () => {
                                 <Route exact path="/employment_setup/requests/:id" render={ () => <Sus content={ <ViewTempEmployee /> } /> } />
                                 <Route exact path="/employment_setup/requests/confirm/:id" render={ () => <Sus content={ <ConfirmApproval /> } /> } />
                                 <Route exact path="/employment_setup/employees" render={ () => <Sus content={ <ViewEmployees /> } /> } />
+                                
+                                <Route exact path='/notices/management' render={ () => <Sus content={ <AdminNotification /> } /> } />
 
                                 {/* 
                                     FOR STORE MODULE

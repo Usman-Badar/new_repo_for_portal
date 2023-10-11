@@ -883,7 +883,7 @@ router.get('/access/get/all', ( req, res ) => {
 router.post('/access/create/new', ( req, res ) => {
     const {access_id, module, access_title, access_description} = req.body;
     db.query(
-        "INSERT INTO `accesses`(`access_id`, `access_title`, `access_description`, `module`) VALUES (?,?,?,?);",
+        "INSERT INTO `accesses`(`access_id`, `access_title`, `access_description`, `module`) VALUESs (?,?,?,?);",
         [access_id, access_title, access_description, module],
         ( err ) => {
             if( err ){

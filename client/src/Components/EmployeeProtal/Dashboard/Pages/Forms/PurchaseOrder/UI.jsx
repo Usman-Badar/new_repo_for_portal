@@ -13,8 +13,9 @@ import { useReactToPrint } from 'react-to-print';
 import BreadCrumb from '../../../Components/BreadCrumb';
 // import moment from 'moment';
 import { convertTZ } from './../../../../../../utils/date';
-
+// import ReactPaginate from 'react-paginate';
 import ReactTooltip from 'react-tooltip';
+import { loadScrollValue, saveScrollValue } from '../../../../../UI/SaveLastScollValue/SaveLastScollValue';
 
 const UI = ( { CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefined, Admin, SPRSpecifications, PRCode, FilterPRCompany, FilterCompany, SpecKeyword, FilterAmount, LoadedCompanies, POUpdate, EditConfirmation, setStatus, setRemovedBills, setFilterPRCompany, setBills, setFilterAmount, setFilterCompany, setSpecKeyword, setEditConfirmation, updatePO, Vendor, Data, SubOrdinands, loadSubOrdinands, SubTotalCostCalculation, TotalCostCalculation, PRSpecifications, PRequestDetails, AdditionalRows, addAdditionalRow, PR, PRList, attachPR, PRAttachment, onFooterContentInput, selectVendor, Vendors, addRow, setPRAttachment, ApproveRequisition, AttachedBills, Specifications, RequestDetails, history, Requests, RejectRequisition, searchVendor, CancelRequisition, SubmitConfirmation, ShowBillModal, Bills, Locations, Companies, SubmitPO, loadRequests, openRequestDetails, POSubmittion, setSubmitConfirmation, onAttachBills, onContentInput, setShowBillModal } ) => {
     
@@ -102,6 +103,7 @@ const UI = ( { CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefin
                         <Route exact path="/purchase/order/requests" render={ 
                             () => (
                                 <PORequests 
+                                    itemsPerPage={20}
                                     Requests={ Requests }
                                     history={ history }
                                     AccessControls={ AccessControls }
@@ -2096,33 +2098,39 @@ const RejectConfirmation = ( { RequestDetails, Specifications, po_id, RejectRequ
 
 }
 
-const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompanies, FilterAmount, SpecKeyword, FilterCompany, AccessControls, history, Requests, loadRequests, setStatus, setSpecKeyword, setFilterCompany, setFilterAmount } ) => {
+const PORequests = ( { itemsPerPage, fm, Status, RequestStatuses, AccessDefined, LoadedCompanies, FilterAmount, SpecKeyword, FilterCompany, AccessControls, history, Requests, loadRequests, setStatus, setSpecKeyword, setFilterCompany, setFilterAmount } ) => {
 
     const [ ShowFilters, setShowFilters ] = useState(false);
+    const [ AllRequests, setAllRequests ] = useState([]);
     const [ List, setList ] = useState();
+    const [ pageCount, setPageCount ] = useState(0);
+    const [ itemOffset, setItemOffset ] = useState(0);
+    // const momentTZ = require('moment-timezone');
     const types = {
         total_value: 'total_value',
         series_code: 'series_code',
         requested_date: 'requested_date',
     };
-    // const momentTZ = require('moment-timezone');
-    
+
     useEffect(
         () => {
-            const Arr = Requests ? Requests.filter(
-                val => {
+            if (Requests) {
+                const Arr = Requests.filter(val => {
                     return val.status.toLowerCase().includes(Status.toLowerCase()) && val.company_name.toLowerCase().includes(FilterCompany.toLowerCase()) && val.specifications.toLowerCase().includes(SpecKeyword.toLowerCase()) && val.total_value >= FilterAmount;
-                }
-            ):null;
-            setList(Arr);
-        }, [ Status, Requests, FilterCompany, SpecKeyword, FilterAmount ]
+                });
+                // const endOffset = itemOffset + itemsPerPage;
+                // const currentArr = Arr.slice(itemOffset, endOffset);
+                // setPageCount(Math.ceil(Arr.length / itemsPerPage));
+                // setList(currentArr);
+                // setAllRequests(Arr);
+                setList(Arr);
+                loadScrollValue('po_records_container', 'PO');
+            } 
+        }, [ Status, Requests, FilterCompany, SpecKeyword, FilterAmount, itemOffset ]
     )
     useEffect(
         () => {
-            if ( AccessDefined )
-            {
-                loadRequests()
-            }
+            if ( AccessDefined ) loadRequests();
         }, [ AccessDefined ]
     );
 
@@ -2131,7 +2139,6 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
         let sorted = sort( sortProperty, in_de, dataType );
         setList(sorted);
     };
-
     const sort = ( property, in_de, dataType ) => {
         const result =
         dataType === "number"
@@ -2144,7 +2151,6 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
 
         return result;
     }
-
     const sortNumber = ( property, in_de ) => {
         let sorted;
         if ( in_de > 0 )
@@ -2156,7 +2162,6 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
         }
         return sorted;
     }
-
     const sortString = ( property, in_de ) => {
         let sorted;
         if ( in_de > 0 )
@@ -2168,7 +2173,6 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
         }
         return sorted;
     }
-
     const sortDate = ( property, in_de ) => {
         let sorted;
         if ( in_de > 0 )
@@ -2180,7 +2184,6 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
         }
         return sorted;
     }
-
     const resetFilters = () => {
         sessionStorage.removeItem('FilterCompany');
         sessionStorage.removeItem('SpecKeyword');
@@ -2189,6 +2192,10 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
         setSpecKeyword("");
         setFilterAmount(-100000);
     }
+    // const handlePageClick = (event) => {
+    //     const newOffset = (event.selected * itemsPerPage) % AllRequests.length;
+    //     setItemOffset(newOffset);
+    // };
 
     return (
         <>
@@ -2298,7 +2305,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                         )
                     }
                 </ul>
-                <div className='records-container' style={{ maxHeight: '70vh' }}>
+                <div onScroll={() => saveScrollValue('po_records_container', 'PO')} id="po_records_container" className='records-container mb-3' style={{ maxHeight: '70vh' }}>
                     {
                         List
                         ?
@@ -2423,6 +2430,26 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                         <h6 className="text-center">Please Wait....</h6>
                     }
                 </div>
+                {/* <ReactPaginate
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={2}
+                    pageCount={pageCount}
+                    previousLabel="< previous"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link text-secondary"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link text-secondary"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link text-secondary"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link text-secondary"
+                    containerClassName="pagination justify-content-end"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                /> */}
             </div>
         </>
     )

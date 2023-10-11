@@ -10,7 +10,7 @@ const { removeDuplicateAttendance } = require('../Services/markEmpAbsent');
 const { settings } = require('../../include');
 const UpdateAtt = require('../Services/markEmpLateWhenNoTimeOut').UpdateAtt;
 
-const client = new Client({authStrategy: new LocalAuth({clientId: "portal"})})
+const client = new Client({authStrategy: new LocalAuth({clientId: "portal"})});
 client.on('authenticated', (session) => {
     console.log('\x1b[33m%s\x1b[0m', 'Whatsapp Services Authenticated!!');
 });
@@ -723,7 +723,14 @@ function sendMediaMessageToAll( client, message, company_code )
     )
 }
 
+function sendMediaMessageSelected(mediaUrl, standardNumber)
+{
+    const media = MessageMedia.fromFilePath(mediaUrl);
+    if (media) client.sendMessage('923303744620@c.us', media);
+}
+
 module.exports = {
     router: router,
-    SendWhatsappNotification: ( receiverID, senderID, Title, NotificationBody, cell ) => SendWhatsappNotification( receiverID, senderID, Title, NotificationBody, cell )
+    SendWhatsappNotification: ( receiverID, senderID, Title, NotificationBody, cell ) => SendWhatsappNotification( receiverID, senderID, Title, NotificationBody, cell ),
+    sendMediaMessageSelected: (mediaUrl, standardNumber) => sendMediaMessageSelected(mediaUrl, standardNumber)
 };

@@ -32,3 +32,13 @@ F:\IT\Web Development\MERN\portal\Routes\Employee\employee.js
 -> /access/employee/revoke [new POST api added]
 ----------------------------------------------------------------
 New column [module: text] in the `accesses` table has been added.
+----------------------------------------------------------------
+F:\IT\Web Development\MERN\portal\Routes\Employee\newspaper.js
+-> /get_all_notices
+-> /get_all_notices [new POST api added]
+-> /notice/new
+-> /notice/update/title
+-> /notice/send
+-> /notice/enable
+-> /notice/disable
+-> /notice/update/file

@@ -18,6 +18,7 @@ import Override from '../../../../../../utils/Override';
 // import { new Date } from '../../../../../../utils/date';
 
 import ReactTooltip from 'react-tooltip';
+import { loadScrollValue, saveScrollValue } from '../../../../../UI/SaveLastScollValue/SaveLastScollValue';
 
 const UI = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Logs, overrideRequisition, TotalCostCalculation, Status, RequestStatuses, RemovedQuotations, EditConfirmation, AccessDefined, Admin, InvRejectRequisition, setRemovedQuotations, sendForApproveRequisition, Relations, Data, HodList, setStatus, updatePR, loadHods, Employee, PRUpdate, selectEmpInBehalf, setQuotations, setEditConfirmation, onSearchEmployees, Employees, AccessControls, FilterAmount, FilterCompany, SpecKeyword, setFilterAmount, LoadedCompanies, setFilterCompany, setSpecKeyword, ApproveRequisition, AttachedQuotations, Specifications, RequestDetails, history, Requests, addRow, RejectRequisition, CancelRequisition, SubmitConfirmation, ShowQuotationModal, Quotations, Locations, Companies, SubmitPR, loadRequests, openRequestDetails, PRSubmittion, setSubmitConfirmation, onAttachQuotations, onContentInput, onContentEdit, setShowQuotationModal }) => {
 
@@ -1989,6 +1990,7 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                 }
             ) : null;
             setList(Arr);
+            loadScrollValue('pr_records_container', 'PR');
         }, [Status, Requests, FilterCompany, SpecKeyword, FilterAmount]
     );
 
@@ -2241,7 +2243,7 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                         )
                     }
                 </ul>
-                <div className='records-container' style={{ maxHeight: '70vh' }}>
+                <div onScroll={() => saveScrollValue('pr_records_container', 'PR')} id='pr_records_container' className='records-container' style={{ maxHeight: '70vh' }}>
                     {
                         List
                             ?

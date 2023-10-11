@@ -35,12 +35,11 @@ const io = require('socket.io')( sslServer, {cors:
         methods: ['GET','POST']
     }
 });
-
 module.exports = io;
 
 // different express packages other things
 app.use(bodyParser.json({limit: "50mb"}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit: 50000}));
 app.use( cors() );
 app.use( express.json() );
 app.use((req, res, next) => {

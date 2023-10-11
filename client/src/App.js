@@ -146,6 +146,8 @@ const App = () => {
 
                 <Route exact path='/profile/:path/:link' render={ () => <Sus content={ <Dashboard /> } /> } />
                 <Route exact path='/empdailyattendance' render={ () => <Sus content={ <Dashboard /> } /> } />
+                
+                <Route exact path='/notices/management' render={ () => <Sus content={ <Dashboard /> } /> } />
 
                 {/* 
                     For Admin Module
