@@ -42,3 +42,33 @@ F:\IT\Web Development\MERN\portal\Routes\Employee\newspaper.js
 -> /notice/enable
 -> /notice/disable
 -> /notice/update/file
+----------------------------------------------------------------
+F:\IT\Web Development\MERN\portal\Routes\Services\ReadTxtFile.js
+-> Remove the variable [res] from the file.
+----------------------------------------------------------------
+view_date field was not update in the purchase requisition module
+-> resolved [error occurred due to missing api].
+----------------------------------------------------------------
+F:\IT\Web Development\MERN\portal\Routes\Cash\adv_cash_shp_line.js
+-> New file added [adv_cash_shp_line.js] for shipping line payment module.
+-> /cash/shipping/create [POST Api changed from (cash/advance/create)]
+----------------------------------------------------------------
+new column [shp_request: varchar(5)] added in the table [db_cash_receipts].
+new column [d_o: double] added in the table [db_cash_receipts].
+new column [lolo: double] added in the table [db_cash_receipts].
+new column [detention: double] added in the table [db_cash_receipts].
+new column [damage_dirty: double] added in the table [db_cash_receipts].
+----------------------------------------------------------------
+[Error Found in the file]
+-> cash.js -> cash/advance/create -> line: 138 -> query not changed as above -> previous payment slip or pr attachment script not added.
+----------------------------------------------------------------
+F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js
+-> sendMediaMessageSelected() [new function]
+----------------------------------------------------------------
+F:\IT\Web Development\MERN\portal\Routes\Cash\cash.js
+-> /cash/load/requests
+----------------------------------------------------------------
+New access 65: Need to create for shipping line payment requests
+-> Employee have 65 access will only able to see the shipping line requests.
+New access 66: Need to create for shipping line payment form
+-> Employee have 66 access will only able to send the shipping line requests.

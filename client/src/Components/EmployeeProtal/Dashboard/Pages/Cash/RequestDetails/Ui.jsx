@@ -193,7 +193,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                 <h1 className='mb-0'>
                                                     <small className='text-success' style={{ fontSize: 16 }}>Rs</small><span className='font-weight-bold'>{Details.amount.toLocaleString('en')}</span>/-
                                                 </h1>
-                                                <h6 className='text-capitalize mb-0'>{Details.amount_in_words}</h6>
+                                                <h6 className='text-capitalize mb-0'>{Details.amount_in_words} Rupees Only</h6>
 
                                             </div>
 
@@ -324,63 +324,52 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                             {
                                                                 Details.status === 'cancelled' || Details.status === 'rejected'
                                                                     ?
-                                                                    <>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <h6 className='font-weight-bold'>Rejected By</h6>
-                                                                            </td>
-                                                                            <td>
-                                                                                <span>
-                                                                                    <Link to={'/hr/employee/details/' + (Details.approved_by !== null ? Details.approved_by : Details.verified_by !== null ? Details.verified_by : Details.emp_id)} className='clickable'>
-                                                                                        {Details.appr_emp_name ? Details.appr_emp_name : Details.record_emp_name}
-                                                                                    </Link>
-                                                                                </span><br />
-                                                                                <b>Date & Time</b><br />
-                                                                                <span>{new Date(Details.approved_date).toDateString() + " at " + moment(Details.approved_time, 'h:mm:ss a').format('hh:mm A')}</span>
-                                                                            </td>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h6 className='font-weight-bold'>Rejected By</h6>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span>
+                                                                                <Link to={'/hr/employee/details/' + (Details.approved_by !== null ? Details.approved_by : Details.verified_by !== null ? Details.verified_by : Details.emp_id)} className='clickable'>
+                                                                                    {Details.appr_emp_name ? Details.appr_emp_name : Details.record_emp_name}
+                                                                                </Link>
+                                                                            </span><br />
+                                                                            <b>Date & Time</b><br />
+                                                                            <span>{new Date(Details.approved_date).toDateString() + " at " + moment(Details.approved_time, 'h:mm:ss a').format('hh:mm A')}</span>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                    :
+                                                                    Details.hod_remarks
+                                                                        ?
+                                                                        <>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <h6 className='font-weight-bold'>Approved By</h6>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span>
+                                                                                        <Link to={'/hr/employee/details/' + (Details.approved_by !== null ? Details.approved_by : Details.verified_by !== null ? Details.verified_by : Details.emp_id)} className='clickable'>
+                                                                                            {Details.appr_emp_name ? Details.appr_emp_name : Details.record_emp_name}
+                                                                                        </Link>
+                                                                                    </span><br />
+                                                                                    <b>Date & Time</b><br />
+                                                                                    <span>{new Date(Details.approved_date).toDateString() + " at " + moment(Details.approved_time, 'h:mm:ss a').format('hh:mm A')}</span>
+                                                                                </td>
+                                                                            </tr>
+
                                                                             <tr>
                                                                                 <td>
                                                                                     <h6 className='font-weight-bold'>
-                                                                                        {Details.status === 'cancelled' ? "Reason" : Details.status === 'rejected' ? "Rejection Remarks" : "Approval Remarks"}
+                                                                                        {Details.status === 'cancelled' ? "Reason" : "Approval Remarks"}
                                                                                     </h6>
                                                                                 </td>
                                                                                 <td>
                                                                                     <pre style={{ fontFamily: 'Poppins', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.hod_remarks}</pre>
                                                                                 </td>
                                                                             </tr>
-                                                                        </tr>
-                                                                    </>
-                                                                    :
-                                                                    Details.hod_remarks
-                                                                    ?
-                                                                    <>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <h6 className='font-weight-bold'>Approved By</h6>
-                                                                            </td>
-                                                                            <td>
-                                                                                <span>
-                                                                                    <Link to={'/hr/employee/details/' + (Details.approved_by !== null ? Details.approved_by : Details.verified_by !== null ? Details.verified_by : Details.emp_id)} className='clickable'>
-                                                                                        {Details.appr_emp_name ? Details.appr_emp_name : Details.record_emp_name}
-                                                                                    </Link>
-                                                                                </span><br />
-                                                                                <b>Date & Time</b><br />
-                                                                                <span>{new Date(Details.approved_date).toDateString() + " at " + moment(Details.approved_time, 'h:mm:ss a').format('hh:mm A')}</span>
-                                                                            </td>
-                                                                        </tr>
-
-                                                                        <tr>
-                                                                            <td>
-                                                                                <h6 className='font-weight-bold'>
-                                                                                    {Details.status === 'cancelled' ? "Reason" : Details.status === 'rejected' ? "Rejection Remarks" : "Approval Remarks"}
-                                                                                </h6>
-                                                                            </td>
-                                                                            <td>
-                                                                                <pre style={{ fontFamily: 'Poppins', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.hod_remarks}</pre>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </>
-                                                                    : null
+                                                                        </>
+                                                                        : null
                                                             }
 
                                                             {
@@ -1717,7 +1706,7 @@ const CommentBox = ({ data, index }) => {
         <>
             <div className='comment popUps' key={index}>
                 <div className='d-flex align-items-center pb-2'>
-                    <img src={process.env.REACT_APP_SERVER+'/images/employees/' + data.emp_image} className='emp_img' alt="employee" />
+                    <img src={'images/employees/' + data.emp_image} className='emp_img' alt="employee" />
                     <div className='ml-2 d-flex align-items-center justify-content-between w-100'>
                         <div>
                             <b>{data.name}</b><br />
@@ -2012,7 +2001,7 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
 
 const ModalMoneyClearance = ({ AccessControls, Details, clearRequest }) => {
 
-    const [CashierPassCode, setCashierPassCode] = useState("");
+    const [CashierPassCode, setCashierPassCode] = useState();
     const [ValidCashier, setValidCashier] = useState(false);
     const key = 'real secret keys should be long and random';
     const encryptor = require('simple-encryptor')(key);
@@ -2020,6 +2009,7 @@ const ModalMoneyClearance = ({ AccessControls, Details, clearRequest }) => {
     useEffect(
         () => {
             if (CashierPassCode === encryptor.decrypt(AccessControls.emp_password)) {
+                JSAlert.alert("Cashier Validated").dismissIn(1500 * 1);
                 setValidCashier(true);
             }
         }, [CashierPassCode]

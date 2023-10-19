@@ -726,7 +726,7 @@ function sendMediaMessageToAll( client, message, company_code )
 function sendMediaMessageSelected(mediaUrl, standardNumber)
 {
     const media = MessageMedia.fromFilePath(mediaUrl);
-    if (media) client.sendMessage('923303744620@c.us', media);
+    if (media) client.sendMessage(standardNumber, media);
 }
 
 module.exports = {

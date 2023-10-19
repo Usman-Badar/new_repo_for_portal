@@ -48,3 +48,59 @@
 .advance_cash .Attandence_Request_Div_Content .table tr.highlighted {
     background-color: var(--lightgray);
 }
+
+.shipping_line_payment_form .grid {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 33.33fr 33.33fr 33.33fr;
+    grid-gap: 20px;
+}
+
+.shipping_line_payment_form .grid-2 {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+}
+
+.shipping_line_payment_form .purpose {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 20px;
+}
+
+.shipping_line_payment_form .purpose .type {
+    word-break: break-word;
+    font-family: Roboto-Light;
+}
+
+.shipping_line_payment_form .purpose .type label {
+    font-family: Roboto;
+    margin-bottom: 0;
+}
+
+
+.bill-grid {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 20px;
+}
+
+#FPImage {
+    cursor: pointer;
+    transition: .5s;
+    padding: 10px 30px;
+    border-radius: 5px;
+    width: 150px;
+    height: 140px;
+}
+
+#FPImage:hover {
+    background-color: rgb(211, 211, 211, .5);
+}

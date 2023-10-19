@@ -11,6 +11,8 @@ function RequestsComponent() {
 
     const [ ShowFilters, setShowFilters ] = useState(false);
     const [ Admin, setAdmin ] = useState(false);
+    const [ CashViewer, setCashViewer ] = useState(false);
+    const [ ShipViewer, setShipViewer ] = useState(false);
     const [ Cashier, setCashier ] = useState(false);
     const [ AccessDefined, setAccessDefined ] = useState(false);
     const [ Keyword, setKeyword ] = useState('');
@@ -24,14 +26,22 @@ function RequestsComponent() {
 
     useEffect(
         () => {
+            let cashViewer = false;
+            let shpViewer = false;
             let accessKey = false;
             let cashier = false;
             if ( AccessControls )
             {
                 for ( let y = 0; y < JSON.parse(AccessControls.access).length; y++ )
                 {
-                    if ( parseInt(JSON.parse(AccessControls.access)[y]) === 0 || parseInt(JSON.parse(AccessControls.access)[y]) === 47 )
+                    if ( parseInt(JSON.parse(AccessControls.access)[y]) === 0 || parseInt(JSON.parse(AccessControls.access)[y]) === 47 || parseInt(JSON.parse(AccessControls.access)[y]) === 65 )
                     {
+                        if (parseInt(JSON.parse(AccessControls.access)[y]) === 47) {
+                            cashViewer = true;
+                        }
+                        if (parseInt(JSON.parse(AccessControls.access)[y]) === 65) {
+                            shpViewer = true;
+                        }
                         accessKey = true;
                     }
                     if ( parseInt(JSON.parse(AccessControls.access)[y]) === 52 )
@@ -40,6 +50,8 @@ function RequestsComponent() {
                     }
                 }
             }
+            setShipViewer(shpViewer);
+            setCashViewer(cashViewer);
             setAdmin(accessKey);
             setCashier(cashier);
             setAccessDefined(true);
@@ -50,7 +62,7 @@ function RequestsComponent() {
         () => {
             if ( AccessControls && AccessDefined )
             {
-                loadAllRequests( Admin, Cashier, AccessControls.location_code, setRequests );
+                loadAllRequests( ShipViewer, CashViewer, Admin, Cashier, AccessControls.location_code, setRequests );
             }
         }, [ AccessControls, AccessDefined ]
     );

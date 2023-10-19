@@ -8,6 +8,19 @@
     overflow: hidden;
 }
 
+.advance_cash_request .table tbody tr .attached_shp {
+    position: absolute;
+    top: 13px;
+    right: -80px;
+    width: 200px;
+    text-align: center;
+    background-color: #0D6EFD;
+    opacity: .8;
+    font-size: 10px;
+    color: #fff;
+    transform: rotate(40deg);
+}
+
 .advance_cash_request .table tbody tr .attached_pr {
     position: absolute;
     top: 3px;

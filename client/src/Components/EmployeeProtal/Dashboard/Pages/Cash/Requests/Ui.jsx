@@ -161,8 +161,8 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                     {
                         ShowFilters
                         ?
-                        <>
-                            <div className='filter-content popUps'>
+                            <>
+                                <div className='filter-content popUps'>
                                     <div className='flex'>
                                         <div className='w-100'>
                                             <label className="font-weight-bold mb-0">Search Employee</label>
@@ -205,9 +205,9 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                                         </div>
                                         <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
                                     </div>
-                            </div>
-                            <br />
-                        </>
+                                </div>
+                                <br />
+                            </>
                         :null
                     }
                     <ul className="nav nav-tabs mb-3">
@@ -364,6 +364,7 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                                                                     {val.receival_date ? <span className='text-success'>Cash Collected</span> : <span className='text-danger'>Cash Not Collected</span>}
                                                                     {val.pr_id !== null ? <div className='attached_pr'>PR</div> : null}
                                                                     {val.previous_slip !== null ? <div className='attached_slip'>Slip</div> : null}
+                                                                    {val.shp_line_adv === 'Y' ? <div className='attached_shp'>Shipping</div> : null}
                                                                 </td>
                                                             </tr>
                                                         );
