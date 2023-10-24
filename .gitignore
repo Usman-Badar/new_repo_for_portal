@@ -4,3 +4,5 @@ client/build/
 build/css/line-awesome/
 .wwebjs_auth/
 .vscode/
+logs/
+servers/

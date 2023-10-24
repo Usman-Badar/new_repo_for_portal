@@ -112,13 +112,29 @@ function checkAdvanceCashPendingForVerification() {
                     checkAdvanceCashPendingForVerification();
                 }else {
                     if ( rslt.length > 0 ) {
-                        let limit = rslt.length;
-                        let count = [];
-                        console.log('rslt.length:', rslt.length);
-                        function issueTickets()
+                        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        const limit = rslt.length;
+                        const count = [];
+                        db.query(
+                            "SELECT additional_off FROM employees WHERE emp_id = ?;" +
+                            "SELECT day FROM tbl_holidays;",
+                            [inv2],
+                            ( _, offDays ) => {
+                                const { additional_off } = offDays[0][0];
+                                const parsed_offDays = JSON.parse(additional_off);
+                                const holidays = [];
+                                offDays[1].forEach(({day}) => holidays.push(day));
+                                issueTickets(parsed_offDays, holidays);
+                            }
+                        )
+                        function issueTickets(parsed_offDays, holidays)
                         {
+                            const submitDate = new Date(rslt[count.length].submit_date);
+                            const currentDate = new Date(rslt[count.length].today);
+                            const dayName = days[currentDate.getDay()];
+                            console.log('Today:', dayName);
                             let issueTicket = false;
-                            if (new Date(rslt[count.length].today) > new Date(rslt[count.length].submit_date)) {
+                            if (currentDate > submitDate) {
                                 issueTicket = true;
                             }else {
                                 const startTime = moment(rslt[count.length].submit_time, 'HH:mm:ss a');
@@ -132,7 +148,9 @@ function checkAdvanceCashPendingForVerification() {
                                 if ( hours >= 4 ) {
                                     issueTicket = true;
                                 }
-                                console.log('total hours: ', hours);
+                            }
+                            if (parsed_offDays.includes(dayName) || holidays.includes(rslt[count.length].today) || dayName === 'Sunday') {
+                                issueTicket = false;
                             }
                             if ( issueTicket ) {
                                 const code = rslt[count.length].company_code_name + '-' + rslt[count.length].series_year + '-' + rslt[count.length].serial_no;
@@ -184,7 +202,7 @@ function checkAdvanceCashPendingForVerification() {
                                                         }else
                                                         {
                                                             count.push(1);
-                                                            issueTickets();
+                                                            issueTickets(parsed_offDays, holidays);
                                                         }
                                                     }
                                                 }
@@ -196,16 +214,15 @@ function checkAdvanceCashPendingForVerification() {
                             {
                                 if ( ( count.length + 1 ) === limit )
                                 {
-                                    console.log( "Ticket Issued (Verification) Regarding Advance Cash!!!" );
+                                    console.log( "Ticket Not Issued For (Verification) Regarding Advance Cash!!!" );
                                     checkAdvanceCashPendingForVerification();
                                 }else
                                 {
                                     count.push(1);
-                                    issueTickets();
+                                    issueTickets(parsed_offDays, holidays);
                                 }
                             }
                         }
-                        issueTickets();
                     }else
                     {
                         checkAdvanceCashPendingForVerification();
@@ -213,7 +230,7 @@ function checkAdvanceCashPendingForVerification() {
                 }
             }
         )
-    }, 1000 * 30);
+    }, 1000);
 }
 function checkAdvanceCashPendingForApproval() {
     setTimeout(() => {
