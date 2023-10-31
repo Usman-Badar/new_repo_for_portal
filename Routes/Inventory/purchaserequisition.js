@@ -1843,7 +1843,7 @@ router.post('/purchase/requisition/submittion&&submit_by=employee', ( req, res )
                 }else {
                     db.query(
                         "SELECT site_manager FROM locations WHERE location_code = ? AND site_manager IS NOT NULL;",
-                        [ emp_location ],
+                        [ received_data.location_code ],
                         ( err, location ) => {
                             if( err ) {
                                 console.log( err );

@@ -28,3 +28,6 @@ F:\IT\Web Development\MERN\portal\Routes\Employee\attendance.js
 F:\IT\Web Development\MERN\portal\Routes\Services\markEmpLateWhenNoTimeOut.js
 changes in the whole file
 --------------------------------
+F:\IT\React\portal\Routes\Inventory\purchaserequisition.js
+-> /purchase/requisition/submittion&&submit_by=employee
+-> /purchase/requisition/send_for_approval
