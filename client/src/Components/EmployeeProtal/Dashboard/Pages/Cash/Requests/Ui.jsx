@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 
 import ReactTooltip from 'react-tooltip';
 
-function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requests, Keyword, Companies, setStatus, updateEndValue, setShowFilters, setKeyword, setAmount, setCompany }) {
+function UI({ Admin, RequestType, ShipViewer, Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requests, Keyword, Companies, setStatus, updateEndValue, setShowFilters, setKeyword, setAmount, setCompany, setRequestType }) {
 
     const CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const d = moment(moment()).format('YYYY-MM-DD');
@@ -42,10 +42,10 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
     const [ List, setList ] = useState([]);
     useEffect(
         () => {
-            const Arr = Requests.filter(val => {return val.status.toLowerCase().includes(Status.toLowerCase()) && val.requested_emp_name.toLowerCase().includes(Keyword.toLowerCase()) && val.company_name.toLowerCase().includes(Company.toLowerCase()) && val.amount >= Amount && moment(new Date(val.receival_date)).format('YYYY-MM-DD') > DateFilter});
+            const Arr = Requests.filter(val => {return val.status.toLowerCase().includes(Status.toLowerCase()) && val.requested_emp_name.toLowerCase().includes(Keyword.toLowerCase()) && val.company_name.toLowerCase().includes(Company.toLowerCase()) && val.amount >= Amount && moment(new Date(val.receival_date)).format('YYYY-MM-DD') > DateFilter && val.shp_line_adv.includes(RequestType)});
             setList(Arr);
-        }, [ Requests, Status, Keyword, Company, Amount, DateFilter ]
-    )
+        }, [ Requests, Status, Keyword, Company, Amount, DateFilter, RequestType ]
+    );
 
     // function splitToNChunks(array, n) {
     //     let result = [];
@@ -114,8 +114,10 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
         sessionStorage.removeItem('AC_Filters_Company');
         sessionStorage.removeItem('AC_Filters_Amount');
         sessionStorage.removeItem('AC_Filters_Keyword');
+        sessionStorage.removeItem('AC_Filters_Type');
         setKeyword("");
         setCompany("");
+        setRequestType("");
         setAmount(0);
     }
 
@@ -139,7 +141,7 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                                         :
                                         <div data-tip data-for='filter'>
                                             {
-                                                Keyword !== '' || Company !== '' || Amount !== 0 || DateFilter !== ''
+                                                Keyword !== '' || Company !== '' || Amount !== 0 || DateFilter !== '' || RequestType !== ''
                                                     ?
                                                     <div className='filterisOpen'></div>
                                                     :
@@ -161,8 +163,8 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                     {
                         ShowFilters
                         ?
-                        <>
-                            <div className='filter-content popUps'>
+                            <>
+                                <div className='filter-content popUps'>
                                     <div className='flex'>
                                         <div className='w-100'>
                                             <label className="font-weight-bold mb-0">Search Employee</label>
@@ -203,11 +205,24 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                                                 <option value={moment(d).subtract(28, 'days').format('YYYY-MM-DD')}>28 days+</option>
                                             </select>
                                         </div>
+                                        {
+                                            Admin || ShipViewer
+                                            ?
+                                            <div className='w-50'>
+                                                <label className="font-weight-bold mb-0">Request Type</label>
+                                                <select className='form-control form-control-sm mb-2' value={RequestType} onChange={(e) => setRequestType(e.target.value)}>
+                                                    <option value=''>All</option>
+                                                    <option value='N'>Advance Cash</option>
+                                                    <option value='Y'>Shipping Line</option>
+                                                </select>
+                                            </div>
+                                            :null
+                                        }
                                         <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
                                     </div>
-                            </div>
-                            <br />
-                        </>
+                                </div>
+                                <br />
+                            </>
                         :null
                     }
                     <ul className="nav nav-tabs mb-3">
@@ -364,6 +379,7 @@ function UI({ Range, ShowFilters, Status, RequestStatuses, Company, Amount, Requ
                                                                     {val.receival_date ? <span className='text-success'>Cash Collected</span> : <span className='text-danger'>Cash Not Collected</span>}
                                                                     {val.pr_id !== null ? <div className='attached_pr'>PR</div> : null}
                                                                     {val.previous_slip !== null ? <div className='attached_slip'>Slip</div> : null}
+                                                                    {val.shp_line_adv === 'Y' ? <div className='attached_shp'>Shipping</div> : null}
                                                                 </td>
                                                             </tr>
                                                         );

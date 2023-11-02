@@ -1605,7 +1605,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                             <>
                                                                                 <div className="d-flex align-items-center justify-content-between">
                                                                                     <p className="text-capitalize font-weight-bold mb-0">Confirmation Remarks:</p>
-                                                                                    <p className="mb-0 text-right text-secondary">{completed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
+                                                                                    <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
                                                                                 </div>
                                                                                 <p className="mb-0">
                                                                                     {confirmed_remarks}
@@ -1764,7 +1764,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                                                         <>
                                                                                                             <div className="d-flex align-items-center justify-content-between">
                                                                                                                 <p className="text-capitalize font-weight-bold mb-0">Confirmation Remarks:</p>
-                                                                                                                <p className="mb-0 text-right text-secondary">{completed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
+                                                                                                                <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
                                                                                                             </div>
                                                                                                             <p className="mb-0">
                                                                                                                 {confirmed_remarks}

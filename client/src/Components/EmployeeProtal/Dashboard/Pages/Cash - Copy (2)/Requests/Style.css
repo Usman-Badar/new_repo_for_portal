@@ -1,0 +1,53 @@
+.advance_cash_request .table tbody tr {
+    position: relative;
+    overflow: hidden;
+}
+
+.advance_cash_request .table tbody tr td {
+    position: relative;
+    overflow: hidden;
+}
+
+.advance_cash_request .table tbody tr .attached_shp {
+    position: absolute;
+    top: 13px;
+    right: -80px;
+    width: 200px;
+    text-align: center;
+    background-color: #0D6EFD;
+    opacity: .8;
+    font-size: 10px;
+    color: #fff;
+    transform: rotate(40deg);
+}
+
+.advance_cash_request .table tbody tr .attached_pr {
+    position: absolute;
+    top: 3px;
+    right: -90px;
+    width: 200px;
+    text-align: center;
+    background-color: #DC3545;
+    opacity: .8;
+    font-size: 10px;
+    color: #fff;
+    transform: rotate(40deg);
+}
+
+.advance_cash_request .table tbody tr .attached_slip {
+    position: absolute;
+    top: 13px;
+    right: -80px;
+    width: 200px;
+    text-align: center;
+    background-color: #FFC107;
+    opacity: .8;
+    font-size: 10px;
+    transform: rotate(40deg);
+}
+
+/* @media only screen and (max-width: 1280px) {
+    .advance_cash_request .table tbody tr .attached_pr {
+        right: -50px;
+    }
+} */

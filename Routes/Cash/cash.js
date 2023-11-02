@@ -177,7 +177,7 @@ router.post('/cash/advance/create', ( req, res ) => {
 
 router.post('/cash/load/requests', ( req, res ) => {
 
-    const { emp_id, cashier, location_code, accessKey } = req.body;
+    const { shipViewer, cashViewer, emp_id, cashier, location_code, accessKey } = req.body;
 
     db.query(
         "SELECT  \
@@ -194,7 +194,7 @@ router.post('/cash/load/requests', ( req, res ) => {
         LEFT OUTER JOIN employees req ON db_cash_receipts.emp_id = req.emp_id \
         LEFT OUTER JOIN locations ON db_cash_receipts.location = locations.location_code \
         LEFT OUTER JOIN companies ON db_cash_receipts.company = companies.company_code \
-        " + ( accessKey === 1 ? "" : cashier ? ("WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued' OR db_cash_receipts.status = 'cleared')") : "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" ) + " ORDER BY `id` DESC;",
+        " + ( accessKey === 1 ? (cashViewer ? "WHERE db_cash_receipts.shp_line_adv = 'N'" : shipViewer ? "WHERE db_cash_receipts.shp_line_adv = 'Y'" : "") : cashier ? ("WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued')") : "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" ) + " ORDER BY `id` DESC;",
         [ emp_id, emp_id, emp_id, emp_id ],
         ( err, rslt ) => {
 
@@ -685,7 +685,7 @@ router.post('/cash/load/thumbs', ( req, res ) => {
     const cashierThumbs = [];
     for ( let x = 0; x < fingerpos.length; x++ )
     {
-        const img = 'client/public/images/thumbs/' + cashier + '/' + fingerpos[x] + "_" + cashier + ".txt";
+        const img = 'client/images/thumbs/' + cashier + '/' + fingerpos[x] + "_" + cashier + ".txt";
         var imageAsBase64 = fs.readFileSync(img, 'utf8');
         cashierThumbs.push(imageAsBase64);
     }

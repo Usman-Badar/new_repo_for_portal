@@ -11,6 +11,8 @@ function RequestsComponent() {
 
     const [ ShowFilters, setShowFilters ] = useState(false);
     const [ Admin, setAdmin ] = useState(false);
+    const [ CashViewer, setCashViewer ] = useState(false);
+    const [ ShipViewer, setShipViewer ] = useState(false);
     const [ Cashier, setCashier ] = useState(false);
     const [ AccessDefined, setAccessDefined ] = useState(false);
     const [ Keyword, setKeyword ] = useState('');
@@ -20,18 +22,27 @@ function RequestsComponent() {
     const [ RequestStatuses, setRequestStatuses ] = useState([]);
     const [ Requests, setRequests ] = useState([]);
     const [ Amount, setAmount ] = useState(0);
+    const [ RequestType, setRequestType ] = useState('');
     const [ Range, setRange ] = useState({ start: 0, end: 10 });
 
     useEffect(
         () => {
+            let cashViewer = false;
+            let shpViewer = false;
             let accessKey = false;
             let cashier = false;
             if ( AccessControls )
             {
                 for ( let y = 0; y < JSON.parse(AccessControls.access).length; y++ )
                 {
-                    if ( parseInt(JSON.parse(AccessControls.access)[y]) === 0 || parseInt(JSON.parse(AccessControls.access)[y]) === 47 )
+                    if ( parseInt(JSON.parse(AccessControls.access)[y]) === 0 || parseInt(JSON.parse(AccessControls.access)[y]) === 47 || parseInt(JSON.parse(AccessControls.access)[y]) === 65 )
                     {
+                        if (parseInt(JSON.parse(AccessControls.access)[y]) === 47) {
+                            cashViewer = true;
+                        }
+                        if (parseInt(JSON.parse(AccessControls.access)[y]) === 65) {
+                            shpViewer = true;
+                        }
                         accessKey = true;
                     }
                     if ( parseInt(JSON.parse(AccessControls.access)[y]) === 52 )
@@ -40,6 +51,8 @@ function RequestsComponent() {
                     }
                 }
             }
+            setShipViewer(shpViewer);
+            setCashViewer(cashViewer);
             setAdmin(accessKey);
             setCashier(cashier);
             setAccessDefined(true);
@@ -50,7 +63,7 @@ function RequestsComponent() {
         () => {
             if ( AccessControls && AccessDefined )
             {
-                loadAllRequests( Admin, Cashier, AccessControls.location_code, setRequests );
+                loadAllRequests( ShipViewer, CashViewer, Admin, Cashier, AccessControls.location_code, setRequests );
             }
         }, [ AccessControls, AccessDefined ]
     );
@@ -101,6 +114,10 @@ function RequestsComponent() {
             {
                 setKeyword(sessionStorage.getItem('AC_Filters_Keyword'));
             }
+            if (sessionStorage.getItem('AC_Filters_Type'))
+            {
+                setRequestType(sessionStorage.getItem('AC_Filters_Type'));
+            }
         }, []
     );
 
@@ -125,6 +142,9 @@ function RequestsComponent() {
                 ShowFilters={ ShowFilters }
                 RequestStatuses={ RequestStatuses }
                 Range={ Range }
+                Admin={ Admin }
+                ShipViewer={ ShipViewer }
+                RequestType={ RequestType }
 
                 updateEndValue={ updateEndValue }
                 setShowFilters={ setShowFilters }
@@ -132,6 +152,7 @@ function RequestsComponent() {
                 setCompany={ (value) => { setCompany(value); sessionStorage.setItem("AC_Filters_Company", value) } }
                 setAmount={ (value) => { setAmount(value); sessionStorage.setItem("AC_Filters_Amount", value) } }
                 setKeyword={ (value) => { setKeyword(value); sessionStorage.setItem("AC_Filters_Keyword", value) } }
+                setRequestType={ (value) => { setRequestType(value); sessionStorage.setItem("AC_Filters_Type", value) } }
             />
         </Suspense>
     );
