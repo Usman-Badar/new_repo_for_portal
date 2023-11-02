@@ -1941,7 +1941,7 @@ router.post('/acr/growth-review/additional-tasks', ( req, res ) => {
                         {
                             connection.query(
                                 "INSERT INTO `tbl_acr_growth_review_items`(`category_id`, `assigned_by`, `emp_id`, `year`, `task`, `start_date`, `deadline`, `assigning_date`, `assigning_time`) VALUES (?,?,?,?,?,?,?,?,?);",
-                                [assignedTasks[speccount.length].category == null ? null : assignedTasks[speccount.length].category, submit_by, emp_id, d.getFullYear(), assignedTasks[speccount.length].task, assignedTasks[speccount.length].start_date, assignedTasks[speccount.length].deadline, new Date(), new Date().toTimeString()],
+                                [assignedTasks[speccount.length].category == null || assignedTasks[speccount.length].category == 'null' ? null : assignedTasks[speccount.length].category, submit_by, emp_id, d.getFullYear(), assignedTasks[speccount.length].task, assignedTasks[speccount.length].start_date, assignedTasks[speccount.length].deadline, new Date(), new Date().toTimeString()],
                                 ( err ) => {
                                     if( err )
                                     {
@@ -1998,6 +1998,45 @@ router.post('/acr/growth-review/additional-tasks', ( req, res ) => {
             )
         }
     )
+} );
+
+router.post('/acr/growth-review/individual-tasks', ( req, res ) => {
+
+    const { category_id, task, submit_by, emp_id } = req.body;
+    const d = new Date();
+    const assignedTasks = JSON.parse(task);
+    db.query(
+        "INSERT INTO `tbl_acr_growth_review_items`(`category_id`, `assigned_by`, `emp_id`, `year`, `task`, `start_date`, `deadline`, `assigning_date`, `assigning_time`) VALUES (?,?,?,?,?,?,?,?,?);",
+        [category_id == null || category_id == 'null' ? null : category_id, submit_by, emp_id, d.getFullYear(), assignedTasks.task, assignedTasks.start_date, assignedTasks.deadline, new Date(), new Date().toTimeString()],
+        ( err ) => {
+            if( err )
+            {
+                res.send('err');
+                res.end();
+            }else
+            {
+                db.query(
+                    "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                    "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                    [ submit_by, emp_id ],
+                    ( err, rslt ) => {
+                        if( err )
+                        {
+                            console.log( err );
+                            res.send( err );
+                            res.end();
+                        }else
+                        {
+                            SendWhatsappNotification( null, null, "Hi " + rslt[1][0].name, rslt[0][0].name + " have assigned you a task, Kindly check.", rslt[1][0].cell );
+                            SendWhatsappNotification( null, null, "Hi " + rslt[0][0].name, "Your task has been assigned to " + rslt[1][0].name + ".", rslt[0][0].cell );
+                            res.send('success');
+                            res.end();
+                        }
+                    }
+                );
+            }
+        }
+    );
 } );
 
 router.post('/acr/self-assessment/data', ( req, res ) => {
@@ -2114,7 +2153,7 @@ router.post('/acr/self-assessment/details', ( req, res ) => {
 router.post('/acr/growth-review/details', ( req, res ) => {
     const { emp_id } = req.body;
     db.query(
-        "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ?;",
+        "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? ORDER BY id DESC;",
         [ emp_id ],
         ( err, result ) => {
             if( err )
@@ -2138,6 +2177,28 @@ router.post('/acr/growth-review/category/add', ( req, res ) => {
     db.query(
         "INSERT INTO `tbl_acr_growth_review_categories`(`category`, `created_by`, `created_date`, `created_time`, `emp_id`) VALUES (?,?,?,?,?)",
         [ category, created_by, new Date(), new Date().toTimeString(), emp_id ],
+        ( err ) => {
+            if( err )
+            {
+                console.log( err );
+                res.send( err );
+                res.end();
+
+            }else
+            {
+                res.send('success');
+                res.end();
+            }
+
+        }
+    );
+} );
+
+router.post('/acr/growth-review/category/update', ( req, res ) => {
+    const { category, id } = req.body;
+    db.query(
+        "UPDATE `tbl_acr_growth_review_categories` SET category = ? WHERE id = ?;",
+        [ category, id ],
         ( err ) => {
             if( err )
             {

@@ -20,6 +20,11 @@ export const GetCompanies = ( setCompanies ) => {
 export const acceptAssignedTask = ( task_id, review_id, setGrowthReviewDetails, setConfirmAcceptance, setAcceptanceContent, setGrowthCategories ) => {
     document.getElementById('confirmBtn').setAttribute('disabled', true);
     $("fieldset").prop('disabled', true);
+    setAcceptanceContent(
+        <>
+            <h6 className='text-center p-3 mb-0'><b>Please Wait....</b></h6>
+        </>
+    );
     axios.post(
         '/acr/growth-review/accept/task',
         {
@@ -27,48 +32,60 @@ export const acceptAssignedTask = ( task_id, review_id, setGrowthReviewDetails, 
         }
     )
     .then(
-        () => 
-        {
-            $("fieldset").prop('disabled', true);
-            JSAlert.alert("Task has been accepted.").dismissIn(1000 * 2);
-            loadGrowthReviewDetails( window.location.href.split('/').pop(), setGrowthReviewDetails, setGrowthCategories );
+        () => {
             setConfirmAcceptance(false);
             setAcceptanceContent(<></>);
+            $("fieldset").prop('disabled', false);
+            JSAlert.alert("Task has been accepted.", 'Success', JSAlert.Icons.Success).dismissIn(1000 * 2);
+            loadGrowthReviewDetails( window.location.href.split('/').pop(), setGrowthReviewDetails, setGrowthCategories );
         }
     ).catch(
-        err => {
-            document.getElementById('confirmBtn').setAttribute('disabled', false);
+        err => {    
+            setConfirmAcceptance(false);
+            setAcceptanceContent(<></>);
             $("fieldset").prop('disabled', false);
             console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
         }
     );
 }
 
 export const rejectAssignedTask = ( e, task_id, review_id, setGrowthReviewDetails, setConfirmAcceptance, setAcceptanceContent, setGrowthCategories ) => {
     e.preventDefault();
+    const remarks = e.target['remarks'].value;
+    if (remarks.trim().length < 20) {
+        JSAlert.alert("Reason must contains 20 characters.", 'Validation Error', JSAlert.Icons.Warning).dismissIn(1000 * 4);
+        return false;
+    }
     document.getElementById('confirmBtn').setAttribute('disabled', true);
     $("fieldset").prop('disabled', true);
+    setAcceptanceContent(<>
+        <h6 className='p-3 mb-0 text-center'><b>Please Wait...</b></h6>
+    </>);
+
     axios.post(
         '/acr/growth-review/reject/task',
         {
             id: task_id,
-            remarks: e.target['remarks'].value
+            remarks: remarks
         }
     )
     .then(
         () => 
         {
-            $("fieldset").prop('disabled', true);
-            JSAlert.alert("Task has been rejected.").dismissIn(1000 * 2);
-            loadGrowthReviewDetails( window.location.href.split('/').pop(), setGrowthReviewDetails, setGrowthCategories );
             setConfirmAcceptance(false);
             setAcceptanceContent(<></>);
+            $("fieldset").prop('disabled', false);
+            JSAlert.alert("Task has been rejected.", 'Success', JSAlert.Icons.Success).dismissIn(1000 * 2);
+            loadGrowthReviewDetails( window.location.href.split('/').pop(), setGrowthReviewDetails, setGrowthCategories );
         }
     ).catch(
         err => {
+            setConfirmAcceptance(false);
+            setAcceptanceContent(<></>);
             $("fieldset").prop('disabled', false);
-            document.getElementById('confirmBtn').setAttribute('disabled', false);
             console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
         }
     );
 }
@@ -99,6 +116,15 @@ export const addRow = ( e, category, List, setList ) => {
 
 export const setInCompleteTask = ( e, task_id, review_id, setGrowthReviewDetails, setConfirmAction, setActionContent, setGrowthCategories, confirmed ) => {
     e.preventDefault();
+    const remarks = e.target['remarks'].value;
+    if (remarks.trim().length < 20) {
+        JSAlert.alert("Remarks must contains 20 characters.", 'Validation Error', JSAlert.Icons.Warning).dismissIn(1000 * 4);
+        return false;
+    }
+
+    setActionContent(<>
+        <h6 className='p-3 mb-0 text-center'><b>Please Wait...</b></h6>
+    </>);
     document.getElementById('confirmBtn').setAttribute('disabled', true);
     $("fieldset").prop('disabled', true);
     axios.post(
@@ -106,53 +132,72 @@ export const setInCompleteTask = ( e, task_id, review_id, setGrowthReviewDetails
         {
             id: task_id,
             confirmed: confirmed === undefined ? null : confirmed === true ? 1 : 0,
-            remarks: e.target['remarks'].value
+            remarks: remarks
         }
     )
     .then(
         () => 
         {
-            $("fieldset").prop('disabled', true);
-            JSAlert.alert("Task has been set to incomplete.").dismissIn(1000 * 2);
+            $("fieldset").prop('disabled', false);
+            JSAlert.alert("Task has been set to incomplete.", "Alright", JSAlert.Icons.Success).dismissIn(1000 * 2);
             loadGrowthReviewDetails( window.location.href.split('/').pop(), setGrowthReviewDetails, setGrowthCategories );
             setConfirmAction(false);
             setActionContent(<></>);
         }
     ).catch(
         err => {
+            setConfirmAction(false);
+            setActionContent(<></>);
             $("fieldset").prop('disabled', false);
-            document.getElementById('confirmBtn').setAttribute('disabled', false);
             console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
         }
     );
 }
 
 export const setCompleteTask = ( e, task_id, review_id, setGrowthReviewDetails, setConfirmAction, setActionContent, setGrowthCategories, confirmed ) => {
     e.preventDefault();
+    const remarks = e.target['remarks'].value;
+    if (remarks.trim().length < 20) {
+        JSAlert.alert("Remarks must contains 20 characters.", 'Validation Error', JSAlert.Icons.Warning).dismissIn(1000 * 4);
+        return false;
+    }
     document.getElementById('confirmBtn').setAttribute('disabled', true);
     $("fieldset").prop('disabled', true);
+    setActionContent(
+        <>
+            <h6 className='text-center p-3 mb-0'><b>Please Wait....</b></h6>
+        </>
+    );
+
     axios.post(
         '/acr/growth-review/task/complete',
         {
             id: task_id,
             confirmed: confirmed === undefined ? null : confirmed === true ? 1 : 0,
-            remarks: e.target['remarks'].value
+            remarks: remarks
         }
     )
     .then(
         () => 
         {
-            $("fieldset").prop('disabled', true);
-            JSAlert.alert("Task has been set to complete.").dismissIn(1000 * 2);
+            $("fieldset").prop('disabled', false);
+            if (confirmed === undefined) {
+                JSAlert.alert("You have completed a task.", "Congratulations", JSAlert.Icons.Success).dismissIn(1000 * 2);
+            }else {
+                JSAlert.alert("The task has been completed.", "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
+            }
             loadGrowthReviewDetails( window.location.href.split('/').pop(), setGrowthReviewDetails, setGrowthCategories );
             setConfirmAction(false);
             setActionContent(<></>);
         }
     ).catch(
         err => {
+            setConfirmAction(false);
+            setActionContent(<></>);
             $("fieldset").prop('disabled', false);
-            document.getElementById('confirmBtn').setAttribute('disabled', false);
             console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
         }
     );
 }
@@ -440,9 +485,19 @@ export const deleteTicket = ( data, allTickets, setConfirmRemoval, setList, setA
     );
 }
 
-export const addNewCategory = ( category, setGrowthCategories ) => {
+export const addNewCategory = ( e, setGrowthCategories, setCategoryModal ) => {
+    const category = e.target['category'].value;
+    if (category.trim().length === 0) {
+        JSAlert.alert("Category is required.", 'Validation Error', JSAlert.Icons.Warning).dismissIn(1000 * 4);
+        return false;
+    }
     setGrowthCategories();
-    $("#categoryInput").prop('disabled', true);
+    $("fieldset").prop('disabled', true);
+    setCategoryModal(
+        <>
+            <h6 className='text-center p-3 mb-0'><b>Creating Category....</b></h6>
+        </>
+    )
     axios.post(
         '/acr/growth-review/category/add',
         {
@@ -452,15 +507,53 @@ export const addNewCategory = ( category, setGrowthCategories ) => {
         }
     ).then(
         () => {
-            $("#categoryInput").prop('disabled', false);
-            $("#categoryInput").val("");
-            JSAlert.alert("Category Added").dismissIn(1000 * 2);
+            setCategoryModal();
+            $("fieldset").prop('disabled', false);
+            JSAlert.alert("New category has been added successfully.", "Category Created", JSAlert.Icons.Success).dismissIn(1000 * 2);
             loadCategories( setGrowthCategories );
         }
     ).catch(
         err => {
-            $("#categoryInput").prop('disabled', false);
-            console.log( err );
+            setCategoryModal();
+            $("fieldset").prop('disabled', false);
+            console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
+        }
+    );
+}
+
+export const updateCategory = ( e, id, setCategoryModal, setGrowthCategories ) => {
+    const category = e.target['category'].value;
+    if (category.trim().length === 0) {
+        JSAlert.alert("Category is required.", 'Validation Error', JSAlert.Icons.Warning).dismissIn(1000 * 4);
+        return false;
+    }
+    setGrowthCategories();
+    $("fieldset").prop('disabled', true);
+    setCategoryModal(
+        <>
+            <h6 className='text-center p-3 mb-0'><b>Updating Category....</b></h6>
+        </>
+    )
+    axios.post(
+        '/acr/growth-review/category/update',
+        {
+            category: category,
+            id: id
+        }
+    ).then(
+        () => {
+            setCategoryModal();
+            $("fieldset").prop('disabled', false);
+            JSAlert.alert("Category has been updated successfully.", "Name Has Changed", JSAlert.Icons.Success).dismissIn(1000 * 2);
+            loadCategories( setGrowthCategories );
+        }
+    ).catch(
+        err => {
+            setCategoryModal();
+            $("fieldset").prop('disabled', false);
+            console.log(err);
+            JSAlert.alert(`Something went wrong. ${err}`, 'Request Failed', JSAlert.Icons.Failed);
         }
     );
 }

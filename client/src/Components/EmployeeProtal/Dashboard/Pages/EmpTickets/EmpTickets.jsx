@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import $ from 'jquery';
 
-import { GetCompanies, issueTicket, acceptAssignedTask, loadEmpGrowthReviewData, loadGrowthReviewData, loadGrowthReviewDetails, loadSelfAssessmentData, loadSelfAssessmentDetails, loadSeniors, loadSubordinates, loadTicketIssued, loadSubordinatesForGrowthReview, setInCompleteTask, setCompleteTask, loadAllSelfSubmissions, loadPeers, loadEmpPeerReview, loadPeerReviewDetails, rejectAssignedTask, addRow, loadAllTickets, deleteTicket, enterReply, addNewCategory } from './Functions';
+import { GetCompanies, issueTicket, acceptAssignedTask, loadEmpGrowthReviewData, loadGrowthReviewData, loadGrowthReviewDetails, loadSelfAssessmentData, loadSelfAssessmentDetails, loadSeniors, loadSubordinates, loadTicketIssued, loadSubordinatesForGrowthReview, setInCompleteTask, setCompleteTask, loadAllSelfSubmissions, loadPeers, loadEmpPeerReview, loadPeerReviewDetails, rejectAssignedTask, addRow, loadAllTickets, deleteTicket, enterReply, addNewCategory, updateCategory } from './Functions';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 const UI = lazy(() => import('./UI'));
@@ -94,7 +94,8 @@ const EmpTickets = () => {
                     AllTickets={ AllTickets }
                     GrowthCategories={ GrowthCategories }
 
-                    addNewCategory={ (value) => addNewCategory(value, setGrowthCategories) }
+                    updateCategory={(e, id, setCategoryModal) => updateCategory(e, id, setCategoryModal, setGrowthCategories)}
+                    addNewCategory={ (e, setCategoryModal) => addNewCategory(e, setGrowthCategories, setCategoryModal) }
                     enterReply={ (ticket_id, reply, generated_by, emp_id, generated_date) => enterReply( ticket_id, reply, generated_by, emp_id, generated_date, setList ) }
                     deleteTicket={ (data, allTickets, setConfirmRemoval) => deleteTicket(data, allTickets, setConfirmRemoval, setList, setAllTickets) } 
                     loadAllTickets={ () => loadAllTickets( setAllTickets ) }

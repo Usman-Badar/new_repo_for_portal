@@ -1,14 +1,89 @@
+.d-grid-growth-details .task .task-grid {
+    display: grid;
+    grid-template-columns: 30fr 15fr 30fr 25fr;
+    grid-column-gap: 15px;
+    font-family: Roboto-Light;
+}
+
+.d-grid-growth-details .tasks-grid {
+    display: grid;
+    grid-template-columns: 10fr 20fr 10fr 10fr;
+    grid-gap: 5px;
+}
+
+.d-grid-growth-details .task .task-grid .la-comment-dots {
+    position: relative;
+}
+
+.d-grid-growth-details .task .task-grid .remarks_container {
+    position: relative;
+}
+
+.d-grid-growth-details .task .task-grid .remarks_container .remarks_box {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    z-index: 1;
+    width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.d-grid-growth-details .task .task-grid .remarks_container .remarks_box_back {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 15vw;
+    top: 50px;
+}
+
+.d-grid-growth-details .task .task-grid .remarks_container .arrow-left{
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid var(--lightgray);
+}
+
+.d-grid-growth-details .task .task-grid .remarks_container .arrow-right{
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid var(--lightgray);
+}
+
+.d-grid-growth-details .task .task-grid .la-comment-dots.remarkable::after {
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: orangered;
+    border-radius: 50%;
+    top: 0;
+    right: -0.8px;
+}
+
 /* .ticket .d-grid-growth-details {
     display: grid;
     grid-template-columns: 75fr 25fr;
     grid-gap: 20px;
 } */
 
-.ticket .d-grid-growth-details .collapse {
+.tooltip {
+    max-width: 300px;
+    white-space: normal;
+}
+
+/* .ticket .d-grid-growth-details .collapse {
     overflow: auto;
     width: 82vw;
     position: relative;
-}
+} */
 
 .ticket .d-grid-growth-details .collapse .table-header {
     cursor: pointer;
