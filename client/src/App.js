@@ -268,6 +268,15 @@ const App = () => {
                     <Route exact path="/cash/shipping/line/list" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/cash/shipping/line/form" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/cash/shipping/line/details/:id" render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    {/* FUEL MANAGEMENT */}
+                    <Route exact path="/fuel-managent/equipment-type-entry" render={ () => <Sus content={ <AdminModule /> } /> } />
+                    <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/fuel-receival-for-workshop" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    <Route exact path='/notices/management' render={ () => <Sus content={ <Dashboard /> } /> } />
                     
                 </Switch>
             </>

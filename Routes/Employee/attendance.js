@@ -267,75 +267,8 @@ router.post('/allemployeesattcompanywiseaccordingtodate', ( req, res ) => {
     const { CompanyCode, DateFrom, DateTo, AccessControls, temporaryStaff } = req.body;
     const access = JSON.parse(JSON.parse(AccessControls).access);
     function regularStaff() {
-        let locationQuery = "";
-        for ( let x = 0; x < access.length; x++ )
-        {
-            if ( access[x] === 31 )
-            {
-                locationQuery = " employees.location_code = " + JSON.parse(AccessControls).location_code + " AND ";
-            }
-        }
-        let q = '';
-        if ( DateTo === '' ) {
-            q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + " employees.company_code = " + CompanyCode + " AND emp_attendance.emp_date = '" + DateFrom + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
-        }else
-        if ( DateFrom === '' )
-        {
-            q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + " employees.company_code = " + CompanyCode + " AND emp_attendance.emp_date = '" + DateTo + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
-        }else
-        {
-            q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + " employees.company_code = " + CompanyCode + " AND emp_attendance.emp_date BETWEEN '" + DateFrom + "' AND '" + DateTo + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
-        }
-        db.query(
-            q,
-            ( err, rslt ) => {
-                if( err )
-                {
-                    res.status(500).send(err);
-                    res.end();
-                }else 
-                {
-                    res.send( rslt );
-                    res.end();
-                }
-            }
-        )
     }
     function dailyWagesStaff() {
-        let locationQuery = "";
-        for ( let x = 0; x < access.length; x++ )
-        {
-            if ( access[x] === 61 )
-            {
-                locationQuery = " tbl_temp_employees.location_code = " + JSON.parse(AccessControls).location_code + " AND ";
-            }
-        }
-        let q = '';
-        if ( DateTo === '' ) {
-            q = "SELECT temp_emp_attendance.`paid`, temp_emp_attendance.`paid_date`, temp_emp_attendance.`paid_time`, temp_emp_attendance.`id`, temp_emp_attendance.`emp_id`, temp_emp_attendance.`time_in`, temp_emp_attendance.`time_out`, temp_emp_attendance.`emp_date`, tbl_temp_employees.company_code, tbl_temp_employees.name, tbl_temp_employees.temp_emp_id FROM tbl_temp_employees LEFT OUTER JOIN temp_emp_attendance ON tbl_temp_employees.temp_emp_id = temp_emp_attendance.emp_id WHERE " + locationQuery + " tbl_temp_employees.company_code = " + CompanyCode + " AND temp_emp_attendance.emp_date = '" + DateFrom + "' ORDER BY temp_emp_attendance.emp_date DESC, tbl_temp_employees.name ASC;";
-        }else
-        if ( DateFrom === '' )
-        {
-            q = "SELECT temp_emp_attendance.`paid`, temp_emp_attendance.`paid_date`, temp_emp_attendance.`paid_time`, temp_emp_attendance.`id`, temp_emp_attendance.`emp_id`, temp_emp_attendance.`time_in`, temp_emp_attendance.`time_out`, temp_emp_attendance.`emp_date`, tbl_temp_employees.company_code, tbl_temp_employees.name, tbl_temp_employees.temp_emp_id FROM tbl_temp_employees LEFT OUTER JOIN temp_emp_attendance ON tbl_temp_employees.temp_emp_id = temp_emp_attendance.emp_id WHERE " + locationQuery + " tbl_temp_employees.company_code = " + CompanyCode + " AND temp_emp_attendance.emp_date = '" + DateTo + "' ORDER BY temp_emp_attendance.emp_date DESC, tbl_temp_employees.name ASC;";
-        }else
-        {
-            q = "SELECT temp_emp_attendance.`paid`, temp_emp_attendance.`paid_date`, temp_emp_attendance.`paid_time`, temp_emp_attendance.`id`, temp_emp_attendance.`emp_id`, temp_emp_attendance.`time_in`, temp_emp_attendance.`time_out`, temp_emp_attendance.`emp_date`, tbl_temp_employees.company_code, tbl_temp_employees.name, tbl_temp_employees.temp_emp_id FROM tbl_temp_employees LEFT OUTER JOIN temp_emp_attendance ON tbl_temp_employees.temp_emp_id = temp_emp_attendance.emp_id WHERE " + locationQuery + " tbl_temp_employees.company_code = " + CompanyCode + " AND temp_emp_attendance.emp_date BETWEEN '" + DateFrom + "' AND '" + DateTo + "' ORDER BY temp_emp_attendance.emp_date DESC, tbl_temp_employees.name ASC;";
-        }
-        let sajdhaksjdhakjsd = db.query(
-            q,
-            ( err, rslt ) => {
-                console.log(sajdhaksjdhakjsd.sql)
-                if( err )
-                {
-                    res.status(500).send(err);
-                    res.end();
-                }else 
-                {
-                    res.send( rslt );
-                    res.end();
-                }
-            }
-        )
     }
     if(parseInt(temporaryStaff) === 1) {
         dailyWagesStaff();
@@ -569,7 +502,7 @@ router.post('/getempattdetails', ( req, res ) => {
             }else
             {
                 connection.query(
-                    "SELECT `id`, `emp_id`, `time_in`, `time_out`, `break_in`, `break_out`, `status`, `emp_date` FROM emp_attendance WHERE emp_id = " + empID + " AND MONTH(`emp_date`) = MONTH(CURRENT_DATE()) AND YEAR(`emp_date`) = YEAR(CURRENT_DATE()) ORDER BY emp_date DESC",
+                    "SELECT `id`, `emp_id`, `time_in`, `time_out`, `break_in`, `break_out`, `status`, `emp_date`, `leave_ref` FROM emp_attendance WHERE emp_id = " + empID + " AND MONTH(`emp_date`) = MONTH(CURRENT_DATE()) AND YEAR(`emp_date`) = YEAR(CURRENT_DATE()) ORDER BY emp_date DESC",
                     ( err, rslt ) => {
             
                         if( err )

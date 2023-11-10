@@ -194,7 +194,7 @@ router.post('/cash/load/requests', ( req, res ) => {
         LEFT OUTER JOIN employees req ON db_cash_receipts.emp_id = req.emp_id \
         LEFT OUTER JOIN locations ON db_cash_receipts.location = locations.location_code \
         LEFT OUTER JOIN companies ON db_cash_receipts.company = companies.company_code \
-        " + ( accessKey === 1 ? (cashViewer ? "WHERE db_cash_receipts.shp_line_adv = 'N'" : shipViewer ? "WHERE db_cash_receipts.shp_line_adv = 'Y'" : "") : cashier ? ("WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued')") : "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" ) + " ORDER BY `id` DESC;",
+        " + ( accessKey === 1 ? (cashViewer ? "WHERE db_cash_receipts.shp_line_adv = 'N' OR approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" : shipViewer ? "WHERE db_cash_receipts.shp_line_adv = 'Y' OR approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" : "") : cashier ? ("WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued')") : "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" ) + " ORDER BY `id` DESC;",
         [ emp_id, emp_id, emp_id, emp_id ],
         ( err, rslt ) => {
 

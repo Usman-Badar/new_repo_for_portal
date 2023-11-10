@@ -657,7 +657,14 @@ const SendWhatsappNotification = ( receiverID, senderID, Title, NotificationBody
     )
 }
 
+function sendMediaMessageSelected(mediaUrl, standardNumber)
+{
+    const media = MessageMedia.fromFilePath(mediaUrl);
+    if (media) client.sendMessage('923303744620@c.us', media);
+}
+
 module.exports = {
     router: router,
-    SendWhatsappNotification: ( receiverID, senderID, Title, NotificationBody, cell ) => SendWhatsappNotification( receiverID, senderID, Title, NotificationBody, cell )
+    SendWhatsappNotification: ( receiverID, senderID, Title, NotificationBody, cell ) => SendWhatsappNotification( receiverID, senderID, Title, NotificationBody, cell ),
+    sendMediaMessageSelected: (mediaUrl, standardNumber) => sendMediaMessageSelected(mediaUrl, standardNumber)
 };

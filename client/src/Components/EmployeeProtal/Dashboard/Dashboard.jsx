@@ -115,6 +115,13 @@ const CSCRefund = lazy( () => import('./Pages/Refunds/CSCRefund/CSCRefund') );
 const ShippingLinePayment = lazy( () => import('./Pages/Forms/ShippingLinePayment/ShippingLinePayment') );
 const TemporaryEmployees = lazy( () => import('./Pages/HR/TemporaryEmployees/TemporaryEmployees') );
 
+const ComapanyEquipmentSetupForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelManagement/FuelManagement') );
+const FuelReceivedForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelReceivedForm/FuelReceivedForm') );
+const EquipmentFuelEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/EquipmentFuelEntry/EquipmentFuelEntry') );
+const TripEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/TripEntry/TripEntry') );
+
+const AdminNotification = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
+
 const Dashboard = () => {
     
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
@@ -538,6 +545,14 @@ const Dashboard = () => {
                                 <Route exact path="/cash/shipping/line/list" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
                                 <Route exact path="/cash/shipping/line/form" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
                                 <Route exact path="/cash/shipping/line/details/:id" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
+                                
+                                {/* FUEL MANAGEMENT */}
+                                <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <ComapanyEquipmentSetupForm /> } /> } />
+                                <Route exact path="/fuel-managent/fuel-receival-for-workshop" render={ () => <Sus content={ <FuelReceivedForm /> } /> } />
+                                <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <EquipmentFuelEntry /> } /> } />
+                                <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <TripEntry /> } /> } />
+
+                                <Route exact path='/notices/management' render={ () => <Sus content={ <AdminNotification /> } /> } />
                             </div>
                         }
                     </div>

@@ -373,31 +373,21 @@ router.post('/performactionforattrequest', ( req, res ) => {
         record_status
     } = req.body;
 
-    let date = new Date( date_time );
-    let date2 = new Date( record_date );
-    var date3 = moment( record_date ).format('YYYY-MM-DD');
-
     if ( status === 'cancel' )
     {
         db.query(
             "INSERT INTO `tbl_attendance_request_refs`(`request_id`, `request_by`, `request_date`, `request_time`, `request_status`, `remarks`) VALUES (?,?,?,?,?,?);",
-            [ request_id, emp_id, date, date.toTimeString(), 'cancel', remarks ],
+            [ request_id, emp_id, new Date(), new Date().toTimeString(), 'cancel', remarks ],
             ( err, rslt ) => {
-    
                 if( err )
                 {
-    
                     res.status(500).send(err);
-                    res.end();
-    
+                    res.end();    
                 }else 
                 {
-    
                     res.send( rslt );
                     res.end();
-    
                 }
-    
             }
         );
     }else
@@ -435,8 +425,9 @@ router.post('/performactionforattrequest', ( req, res ) => {
         }
 
         db.query(
-            "UPDATE `tbl_attendance_request_refs` SET update_date = ?, update_time = ?, remarks = ?, request_status = ? WHERE id = ?",
-            [ date, date.toTimeString(), remarks, status, id ],
+            "UPDATE `tbl_attendance_request_refs` SET update_date = ?, update_time = ?, remarks = ?, request_status = ? WHERE id = ?;" +
+            "SELECT name, time_in, time_out, cell, grace_in_minutes FROM employees WHERE emp_id = ?;",
+            [ new Date(), new Date().toTimeString(), remarks, status, id, request_by ],
             ( err, rslt ) => {
 
                 if( err )
@@ -449,17 +440,29 @@ router.post('/performactionforattrequest', ( req, res ) => {
                 {
                     if ( status === 'mark' || status === 'mark_&_forward' )
                     {
+                        let time1 = rslt[1][0].time_in.substring(3, 5);
+                        let time2 = timeIn;
+                        time1 = parseInt(time1) + parseInt(rslt[1][0].grace_in_minutes);
+                        time1 = rslt[1][0].time_in.substring(0, 3) + (time1.toString().length === 1 ? ( '0' + time1.toString() ) : time1.toString()) + ':00';
                         let q = "";
                         let parameters = [];
+                        let status = 'Present';
+                        
+                        console.log(status)
+                        if ( time2 > time1 )
+                        {
+                            status = 'Late';
+                        }
+                        console.log(status)
                         if ( request_type === 'insert' )
                         {
                             q = "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_in`, `time_out`, `break_in`, `break_out`, `emp_date`) VALUES (?,?,?,?,?,?,?);";
-                            parameters = [ request_by, record_status, timeIn, timeOut, breakIn, breakOut, date2 ];
+                            parameters = [ request_by, status, timeIn, timeOut, breakIn, breakOut, new Date(record_date) ];
                         }else
                         if ( request_type === 'update' )
                         {
-                            q = "UPDATE `emp_attendance` SET `status` = ?, `time_in` = ?, `time_out` = ?, `break_in` = ?, `break_out` = ? WHERE emp_id = ? AND emp_date = ?;";
-                            parameters = [ record_status, timeIn, timeOut, breakIn, breakOut, request_by, date3 ];
+                            q = "UPDATE `emp_attendance` SET `time_in` = ?, `time_out` = ?, `break_in` = ?, `break_out` = ? WHERE emp_id = ? AND emp_date = ?;";
+                            parameters = [ timeIn, timeOut, breakIn, breakOut, request_by, new Date(record_date).toISOString().slice(0, 10).replace('T', ' ') ];
                         }
 
                         q = q.concat("UPDATE tbl_attendance_requests SET marked_time_in = ?, marked_time_out = ?, marked_break_in = ?, marked_break_out = ? WHERE id = ?");
@@ -491,7 +494,7 @@ router.post('/performactionforattrequest', ( req, res ) => {
                     {
                         db.query(
                             "INSERT INTO `tbl_attendance_request_refs`(`request_id`, `request_by`, `request_date`, `request_time`, `request_to`, `request_status`, `time_in`, `time_out`, `break_in`, `break_out`) VALUES (?,?,?,?,?,?,?,?,?,?);",
-                            [ request_id, emp_id, date, date.toTimeString(), forward_to, 'sent', timeIn, timeOut, breakIn, breakOut ],
+                            [ request_id, emp_id, new Date(), new Date().toTimeString(), forward_to, 'sent', timeIn, timeOut, breakIn, breakOut ],
                             ( err, rslt ) => {
                     
                                 if( err )

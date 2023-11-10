@@ -97,52 +97,25 @@ router.post('/getcompanylogs', ( req, res ) => {
 } );
 
 router.post('/getcompanylocations', ( req, res ) => {
-
     const { company_code } = req.body;
-    
-    db.getConnection(
-        ( err, connection ) => {
-            
-            if ( err )
-            {
-                
-                
-                res.status(503).send(err);
+    console.log(company_code)
+    db.query(
+        "SELECT locations.*, \
+        company_locations.* \
+        FROM company_locations \
+        LEFT OUTER JOIN locations ON company_locations.location_code = locations.location_code \
+        WHERE company_locations.company_code = " + company_code,
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
                 res.end();
-                
-            }else
-            {
-                db.query(
-                    "SELECT locations.*, \
-                    company_locations.* \
-                    FROM company_locations \
-                    LEFT OUTER JOIN locations ON company_locations.location_code = locations.location_code \
-                    WHERE company_locations.company_code = " + company_code,
-                    ( err, rslt ) => {
-                        
-                        if( err )
-                        {
-                            
-                            res.status(500).send(err);
-                            res.end();
-                            connection.release();
-                            
-                        }else 
-                        {
-                            
-                            res.send( rslt );
-                            res.end();
-                            connection.release();
-            
-                        }
-            
-                    }
-                )
+            }else {
+                res.send( rslt );
+                res.end();
             }
-
         }
     )
-
 } );
 
 router.get('/getcompaniescodes', ( req, res ) => {

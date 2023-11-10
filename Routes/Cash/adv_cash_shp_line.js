@@ -148,9 +148,9 @@ router.post('/cash/shipping/create', ( req, res ) => {
                                     }else
                                     {
                                         connection.query(
-                                            "INSERT INTO `db_cash_receipts`(`shp_line_adv`, `line`, `d_o`, `lolo`, `detention`, `damage_dirty`, `csc`, `other_purpose_amount`, `other_purpose_specification`, `serial_no`, `series_year`, `emp_id`, `submit_date`, `submit_time`, `amount`, `amount_in_words`, `company`, `location`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);" +
+                                            "INSERT INTO `db_cash_receipts`(`shp_line_adv`, `line`, `d_o`, `lolo`, `detention`, `damage_dirty`, `csc`, `other_purpose_amount`, `other_purpose_specification`, `previous_slip`, `pr_id`, `serial_no`, `series_year`, `emp_id`, `submit_date`, `submit_time`, `amount`, `amount_in_words`, `company`, `location`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);" +
                                             "INSERT INTO `db_cash_balance`(`emp_id`, `balance`, `last_updated`) VALUES (?,?,?);",
-                                            [ 'Y', line, d_o, lolo, detention, damage_dirty, csc, other, other_specification, serial_no, financial_year, emp_id, d, d.toTimeString(), amount, amountInWords, company_code, location_code, reason, emp_id, balance, d ],
+                                            [ 'Y', line, d_o, lolo, detention, damage_dirty, csc, other, other_specification, previous_slip == 'null' || previous_slip == 'undefined' ? null : previous_slip, pr_id == 'null' || pr_id == 'undefined' ? null : pr_id, serial_no, financial_year, emp_id, d, d.toTimeString(), amount, amountInWords, company_code, location_code, reason, emp_id, balance, d ],
                                             ( err, result ) => {
                                                 if( err )
                                                 {

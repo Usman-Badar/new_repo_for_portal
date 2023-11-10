@@ -7,4 +7,6 @@ F:\IT\Web Development\MERN\portal\Routes\Employee\attendance.js
 --------------------------------
 F:\IT\Web Development\MERN\portal\Routes\Services\markEmpLateWhenNoTimeOut.js
 changes in the whole file
---------------------------------
+----------------------------------------------------------------
+G:\IT\React\portal\Routes\Companies\companies.js
+-> /getcompanylocations
