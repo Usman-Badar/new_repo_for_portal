@@ -112,7 +112,7 @@ router.get('/get_all_notices', ( req, res ) => {
 
 router.get('/notice/get_all_notices', ( req, res ) => {
     db.query(
-        "SELECT * FROM `tbl_notices` ORDER BY id DESC;",
+        "SELECT tbl_notices.*, employees.name FROM `tbl_notices` LEFT OUTER JOIN employees ON upload_by = employees.emp_id ORDER BY tbl_notices.id DESC;",
         ( err, rslt ) => {
             if( err )
             {
@@ -247,8 +247,8 @@ router.post('/notice/send', ( req, res ) => {
     let sentCount = 0;
 
     CreateLog('tbl_notices', 0, `${name}:${emp_id} has sent a notification (${url}) to the following companies \n${arr}.`, 'info', 'update');
-
     res.send("success").end();
+    
     function sendOneByOne() {
         let query = `SELECT emp_id, name, cell FROM employees WHERE emp_status = 'Active' AND company_code = ${parsed_arr[count].company} AND location_code = ${parsed_arr[count].location};`;
         if (parsed_arr[count].location === 'all') {

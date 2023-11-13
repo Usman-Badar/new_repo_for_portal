@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useEffect, useState } from 'react';
@@ -9,9 +10,11 @@ import axios from '../../../../../axios';
 import JSAlert from 'js-alert';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
 const AdminNotification = () => {
     let titleTimeout;
+    const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
 
     const [notices, setNotices] = useState();
     const [whatsapp, setWhatsapp] = useState(false);
@@ -28,6 +31,7 @@ const AdminNotification = () => {
     useEffect(
         () => {
             if (whatsapp && $('#arr').length) {
+                console.log('first');
                 const arr = JSON.parse($('#arr').text());
                 openWhatsAppModal(whatsapp, arr);
             }
@@ -161,7 +165,7 @@ const AdminNotification = () => {
                 <h5 className='mb-0'>Notice Details</h5>
                 <hr />
                 <div className='d-flex'>
-                    <div className='p-relative w-50 pr-1'>
+                    <div className='p-relative pr-1' style={{width: '60%'}}>
                         {
                             val.upload_by === parseInt(localStorage.getItem('EmpID'))
                             ?
@@ -181,7 +185,7 @@ const AdminNotification = () => {
                             <img src={`${process.env.REACT_APP_SERVER}/assets/portal/assets/notices/${url}`} alt="news papers" width='100%' />
                         }
                     </div>
-                    <div className='w-50 pl-1 d-flex flex-column justify-content-between'>
+                    <div style={{width: '40%'}} className='pl-1 d-flex flex-column justify-content-between'>
                         <table className='table table-borderless'>
                             <tbody>
                                 <tr>
@@ -212,18 +216,14 @@ const AdminNotification = () => {
                                 </tr>
                             </tbody>
                         </table>
-                        <div className='text-right'>
-                            {
-                                status === 'Active'
-                                ?
-                                <>
-                                    <button className='btn cancle d-block ml-auto' onDoubleClick={() => disableNotice(id)}>Disable</button>
-                                    <button className='btn submit mt-2' onClick={() => openWhatsAppModal(url)}>Send WhatsApp Notification</button>
-                                </>
-                                :
-                                <button className='btn green' onDoubleClick={() => enableNotice(id)}>Enable</button>
-                            }
-                        </div>
+                        {
+                            JSON.parse(AccessControls.access).includes(70)
+                            ?
+                            <div className='text-right'>
+                                {status === 'Active' && <button className='btn submit mt-2' onClick={() => openWhatsAppModal(url)}>Send WhatsApp Notification</button>}
+                            </div>
+                            :null
+                        }
                     </div>
                 </div>
             </>
@@ -303,6 +303,26 @@ const AdminNotification = () => {
     }
     const addRow = (e, id, arr) => {
         e.preventDefault();
+        // // RESTRICT MORE THAN 1 ROW
+        // if ( arr && arr.length > 0 )
+        // {
+        //     alert('You can send notification for one location at a time!!!');
+        //     return false;
+        // }
+
+        if ( arr && arr.length >= 1 ) {
+            // console.log('arr[arr.length-1].location', arr[arr?.length-1]?.location)
+            if ( arr[arr.length-1].location != 1 ) // Headoffice
+            {
+                JSAlert.alert("You can send notification for one location at a time!!", "Validation Error", JSAlert.Icons.Warning);
+                return false;
+            }
+            if ( arr[arr.length-1].location == 1 && e.target['location'].value != 1 ) //Headoffice
+            {
+                JSAlert.alert("You can not select location other tha Head Office!!!", "Validation Error", JSAlert.Icons.Warning);
+                return false;
+            }
+        }
         const company = e.target['company'].value;
         const companyName = $('#company').find('option:selected').text();
         const location = e.target['location'].value;
@@ -321,10 +341,14 @@ const AdminNotification = () => {
             locationName: locationName
         };
         const list = arr || [];
+        console.log('before_push')
         list.push(obj);
+        console.log('after_push')
         openWhatsAppModal(id, list);
     }
     const openWhatsAppModal = (id, arr) => {
+        const AllLocationsIncludeOrNot = arr ? arr.findIndex(val => val.location_name === 'all') : -1;
+        console.log('arr_in_openWhatsAppModal', arr);
         setWhatsapp(id);
         setModalData(
             <>
@@ -361,7 +385,7 @@ const AdminNotification = () => {
                                         }
                                     </select>
                                     <button className='d-none' id="reset">Reset</button>
-                                    <button className='btn submit d-block ml-auto mt-3'>Add</button>
+                                    {AllLocationsIncludeOrNot < 0 ? <button className='btn submit d-block ml-auto mt-3'>Add</button> : null}
                                 </td>
                             </tr>
                         </tbody>
@@ -406,6 +430,11 @@ const AdminNotification = () => {
         )
     }
     const SendNotification = () => {
+        if (!JSON.parse(AccessControls.access).includes(70)) {
+            JSAlert.alert("You don't have access!!", "Validation Error", JSAlert.Icons.Warning);
+            return false;
+        }
+        
         const arr = $('#arr').text();
         const id = whatsapp;
         setModalData(
@@ -428,14 +457,19 @@ const AdminNotification = () => {
         <>
             <div className='page admin_notification'>
                 <ToastContainer />
-                {modalData ? <Modal width='50%' show={true} Hide={() => { setModalData(false); setWhatsapp(); }} content={modalData} /> : null}
+                {modalData ? <Modal width='45%' show={true} Hide={() => { setModalData(false); setWhatsapp(); }} content={modalData} /> : null}
                 <div className='page-content'>
                     <div className="d-flex align-items-center justify-content-between">
                         <h3 className="heading">
                             Notices Management
                             <sub>To manage all portal notices</sub>
                         </h3>
-                        <button className='btn submit' onClick={() => createNew()}>New</button>
+                        {
+                            JSON.parse(AccessControls.access).includes(68)
+                            ?
+                            <button className='btn submit' onClick={() => createNew()}>New</button>
+                            :null
+                        }
                     </div>
                     <br />
                     {
@@ -447,21 +481,34 @@ const AdminNotification = () => {
                                     <th>Sr.No</th>
                                     <th>Notice</th>
                                     <th>Status</th>
-                                    <th>Upload Date</th>
+                                    <th colSpan={2}>Upload At</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     notices.map(
                                         (val, index) => {
-                                            const { title, upload_at, status } = val;
+                                            const { title, upload_at, status, name, id } = val;
                                             return (
                                                 <>
-                                                    <tr className='pointer pointer-hover' onClick={() => openDetails(val, index)}>
-                                                        <td>{index + 1}</td>
-                                                        <td>{title}</td>
-                                                        <td>{status}</td>
-                                                        <td>{new Date(upload_at).toLocaleString()}</td>
+                                                    <tr className='pointer pointer-hover'>
+                                                        <td onClick={() => openDetails(val, index)}>{index + 1}</td>
+                                                        <td onClick={() => openDetails(val, index)}>{title}</td>
+                                                        <td onClick={() => openDetails(val, index)}>{status}</td>
+                                                        <td onClick={() => openDetails(val, index)}>
+                                                            <b>{name}</b><br />
+                                                            <span>{new Date(upload_at).toLocaleString()}</span>
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                !JSON.parse(AccessControls.access).includes(69)?null:
+                                                                status === 'Active'
+                                                                ?
+                                                                <button className='btn cancle d-block ml-auto' onClick={() => disableNotice(id)}>Disable</button>
+                                                                :
+                                                                <button className='btn green d-block ml-auto' onClick={() => enableNotice(id)}>Enable</button>
+                                                            }
+                                                        </td>
                                                     </tr>
                                                 </>
                                             )
