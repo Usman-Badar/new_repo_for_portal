@@ -28,6 +28,7 @@ const AdminLogbook = lazy( () => import('./Pages/AdminLogbook/AdminLogbook') );
 const AttRequest_Config = lazy( () => import('./Pages/AttRequest_Config/AttRequest_Config') );
 const MenuSetup = lazy( () => import('./Pages/MenuSetup/MenuSetup') );
 const MiscSetup = lazy( () => import('./Pages/MiscSetup/MiscSetup') );
+const AccessManagement = lazy( () => import('./Pages/AccessManagement/AccessManagement') );
 
 const AdminModule = () => {
 
@@ -77,6 +78,10 @@ const AdminModule = () => {
             <NavLink activeClassName="Admin_Dashboard_active" to="/admin_employement_requests/admin_employement_setup" className="d-center links">
                 <div className="pr-3"><i class="las la-building"></i></div>
                 <div className="links_txt">Employee Form</div>
+            </NavLink>
+            <NavLink activeClassName="Admin_Dashboard_active" to="/admin/access/management" className="d-center links">
+                <div className="pr-3"><i class="las la-building"></i></div>
+                <div className="links_txt">Access Management</div>
             </NavLink>
             <NavLink activeClassName="Admin_Dashboard_active" to="/admin_companies" className="d-center links">
                 <div className="pr-3"><i class="las la-building"></i></div>
@@ -132,6 +137,7 @@ const AdminModule = () => {
                     {/* TopBar End here */}
                     <div className="content">
                         {/* <Breadcrumbs /> */}
+                        <Route exact path='/admin/access/management' render={ () => <Suspense fallback={ <div>Loading....</div> }><AccessManagement /></Suspense> } />
                         <Route exact path='/admin_module' render={ () => <Suspense fallback={ <div>Loading....</div> }><Home /></Suspense> } />
                         <Route exact path='/admin_employement_requests' render={ () => <Suspense fallback={ <div>Loading....</div> }><EmploymentRequests /></Suspense> } />
                         <Route exact path='/admin_employement_requests/admin_employement_setup' render={ () => <Suspense fallback={ <div>Loading....</div> }><EmployeeForm /></Suspense> } />

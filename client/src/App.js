@@ -152,6 +152,7 @@ const App = () => {
                         For Admin Module
                     */}
 
+                    <Route exact path='/admin/access/management' render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/admin_login' render={ () => <Sus content={ <AdminLogin /> } /> } />
                     <Route exact path='/admin_logout' render={ () => <Sus content={ <AdminLogout /> } /> } />
                     <Route exact path='/admin_module' render={ () => <Sus content={ <AdminModule /> } /> } />

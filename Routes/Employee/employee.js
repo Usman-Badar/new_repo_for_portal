@@ -848,49 +848,6 @@ router.post('/getlocationemployees', ( req, res ) => {
 
 } );
 
-router.get('/getalltempemployee', ( req, res ) => {
-
-    db.getConnection(
-        ( err, connection ) => {
-
-            if ( err )
-            {
-
-                
-                res.status(503).send(err);
-                res.end();
-
-            }else
-            {
-                connection.query(
-                    "SELECT employees.*, users.* FROM employees LEFT OUTER JOIN users ON employees.user_id = users.user_id WHERE emp_status = 'Waiting For Approval' GROUP BY emp_id DESC;",
-                    ( err, rslt ) => {
-            
-                        if( err )
-                        {
-            
-                            res.status(500).send(err);
-                            res.end();
-                            connection.release();
-            
-                        }else 
-                        {
-            
-                            res.send( rslt );
-                            res.end();
-                            connection.release();
-            
-                        }
-            
-                    }
-                );
-            }
-
-        }
-    );
-
-} );
-
 router.post('/srchtempemp', ( req, res ) => {
 
     const { SearchKey, SearchBy } = req.body;
@@ -2784,6 +2741,169 @@ router.get('/acr/performance/tickets/all', ( req, res ) => {
             }
         }
     );
+} );
+
+router.get('/getalltempemployee', ( req, res ) => {
+
+    db.query(
+        "SELECT employees.*, users.* FROM employees LEFT OUTER JOIN users ON employees.user_id = users.user_id WHERE emp_status = 'Waiting For Approval' GROUP BY employees.created_at DESC;",
+        ( err, rslt ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    );
+
+} );
+
+router.get('/access/get/all', ( req, res ) => {
+    db.query(
+        "SELECT * FROM `accesses`",
+        ( err, rslt ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/create/new', ( req, res ) => {
+    const {access_id, module, access_title, access_description} = req.body;
+    db.query(
+        "INSERT INTO `accesses`(`access_id`, `access_title`, `access_description`, `module`) VALUES (?,?,?,?);",
+        [access_id, access_title, access_description, module],
+        ( err ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/create/update', ( req, res ) => {
+    const {access_id, module, access_title, access_description} = req.body;
+    db.query(
+        "UPDATE `accesses` SET access_title = ?, access_description = ?, module = ? WHERE access_id = ?;",
+        [access_title, access_description, module, access_id],
+        ( err ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/employees/search/keyword', ( req, res ) => {
+    const {keyword} = req.body;
+    db.query(
+        "SELECT employees.emp_id, employees.name, employees.access, emp_app_profile.emp_image, designations.designation_name FROM `employees` LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id LEFT OUTER JOIN designations ON employees.designation_code = designations.designation_code WHERE employees.emp_status = 'Active' AND LOWER(employees.name) LIKE '%" + keyword.toLowerCase() + "%';",
+        ( err, rslt ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/employee/revoke', ( req, res ) => {
+    const {list, emp_id} = req.body;
+    db.query(
+        "UPDATE employees SET access = ? WHERE emp_id = ?;",
+        [JSON.stringify(list), emp_id],
+        ( err ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/module/name/update', ( req, res ) => {
+    const {module, name} = req.body;
+    db.query(
+        "UPDATE accesses SET module = ? WHERE LOWER(module) = ?;",
+        [name, module.toLowerCase()],
+        ( err ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/assign/employees', ( req, res ) => {
+    const {employees, access_id} = req.body;
+    const parsed_employees = JSON.parse(employees);
+    const limit = parsed_employees.length;
+    let count = 0;
+    function assignAccess() {
+        db.query(
+            "SELECT access FROM employees WHERE emp_id = ? AND access IS NOT NULL;",
+            [parsed_employees[count].emp_id],
+            ( err, rslt ) => {
+                if( err ){
+                    console.log(err);
+                    res.status(500).send(err);
+                    res.end();
+                }else {
+                    const access = JSON.parse(rslt[0].access);
+                    access.push(access_id);
+                    access.sort();
+                    db.query(
+                        "UPDATE employees SET access = ? WHERE emp_id = ?;",
+                        [JSON.stringify(access), parsed_employees[count].emp_id],
+                        ( err ) => {
+                            if( err ){
+                                console.log(err);
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                if ((count+1) === limit) {
+                                    res.send('success');
+                                    res.end();
+                                }else {
+                                    count = count + 1;
+                                    assignAccess();
+                                }
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
+    assignAccess();
 } );
 
 module.exports = router;
