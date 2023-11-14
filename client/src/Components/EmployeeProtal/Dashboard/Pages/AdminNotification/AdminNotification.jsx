@@ -18,6 +18,7 @@ const AdminNotification = () => {
 
     const [notices, setNotices] = useState();
     const [whatsapp, setWhatsapp] = useState(false);
+    const [noticeID, setNoticeID] = useState();
     const [modalData, setModalData] = useState();
     const [companies, setCompanies] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -32,7 +33,7 @@ const AdminNotification = () => {
         () => {
             if (whatsapp && $('#arr').length) {
                 const arr = JSON.parse($('#arr').text());
-                openWhatsAppModal(whatsapp, arr);
+                openWhatsAppModal(whatsapp, noticeID, arr);
             }
         }, [companies, locations, whatsapp]
     )
@@ -159,7 +160,6 @@ const AdminNotification = () => {
     }
     const openDetails = (val, index) => {
         const { id, url, title, status, upload_at, whatsapp_sent, whatsapp_sent_date, name } = val;
-        console.log(val)
         setModalData(
             <>
                 <h5 className='mb-0'>Notice Details</h5>
@@ -225,7 +225,7 @@ const AdminNotification = () => {
                             JSON.parse(AccessControls.access).includes(70)
                             ?
                             <div className='text-right'>
-                                {status === 'Active' && <button className='btn submit mt-2' onClick={() => openWhatsAppModal(url)}>Send WhatsApp Notification</button>}
+                                {status === 'Active' && <button className='btn submit mt-2' onClick={() => openWhatsAppModal(url, id)}>Send WhatsApp Notification</button>}
                             </div>
                             :null
                         }
@@ -305,7 +305,7 @@ const AdminNotification = () => {
             JSAlert.alert(`Something went wrong, ${err}.`, "Request Failed", JSAlert.Icons.Failed);
         });
     }
-    const addRow = (e, id, arr) => {
+    const addRow = (e, id, arr, notice_id) => {
         e.preventDefault();
         // // RESTRICT MORE THAN 1 ROW
         // if ( arr && arr.length > 0 )
@@ -346,16 +346,17 @@ const AdminNotification = () => {
         };
         const list = arr || [];
         list.push(obj);
-        openWhatsAppModal(id, list);
+        openWhatsAppModal(id, notice_id, list);
     }
-    const openWhatsAppModal = (id, arr) => {
+    const openWhatsAppModal = (id, notice_id, arr) => {
         setWhatsapp(id);
+        setNoticeID(notice_id);
         setModalData(
             <>
                 <h5 className='mb-0'>WhatsApp Notification</h5>
                 <hr />
                 <div id="arr" className='d-none'>{JSON.stringify(arr || [])}</div>
-                <form onSubmit={(e) => addRow(e, id, arr)}>
+                <form onSubmit={(e) => addRow(e, id, arr, notice_id)}>
                     <table className='table table-sm table-borderless'>
                         <tbody>
                             <tr>
@@ -443,7 +444,7 @@ const AdminNotification = () => {
                 <p className='text-center mb-0'>This may take a while, please wait or you can close this window.</p>
             </>
         );
-        axios.post('/notice/send', { arr: arr, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
+        axios.post('/notice/send', { notice_id: noticeID, arr: arr, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
             setModalData();
             loadNotices();
             JSAlert.alert(`Notice has been sent successfully`, "Success", JSAlert.Icons.Success).dismissIn(2000);
