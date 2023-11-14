@@ -240,13 +240,13 @@ router.post('/notice/update/title', ( req, res ) => {
 } );
 
 router.post('/notice/send', ( req, res ) => {
-    const {url, arr, name, emp_id} = req.body;
+    const {url, arr, name, emp_id, notice_id} = req.body;
     const parsed_arr = JSON.parse(arr);
     const limit = parsed_arr.length;
     let count = 0;
     let sentCount = 0;
 
-    CreateLog('tbl_notices', 0, `${name}:${emp_id} has sent a notification (${url}) to the following companies \n${arr}.`, 'info', 'update');
+    CreateLog('tbl_notices', notice_id, `${name}:${emp_id} has sent a notification (${url}) to the following companies \n${arr}.`, 'info', 'update');
     res.send("success").end();
     
     function sendOneByOne() {

@@ -688,6 +688,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
     const lastMonthsOfTheQuarter = [3, 6, 9, 12];
     const currentMonth = new Date().getMonth() + 1;
     const lastAboveDays = 15;
+    const [EditID, setEditID] = useState();
     const [EditMode, setEditMode] = useState(false);
     const [AcceptanceContent, setAcceptanceContent] = useState();
     const [ConfirmAcceptance, setConfirmAcceptance] = useState(false);
@@ -1215,6 +1216,11 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
     const resetFilters = () => {
         setDateFilter("");
     }
+    const EditTask = (index, obj) => {
+        obj.index = index;
+        console.log(obj);
+        setEditID(obj);
+    }
     const addNewTaskInTheList = (e) => {
         e.preventDefault();
         const category = e.target['category'].value;
@@ -1254,8 +1260,18 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
         if (category !== 'General') {
             category_name = GrowthCategories.filter(val => val.id == category)[0].category;
         }
+        if (EditID) {
+            let tasks = addTasksList.slice();
+            tasks[EditID.index].category_name = category_name;
+            tasks[EditID.index].category = category == 'General' ? null : category;
+            tasks[EditID.index].task = task;
+            tasks[EditID.index].start_date = start_date;
+            tasks[EditID.index].deadline = deadline;
+            setEditID();
+        }else {
+            setAddTasksList([...addTasksList, { category_name: category_name, category: category == 'General' ? null : category, task: task, start_date: start_date, deadline: deadline }]);
+        }
         $('#taskResetBtn').trigger('click');
-        setAddTasksList([...addTasksList, { category_name: category_name, category: category == 'General' ? null : category, task: task, start_date: start_date, deadline: deadline }]);
     }
     const confirmAssigningTasks = () => {
         setAcceptanceContent(
@@ -1446,13 +1462,14 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                         <th>Category</th>
                                                         <th>Task</th>
                                                         <th>Start Date</th>
-                                                        <th>Deadline</th>
+                                                        <th colSpan={2}>Deadline</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
                                                         addTasksList.map(
-                                                            ({ category_name, task, start_date, deadline }, i) => {
+                                                            (val, i) => {
+                                                                const { category_name, task, start_date, deadline } = val;
                                                                 return (
                                                                     <tr key={i}>
                                                                         <td>{i + 1}</td>
@@ -1460,6 +1477,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                         <td>{task}</td>
                                                                         <td>{start_date}</td>
                                                                         <td>{deadline}</td>
+                                                                        <td onClick={() => EditTask(i, val)}><span className="text-primary pointer">Edit</span></td>
                                                                     </tr>
                                                                 )
                                                             }
@@ -1471,6 +1489,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                         : null
                                 }
                                 <form className="tasks-grid" onSubmit={addNewTaskInTheList}>
+                                    {console.log(EditID)}
                                     <div>
                                         <label className="mb-0 font-weight-bold">Category</label>
                                         <select name="category" className="form-control" defaultValue='General' required>
@@ -1478,7 +1497,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                             {
                                                 GrowthCategories && GrowthCategories.map(
                                                     ({ category, id }, i) => {
-                                                        return <option key={i} value={id}>{category}</option>
+                                                        return <option key={i} value={id} selected={ EditID?.category == id }>{category}</option>
                                                     }
                                                 )
                                             }
@@ -1486,22 +1505,28 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                     </div>
                                     <div>
                                         <label className="mb-0 font-weight-bold">Task</label>
-                                        <input name="task" className="form-control" minLength={10} required />
+                                        <input name="task" defaultValue={EditID?.task || ''} className="form-control" minLength={10} required />
                                     </div>
                                     <div>
                                         <label className="mb-0 font-weight-bold">Start Date</label>
-                                        <input type="date" name="start_date" className="form-control" required />
+                                        <input type="date" defaultValue={EditID?.start_date || undefined} name="start_date" className="form-control" required />
                                     </div>
                                     <div>
                                         <label className="mb-0 font-weight-bold">Deadline</label>
-                                        <input type="date" name="deadline" className="form-control" required />
+                                        <input type="date" defaultValue={EditID?.deadline || undefined} name="deadline" className="form-control" required />
                                     </div>
                                     <div></div>
                                     <div></div>
                                     <div></div>
                                     <div className="text-right">
                                         <button type="reset" className="btn d-none" id="taskResetBtn">Reset</button>
-                                        <button className="btn submit">Add</button>
+                                        {
+                                            EditID
+                                            ?
+                                            <button className="btn submit">Update</button>
+                                            :
+                                            <button className="btn submit">Add</button>
+                                        }
                                     </div>
                                 </form>
                             </div>

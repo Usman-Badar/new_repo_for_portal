@@ -29,7 +29,6 @@ const InventoryDashboard = lazy( () => import( './Components/Inventory/Inventory
 const App = () => {
 
     require('dotenv').config();
-
         const Load = <Loading 
             display={ true }
             styling={
@@ -78,6 +77,7 @@ const App = () => {
 
                     <Route exact path='/news' render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path='/news/newspaper/:id' render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path='/notices/management' render={ () => <Sus content={ <Dashboard /> } /> } />
 
                     <Route exact path='/help' render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path='/drive' render={ () => <Sus content={ <Dashboard /> } /> } />

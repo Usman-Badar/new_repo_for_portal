@@ -120,7 +120,7 @@ const FuelReceivedForm = lazy( () => import('./Pages/Forms/FuelManagementModule/
 const EquipmentFuelEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/EquipmentFuelEntry/EquipmentFuelEntry') );
 const TripEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/TripEntry/TripEntry') );
 
-const AdminNotification = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
+const NotificationManagement = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
 
 const Dashboard = () => {
     
@@ -409,6 +409,7 @@ const Dashboard = () => {
 
                                 <Route exact path='/news' render={ () => <Sus content={ <News /> } /> } />
                                 <Route exact path='/news/newspaper/:id' render={ () => <Sus content={ <NewsPaper /> } /> } />
+                                <Route exact path='/notices/management' render={ () => <Sus content={ <NotificationManagement /> } /> } />
 
                                 <Route exact path='/help' render={ () => <Sus content={ <Help /> } /> } />
                                 <Route exact path='/drive' render={ () => <Sus content={ <Drive /> } /> } />
@@ -552,7 +553,6 @@ const Dashboard = () => {
                                 <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <EquipmentFuelEntry /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <TripEntry /> } /> } />
 
-                                <Route exact path='/notices/management' render={ () => <Sus content={ <AdminNotification /> } /> } />
                             </div>
                         }
                     </div>

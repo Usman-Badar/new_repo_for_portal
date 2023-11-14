@@ -18,6 +18,7 @@ const AdminNotification = () => {
 
     const [notices, setNotices] = useState();
     const [whatsapp, setWhatsapp] = useState(false);
+    const [noticeID, setNoticeID] = useState();
     const [modalData, setModalData] = useState();
     const [companies, setCompanies] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -31,9 +32,8 @@ const AdminNotification = () => {
     useEffect(
         () => {
             if (whatsapp && $('#arr').length) {
-                console.log('first');
                 const arr = JSON.parse($('#arr').text());
-                openWhatsAppModal(whatsapp, arr);
+                openWhatsAppModal(whatsapp, noticeID, arr);
             }
         }, [companies, locations, whatsapp]
     )
@@ -159,7 +159,7 @@ const AdminNotification = () => {
         });
     }
     const openDetails = (val, index) => {
-        const { id, url, title, status, upload_at, whatsapp_sent } = val;
+        const { id, url, title, status, upload_at, whatsapp_sent, whatsapp_sent_date, name } = val;
         setModalData(
             <>
                 <h5 className='mb-0'>Notice Details</h5>
@@ -194,8 +194,8 @@ const AdminNotification = () => {
                                         <span id='title' contentEditable={val.upload_by === parseInt(localStorage.getItem('EmpID'))} onInput={(e) => onTitleChange(e, id, title, index)}>{title}</span>
                                     </td>
                                     <td>
-                                        <b>Upload Date</b><br />
-                                        <span>{new Date(upload_at).toDateString()}</span>
+                                        <b>Upload By</b><br />
+                                        <span>{name}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -204,14 +204,19 @@ const AdminNotification = () => {
                                         <span>{status}</span>
                                     </td>
                                     <td>
-                                        <b>Upload Time</b><br />
+                                        <b>Upload At</b><br />
+                                        <span>{new Date(upload_at).toDateString()}</span><br />
                                         <span>{new Date(upload_at).toLocaleTimeString()}</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colSpan={2}>
+                                    <td>
                                         <b>Whatsapp Sent</b><br />
                                         <span>{whatsapp_sent === 0 ? "No" : "Yes"}</span>
+                                    </td>
+                                    <td>
+                                        <b>Whatsapp Sent Date</b><br />
+                                        <span>{whatsapp_sent === 0 ? "-" : new Date(whatsapp_sent_date).toDateString()}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -220,7 +225,7 @@ const AdminNotification = () => {
                             JSON.parse(AccessControls.access).includes(70)
                             ?
                             <div className='text-right'>
-                                {status === 'Active' && <button className='btn submit mt-2' onClick={() => openWhatsAppModal(url)}>Send WhatsApp Notification</button>}
+                                {status === 'Active' && <button className='btn submit mt-2' onClick={() => openWhatsAppModal(url, id)}>Send WhatsApp Notification</button>}
                             </div>
                             :null
                         }
@@ -233,7 +238,6 @@ const AdminNotification = () => {
         const reader = new FileReader();
         reader.onload = () => {
             if (reader.readyState === 2) {
-                console.log()
                 if (event.target.files[0].type === 'application/pdf' || event.target.files[0].type === 'image/jpeg') {
                     setFile(event.target.files[0]);
                 } else {
@@ -301,7 +305,7 @@ const AdminNotification = () => {
             JSAlert.alert(`Something went wrong, ${err}.`, "Request Failed", JSAlert.Icons.Failed);
         });
     }
-    const addRow = (e, id, arr) => {
+    const addRow = (e, id, arr, notice_id) => {
         e.preventDefault();
         // // RESTRICT MORE THAN 1 ROW
         // if ( arr && arr.length > 0 )
@@ -341,21 +345,18 @@ const AdminNotification = () => {
             locationName: locationName
         };
         const list = arr || [];
-        console.log('before_push')
         list.push(obj);
-        console.log('after_push')
-        openWhatsAppModal(id, list);
+        openWhatsAppModal(id, notice_id, list);
     }
-    const openWhatsAppModal = (id, arr) => {
-        const AllLocationsIncludeOrNot = arr ? arr.findIndex(val => val.location_name === 'all') : -1;
-        console.log('arr_in_openWhatsAppModal', arr);
+    const openWhatsAppModal = (id, notice_id, arr) => {
         setWhatsapp(id);
+        setNoticeID(notice_id);
         setModalData(
             <>
                 <h5 className='mb-0'>WhatsApp Notification</h5>
                 <hr />
                 <div id="arr" className='d-none'>{JSON.stringify(arr || [])}</div>
-                <form onSubmit={(e) => addRow(e, id, arr)}>
+                <form onSubmit={(e) => addRow(e, id, arr, notice_id)}>
                     <table className='table table-sm table-borderless'>
                         <tbody>
                             <tr>
@@ -375,7 +376,7 @@ const AdminNotification = () => {
                                 <td>
                                     <label className='mb-0'><b>Location</b></label>
                                     <select className='form-control' id='location' name="location" required>
-                                        <option value="all">All Locations</option>
+                                        <option value="">Select Location</option>
                                         {
                                             locations.map(
                                                 ({ location_code, location_name }, i) => {
@@ -385,7 +386,7 @@ const AdminNotification = () => {
                                         }
                                     </select>
                                     <button className='d-none' id="reset">Reset</button>
-                                    {AllLocationsIncludeOrNot < 0 ? <button className='btn submit d-block ml-auto mt-3'>Add</button> : null}
+                                    <button className='btn submit d-block ml-auto mt-3'>Add</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -443,7 +444,7 @@ const AdminNotification = () => {
                 <p className='text-center mb-0'>This may take a while, please wait or you can close this window.</p>
             </>
         );
-        axios.post('/notice/send', { arr: arr, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
+        axios.post('/notice/send', { notice_id: noticeID, arr: arr, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
             setModalData();
             loadNotices();
             JSAlert.alert(`Notice has been sent successfully`, "Success", JSAlert.Icons.Success).dismissIn(2000);
