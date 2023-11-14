@@ -115,6 +115,8 @@ const CSCRefund = lazy( () => import('./Pages/Refunds/CSCRefund/CSCRefund') );
 const ShippingLinePayment = lazy( () => import('./Pages/Forms/ShippingLinePayment/ShippingLinePayment') );
 const TemporaryEmployees = lazy( () => import('./Pages/HR/TemporaryEmployees/TemporaryEmployees') );
 
+const NotificationManagement = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
+
 const Dashboard = () => {
     
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
@@ -402,6 +404,7 @@ const Dashboard = () => {
 
                                 <Route exact path='/news' render={ () => <Sus content={ <News /> } /> } />
                                 <Route exact path='/news/newspaper/:id' render={ () => <Sus content={ <NewsPaper /> } /> } />
+                                <Route exact path='/notices/management' render={ () => <Sus content={ <NotificationManagement /> } /> } />
 
                                 <Route exact path='/help' render={ () => <Sus content={ <Help /> } /> } />
                                 <Route exact path='/drive' render={ () => <Sus content={ <Drive /> } /> } />

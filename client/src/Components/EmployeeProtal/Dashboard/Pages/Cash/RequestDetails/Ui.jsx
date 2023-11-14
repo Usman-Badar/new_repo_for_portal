@@ -287,7 +287,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
 
                                                             <tr>
                                                                 <td>
-                                                                    <h6 className='font-weight-bold'>Company & Location</h6>
+                                                                    <h6 className='font-weight-bold'>Company<br />Cash Collection Location</h6>
                                                                 </td>
                                                                 <td>
                                                                     <p className='mb-1'>{Details.company_name}</p>

@@ -77,7 +77,7 @@ function UI({ Slip, SlipCode, attachSlip, SlipAttachment, SlipList, PRAttachment
                         </div>
                         <div>
                             <label className='mb-0'>
-                                <b>Cash Collection At</b>
+                                <b>Cash Collection Location</b>
                             </label>
                             <select className="form-control" name="location_code" required>
                                 <option value=''>Select the option</option>
