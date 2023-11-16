@@ -10,3 +10,8 @@ changes in the whole file
 ----------------------------------------------------------------
 G:\IT\React\portal\Routes\Companies\companies.js
 -> /getcompanylocations
+----------------------------------------------------------------
+G:\IT\React\portal\Routes\Employee\attendance.js
+-> /allemployeesattcompanywiseaccordingtodate
+
+new access [71] for [Monthly Attendance Locations Dropdown]

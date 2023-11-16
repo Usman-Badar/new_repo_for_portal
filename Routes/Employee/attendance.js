@@ -264,11 +264,102 @@ router.post('/getallemployeestodayattendancecompanywise', ( req, res ) => {
 
 router.post('/allemployeesattcompanywiseaccordingtodate', ( req, res ) => {
 
-    const { CompanyCode, DateFrom, DateTo, AccessControls, temporaryStaff } = req.body;
+    const { CompanyCode, LocationCode, DateFrom, DateTo, AccessControls, temporaryStaff } = req.body;
     const access = JSON.parse(JSON.parse(AccessControls).access);
+    let hasLocationAccess = false;
     function regularStaff() {
+        let locationQuery = "";
+        let companyQuery = "";
+        for ( let x = 0; x < access.length; x++ )
+        {
+            if ( access[x] === 31 )
+            {
+                locationQuery = " employees.location_code = " + JSON.parse(AccessControls).location_code + " AND ";
+                companyQuery = " employees.company_code = " + JSON.parse(AccessControls).company_code + " AND ";
+                hasLocationAccess = true;
+            }
+        }
+        if (!hasLocationAccess && LocationCode != 'null') {
+            locationQuery = " employees.location_code = " + LocationCode + " AND ";
+        }
+        if (!hasLocationAccess && CompanyCode != 'null') {
+            companyQuery = " employees.company_code = " + CompanyCode + " AND ";
+        }
+        let q = '';
+        if ( DateTo === '' ) {
+            q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " emp_attendance.emp_date = '" + DateFrom + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
+        }else
+        if ( DateFrom === '' )
+        {
+            q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " emp_attendance.emp_date = '" + DateTo + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
+        }else
+        {
+            q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " emp_attendance.emp_date BETWEEN '" + DateFrom + "' AND '" + DateTo + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
+        }
+        db.query(
+            q,
+            ( err, rslt ) => {
+                if( err )
+                {
+                    console.log(err);
+                    res.status(500).send(err);
+                    res.end();
+                }else 
+                {
+                    res.send( rslt );
+                    res.end();
+                }
+            }
+        )
     }
     function dailyWagesStaff() {
+        let locationQuery = "";
+        let companyQuery = "";
+        for ( let x = 0; x < access.length; x++ )
+        {
+            if ( access[x] === 61 )
+            {
+                locationQuery = " tbl_temp_employees.location_code = " + JSON.parse(AccessControls).location_code + " AND ";
+                companyQuery = " tbl_temp_employees.company_code = " + JSON.parse(AccessControls).company_code + " AND ";
+                hasLocationAccess = true;
+            }
+            if ( access[x] === 60 || access[x] === 0 )
+            {
+                locationQuery = "";
+                hasLocationAccess = false;
+            }
+        }
+        if (!hasLocationAccess && LocationCode != 'null') {
+            locationQuery = " tbl_temp_employees.location_code = " + LocationCode + " AND ";
+        }
+        if (!hasLocationAccess && CompanyCode != 'null') {
+            companyQuery = " tbl_temp_employees.company_code = " + CompanyCode + " AND ";
+        }
+        let q = '';
+        if ( DateTo === '' ) {
+            q = "SELECT temp_emp_attendance.`paid`, temp_emp_attendance.`paid_date`, temp_emp_attendance.`paid_time`, temp_emp_attendance.`id`, temp_emp_attendance.`emp_id`, temp_emp_attendance.`time_in`, temp_emp_attendance.`time_out`, temp_emp_attendance.`emp_date`, tbl_temp_employees.company_code, tbl_temp_employees.name, tbl_temp_employees.temp_emp_id FROM tbl_temp_employees LEFT OUTER JOIN temp_emp_attendance ON tbl_temp_employees.temp_emp_id = temp_emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " temp_emp_attendance.emp_date = '" + DateFrom + "' ORDER BY temp_emp_attendance.emp_date DESC, tbl_temp_employees.name ASC;";
+        }else
+        if ( DateFrom === '' )
+        {
+            q = "SELECT temp_emp_attendance.`paid`, temp_emp_attendance.`paid_date`, temp_emp_attendance.`paid_time`, temp_emp_attendance.`id`, temp_emp_attendance.`emp_id`, temp_emp_attendance.`time_in`, temp_emp_attendance.`time_out`, temp_emp_attendance.`emp_date`, tbl_temp_employees.company_code, tbl_temp_employees.name, tbl_temp_employees.temp_emp_id FROM tbl_temp_employees LEFT OUTER JOIN temp_emp_attendance ON tbl_temp_employees.temp_emp_id = temp_emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " temp_emp_attendance.emp_date = '" + DateTo + "' ORDER BY temp_emp_attendance.emp_date DESC, tbl_temp_employees.name ASC;";
+        }else
+        {
+            q = "SELECT temp_emp_attendance.`paid`, temp_emp_attendance.`paid_date`, temp_emp_attendance.`paid_time`, temp_emp_attendance.`id`, temp_emp_attendance.`emp_id`, temp_emp_attendance.`time_in`, temp_emp_attendance.`time_out`, temp_emp_attendance.`emp_date`, tbl_temp_employees.company_code, tbl_temp_employees.name, tbl_temp_employees.temp_emp_id FROM tbl_temp_employees LEFT OUTER JOIN temp_emp_attendance ON tbl_temp_employees.temp_emp_id = temp_emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " temp_emp_attendance.emp_date BETWEEN '" + DateFrom + "' AND '" + DateTo + "' ORDER BY temp_emp_attendance.emp_date DESC, tbl_temp_employees.name ASC;";
+        }
+        db.query(
+            q,
+            ( err, rslt ) => {
+                if( err )
+                {
+                    res.status(500).send(ewrr);
+                    res.end();
+                }else 
+                {
+                    res.send( rslt );
+                    res.end();
+                }
+            }
+        )
     }
     if(parseInt(temporaryStaff) === 1) {
         dailyWagesStaff();
