@@ -1,9 +1,0 @@
-.FuelRequest .flex_container {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-}
-
-.FuelRequest .flex_container>div {
-    width: 50%;
-}

@@ -272,6 +272,7 @@ const App = () => {
                     {/* FUEL MANAGEMENT */}
                     <Route exact path="/fuel-managent/equipment-type-entry" render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/fuel-request-for-station" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/fuel-managent/fuel-receival-for-workshop" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <Dashboard /> } /> } />

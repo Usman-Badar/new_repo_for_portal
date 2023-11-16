@@ -128,8 +128,6 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
 
     const shipping = Details && Details.shp_line_adv === 'Y' ? "Advance Cash (Shipping) Details - " : "Advance Cash Details - ";
 
-    console.log(Details)
-
     return (
         <>
             <div className="advance_cash_details page">
@@ -299,108 +297,113 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                     <p>{Details.location_name}</p>
                                                                 </td>
                                                             </tr>
+                                                            
+                                                            {
+                                                                Details.shp_line_adv === 'Y'
+                                                                ?
+                                                                <tr>
+                                                                    <td>
+                                                                        <h6 className='font-weight-bold'>Charges</h6>
+                                                                    </td>
 
-                                                            <tr>
-                                                                <td>
-                                                                    <h6 className='font-weight-bold'>Charges</h6>
-                                                                </td>
+                                                                    <td>
 
-                                                                <td>
-
-                                                                    {
-                                                                        Details.d_o
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>D/O Charges :</p>
-                                                                                <p className='ml-1'>Rs {Details.d_o}/-</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-                                                                    {
-                                                                        Details.lolo
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>LOLO Charges :</p>
-                                                                                <p className='ml-1'>Rs {Details.lolo}/-</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-                                                                    {
-                                                                        Details.detention
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>Detention :</p>
-                                                                                <p className='ml-1'>Rs {Details.detention}/-</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-                                                                    {
-                                                                        Details.damage_dirty
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>Damage & Dirty :</p>
-                                                                                <p className='ml-1'>Rs {Details.damage_dirty}/-</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-                                                                    {
-                                                                        Details.csc
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>CSC Charges :</p>
-                                                                                <p className='ml-1'>Rs {Details.csc}/-</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-                                                                    {
-                                                                        Details.other_purpose_amount
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>Other Charges :</p>
-                                                                                <p className='ml-1'>Rs {Details.other_purpose_amount}/-</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-                                                                    {
-                                                                        Details.other_purpose_amount
-                                                                            ?
-                                                                            <span className='d-flex mb-1'>
-                                                                                <p className='mr-1 font-weight-bold'>Other Specification :</p>
-                                                                                <p className='ml-1'>{Details.other_purpose_specification}</p>
-                                                                            </span>
-                                                                            :
-                                                                            null
-                                                                    }
-
-
-
-                                                                    {/* {
-                                                                        Details.other_purpose_specification
-                                                                            ?
-                                                                            <>
-                                                                                <p>Other Charges :</p>
+                                                                        {
+                                                                            Details.d_o
+                                                                                ?
                                                                                 <span className='d-flex mb-1'>
-                                                                                    <p className='mr-1 font-weight-bold'>{Details.other_purpose_specification} :</p>
-                                                                                    <p className='ml-1'>{Details.other_purpose_amount}</p>
+                                                                                    <p className='mr-1 font-weight-bold'>D/O Charges :</p>
+                                                                                    <p className='ml-1'>Rs {Details.d_o}/-</p>
                                                                                 </span>
-                                                                            </>
-                                                                            :
-                                                                            <p>Other Charges : {Details.other_purpose_amount}</p>
-                                                                    } */}
-                                                                </td>
-                                                            </tr>
+                                                                                :
+                                                                                null
+                                                                        }
+
+                                                                        {
+                                                                            Details.lolo
+                                                                                ?
+                                                                                <span className='d-flex mb-1'>
+                                                                                    <p className='mr-1 font-weight-bold'>LOLO Charges :</p>
+                                                                                    <p className='ml-1'>Rs {Details.lolo}/-</p>
+                                                                                </span>
+                                                                                :
+                                                                                null
+                                                                        }
+
+                                                                        {
+                                                                            Details.detention
+                                                                                ?
+                                                                                <span className='d-flex mb-1'>
+                                                                                    <p className='mr-1 font-weight-bold'>Detention :</p>
+                                                                                    <p className='ml-1'>Rs {Details.detention}/-</p>
+                                                                                </span>
+                                                                                :
+                                                                                null
+                                                                        }
+
+                                                                        {
+                                                                            Details.damage_dirty
+                                                                                ?
+                                                                                <span className='d-flex mb-1'>
+                                                                                    <p className='mr-1 font-weight-bold'>Damage & Dirty :</p>
+                                                                                    <p className='ml-1'>Rs {Details.damage_dirty}/-</p>
+                                                                                </span>
+                                                                                :
+                                                                                null
+                                                                        }
+
+                                                                        {
+                                                                            Details.csc
+                                                                                ?
+                                                                                <span className='d-flex mb-1'>
+                                                                                    <p className='mr-1 font-weight-bold'>CSC Charges :</p>
+                                                                                    <p className='ml-1'>Rs {Details.csc}/-</p>
+                                                                                </span>
+                                                                                :
+                                                                                null
+                                                                        }
+
+                                                                        {
+                                                                            Details.other_purpose_amount
+                                                                                ?
+                                                                                <span className='d-flex mb-1'>
+                                                                                    <p className='mr-1 font-weight-bold'>Other Charges :</p>
+                                                                                    <p className='ml-1'>Rs {Details.other_purpose_amount}/-</p>
+                                                                                </span>
+                                                                                :
+                                                                                null
+                                                                        }
+
+                                                                        {
+                                                                            Details.other_purpose_amount
+                                                                                ?
+                                                                                <span className='d-flex mb-1'>
+                                                                                    <p className='mr-1 font-weight-bold'>Other Specification :</p>
+                                                                                    <p className='ml-1'>{Details.other_purpose_specification}</p>
+                                                                                </span>
+                                                                                :
+                                                                                null
+                                                                        }
+
+
+
+                                                                        {/* {
+                                                                            Details.other_purpose_specification
+                                                                                ?
+                                                                                <>
+                                                                                    <p>Other Charges :</p>
+                                                                                    <span className='d-flex mb-1'>
+                                                                                        <p className='mr-1 font-weight-bold'>{Details.other_purpose_specification} :</p>
+                                                                                        <p className='ml-1'>{Details.other_purpose_amount}</p>
+                                                                                    </span>
+                                                                                </>
+                                                                                :
+                                                                                <p>Other Charges : {Details.other_purpose_amount}</p>
+                                                                        } */}
+                                                                    </td>
+                                                                </tr>
+                                                                :null
+                                                            }
 
                                                             <tr>
                                                                 <td>

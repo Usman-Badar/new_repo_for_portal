@@ -117,6 +117,7 @@ const TemporaryEmployees = lazy( () => import('./Pages/HR/TemporaryEmployees/Tem
 
 const ComapanyEquipmentSetupForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelManagement/FuelManagement') );
 const FuelReceivedForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelReceivedForm/FuelReceivedForm') );
+const FuelRequest = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelRequest/FuelRequest') );
 const EquipmentFuelEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/EquipmentFuelEntry/EquipmentFuelEntry') );
 const TripEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/TripEntry/TripEntry') );
 
@@ -550,6 +551,7 @@ const Dashboard = () => {
                                 {/* FUEL MANAGEMENT */}
                                 <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <ComapanyEquipmentSetupForm /> } /> } />
                                 <Route exact path="/fuel-managent/fuel-receival-for-workshop" render={ () => <Sus content={ <FuelReceivedForm /> } /> } />
+                                <Route exact path="/fuel-managent/fuel-request-for-station" render={ () => <Sus content={ <FuelRequest /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <EquipmentFuelEntry /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <TripEntry /> } /> } />
 

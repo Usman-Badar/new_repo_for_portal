@@ -22,6 +22,7 @@ app.use( require('./Routes/Services/markEmpAbsent').router );
 app.use( require('./Routes/Services/markEmpLateWhenNoTimeOut').router );
 app.use( require('./Routes/Services/SetInOutStatusToValid') );
 
+app.use( require('./Routes/Services/AdvanceCashExpiry') );
 app.use( require('./Routes/Services/AutoTickets').router );
 app.use( require('./Routes/Refund/csc').router );
 app.use( require('./Routes/Employee/leave') );
