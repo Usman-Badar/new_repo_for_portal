@@ -672,7 +672,7 @@ router.post('/markshortleave', (req, res) => {
                             if (results[0]) {
 
                                 q = {
-                                    sql: "UPDATE emp_attendance SET status = 'leave', leave_ref = '" + 'short/' + leave_id + "' WHERE emp_id = " + empID + " AND emp_attendance.emp_date = ?",
+                                    sql: "UPDATE emp_attendance SET status = 'short leave', leave_ref = '" + 'short/' + leave_id + "' WHERE emp_id = " + empID + " AND emp_attendance.emp_date = ?",
                                     values: [date]
                                 };
 
@@ -700,7 +700,7 @@ router.post('/markshortleave', (req, res) => {
 
                                 q = {
                                     sql: 'INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?)',
-                                    values: [empID, 'leave', date, 'short/' + leave_id]
+                                    values: [empID, 'short leave', date, 'short/' + leave_id]
                                 }
 
                                 db.query(

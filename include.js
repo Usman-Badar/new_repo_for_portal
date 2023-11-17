@@ -174,4 +174,7 @@ app.use( require('./Routes/Vehicle_Tracking/vehicleTracking') );
 
 app.use( require('./Routes/Fuel_Management/fuel_management') );
 
+
+app.use( require('./Routes/PortalIssues/portal_issues') );
+
 module.exports = app;

@@ -123,6 +123,8 @@ const TripEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/TripEnt
 
 const NotificationManagement = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
 
+const PortalIssues = lazy( () => import('./Pages/PortalIssues/PortalIssues') );
+
 const Dashboard = () => {
     
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
@@ -554,6 +556,11 @@ const Dashboard = () => {
                                 <Route exact path="/fuel-managent/fuel-request-for-station" render={ () => <Sus content={ <FuelRequest /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <EquipmentFuelEntry /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <TripEntry /> } /> } />
+
+                                
+                                <Route exact path='/portal/issues' render={ () => <Sus content={ <PortalIssues /> } /> } />
+                                <Route exact path='/portal/issues/new' render={ () => <Sus content={ <PortalIssues /> } /> } />
+                                <Route exact path='/portal/issues/details/:id' render={ () => <Sus content={ <PortalIssues /> } /> } />
 
                             </div>
                         }

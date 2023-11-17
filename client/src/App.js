@@ -278,6 +278,11 @@ const App = () => {
                     <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <Dashboard /> } /> } />
 
                     <Route exact path='/notices/management' render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    
+                    <Route exact path='/portal/issues' render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path='/portal/issues/new' render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path='/portal/issues/details/:id' render={ () => <Sus content={ <Dashboard /> } /> } />
                     
                 </Switch>
             </>

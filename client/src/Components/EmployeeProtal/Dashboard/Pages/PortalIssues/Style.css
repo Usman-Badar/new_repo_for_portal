@@ -1,0 +1,12 @@
+.portal_issues .table td h2 {
+    font-size: 18px;
+}
+
+.portal_issues .table td h1 {
+    font-size: 20px;
+}
+
+.portal_issues .description img {
+    border-radius: 5px;
+    border: 1px solid lightgray;
+}
