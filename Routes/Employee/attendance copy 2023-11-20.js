@@ -1,9 +1,8 @@
-// Last updated : 2023-Nov-20
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/connection');
 const ExcelJS = require('exceljs');
 const moment = require('moment');
+const db = require('../../db/connection');
 
 const CreateLogs = require('./logs').CreateLog;
 
@@ -271,28 +270,21 @@ router.post('/allemployeesattcompanywiseaccordingtodate', ( req, res ) => {
     function regularStaff() {
         let locationQuery = "";
         let companyQuery = "";
-
-        if (LocationCode != 'null') {
-            locationQuery = " employees.location_code = " + LocationCode + " AND ";
-        }
-        if (CompanyCode != 'null') {
-            companyQuery = " employees.company_code = " + CompanyCode + " AND ";
-        }
         for ( let x = 0; x < access.length; x++ )
         {
             if ( access[x] === 31 )
             {
                 locationQuery = " employees.location_code = " + JSON.parse(AccessControls).location_code + " AND ";
-                // companyQuery = " employees.company_code = " + JSON.parse(AccessControls).company_code + " AND ";
-                hasLocationAccess = true;
-            }
-            if ( access[x] === 73 )
-            {
                 companyQuery = " employees.company_code = " + JSON.parse(AccessControls).company_code + " AND ";
                 hasLocationAccess = true;
             }
         }
-        
+        if (!hasLocationAccess && LocationCode != 'null') {
+            locationQuery = " employees.location_code = " + LocationCode + " AND ";
+        }
+        if (!hasLocationAccess && CompanyCode != 'null') {
+            companyQuery = " employees.company_code = " + CompanyCode + " AND ";
+        }
         let q = '';
         if ( DateTo === '' ) {
             q = "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE " + locationQuery + companyQuery + " emp_attendance.emp_date = '" + DateFrom + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;";
@@ -328,11 +320,6 @@ router.post('/allemployeesattcompanywiseaccordingtodate', ( req, res ) => {
             if ( access[x] === 61 )
             {
                 locationQuery = " tbl_temp_employees.location_code = " + JSON.parse(AccessControls).location_code + " AND ";
-                companyQuery = " tbl_temp_employees.company_code = " + JSON.parse(AccessControls).company_code + " AND ";
-                hasLocationAccess = true;
-            }
-            if ( access[x] === 73 )
-            {
                 companyQuery = " tbl_temp_employees.company_code = " + JSON.parse(AccessControls).company_code + " AND ";
                 hasLocationAccess = true;
             }
@@ -729,8 +716,6 @@ router.post('/getthatdateemployeeslist', ( req, res ) => {
     )
 
 } );
-
-
 
 router.post('/getemployeefullattendance', ( req, res ) => {
 

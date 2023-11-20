@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import './Attendance.css';
 
@@ -29,9 +31,10 @@ const Attendance = () => {
     const [ Logs, setLogs ] = useState([]);
     const [ Thumbs, setThumbs ] = useState([]);
     const [ Companies, setCompanies ] = useState([]);
+    const [ Locations, setLocations ] = useState([]);
     const [ Filters, setFilters ] = useState(
         {
-            dateFrom: '', dateTo: '', company: null
+            dateFrom: '', dateTo: '', company: 'null', location: 'null'
         }
     );
     const [ checkedList, setCheckedList ] = useState([]);
@@ -39,11 +42,14 @@ const Attendance = () => {
 
     useEffect(
         () => {
-            if ( Filters.dateFrom !== '' || Filters.dateTo !== '' || Filters.company !== null ) {
+            if (Filters.company != 'null' && Filters.company != '') {
+                GetLocations(Filters.company);
+            }
+            if ( Filters.dateFrom !== '' || Filters.dateTo !== '' || Filters.company != 'null' || Filters.location != 'null' ) {
                 fetchAttendance();
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [ temporaryStaff, Filters.dateFrom, Filters.dateTo, Filters.company ]
+        }, [ temporaryStaff, Filters.dateFrom, Filters.dateTo, Filters.company, Filters.location ]
     );
     useEffect(
         () => {
@@ -53,36 +59,76 @@ const Attendance = () => {
     );
     useEffect(
         () => {
-
-            axios.get('/getcompaniescodes').then( response => {
-
-                setCompanies( response.data );
-
-            } ).catch( err => {
-
-                toast.dark( err , {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-
-            } );
-
-        }, []
+            let isActive = true;
+            if (AccessControls) {
+                let company = Filters.company == 'null' ? EmpData.company_code : Filters.company;
+                if (JSON.parse(AccessControls.access).includes(18) || JSON.parse(AccessControls.access).includes(0)) {
+                    getCompany(isActive);
+                }
+                GetLocations(company);
+            }
+            return () => {
+                isActive = false;
+            }
+        }, [AccessControls]
     );
+    const getCompany = (isActive) => {
+        axios.post('/getemployeecompaniesauth', {emp_id: AccessControls.emp_id}).then( response => {
+            if (isActive) {
+                setCompanies( response.data );
+            }
+        } ).catch( err => {
+
+            toast.dark( err , {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
+        } );
+    }
+    const GetLocations = (value) => {
+        setLocations([]);
+        axios.post('/getcompanylocations', {company_code: value}).then(
+            res => {
+                setLocations(res.data);
+            }
+        ).catch(
+            err => {
+                console.log(err);
+            }
+        )
+    }
     const fetchAttendance = () => {
-        let company = Filters.company === null ? EmpData.company_code : Filters.company;
+        let company = Filters.company == 'null' ? EmpData.company_code : Filters.company;
         let dateFrom = Filters.dateFrom;
         let dateTo = Filters.dateTo;
 
         if (dateFrom === '' && dateTo === '') {
             return false;
         }
-
+        for ( let x = 0; x < JSON.parse(AccessControls.access).length; x++ )
+        {
+            if ( JSON.parse(AccessControls.access)[x] === 31 )
+            {
+                if (company == 'null' && Filters.location == 'null') {
+                    toast.dark( "Please select a company", {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    return false;
+                }
+            }
+        }
         if ( dateFrom !== '' && dateTo !== '' && dateTo < dateFrom )
         {
             toast.dark( "Date To should greater than Date From", {
@@ -96,7 +142,7 @@ const Attendance = () => {
             });
             return false;
         }
-        if (JSON.parse(AccessControls.access).includes(0) || JSON.parse(AccessControls.access).includes(63) || JSON.parse(AccessControls.access).includes(60) || JSON.parse(AccessControls.access).includes(61)) {
+        if (JSON.parse(AccessControls.access).includes(0) || JSON.parse(AccessControls.access).includes(63) || JSON.parse(AccessControls.access).includes(60) || JSON.parse(AccessControls.access).includes(61) || JSON.parse(AccessControls.access).includes(71)) {
             
             setModalContent(
                 <>
@@ -109,7 +155,8 @@ const Attendance = () => {
             const Data = new FormData();
             Data.append('DateFrom', dateFrom);
             Data.append('DateTo', dateTo);
-            Data.append('CompanyCode', company);
+            Data.append('CompanyCode', Filters.company);
+            Data.append('LocationCode', Filters.location);
             Data.append('temporaryStaff', temporaryStaff ? 1 : 0);
             Data.append('AccessControls', JSON.stringify(AccessControls));
             axios.post('/allemployeesattcompanywiseaccordingtodate', Data).then( res => {
@@ -660,26 +707,53 @@ const Attendance = () => {
                                         name='company'
                                     >
                                         <option
-                                            value=''
+                                            value='null'
                                         >
                                             Select the Option
                                         </option>
                                             {Companies.map(
                                             (val, index) => {
-                                                
-                                                let content = <></>;
-                                                if ( val.Status_View === 'Y' )
-                                                {
-                                                    content = <option
+                                                return (
+                                                    <option
                                                         key={index}
                                                         value={val.company_code}
                                                     >
                                                         {val.company_name}
                                                     </option>
-                                                }
-                                                return content;
-                                                
-
+                                                );
+                                            })}
+                                    </select>
+                                </div>
+                                :null
+                            }
+                            {
+                                JSON.parse(AccessControls.access).includes(71) || JSON.parse(AccessControls.access).includes(0)
+                                ?
+                                <div className="w-100 px-1">
+                                    <label className="mb-0 font-weight-bold">Location</label>
+                                    <select
+                                        className="form-control bg-light"
+                                        variant="standard"
+                                        style={{ width: '100%', fontSize: '12px', fontFamily: 'Quicksand' }}
+                                        onChange={ OnFilter }
+                                        name='location'
+                                    >
+                                        <option
+                                            value='null'
+                                        >
+                                            All Locations
+                                        </option>
+                                            {Locations.map(
+                                            (val, index) => {
+                                                return (
+                                                    <option
+                                                        key={index}
+                                                        value={val.location_code}
+                                                        selected={Filters.location == val.location_code}
+                                                    >
+                                                        {val.location_name}
+                                                    </option>
+                                                );
                                             })}
                                     </select>
                                 </div>

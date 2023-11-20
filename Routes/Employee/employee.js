@@ -2129,6 +2129,34 @@ router.post('/acr/growth-review/details', ( req, res ) => {
     );
 } );
 
+router.post('/acr/growth-review/details/filter', ( req, res ) => {
+    const { emp_id, start_date, end_date } = req.body;
+    let sql = "";
+    if (end_date === '') {
+        sql = "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? AND tbl_acr_growth_review_items.assigning_date = '" + start_date + "' ORDER BY id DESC;";
+    }else if (start_date === '') {
+        sql = "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? AND tbl_acr_growth_review_items.assigning_date = '" + end_date + "' ORDER BY id DESC;";
+    }else {
+        sql = "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? AND tbl_acr_growth_review_items.assigning_date BETWEEN '" + start_date + "' AND '" + end_date + "' ORDER BY id DESC;";
+    }
+    db.query(
+        sql,
+        [ emp_id ],
+        ( err, result ) => {
+            if( err )
+            {
+                console.log( err );
+                res.send( err );
+                res.end();
+            }else
+            {
+                res.send(result);
+                res.end();
+            }
+        }
+    );
+} );
+
 router.post('/acr/growth-review/category/add', ( req, res ) => {
     const { category, emp_id, created_by } = req.body;
     db.query(
