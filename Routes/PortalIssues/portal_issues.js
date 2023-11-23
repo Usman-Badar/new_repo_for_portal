@@ -18,23 +18,43 @@ router.get('/portal/issues/categories', ( req, res ) => {
 } );
 
 router.post('/portal/issues/list', ( req, res ) => {
-    const { requested_by } = req.body;
-    db.query(
-        "SELECT tbl_pi_reported.*, employees.name, departments.department_name FROM `tbl_pi_reported` \
-        LEFT OUTER JOIN employees ON employees.emp_id = tbl_pi_reported.requested_by \
-        LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
-        WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at, tbl_pi_reported.priority;",
-        [ requested_by ],
-        ( err, rslt ) => {
-            if( err ) {
-                res.status(500).send(err);
-                res.end();
-            }else {
-                res.send( rslt );
-                res.end();
+    const { requested_by, admin } = req.body;
+    if (parseInt(admin) === 1) {
+        db.query(
+            "SELECT tbl_pi_reported.*, employees.name, departments.department_name FROM `tbl_pi_reported` \
+            LEFT OUTER JOIN employees ON employees.emp_id = tbl_pi_reported.requested_by \
+            LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
+            ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
+            ( err, rslt ) => {
+                if( err ) {
+                    console.log(err);
+                    res.status(500).send(err);
+                    res.end();
+                }else {
+                    res.send( rslt );
+                    res.end();
+                }
             }
-        }
-    );
+        );
+    }else {
+        db.query(
+            "SELECT tbl_pi_reported.*, employees.name, departments.department_name FROM `tbl_pi_reported` \
+            LEFT OUTER JOIN employees ON employees.emp_id = tbl_pi_reported.requested_by \
+            LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
+            WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
+            [ requested_by ],
+            ( err, rslt ) => {
+                if( err ) {
+                    console.log(err);
+                    res.status(500).send(err);
+                    res.end();
+                }else {
+                    res.send( rslt );
+                    res.end();
+                }
+            }
+        );
+    }
 } );
 
 router.post('/portal/issues/details', ( req, res ) => {
@@ -75,6 +95,40 @@ router.post('/portal/issues/new', ( req, res ) => {
     db.query(
         "INSERT INTO `tbl_pi_reported`(`pi_category_id`, `pi_category`, `subject`, `description`, `issue_date`, `requested_by`) VALUES (?,?,?,?,?,?);",
         [ category, categoryName, subject, description, issue_date, reported_by ],
+        ( err ) => {
+            if( err ) {
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/portal/issues/update', ( req, res ) => {
+    const { report_id, support_by, status, support_comment } = req.body;
+    db.query(
+        "UPDATE `tbl_pi_reported` SET status = ?, support_by = ?, support_at = ?, support_comments = ? WHERE portal_issue_id = ?;",
+        [ status, support_by, new Date(), support_comment, report_id ],
+        ( err ) => {
+            if( err ) {
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/portal/issues/update/priority', ( req, res ) => {
+    const { report_id, update_by, priority } = req.body;
+    db.query(
+        "UPDATE `tbl_pi_reported` SET priority = ?, last_edit_by = ?, last_edit_at = ? WHERE portal_issue_id = ?;",
+        [ priority, update_by, new Date(), report_id ],
         ( err ) => {
             if( err ) {
                 res.status(500).send(err);

@@ -9,4 +9,44 @@
 .portal_issues .description img {
     border-radius: 5px;
     border: 1px solid lightgray;
+    max-width: 50%;
+}
+
+@media only screen and (max-width: 992px) {
+    .portal_issues .table.list tr th:nth-child(3),
+    .portal_issues .table.list tr td:nth-child(3) {
+        display: none;
+    }
+    .portal_issues .table.list tr th:nth-child(6),
+    .portal_issues .table.list tr td:nth-child(6) {
+        display: none;
+    }
+    .portal_issues .table.list tr th:nth-child(7),
+    .portal_issues .table.list tr td:nth-child(7) {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .portal_issue_form {
+        padding: 0 !important;
+        border: 0 !important;
+    }
+
+    .portal_issues .table.list tr th:nth-child(2),
+    .portal_issues .table.list tr td:nth-child(2) {
+        display: none;
+    }
+    
+    .portal_issue_form .d-flex {
+        display: block !important;
+    }
+
+    .portal_issue_form .d-flex .w-50 {
+        width: 100% !important;
+    }
+
+    .portal_issues .description img {
+        max-width: 100%;
+    }
 }

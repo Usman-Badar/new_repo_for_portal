@@ -68,16 +68,21 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
 
     useEffect(
         () => {
-            loadComments();
-            if (AccessControls) {
+            if (AccessControls && Details) {
+                loadComments();
                 for (let y = 0; y < JSON.parse(AccessControls.access).length; y++) {
-                    if (parseInt(JSON.parse(AccessControls.access)[y]) === 0 || parseInt(JSON.parse(AccessControls.access)[y]) === 51) {
+                    if (parseInt(JSON.parse(AccessControls.access)[y]) === 51 && Details.shp_line_adv === 'N') {
+                        setVerificationAccess(true);
+                        return false;
+                    }
+
+                    if (parseInt(JSON.parse(AccessControls.access)[y]) === 74 && Details.shp_line_adv === 'Y') {
                         setVerificationAccess(true);
                         return false;
                     }
                 }
             }
-        }, []
+        }, [Details]
     );
     useEffect(() => {
         if (PrintContentLoaded) {
@@ -183,10 +188,10 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                     <button className='btn light' onClick={() => history.goBack()}>Back</button>
                                                     <button className='btn submit ml-2' onClick={print}>Print</button>
                                                     {
-                                                        Details.status === 'waiting for approval' && Details.emp_id == localStorage.getItem('EmpID')
-                                                            ?
-                                                            <button className='btn cancle ml-2' onClick={() => setCancel(true)}>Cancel</button>
-                                                            : null
+                                                        Details.status === 'pending for verification' && Details.emp_id == localStorage.getItem('EmpID')
+                                                        ?
+                                                        <button className='btn cancle ml-2' onClick={() => setCancel(true)}>Cancel</button>
+                                                        : null
                                                     }
                                                 </div>
                                             </div>
@@ -278,6 +283,20 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                     <p>{Details.designation_name}</p>
                                                                 </td>
                                                             </tr>
+                                                            
+                                                            {
+                                                                Details.shp_line_adv === 'Y'
+                                                                ?
+                                                                <tr>
+                                                                    <td>
+                                                                        <h6 className='font-weight-bold'>Line</h6>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='mb-1'>{Details.line}</p>
+                                                                    </td>
+                                                                </tr>
+                                                                :null
+                                                            }
 
                                                             <tr>
                                                                 <td>
@@ -290,7 +309,8 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
 
                                                             <tr>
                                                                 <td>
-                                                                    <h6 className='font-weight-bold'>Company<br />Cash Collection Location</h6>
+                                                                    <h6 className='font-weight-bold'>Company</h6>
+                                                                    <h6 className='font-weight-bold'>Cash Collection Location</h6>
                                                                 </td>
                                                                 <td>
                                                                     <p className='mb-1'>{Details.company_name}</p>
@@ -404,10 +424,9 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                 </tr>
                                                                 :null
                                                             }
-
                                                             <tr>
                                                                 <td>
-                                                                    <h6 className='font-weight-bold'>Verified By</h6>
+                                                                    <h6 className='font-weight-bold'>{Details.status === 'rejected' && Details.approved_by === null ? "Rejected" : "Verified"} By</h6>
                                                                 </td>
                                                                 <td>
                                                                     <p className='mb-0 font-weight-bold'>
@@ -422,7 +441,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                     ?
                                                                     <tr>
                                                                         <td>
-                                                                            {Details.verified_date ? <h6 className='font-weight-bold mt-2'>Verification Remarks</h6> : null}
+                                                                            {Details.verified_date ? <h6 className='font-weight-bold mt-2'>{Details.status === 'rejected' && Details.approved_by === null ? "Rejection" : "Verification"} Remarks</h6> : null}
                                                                         </td>
                                                                         <td>
                                                                             {Details.verified_date ? <p>{Details.verification_remarks}</p> : null}
@@ -432,22 +451,35 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                             }
 
                                                             {
-                                                                Details.status === 'cancelled' || Details.status === 'rejected'
+                                                                Details.approved_by !== null && Details.status === 'rejected'
                                                                     ?
-                                                                    <tr>
-                                                                        <td>
-                                                                            <h6 className='font-weight-bold'>Rejected By</h6>
-                                                                        </td>
-                                                                        <td>
-                                                                            <span>
-                                                                                <Link to={'/hr/employee/details/' + (Details.approved_by !== null ? Details.approved_by : Details.verified_by !== null ? Details.verified_by : Details.emp_id)} className='clickable'>
-                                                                                    {Details.appr_emp_name ? Details.appr_emp_name : Details.record_emp_name}
-                                                                                </Link>
-                                                                            </span><br />
-                                                                            <b>Date & Time</b><br />
-                                                                            <span>{new Date(Details.approved_date).toDateString() + " at " + moment(Details.approved_time, 'h:mm:ss a').format('hh:mm A')}</span>
-                                                                        </td>
-                                                                    </tr>
+                                                                    <>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <h6 className='font-weight-bold'>Rejected By</h6>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span>
+                                                                                    <Link to={'/hr/employee/details/' + (Details.approved_by !== null ? Details.approved_by : Details.verified_by !== null ? Details.verified_by : Details.emp_id)} className='clickable'>
+                                                                                        {Details.appr_emp_name ? Details.appr_emp_name : Details.record_emp_name}
+                                                                                    </Link>
+                                                                                </span><br />
+                                                                                <b>Date & Time</b><br />
+                                                                                <span>{new Date(Details.approved_date).toDateString() + " at " + moment(Details.approved_time, 'h:mm:ss a').format('hh:mm A')}</span>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>
+                                                                                <h6 className='font-weight-bold'>
+                                                                                    Rejection Remarks
+                                                                                </h6>
+                                                                            </td>
+                                                                            <td>
+                                                                                <pre style={{ fontFamily: 'Poppins', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.hod_remarks}</pre>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </>
                                                                     :
                                                                     Details.hod_remarks
                                                                         ?
@@ -470,7 +502,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                             <tr>
                                                                                 <td>
                                                                                     <h6 className='font-weight-bold'>
-                                                                                        {Details.status === 'cancelled' ? "Reason" : "Approval Remarks"}
+                                                                                        Approval Remarks
                                                                                     </h6>
                                                                                 </td>
                                                                                 <td>
@@ -479,6 +511,37 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                             </tr>
                                                                         </>
                                                                         : null
+                                                            }
+
+                                                            
+                                                            
+                                                            {
+                                                                Details.status === 'cancelled'
+                                                                ?
+                                                                <>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h6 className='font-weight-bold'>Cancelled By</h6>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p className='mb-0 font-weight-bold'>
+                                                                                {<Link to={'/hr/employee/details/' + Details.emp_id} className='clickable'>{Details.requested_emp_name}</Link>}
+                                                                            </p>
+                                                                            {Details.cancelled_at ? <>{new Date(Details.cancelled_at).toDateString()} at {moment(Details.cancelled_at, 'h:mm:ss a').format('hh:mm A')}</> : null}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h6 className='font-weight-bold'>Cancellation Remarks</h6>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p className='mb-0'>
+                                                                                {Details.cancellation_remarks}
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </>
+                                                                :null
                                                             }
 
                                                             {
@@ -637,7 +700,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                     : null
                                                             }
                                                             {
-                                                                Details.status === 'waiting for approval' && Details.approved_by == localStorage.getItem('EmpID')
+                                                                Details.status === 'waiting for approval' && Details.approved_by == localStorage.getItem('EmpID') && JSON.parse(AccessControls.access).includes(75)
                                                                     ?
                                                                     <>
                                                                         <button className='btn cancle mr-3' onClick={() => setReject(true)}>Reject</button>
