@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import $ from 'jquery';
 
-import { GetCompanies, issueTicket, acceptAssignedTask, loadEmpGrowthReviewData, loadGrowthReviewData, loadGrowthReviewDetails, loadSelfAssessmentData, loadSelfAssessmentDetails, loadSeniors, loadSubordinates, loadTicketIssued, loadSubordinatesForGrowthReview, setInCompleteTask, setCompleteTask, loadAllSelfSubmissions, loadPeers, loadEmpPeerReview, loadPeerReviewDetails, rejectAssignedTask, addRow, loadAllTickets, deleteTicket, enterReply, addNewCategory, updateCategory } from './Functions';
+import { GetCompanies, issueTicket, acceptAssignedTask, loadEmpGrowthReviewData, loadGrowthReviewData, loadGrowthReviewDetails, loadSelfAssessmentData, loadSelfAssessmentDetails, loadSeniors, loadSubordinates, loadTicketIssued, loadSubordinatesForGrowthReview, setInCompleteTask, setCompleteTask, loadAllSelfSubmissions, loadPeers, loadEmpPeerReview, loadPeerReviewDetails, rejectAssignedTask, addRow, loadAllTickets, deleteTicket, enterReply, addNewCategory, updateCategory, loadGrowthReviewDetailsFiltered } from './Functions';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 const UI = lazy(() => import('./UI'));
@@ -109,6 +109,7 @@ const EmpTickets = () => {
                     rejectAssignedTask={ ( e, task_id, review_id, setConfirmAcceptance, setAcceptanceContent ) => rejectAssignedTask( e, task_id, review_id, setGrowthReviewDetails, setConfirmAcceptance, setAcceptanceContent, setGrowthCategories ) }
                     acceptAssignedTask={ ( task_id, review_id, setConfirmAcceptance, setAcceptanceContent ) => acceptAssignedTask( task_id, review_id, setGrowthReviewDetails, setConfirmAcceptance, setAcceptanceContent, setGrowthCategories ) }
                     loadGrowthReviewDetails={ (id) => loadGrowthReviewDetails( id, setGrowthReviewDetails, setGrowthCategories ) }
+                    loadGrowthReviewDetailsFiltered={ (id, start_date, end_date) => loadGrowthReviewDetailsFiltered( id, start_date, end_date, setGrowthReviewDetails, setGrowthCategories ) }
                     loadSelfAssessmentDetails={ (id) => loadSelfAssessmentDetails( id, setSelfAssessmentDetails ) }
                     setStatus={ setStatus }
                     loadTicketIssued={ () => loadTicketIssued( setList ) }

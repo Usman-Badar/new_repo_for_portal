@@ -848,49 +848,6 @@ router.post('/getlocationemployees', ( req, res ) => {
 
 } );
 
-router.get('/getalltempemployee', ( req, res ) => {
-
-    db.getConnection(
-        ( err, connection ) => {
-
-            if ( err )
-            {
-
-                
-                res.status(503).send(err);
-                res.end();
-
-            }else
-            {
-                connection.query(
-                    "SELECT employees.*, users.* FROM employees LEFT OUTER JOIN users ON employees.user_id = users.user_id WHERE emp_status = 'Waiting For Approval' GROUP BY emp_id DESC;",
-                    ( err, rslt ) => {
-            
-                        if( err )
-                        {
-            
-                            res.status(500).send(err);
-                            res.end();
-                            connection.release();
-            
-                        }else 
-                        {
-            
-                            res.send( rslt );
-                            res.end();
-                            connection.release();
-            
-                        }
-            
-                    }
-                );
-            }
-
-        }
-    );
-
-} );
-
 router.post('/srchtempemp', ( req, res ) => {
 
     const { SearchKey, SearchBy } = req.body;
@@ -2172,6 +2129,34 @@ router.post('/acr/growth-review/details', ( req, res ) => {
     );
 } );
 
+router.post('/acr/growth-review/details/filter', ( req, res ) => {
+    const { emp_id, start_date, end_date } = req.body;
+    let sql = "";
+    if (end_date === '') {
+        sql = "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? AND tbl_acr_growth_review_items.assigning_date = '" + start_date + "' ORDER BY id DESC;";
+    }else if (start_date === '') {
+        sql = "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? AND tbl_acr_growth_review_items.assigning_date = '" + end_date + "' ORDER BY id DESC;";
+    }else {
+        sql = "SELECT tbl_acr_growth_review_items.*, assigned.name AS assigned_emp_name, assigned_dept.department_name, assigned_to_profile.emp_image AS assigned_to_profile_image, assigned_by_profile.emp_image AS assigned_by_profile_image FROM `tbl_acr_growth_review_items` LEFT OUTER JOIN employees assigned ON tbl_acr_growth_review_items.assigned_by = assigned.emp_id LEFT OUTER JOIN departments assigned_dept ON assigned.department_code = assigned_dept.department_code LEFT OUTER JOIN emp_app_profile assigned_to_profile ON tbl_acr_growth_review_items.emp_id = assigned_to_profile.emp_id LEFT OUTER JOIN emp_app_profile assigned_by_profile ON tbl_acr_growth_review_items.assigned_by = assigned_by_profile.emp_id LEFT OUTER JOIN employees emp ON tbl_acr_growth_review_items.emp_id = emp.emp_id WHERE tbl_acr_growth_review_items.emp_id = ? AND tbl_acr_growth_review_items.assigning_date BETWEEN '" + start_date + "' AND '" + end_date + "' ORDER BY id DESC;";
+    }
+    db.query(
+        sql,
+        [ emp_id ],
+        ( err, result ) => {
+            if( err )
+            {
+                console.log( err );
+                res.send( err );
+                res.end();
+            }else
+            {
+                res.send(result);
+                res.end();
+            }
+        }
+    );
+} );
+
 router.post('/acr/growth-review/category/add', ( req, res ) => {
     const { category, emp_id, created_by } = req.body;
     db.query(
@@ -2780,6 +2765,227 @@ router.get('/acr/performance/tickets/all', ( req, res ) => {
             }else 
             {
                 res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
+router.get('/getalltempemployee', ( req, res ) => {
+
+    db.query(
+        "SELECT employees.*, users.* FROM employees LEFT OUTER JOIN users ON employees.user_id = users.user_id WHERE emp_status = 'Waiting For Approval' GROUP BY employees.created_at DESC;",
+        ( err, rslt ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    );
+
+} );
+
+router.get('/access/get/all', ( req, res ) => {
+    db.query(
+        "SELECT * FROM `accesses`",
+        ( err, rslt ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/create/new', ( req, res ) => {
+    const {access_id, module, access_title, access_description} = req.body;
+    db.query(
+        "INSERT INTO `accesses`(`access_id`, `access_title`, `access_description`, `module`) VALUES (?,?,?,?);",
+        [access_id, access_title, access_description, module],
+        ( err ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/create/update', ( req, res ) => {
+    const {access_id, module, access_title, access_description} = req.body;
+    db.query(
+        "UPDATE `accesses` SET access_title = ?, access_description = ?, module = ? WHERE access_id = ?;",
+        [access_title, access_description, module, access_id],
+        ( err ) => {
+            if( err ){
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/employees/search/keyword', ( req, res ) => {
+    const {keyword} = req.body;
+    db.query(
+        "SELECT employees.emp_id, employees.name, employees.access, emp_app_profile.emp_image, designations.designation_name FROM `employees` LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id LEFT OUTER JOIN designations ON employees.designation_code = designations.designation_code WHERE employees.emp_status = 'Active' AND LOWER(employees.name) LIKE '%" + keyword.toLowerCase() + "%';",
+        ( err, rslt ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/employee/revoke', ( req, res ) => {
+    const {list, emp_id} = req.body;
+    db.query(
+        "UPDATE employees SET access = ? WHERE emp_id = ?;",
+        [JSON.stringify(list), emp_id],
+        ( err ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/module/name/update', ( req, res ) => {
+    const {module, name} = req.body;
+    db.query(
+        "UPDATE accesses SET module = ? WHERE LOWER(module) = ?;",
+        [name, module.toLowerCase()],
+        ( err ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/access/assign/employees', ( req, res ) => {
+    const {employees, access_id} = req.body;
+    const parsed_employees = JSON.parse(employees);
+    const limit = parsed_employees.length;
+    let count = 0;
+    function assignAccess() {
+        db.query(
+            "SELECT access FROM employees WHERE emp_id = ? AND access IS NOT NULL;",
+            [parsed_employees[count].emp_id],
+            ( err, rslt ) => {
+                if( err ){
+                    console.log(err);
+                    res.status(500).send(err);
+                    res.end();
+                }else {
+                    const access = JSON.parse(rslt[0].access);
+                    access.push(access_id);
+                    access.sort();
+                    db.query(
+                        "UPDATE employees SET access = ? WHERE emp_id = ?;",
+                        [JSON.stringify(access), parsed_employees[count].emp_id],
+                        ( err ) => {
+                            if( err ){
+                                console.log(err);
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                if ((count+1) === limit) {
+                                    res.send('success');
+                                    res.end();
+                                }else {
+                                    count = count + 1;
+                                    assignAccess();
+                                }
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    }
+    assignAccess();
+} );
+
+router.post('/employees/company_code', ( req, res ) => {
+
+    const { company_code } = req.body;
+
+    let abc = db.query(
+        "SELECT  \
+        employees.emp_id, \
+        employees.name, \
+        employees.lock_user, \
+        employees.emp_status, \
+        departments.department_name, \
+        emp_app_profile.emp_image \
+        FROM employees \
+        LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
+        LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id \
+        WHERE employees.company_code = ?;",
+        [company_code],
+        ( err, rslt ) => {
+
+            if( err )
+            {
+
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+
+            }else 
+            {
+
+                console.log(abc.sql)
+                res.send( rslt );
+                res.end();
+
+            }
+
+        }
+    );
+
+} );
+
+router.post('/employees/update_lock', ( req, res ) => {
+    const {emp_id, lock_user, remarks} = req.body;
+    db.query(
+        "UPDATE employees SET lock_user = ?, lock_user_dt = ?, lock_user_remarks = ? WHERE emp_id = ?;",
+        [lock_user, new Date(), remarks, emp_id],
+        ( err ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
                 res.end();
             }
         }

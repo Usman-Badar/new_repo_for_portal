@@ -44,7 +44,6 @@ const Employee_Login = () => {
         }, []
 
     )
-
     const LoginShow = () =>{
 
         $('.LoginDiv').fadeIn();
@@ -64,10 +63,10 @@ const Employee_Login = () => {
 
 
         // IF USER WANT TO TO GO TO ATTENDANCE PAGE
-        if ( UserData.LoginID === '1234567890' )
-        {
-            history.push('/atthome');
-        }
+        // if ( UserData.LoginID === '1234567890' )
+        // {
+        //     history.push('/atthome');
+        // }
 
         axios.get('/authemployee').then(response => {
 

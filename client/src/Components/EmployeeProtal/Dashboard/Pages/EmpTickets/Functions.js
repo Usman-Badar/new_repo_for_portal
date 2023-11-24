@@ -593,6 +593,26 @@ export const loadGrowthReviewDetails = ( id, setGrowthReviewDetails, setGrowthCa
     );
 }
 
+export const loadGrowthReviewDetailsFiltered = ( id, start_date, end_date, setGrowthReviewDetails, setGrowthCategories ) => {
+    axios.post(
+        '/acr/growth-review/details/filter',
+        {
+            emp_id: id,
+            start_date: start_date,
+            end_date: end_date
+        }
+    ).then(
+        res => {
+            loadCategories( setGrowthCategories )
+            setGrowthReviewDetails(res.data);
+        }
+    ).catch(
+        err => {
+            console.log( err );
+        }
+    );
+}
+
 export const loadTicketIssued = ( setList ) => {
 
     axios.post(

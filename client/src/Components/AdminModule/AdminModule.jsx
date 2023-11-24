@@ -29,6 +29,7 @@ const AttRequest_Config = lazy( () => import('./Pages/AttRequest_Config/AttReque
 const MenuSetup = lazy( () => import('./Pages/MenuSetup/MenuSetup') );
 const MiscSetup = lazy( () => import('./Pages/MiscSetup/MiscSetup') );
 const EquipmentType = lazy( () => import('./Pages/EquipmentType_Form/EquipmentType_Form') );
+const LockUser = lazy( () => import('./Pages/LockUser/LockUser') );
 
 const AdminModule = () => {
 
@@ -123,6 +124,10 @@ const AdminModule = () => {
                 <div className="pr-3"><i className="lar la-compass"></i></div>
                 <div className="links_txt">Equipment Entry Form</div>
             </NavLink>
+            <NavLink activeClassName="Admin_Dashboard_active" to="/employees/lock" className="d-center links">
+                <div className="pr-3"><i className="lar la-compass"></i></div>
+                <div className="links_txt">Loack User</div>
+            </NavLink>
         </div> 
     )
 
@@ -157,6 +162,7 @@ const AdminModule = () => {
                         <Route exact path='/menu_setup' render={ () => <Suspense fallback={ <div>Loading....</div> }><MenuSetup /></Suspense> } />
                         <Route exact path='/misc_setup' render={ () => <Suspense fallback={ <div>Loading....</div> }><MiscSetup /></Suspense> } />
                         <Route exact path='/fuel-managent/equipment-type-entry' render={ () => <Suspense fallback={ <div>Loading....</div> }><EquipmentType /></Suspense> } />
+                        <Route exact path='/employees/lock' render={ () => <Suspense fallback={ <div>Loading....</div> }><LockUser /></Suspense> } />
                     </div>
                 </div>
             </div>

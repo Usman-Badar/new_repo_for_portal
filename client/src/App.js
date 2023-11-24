@@ -4,8 +4,6 @@ import './App.css';
 
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Loading from './Components/UI/Loading/Loading';
-import POPrintUI from './Components/EmployeeProtal/Dashboard/Components/PO_PrintUI/PO_PrintUI';
-import PRprintUI from './Components/EmployeeProtal/Dashboard/Components/PR_printUI/PR_printUI';
 import Vouchers from './Components/EmployeeProtal/Dashboard/Components/Vouchers/Vouchers';
 import Quatation from './Components/EmployeeProtal/Dashboard/Components/Quatation/Quatation';
 import Bills from './Components/EmployeeProtal//Dashboard/Components/Bills/Bills';
@@ -21,8 +19,6 @@ const AdminLogin = lazy( () => import( './Components/AdminModule/Admin_login/Adm
 const AdminLogout = lazy( () => import( './Components/AdminModule/Admin_Logout/Admin_Logout' ) );
 
 const OutOfLocation = lazy( () => import( './Components/EmployeeProtal/OutOfLocation/OutOfLocation' ) );
-
-const InventoryDashboard = lazy( () => import( './Components/Inventory/Inventory' ) );
 
 // const Leave = lazy( () => import( './Components/Leave/Leave' ) );
 
@@ -169,14 +165,7 @@ const App = () => {
                     <Route exact path='/menu_setup' render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/misc_setup' render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/configure_attendance_request' render={ () => <Sus content={ <AdminModule /> } /> } />
-
-                    {/* FOR INVENTORY MODULE */}
-                    
-                    <Route exact path='/inventory/dashboard' render={ () => <Sus content={ <InventoryDashboard /> } /> } />
-                    <Route exact path='/inventory/assets' render={ () => <Sus content={ <InventoryDashboard /> } /> } />
-                    <Route exact path='/inventory/asset/id=:asset_id&&name=:asset_name&&view=:view' render={ () => <Sus content={ <InventoryDashboard /> } /> } />
-                    <Route exact path='/inventory/items_names' render={ () => <Sus content={ <InventoryDashboard /> } /> } />
-                    <Route exact path='/inventory/new_items_names' render={ () => <Sus content={ <InventoryDashboard /> } /> } />
+                    <Route exact path='/employees/lock' render={ () => <Sus content={ <AdminModule /> } /> } />
 
 
                     {/* 

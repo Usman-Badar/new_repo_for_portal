@@ -17,7 +17,7 @@ import { Menu, MenuItem, SubMenu } from '@szhsin/react-menu';
 import "@szhsin/react-menu/dist/index.css";
 import ReactTooltip from 'react-tooltip';
 
-const UI = ({ updateCategory, GrowthCategories, addNewCategory, enterReply, deleteTicket, loadAllTickets, AllTickets, nextQuarter, setList, addRow, rejectAssignedTask, loadPeerReviewDetails, PeerReviewDetails, PeerReviewData, loadEmpPeerReview, loadPeers, SelfSubmissions, loadAllSubmissions, setCompleteTask, loadSubordinatesForGrowthReview, GrowthReviewDetails, loadGrowthReviewDetails, EmpGrowthReviewData, GrowthReviewData, setInCompleteTask, acceptAssignedTask, loadGrowthReviewData, Companies, loadEmpGrowthReviewData, SelfAssessmentDetails, SelfAssessmentData, Status, AccessControls, List, Content, SubmitConfirm, loadSelfAssessmentData, loadSubordinates, setSubmitConfirm, issueTicket, Selected, loadSelfAssessmentDetails, Keyword, Employees, Ticket, loadTicketIssued, loadSeniors, setTicket, setEmployee, setStatus, setKeyword }) => {
+const UI = ({ updateCategory, GrowthCategories, addNewCategory, enterReply, deleteTicket, loadAllTickets, AllTickets, nextQuarter, setList, addRow, rejectAssignedTask, loadPeerReviewDetails, PeerReviewDetails, PeerReviewData, loadEmpPeerReview, loadPeers, SelfSubmissions, loadAllSubmissions, setCompleteTask, loadSubordinatesForGrowthReview, GrowthReviewDetails, loadGrowthReviewDetails, loadGrowthReviewDetailsFiltered, EmpGrowthReviewData, GrowthReviewData, setInCompleteTask, acceptAssignedTask, loadGrowthReviewData, Companies, loadEmpGrowthReviewData, SelfAssessmentDetails, SelfAssessmentData, Status, AccessControls, List, Content, SubmitConfirm, loadSelfAssessmentData, loadSubordinates, setSubmitConfirm, issueTicket, Selected, loadSelfAssessmentDetails, Keyword, Employees, Ticket, loadTicketIssued, loadSeniors, setTicket, setEmployee, setStatus, setKeyword }) => {
 
     const today = new Date();
     const quarter = Math.floor((today.getMonth() + 3) / 3);
@@ -161,6 +161,7 @@ const UI = ({ updateCategory, GrowthCategories, addNewCategory, enterReply, dele
                         setInCompleteTask={setInCompleteTask}
                         acceptAssignedTask={acceptAssignedTask}
                         loadGrowthReviewDetails={loadGrowthReviewDetails}
+                        loadGrowthReviewDetailsFiltered={loadGrowthReviewDetailsFiltered}
                     />
                 }
                 />
@@ -684,11 +685,15 @@ const SelfAssessmentDetailsComponent = ({ history, SelfAssessmentDetails, loadSe
     )
 }
 
-const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCategories, addNewCategory, quarter, nextQuarter, setList, List, addRow, history, GrowthReviewDetails, rejectAssignedTask, acceptAssignedTask, setCompleteTask, loadGrowthReviewDetails, setInCompleteTask }) => {
+const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCategories, addNewCategory, quarter, nextQuarter, setList, List, addRow, history, GrowthReviewDetails, rejectAssignedTask, acceptAssignedTask, setCompleteTask, loadGrowthReviewDetails, loadGrowthReviewDetailsFiltered, setInCompleteTask }) => {
     const lastMonthsOfTheQuarter = [3, 6, 9, 12];
     const currentMonth = new Date().getMonth() + 1;
     const lastAboveDays = 15;
     const [EditID, setEditID] = useState();
+    const [Filters, setFilters] = useState({
+        start_date: '', end_date: ''
+    });
+    const [FilterOn, setFilterOn] = useState(false);
     const [EditMode, setEditMode] = useState(false);
     const [AcceptanceContent, setAcceptanceContent] = useState();
     const [ConfirmAcceptance, setConfirmAcceptance] = useState(false);
@@ -706,8 +711,12 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
 
     useEffect(
         () => {
-            loadGrowthReviewDetails(window.location.href.split('/').pop());
-        }, []
+            if (Filters.start_date !== '' || Filters.end_date !== '') {
+                loadGrowthReviewDetailsFiltered(window.location.href.split('/').pop(), Filters.start_date, Filters.end_date);
+            }else {
+                loadGrowthReviewDetails(window.location.href.split('/').pop());
+            }
+        }, [Filters.start_date, Filters.end_date]
     );
     useEffect(
         () => {
@@ -1216,6 +1225,10 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
     const resetFilters = () => {
         setDateFilter("");
     }
+    const DeleteTask = (index) => {
+        const restTasks = addTasksList.filter((val, i) => {return i !== index});
+        setAddTasksList(restTasks);
+    }
     const EditTask = (index, obj) => {
         obj.index = index;
         console.log(obj);
@@ -1305,6 +1318,12 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
             </>
         )
     }
+    const clearFilters = () => {
+        setFilters({start_date: '', end_date: ''});
+        $('input[name=start_date]').val('');
+        $('input[name=end_date]').val('');
+        // setFilterOn(false);
+    }
 
     const [DateFilter, setDateFilter] = useState('');
     const [ShowFilters, setShowFilters] = useState(false);
@@ -1354,6 +1373,16 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                 <button onClick={() => setEditMode(true)} className="btn submit ml-2" id="addNewTasks">Add Tasks</button>
                                             </>
                                 }
+                                {
+                                    JSON.parse(AccessControls.access).includes(72)
+                                    ?
+                                    FilterOn
+                                    ?
+                                    <button onClick={() => setFilterOn(false)} className="btn cancle ml-2">Close{Filters.start_date !== '' || Filters.end_date !== '' ? <sup className="text-danger">*</sup> : null}</button>
+                                    :
+                                    <button onClick={() => setFilterOn(true)} className="btn light ml-2">Filters{Filters.start_date !== '' || Filters.end_date !== '' ? <sup className="text-danger">*</sup> : null}</button>
+                                    :null
+                                }
                                 {/* <button className="btn submit px-2 filter-emit ml-2" onClick={() => setShowFilters(!ShowFilters)} type='button'>
                                     {
                                         ShowFilters
@@ -1396,6 +1425,26 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                     <br />
                                 </>
                                 : null
+                        }
+                        {
+                            FilterOn
+                            ?
+                            <>
+                                <h5><b>Apply Filters</b></h5>
+                                <hr />
+                                <div className="d-flex mb-3" style={{ gap: '20px' }}>
+                                    <div className="w-50">
+                                        <label className="mb-0"><b>Start Date</b></label>
+                                        <input type="date" name="start_date" defaultValue={Filters.start_date} onChange={(e) => setFilters({...Filters, start_date: e.target.value})} className="form-control" />
+                                    </div>
+                                    <div className="w-50">
+                                        <label className="mb-0"><b>End Date</b></label>
+                                        <input type="date" name="end_date" defaultValue={Filters.end_date} onChange={(e) => setFilters({...Filters, end_date: e.target.value})} className="form-control" />
+                                    </div>
+                                </div>
+                                <button className="btn submit mt-3 ml-auto d-block" onClick={clearFilters}>Clear</button>
+                            </>
+                            :null
                         }
                         <table className="table table-borderless mb-0">
                             <tbody>
@@ -1477,7 +1526,10 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                         <td>{task}</td>
                                                                         <td>{start_date}</td>
                                                                         <td>{deadline}</td>
-                                                                        <td onClick={() => EditTask(i, val)}><span className="text-primary pointer">Edit</span></td>
+                                                                        <td>
+                                                                            <span onClick={() => EditTask(i, val)} className="text-primary pointer font-weight-bold">Edit</span>
+                                                                            <span onClick={() => DeleteTask(i)} className="text-danger ml-2 pointer font-weight-bold">Delete</span>
+                                                                        </td>
                                                                     </tr>
                                                                 )
                                                             }
@@ -1535,7 +1587,8 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                 <ReactTooltip place="top" />
                                 <div className="d-flex align-items-center justify-content-between mt-3">
                                     <h6 className="text-uppercase text-secondary font-weight-bold mb-0">General</h6>
-                                    <div className="pr-2">
+                                    <div className="pr-2 d-flex align-items-center">
+                                        <div className="mr-1 mb-1">({GrowthReviewDetails && GrowthReviewDetails.filter(val => val.category_id === null).length})</div>
                                         <i data-toggle="collapse" data-target="#generalTasks" aria-expanded="false" aria-controls="generalTasks" style={{ fontSize: 20 }} data-tip="Collapse" className="las la-compress pointer"></i>
                                         {
                                             window.location.href.split('/').pop() != localStorage.getItem("EmpID")
@@ -1555,6 +1608,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                 ({ assigned_by, id, emp_id, confirmed_remarks, remarks, task, assigning_date, start_date, deadline, confirmed_date, confirmed_time, accepted_date, accepted_time, completion_date, assigned_by_profile_image, assigned_to_profile_image, assigned_emp_name, department_name, accepted, confirmed, completed }, i) => {
                                                     // const start = moment(start_date, "YYYY-MM-DD");
                                                     // const end = moment(deadline, "YYYY-MM-DD");
+
                                                     return (
                                                         <div key={i} className="task page-content mb-2">
                                                             <div className="task-grid">
@@ -1629,8 +1683,8 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                             ?
                                                                             <>
                                                                                 <div className="d-flex align-items-center justify-content-between">
-                                                                                    <p className="text-capitalize font-weight-bold mb-0">Confirmation Remarks:</p>
-                                                                                    <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
+                                                                                    <p className="text-capitalize font-weight-bold mb-0">{confirmed === 1 ? "Confirmation" : "Declining"} Remarks:</p>
+                                                                                    <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <b className="text-success">Confirmed</b> : <b className="text-danger">Declined</b>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
                                                                                 </div>
                                                                                 <p className="mb-0">
                                                                                     {confirmed_remarks}
@@ -1687,7 +1741,8 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                         <ReactTooltip place="top" />
                                                         <div className="d-flex align-items-center justify-content-between">
                                                             <h6 className="text-uppercase text-secondary font-weight-bold mb-0">{category}</h6>
-                                                            <div className="pr-2">
+                                                            <div className="pr-2 d-flex align-items-center">
+                                                                <div className="mr-1 mb-1">({GrowthReviewDetails && GrowthReviewDetails.filter(val => val.category_id === id).length})</div>
                                                                 <i data-toggle="collapse" data-target={'#tasks_' + id} aria-expanded="false" aria-controls={'tasks_' + id} style={{ fontSize: 20 }} data-tip="Collapse" className="las la-compress pointer"></i>
                                                                 {
                                                                     window.location.href.split('/').pop() != localStorage.getItem("EmpID")
@@ -1714,6 +1769,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                             ({ assigned_by, id, emp_id, confirmed_remarks, remarks, task, start_date, deadline, assigning_date, confirmed_date, confirmed_time, accepted_date, accepted_time, completion_date, assigned_by_profile_image, assigned_to_profile_image, assigned_emp_name, department_name, accepted, confirmed, completed }, i) => {
                                                                                 // const start = moment(start_date, "YYYY-MM-DD");
                                                                                 // const end = moment(deadline, "YYYY-MM-DD");
+
                                                                                 return (
                                                                                     <div key={i} className="task page-content mb-2">
                                                                                         <div className="task-grid">
@@ -1788,7 +1844,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                                                         ?
                                                                                                         <>
                                                                                                             <div className="d-flex align-items-center justify-content-between">
-                                                                                                                <p className="text-capitalize font-weight-bold mb-0">Confirmation Remarks:</p>
+                                                                                                                <p className="text-capitalize font-weight-bold mb-0">{confirmed === 1 ? "Confirmation" : "Declining"} Remarks:</p>
                                                                                                                 <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
                                                                                                             </div>
                                                                                                             <p className="mb-0">
@@ -1875,7 +1931,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                     </div> */}
                 </div>
             </>
-        )
+        );
     } else {
         return (
             <>

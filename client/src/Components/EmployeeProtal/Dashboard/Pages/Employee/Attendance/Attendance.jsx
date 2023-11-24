@@ -42,6 +42,9 @@ const Attendance = () => {
 
     useEffect(
         () => {
+            if (Filters.company != 'null' && Filters.company != '') {
+                GetLocations(Filters.company);
+            }
             if ( Filters.dateFrom !== '' || Filters.dateTo !== '' || Filters.company != 'null' || Filters.location != 'null' ) {
                 fetchAttendance();
             }
@@ -57,17 +60,22 @@ const Attendance = () => {
     useEffect(
         () => {
             let isActive = true;
-            getCompany(isActive);
+            if (AccessControls) {
+                let company = Filters.company == 'null' ? EmpData.company_code : Filters.company;
+                if (JSON.parse(AccessControls.access).includes(18) || JSON.parse(AccessControls.access).includes(0)) {
+                    getCompany(isActive);
+                }
+                GetLocations(company);
+            }
             return () => {
                 isActive = false;
             }
-        }, []
+        }, [AccessControls]
     );
     const getCompany = (isActive) => {
-        axios.get('/getcompaniescodes').then( response => {
+        axios.post('/getemployeecompaniesauth', {emp_id: AccessControls.emp_id}).then( response => {
             if (isActive) {
                 setCompanies( response.data );
-                getLocation();
             }
         } ).catch( err => {
 
@@ -83,26 +91,20 @@ const Attendance = () => {
 
         } );
     }
-    const getLocation = () => {
-        axios.get('/getalllocations').then( response => {
-
-            setLocations( response.data );
-
-        } ).catch( err => {
-
-            toast.dark( err , {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-        } );
+    const GetLocations = (value) => {
+        setLocations([]);
+        axios.post('/getcompanylocations', {company_code: value}).then(
+            res => {
+                setLocations(res.data);
+            }
+        ).catch(
+            err => {
+                console.log(err);
+            }
+        )
     }
     const fetchAttendance = () => {
+        let company = Filters.company == 'null' ? EmpData.company_code : Filters.company;
         let dateFrom = Filters.dateFrom;
         let dateTo = Filters.dateTo;
 
@@ -113,7 +115,7 @@ const Attendance = () => {
         {
             if ( JSON.parse(AccessControls.access)[x] === 31 )
             {
-                if (Filters.company == 'null' && Filters.location == 'null') {
+                if (company == 'null' && Filters.location == 'null') {
                     toast.dark( "Please select a company", {
                         position: 'top-right',
                         autoClose: 5000,
@@ -711,20 +713,14 @@ const Attendance = () => {
                                         </option>
                                             {Companies.map(
                                             (val, index) => {
-                                                
-                                                let content = <></>;
-                                                if ( val.Status_View === 'Y' )
-                                                {
-                                                    content = <option
+                                                return (
+                                                    <option
                                                         key={index}
                                                         value={val.company_code}
                                                     >
                                                         {val.company_name}
                                                     </option>
-                                                }
-                                                return content;
-                                                
-
+                                                );
                                             })}
                                     </select>
                                 </div>
@@ -753,6 +749,7 @@ const Attendance = () => {
                                                     <option
                                                         key={index}
                                                         value={val.location_code}
+                                                        selected={Filters.location == val.location_code}
                                                     >
                                                         {val.location_name}
                                                     </option>
