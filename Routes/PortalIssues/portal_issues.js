@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/connection');
+const db = require('../../db/portal_issues');
 
 router.get('/portal/issues/categories', ( req, res ) => {
     db.query(
@@ -21,9 +21,9 @@ router.post('/portal/issues/list', ( req, res ) => {
     const { requested_by, admin } = req.body;
     if (parseInt(admin) === 1) {
         db.query(
-            "SELECT tbl_pi_reported.*, employees.name, departments.department_name FROM `tbl_pi_reported` \
-            LEFT OUTER JOIN employees ON employees.emp_id = tbl_pi_reported.requested_by \
-            LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
+            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name FROM `tbl_pi_reported` \
+            LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
+            LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
             ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
             ( err, rslt ) => {
                 if( err ) {
@@ -38,9 +38,9 @@ router.post('/portal/issues/list', ( req, res ) => {
         );
     }else {
         db.query(
-            "SELECT tbl_pi_reported.*, employees.name, departments.department_name FROM `tbl_pi_reported` \
-            LEFT OUTER JOIN employees ON employees.emp_id = tbl_pi_reported.requested_by \
-            LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
+            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name FROM `tbl_pi_reported` \
+            LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
+            LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
             WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
             [ requested_by ],
             ( err, rslt ) => {
@@ -69,12 +69,12 @@ router.post('/portal/issues/details', ( req, res ) => {
         edit.name AS edit_emp_name, \
         edit_dept.department_name AS edit_emp_dept \
         FROM `tbl_pi_reported` \
-        LEFT OUTER JOIN employees request ON request.emp_id = tbl_pi_reported.requested_by \
-        LEFT OUTER JOIN departments request_dept ON request.department_code = request_dept.department_code \
-        LEFT OUTER JOIN employees support ON support.emp_id = tbl_pi_reported.support_by \
-        LEFT OUTER JOIN departments support_dept ON support.department_code = support_dept.department_code \
-        LEFT OUTER JOIN employees edit ON edit.emp_id = tbl_pi_reported.last_edit_by \
-        LEFT OUTER JOIN departments edit_dept ON edit.department_code = edit_dept.department_code \
+        LEFT OUTER JOIN seaboard.employees request ON request.emp_id = tbl_pi_reported.requested_by \
+        LEFT OUTER JOIN seaboard.departments request_dept ON request.department_code = request_dept.department_code \
+        LEFT OUTER JOIN seaboard.employees support ON support.emp_id = tbl_pi_reported.support_by \
+        LEFT OUTER JOIN seaboard.departments support_dept ON support.department_code = support_dept.department_code \
+        LEFT OUTER JOIN seaboard.employees edit ON edit.emp_id = tbl_pi_reported.last_edit_by \
+        LEFT OUTER JOIN seaboard.departments edit_dept ON edit.department_code = edit_dept.department_code \
         WHERE tbl_pi_reported.portal_issue_id = ?;",
         [ report_id ],
         ( err, rslt ) => {
