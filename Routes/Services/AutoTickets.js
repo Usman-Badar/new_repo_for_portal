@@ -254,12 +254,16 @@ function checkAdvanceCashPendingForVerification() {
                         db.query(
                             "SELECT additional_off, time_out FROM employees WHERE emp_id = ?;" +
                             "SELECT day FROM tbl_holidays;" +
-                            "SELECT time_in FROM emp_attendance WHERE emp_id = ? AND emp_date = ?;",
+                            "SELECT time_in, status FROM emp_attendance WHERE emp_id = ? AND emp_date = ?;",
                             [inv2, inv2, new Date().toISOString().slice(0, 10).replace('T', ' ')],
                             ( _, offDays ) => {
                                 const { additional_off, time_out } = offDays[0][0];
                                 const parsed_offDays = JSON.parse(additional_off);
                                 const holidays = [];
+                                // const dateTime = moment(new Date().toISOString().slice(0, 10).replace('T', ' ') + ' ' + rslt[count.length].submit_time, 'HH:mm:ss a');
+                                // console.log('dateTime', dateTime);
+                                // let ticket_issue_dt_time = dateTime.add(4, 'hours').format('HH:mm:ss');
+                                // console.log('ticket_issue_dt_time', ticket_issue_dt_time)
                                 offDays[1].forEach(({day}) => holidays.push(day));
                                 issueTickets(parsed_offDays, holidays, time_out, offDays[2]);
                             }
@@ -285,7 +289,11 @@ function checkAdvanceCashPendingForVerification() {
                                 }
                                 checkIsInWorkingHours(true);
                             }
-                            if (parsed_offDays.includes(dayName) || holidays.includes(rslt[count.length].today) || dayName === 'Sunday') {
+                            if (
+                                // parsed_offDays.includes(dayName) || 
+                                holidays.includes(rslt[count.length].today) || 
+                                dayName === 'Sunday'
+                            ) {
                                 console.log(3);
                                 issueTicket = false;
                             }
@@ -302,16 +310,30 @@ function checkAdvanceCashPendingForVerification() {
                                     if (isPresent.length === 0) {
                                         console.log(5);
                                         issueTicket = false;
-                                    }else if (isPresent[0].time_in == null || isPresent[0].time_in == 'null') {
-                                        console.log(6);
+                                    }
+                                    // CONDITION FOR LEAVE
+                                    // else if (isPresent[0].time_in == null || isPresent[0].time_in == 'null') {
+                                    //     console.log(6);
+                                    //     issueTicket = false;
+                                    // }
+                                    else if (isPresent[0].status.toLowerCase() === 'leave') {
                                         issueTicket = false;
-                                    }else {
+                                    }
+                                    else {
                                         console.log(7);
                                         const empInTime = moment(isPresent[0].time_in, 'HH:mm:ss a');
                                         const addHoursInStartTime = empInTime.add(4, 'hours').format('HH:mm:ss');
                                         const currentTime = moment(new Date().toTimeString().substring(0,8), 'HH:mm:ss a').format('HH:mm:ss');
-                                        if (addHoursInStartTime.valueOf() > currentTime.valueOf()) {
-                                            console.log(8);
+                                        // if (addHoursInStartTime.valueOf() > currentTime.valueOf()) {
+                                        //     console.log(8);
+                                        //     issueTicket = false;
+                                        // }
+
+                                        if (currentTime.valueOf() >= addHoursInStartTime.valueOf()) {
+                                            console.log(80);
+                                            issueTicket = true;
+                                        }else {
+                                            console.log(81);
                                             issueTicket = false;
                                         }
                                     }
@@ -481,7 +503,7 @@ function checkAdvanceCashPendingForApproval() {
 setTimeout(() => {
     checkAdvanceCashPendingForVerification();
     checkAdvanceCashPendingForApproval();
-}, 1000 * 60);
+}, 1000);
 
 module.exports = {
     router: router,
