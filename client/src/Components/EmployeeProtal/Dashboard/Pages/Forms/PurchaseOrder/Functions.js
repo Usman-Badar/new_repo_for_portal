@@ -489,6 +489,7 @@ export const SubmitPO = ( e, setData, setSubmitConfirmation, setSpecifications )
                 additional_specifications: additional_specifications
             }
         )
+        
         setSubmitConfirmation( true );
         setSpecifications( specifications );
     }

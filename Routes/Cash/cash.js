@@ -7,6 +7,7 @@ const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNot
 const administrativeNotifications = require('../Employee/notifications').administrativeNotifications;
 
 const moment = require('moment');
+const { file_logger } = require('../../utils/logger');
 var key = 'real secret keys should be long and random';
 var encryptor = require('simple-encryptor')(key);
 const owner = 5000; // JP
@@ -438,55 +439,81 @@ router.post('/cash/load/request/approve', ( req, res ) => {
     const { request_id, remarks, employee, amount, cashiers, emp_id } = req.body;
     const d = new Date();
     const cashiersList = JSON.parse(cashiers);
+    // 2023-11-24 approval limit
+    let adv_csh_approvalLimit = 0;
 
     db.query(
-        "UPDATE db_cash_receipts SET status = ?, approved_date = ?, approved_time = ?, hod_remarks = ? WHERE id = ? AND approved_by;",
-        [ 'approved', d, d.toTimeString(), remarks, request_id, emp_id ],
-        ( err ) => {
-
+        "SELECT adv_cash_approval_limit FROM emp_props WHERE emp_id = ?;", [emp_id],
+        ( err, approvalLimit ) => {
             if( err )
             {
-                console.log('err');
-                res.status(500).send(err);
+                console.log( err );
+                res.send( err );
                 res.end();
-            }else 
+            }else
             {
-                const link = '/cash/request/' + request_id;
-                res.send({ message: 'success', link: link, owner: owner, date: new Date().toDateString(), time: moment(new Date().toTimeString(),'h:mm:ss a').format('hh:mm A') });
-                res.end();
-                let query = "SELECT name, cell FROM employees WHERE emp_id = ?; SELECT name, cell FROM employees WHERE emp_id = ?;";
-                let arr = [ emp_id, employee ];
-                for ( let x = 0; x < cashiersList.length; x++ )
-                {
-                    query = query.concat("SELECT name, cell FROM employees WHERE emp_id = ?;");
-                    arr.push(cashiersList[x].emp_id);
-                }
+                adv_csh_approvalLimit = approvalLimit[0] ? approvalLimit[0].adv_cash_approval_limit : 0;
                 db.query(
-                    query, arr,
-                    ( err, result ) => {
+                    "UPDATE db_cash_receipts SET status = ?, approved_date = ?, approved_time = ?, hod_remarks = ? WHERE id = ? AND amount <= ? AND approved_by;",
+                    [ 'approved', d, d.toTimeString(), remarks, request_id, adv_csh_approvalLimit, emp_id ],
+                    ( err, rslt ) => {
+            
                         if( err )
                         {
-                            console.log( err );
-                            res.send( err );
+                            console.log('err');
+                            res.status(500).send(err);
                             res.end();
-                        }else
+                        }else 
                         {
-                            const message = result[0][0].name + " has approved an advance cash for PKR (" + amount.toLocaleString('en') + ")";
-                            administrativeNotifications( link, owner, message );
-                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, " Your approved advance cash request has been forwarded to" + result[1][0].name + "Thank you for your prompt action.", result[0][0].cell );
-                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, " Congratulations your advance cash request for PKR " + amount.toLocaleString('en') + "has been approved by " + result[0][0].name + ". You are now eligible to collect the granted amount. Please proceed with the collection process. If you have any questions or need assistance, feel free to reach out to us", result[1][0].cell );
-                            for ( let x = 0; x < cashiersList.length; x++ )
+                            console.log(rslt);
+                            if (rslt.affectedRows === 0) {
+                                console.log('Advance cash is not approved due to limit issue.');
+                                file_logger.info(`Advance cash is not approved due to limit issue (request_id: ${request_id}).`, {label: 'ApprovalLimitIssue'})
+                                res.status(500).send(err);
+                                res.end();
+                            }else
                             {
-                                let i = x + 1;
-                                SendWhatsappNotification( null, null, "Hi " + result[1+i][0].name, result[0][0].name + " has approved and forwarded you an advance cash request on portal for PKR " + amount.toLocaleString('en') + ", kindly issue the required amount to " + result[1][0].name + " If you have any questions, please let us know. Thank you. " , result[1+i][0].cell );
+
+                                const link = '/cash/request/' + request_id;
+                                res.send({ message: 'success', link: link, owner: owner, date: new Date().toDateString(), time: moment(new Date().toTimeString(),'h:mm:ss a').format('hh:mm A') });
+                                res.end();
+                                let query = "SELECT name, cell FROM employees WHERE emp_id = ?; SELECT name, cell FROM employees WHERE emp_id = ?;";
+                                let arr = [ emp_id, employee ];
+                                for ( let x = 0; x < cashiersList.length; x++ )
+                                {
+                                    query = query.concat("SELECT name, cell FROM employees WHERE emp_id = ?;");
+                                    arr.push(cashiersList[x].emp_id);
+                                }
+                                db.query(
+                                    query, arr,
+                                    ( err, result ) => {
+                                        if( err )
+                                        {
+                                            console.log( err );
+                                            res.send( err );
+                                            res.end();
+                                        }else
+                                        {
+                                            const message = result[0][0].name + " has approved an advance cash for PKR (" + amount.toLocaleString('en') + ")";
+                                            administrativeNotifications( link, owner, message );
+                                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, " Your approved advance cash request has been forwarded to" + result[1][0].name + "Thank you for your prompt action.", result[0][0].cell );
+                                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, " Congratulations your advance cash request for PKR " + amount.toLocaleString('en') + "has been approved by " + result[0][0].name + ". You are now eligible to collect the granted amount. Please proceed with the collection process. If you have any questions or need assistance, feel free to reach out to us", result[1][0].cell );
+                                            for ( let x = 0; x < cashiersList.length; x++ )
+                                            {
+                                                let i = x + 1;
+                                                SendWhatsappNotification( null, null, "Hi " + result[1+i][0].name, result[0][0].name + " has approved and forwarded you an advance cash request on portal for PKR " + amount.toLocaleString('en') + ", kindly issue the required amount to " + result[1][0].name + " If you have any questions, please let us know. Thank you. " , result[1+i][0].cell );
+                                            }
+                                        }
+                                    }
+                                );
                             }
                         }
+            
                     }
-                );
+                )
             }
-
         }
-    )
+    );
 
 } );
 
