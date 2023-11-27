@@ -11,7 +11,7 @@ import moment from 'moment';
 import { convertTZ } from './../../../../../../utils/date';
 import ShippingLine from './ShippingLine';
 
-function UI({ AccessControls, onCreateShpCash, Slip, SlipCode, attachSlip, SlipAttachment, SlipList, PRAttachment, PR, PRCode, SPRSpecifications, setPRAttachment, history, Company, Amount, DO, LOLO, Selected, Locations, Employees, PRList, Keyword, Companies, setKeyword, attachPR, setAmount, setDO, setCompany, onCreateAdvanceCash, setEmployee, setSlipAttachment, Status, setStatus, setLOLO, DET, DMGDT, CSC , Other, setDET, setDMGDT, setCSC, setOther }) {
+function UI({ GetCompanyLocations, AccessControls, onCreateShpCash, Slip, SlipCode, attachSlip, SlipAttachment, SlipList, PRAttachment, PR, PRCode, SPRSpecifications, setPRAttachment, history, Company, Amount, DO, LOLO, Selected, Locations, Employees, PRList, Keyword, Companies, setKeyword, attachPR, setAmount, setDO, setCompany, onCreateAdvanceCash, setEmployee, setSlipAttachment, Status, setStatus, setLOLO, DET, DMGDT, CSC , Other, setDET, setDMGDT, setCSC, setOther }) {
 
     // const Relations = useSelector((state) => state.EmpAuth.Relations);
     // const Arr = Employees ? Employees.filter(val => {return val.name.toLowerCase().includes(Keyword.toLowerCase()) && val.emp_id != localStorage.getItem('EmpID')}):null;
@@ -57,6 +57,7 @@ function UI({ AccessControls, onCreateShpCash, Slip, SlipCode, attachSlip, SlipA
                             CSC={CSC}
                             Other={Other}
                             
+                            GetCompanyLocations={GetCompanyLocations}
                             setDET={setDET}
                             setDMGDT={setDMGDT}
                             setCSC={setCSC}

@@ -43,8 +43,10 @@ app.use( require('./Routes/Employee/chat') );
 app.use( require('./Routes/Employee/guests') );
 app.use( require('./Routes/Employee/courses') );
 app.use( require('./Routes/Employee/attendance') );
+
 app.use( require('./Routes/Employee/newspaper') );
 app.use( require('./Routes/Employee/notifications').router );
+
 app.use( require('./Routes/Employee/drive') );
 app.use( require('./Routes/Employee/attendance_requests') );
 app.use( require('./Routes/Admin_Modules/auth') );
@@ -136,7 +138,8 @@ app.use( require('./Routes/AI/signature') );
 
 
 
-app.use( require('./Routes/Cash/cash') );
+app.use( require('./Routes/Cash/adv_cash_shp_line') ); // Shipping Line Advance Cash
+app.use( require('./Routes/Cash/cash') ); // Advance Cash
 
 
 
