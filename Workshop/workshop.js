@@ -121,6 +121,8 @@ router.post('/workshop/list/sub_categories', function (req, res) {
 
     const { category_id } = req.body;
 
+    console.log(category_id)
+
     db.query(
         "SELECT * FROM `tbl_inventory_sub_categories` WHERE category_id = ?;",
         [ category_id ],
@@ -150,7 +152,7 @@ router.post('/workshop/list/drivers', function (req, res) {
 
     db.query(
         "SELECT * FROM `employees` WHERE location_code = ? AND designation_code = ?;",
-        [ location_code, 92 ],
+        [ location_code, 43 ],
         ( err, rslt ) => {
 
             if( err )

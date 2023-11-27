@@ -8,9 +8,11 @@ setInterval(() => {
     
     if ( d.getHours() === 23 && d.getMinutes() === 1 )
     {
+
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const dayName = days[d.getDay()];
         const iso_d = d.toISOString().slice(0, 10).replace('T', ' ');
+
         db.query(
             "SELECT DISTINCT employees.emp_id, employees.additional_off \
             FROM employees \
@@ -73,90 +75,10 @@ setInterval(() => {
                 }
             }
         )
+
     }
     
 }, 1000);
-
-function markEmpMissingAbsents(emp_id, month, year) {
-    const dates = getDays(month, year);
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-    db.query(
-        "SELECT * FROM `tbl_holidays`;" +
-        "SELECT emp_id, additional_off FROM employees WHERE emp_id = ?;",
-        [emp_id],
-        (err, results) => {
-            if(!err) {
-                let query_limit = dates.length;
-                let query_count = [];
-                function markAbsents() {
-                    const d = new Date(dates[query_count.length]);
-                    const dayName = days[d.getDay()];
-                    const iso_d = d.toISOString().slice(0, 10).replace('T', ' ');
-                    db.query(
-                        "SELECT * FROM `emp_attendance` WHERE emp_id = ? AND emp_date = ?;",
-                        [emp_id, dates[query_count.length]],
-                        (err, rslt) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                if ( !rslt[0] ) {
-                                    let status = 'Absent';
-                                    if ( dayName === 'Sunday' || JSON.parse(results[1][0].additional_off).includes(dayName) )
-                                    {
-                                        status = 'OFF';
-                                    }
-                                    for ( let y = 0; y < results[0].length; y++ )
-                                    {
-                                        const h_d = new Date(results[0][y].day).toISOString().slice(0, 10).replace('T', ' ');
-                                        if (h_d === iso_d)
-                                        {
-                                            status = results[0][y].status;
-                                        }
-                                    }
-                                    console.log(status);
-                                    db.query(
-                                        "INSERT INTO emp_attendance (emp_id, status, emp_date) VALUES(?,?,?)",
-                                        [emp_id, status, d],
-                                        (err) => {
-            
-                                            if (err) {
-                                                console.log(err);
-                                            }else
-                                            {
-                                                if ( ( query_count.length + 1 ) === query_limit )
-                                                {
-                                                    console.log( "STATUS MARKED - ", new Date().getHours() + ':' + new Date().getMinutes() );
-                                                    removeDuplicateAttendance(iso_d);
-                                                }else
-                                                {
-                                                    query_count.push(1);
-                                                    markAbsents();
-                                                }
-                                            }
-            
-                                        }
-                                    )
-                                }else {
-                                    if ( ( query_count.length + 1 ) === query_limit )
-                                    {
-                                        console.log( "STATUS MARKED - ", new Date().getHours() + ':' + new Date().getMinutes() );
-                                        removeDuplicateAttendance(iso_d);
-                                    }else
-                                    {
-                                        query_count.push(1);
-                                        markAbsents();
-                                    }
-                                }
-                            }
-                        }
-                    )
-                }
-                markAbsents();
-            }
-        }
-    )
-}
 
 function removeDuplicateAttendance(d) {
     let date;
@@ -240,6 +162,87 @@ function removeDuplicateAttendance(d) {
     )
 }
 
+function markEmpMissingAbsents(emp_id, month, year) {
+    const dates = getDays(month, year);
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    db.query(
+        "SELECT * FROM `tbl_holidays`;" +
+        "SELECT emp_id, additional_off FROM employees WHERE emp_id = ?;",
+        [emp_id],
+        (err, results) => {
+            if(!err) {
+                let query_limit = dates.length;
+                let query_count = [];
+                function markAbsents() {
+                    const d = new Date(dates[query_count.length]);
+                    const dayName = days[d.getDay()];
+                    const iso_d = d.toISOString().slice(0, 10).replace('T', ' ');
+                    db.query(
+                        "SELECT * FROM `emp_attendance` WHERE emp_id = ? AND emp_date = ?;",
+                        [emp_id, dates[query_count.length]],
+                        (err, rslt) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                if ( !rslt[0] ) {
+                                    let status = 'Absent';
+                                    if ( dayName === 'Sunday' || JSON.parse(results[1][0].additional_off).includes(dayName) )
+                                    {
+                                        status = 'OFF';
+                                    }
+                                    for ( let y = 0; y < results[0].length; y++ )
+                                    {
+                                        const h_d = new Date(results[0][y].day).toISOString().slice(0, 10).replace('T', ' ');
+                                        if (h_d === iso_d)
+                                        {
+                                            status = results[0][y].status;
+                                        }
+                                    }
+                                    console.log(status);
+                                    db.query(
+                                        "INSERT INTO emp_attendance (emp_id, status, emp_date) VALUES(?,?,?)",
+                                        [emp_id, status, d],
+                                        (err) => {
+            
+                                            if (err) {
+                                                console.log(err);
+                                            }else
+                                            {
+                                                if ( ( query_count.length + 1 ) === query_limit )
+                                                {
+                                                    console.log( "STATUS MARKED - ", new Date().getHours() + ':' + new Date().getMinutes() );
+                                                    removeDuplicateAttendance(iso_d);
+                                                }else
+                                                {
+                                                    query_count.push(1);
+                                                    markAbsents();
+                                                }
+                                            }
+            
+                                        }
+                                    )
+                                }else {
+                                    if ( ( query_count.length + 1 ) === query_limit )
+                                    {
+                                        console.log( "STATUS MARKED - ", new Date().getHours() + ':' + new Date().getMinutes() );
+                                        removeDuplicateAttendance(iso_d);
+                                    }else
+                                    {
+                                        query_count.push(1);
+                                        markAbsents();
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }
+                markAbsents();
+            }
+        }
+    )
+}
+
 const getDays = (month, year) => {
     let date = new Date(`${year}-${month}-01`);
     let days = [];
@@ -249,6 +252,84 @@ const getDays = (month, year) => {
     }
     return days;
 }
+
+// markEmpMissingAbsents(10220, '08', '2023');
+
+// let tokenDate = new Date();
+// // let date = tokenDate.getFullYear() + '-' + monthNames[tokenDate.getMonth()] + '-' + tokenDate.getDate();
+// var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+// var d2 = new Date('2023-09-29');
+// var dayName = days[d2.getDay()];
+
+// db.query(
+//     "SELECT DISTINCT employees.emp_id, employees.additional_off \
+//     FROM employees \
+//     LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id \
+//     LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id \
+//     WHERE employees.emp_id not in (SELECT DISTINCT employees.emp_id \
+//     FROM employees \
+//     LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id \
+//     WHERE emp_attendance.emp_date = '2023-09-29') AND employees.emp_status = 'Active' AND emp_props.attendance_enable = 1;" +
+//     "SELECT * FROM `tbl_holidays`;",
+//     (err, rslt) => {
+
+//         if (err) {
+
+//             console.log(err);
+
+//         } else {
+
+//             if ( rslt[0][0] ) {
+//                 let limit = rslt[0].length;
+//                 let count = [];
+//                 function markAttendance()
+//                 {
+//                     let status = 'Absent';
+
+//                     if ( dayName === 'Sunday' )
+//                     {
+//                         status = 'OFF';
+//                     }
+//                     for ( let y = 0; y < rslt[1].length; y++ )
+//                     {
+//                         const h_d = new Date(rslt[1][y].day);
+//                         if ( ( h_d.getFullYear() + '-' + (h_d.getMonth() + 1) + '-' + h_d.getDate() ) === ( '2023-09-29' ) )
+//                         {
+//                             status = rslt[1][y].status;
+//                         }
+//                     }
+
+//                     console.log(status)
+//                     db.query(
+//                         "INSERT INTO emp_attendance (emp_id, status, emp_date) VALUES(?,?,?)",
+//                         [rslt[0][count.length].emp_id, status, '2023-09-29'],
+//                         (err) => {
+
+//                             if (err) {
+//                                 console.log(err);
+//                             }else
+//                             {
+//                                 if ( ( count.length + 1 ) === limit )
+//                                 {
+//                                     console.log( "STATUS MARKED - ", new Date().getHours() + ':' + new Date().getMinutes() );
+//                                 }else
+//                                 {
+//                                     count.push(1);
+//                                     markAttendance();
+//                                 }
+//                             }
+
+//                         }
+//                     )
+//                 }
+//                 markAttendance();
+
+//             }
+
+//         }
+
+//     }
+// )
 
 module.exports = {
     router: router,

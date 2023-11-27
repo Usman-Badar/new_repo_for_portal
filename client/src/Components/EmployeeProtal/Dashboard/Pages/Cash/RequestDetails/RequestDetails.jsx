@@ -84,11 +84,11 @@ function RequestDetails() {
                 setMoney={ setMoney }
                 rejectRequest={ (e) => rejectRequest( e, Details.amount, Details.emp_id, history ) }
                 setReject={ setReject }
-                approveRequest={ (e) => approveRequest( e, Details.emp_id, Details.amount, history ) }
+                approveRequest={ (e) => approveRequest( e, Details.emp_id, Details.amount, AccessControls, history ) }
                 loadCashiers={ () => loadCashiers( setCashiers ) }
                 setApprove={ setApprove }
                 setClearMoney={ setClearMoney }
-                verifyRequest={ (e) => verifyRequest( e, Details.emp_id, Details.amount, history ) }
+                verifyRequest={ (e) => verifyRequest( e, Details.emp_id, Details.amount, Details.shp_line_adv, AccessControls, history ) }
             />
         </Suspense>
     );

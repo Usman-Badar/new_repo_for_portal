@@ -4,11 +4,164 @@ const db = require('../../db/connection');
 const fs = require('fs');
 const administrativeNotifications = require('./notifications').administrativeNotifications;
 const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNotification;
-const owner = 5000; // JP
+const owner = 1; // JP
 const inv = 20015; // Antash
 const inv2 = 5000; // Saima
 
 // the following request is to get all users data
+router.post('/temporary/employee/create', ( req, res ) => {
+
+    const { company_code, location_code, created_by, department, designation, name, f_name, d_o_b, cell, gender, address, cnic_no, cnic_d_o_i, additional_notes, cnic_d_o_e } = req.body;
+    const d = new Date();
+    const cnic_front_img_name = [name, "front", d.getDate(), '.jpg'].join("_");
+    const cnic_back_img_name = [name, "back", d.getDate(), '.jpg'].join("_");
+    const emp_img_name = [name, cnic_no, d.getDate(), '.jpg'].join("_");
+
+    db.getConnection(
+        ( err, connection ) => {
+            connection.beginTransaction(
+                ( err ) => {
+                    if ( err )
+                    {
+                        connection.rollback(() => {console.log(err);connection.release();});
+                        res.send('err');
+                        res.end();
+                    }else
+                    {
+                        connection.query(
+                            "SELECT MAX(temp_emp_id) AS last_emp_id FROM tbl_temp_employees WHERE company_code = ? AND location_code = ?;",
+                            [ company_code, location_code ],
+                            ( err, rslt ) => {
+                                if( err )
+                                {
+                                    connection.rollback(() => {console.log(err);connection.release();});
+                                    res.send('err');
+                                    res.end();
+                                }else 
+                                {
+                                    const last_emp_id = rslt[0] && rslt[0].last_emp_id ? ( rslt[0].last_emp_id + 1 ) : ( company_code + location_code + "001" );
+                                    connection.query(
+                                        "INSERT INTO tbl_temp_employees (temp_emp_id, name, father_name, date_of_birth, address, cell, gender, created_by, cnic_no, cnic_d_o_i, cnic_d_o_e, cnic_front, cnic_back, department, designation, company_code, location_code, image, addItional_notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
+                                        [last_emp_id, name, f_name, d_o_b, address, cell, gender, created_by, cnic_no, cnic_d_o_i, cnic_d_o_e, cnic_front_img_name, cnic_back_img_name, department, designation, company_code, location_code, emp_img_name, additional_notes],
+                                        ( err, rslt ) => {
+                                            if( err )
+                                            {
+                                                connection.rollback(() => {console.log(err);connection.release();});
+                                                res.send('err');
+                                                res.end();
+                                            }else 
+                                            {
+                                                connection.commit((err) => {
+                                                    if ( err ) {
+                                                        connection.rollback(() => {console.log(err);connection.release();});
+                                                        res.send('err');
+                                                        res.end();
+                                                    }else
+                                                    {
+                                                        if ( req.files ) {
+                                                            const { empImage, CNICFront, CNICBack } = req.files;
+                                                            empImage.mv('client/images/employees/' + emp_img_name, (err) => {
+                                                                if (err) {
+                                                                    console.log( err );
+                                                                    res.status(500).send(err);
+                                                                    res.end();
+                                                                }else
+                                                                console.log("File Saved Successfully");
+                                                            });
+                                                            CNICFront.mv('client/images/documents/cnic/front/' + cnic_front_img_name, (err) => {
+                                                                if (err) {
+                                                                    console.log( err );
+                                                                    res.status(500).send(err);
+                                                                    res.end();
+                                                                }else
+                                                                console.log("File Saved");
+                                                            });
+                                                            CNICBack.mv('client/images/documents/cnic/back/' + cnic_back_img_name, (err) => {
+                                                                if (err) {
+                                                                    console.log( err );
+                                                                    res.status(500).send(err);
+                                                                    res.end();
+                                                                }else
+                                                                console.log("File Saved");
+                                                            });
+                                                        }
+                                                        connection.release();
+                                                        res.send("SUCCESS");
+                                                        res.end();
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    }
+                }
+            )
+        }
+    );
+});
+
+router.post('/temporary/employee/confirm', ( req, res ) => {
+
+    const { emp_id, approved_by, remarks } = req.body;
+    const d = new Date();
+
+    db.query(
+        "UPDATE tbl_temp_employees SET status = 'active', approved_by = ?, approved_date = ?, approved_time = ?, approval_remarks = ? WHERE temp_emp_id = ? AND status = 'waiting_for_approval';",
+        [ approved_by, d, d.toTimeString(), remarks, emp_id ],
+        ( err ) => {
+            if( err )
+            {
+                console.log(err)
+                res.send('err');
+                res.end();
+            }else 
+            {
+                res.send("SUCCESS");
+                res.end();
+            }
+        }
+    );
+});
+
+router.post('/fetch/hr/temporary/employees/list', ( req, res ) => {
+    const { companies, verification_person } = req.body;
+    const parsed_companies = JSON.parse(companies);
+    let query = "SELECT 1;";
+    if (parseInt(verification_person) === 1) {
+        query = "SELECT tbl_temp_employees.*, locations.location_name, companies.company_name, created.name AS created_by_person FROM tbl_temp_employees \
+        LEFT OUTER JOIN locations ON tbl_temp_employees.location_code = locations.location_code \
+        LEFT OUTER JOIN companies ON tbl_temp_employees.company_code = companies.company_code \
+        LEFT OUTER JOIN employees created ON tbl_temp_employees.created_by = created.emp_id;";
+    }else if ( parsed_companies.length > 0 ) {
+        query = "SELECT tbl_temp_employees.*, locations.location_name, companies.company_name, created.name AS created_by_person FROM tbl_temp_employees \
+        LEFT OUTER JOIN locations ON tbl_temp_employees.location_code = locations.location_code \
+        LEFT OUTER JOIN companies ON tbl_temp_employees.company_code = companies.company_code \
+        LEFT OUTER JOIN employees created ON tbl_temp_employees.created_by = created.emp_id \
+        WHERE ";
+        parsed_companies.forEach((company, index) => {
+            query = query.concat(`tbl_temp_employees.company_code = ${company}`);
+            if ( (index+1) < parsed_companies.length ) query = query.concat(` OR `);
+        });
+    }
+    console.log(query);
+    db.query(
+        query,
+        ( err, rslt ) => {
+            if( err )
+            {
+                res.status(500).send(err);
+                res.end();
+            }else 
+            {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    );
+} );
 
 router.post('/initializeemployee', ( req, res ) => {
 
@@ -119,7 +272,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                         res.end();
                                                                     }else
                                                                     {
-                                                                        Image.mv('client/public/images/employees/' + imgName, (err) => {
+                                                                        Image.mv('client/images/employees/' + imgName, (err) => {
 
                                                                             if (err) {
                                                                     
@@ -131,7 +284,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                     
                                                                         });
                                                                     
-                                                                        CNICFrontImage.mv('client/public/images/documents/cnic/front/' + cnic_f_name, (err) => {
+                                                                        CNICFrontImage.mv('client/images/documents/cnic/front/' + cnic_f_name, (err) => {
                                                                     
                                                                             if (err) {
                                                                     
@@ -143,7 +296,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                     
                                                                         });
                                                                     
-                                                                        CNICBackImage.mv('client/public/images/documents/cnic/back/' + cnic_b_name, (err) => {
+                                                                        CNICBackImage.mv('client/images/documents/cnic/back/' + cnic_b_name, (err) => {
                                                                     
                                                                             if (err) {
                                                                     
@@ -155,7 +308,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                     
                                                                         });
                                                                     
-                                                                        CVImage.mv('client/public/images/documents/cv/' + cvimgName, (err) => {
+                                                                        CVImage.mv('client/images/documents/cv/' + cvimgName, (err) => {
                                                                     
                                                                             if (err) {
                                                                     
@@ -167,7 +320,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                     
                                                                         });
                                                                     
-                                                                        AddressImage.mv('client/public/images/documents/address/' + addressimgName, (err) => {
+                                                                        AddressImage.mv('client/images/documents/address/' + addressimgName, (err) => {
                                                                     
                                                                             if (err) {
                                                                     
@@ -181,7 +334,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                     
                                                                         if (DrivingLicense)
                                                                         {
-                                                                            DrivingLicense.mv('client/public/images/documents/licenses/driving/' + drvLicName, (err) => {
+                                                                            DrivingLicense.mv('client/images/documents/licenses/driving/' + drvLicName, (err) => {
                                                                     
                                                                                 if (err) {
                                                                     
@@ -196,7 +349,7 @@ router.post('/initializeemployee', ( req, res ) => {
                                                                     
                                                                         if (ArmedLicense)
                                                                         {
-                                                                            ArmedLicense.mv('client/public/images/documents/licenses/armed/' + armdLicName, (err) => {
+                                                                            ArmedLicense.mv('client/images/documents/licenses/armed/' + armdLicName, (err) => {
                                                                     
                                                                                 if (err) {
                                                                     
@@ -305,14 +458,74 @@ router.post('/usernameexistornot', ( req, res ) => {
 
 } );
 
+router.post('/hr/temporary/employee/data', ( req, res ) => {
+
+    const { emp_id } = req.body;
+
+    db.query(
+        "SELECT  \
+        `tbl_temp_employees`.*, \
+        `companies`.`company_name`, \
+        `locations`.`location_name`, \
+        `requisition`.`name` AS requisition_name, \
+        `verification`.`name` AS verification_name, \
+        `approval`.`name` AS approval_name \
+        FROM `tbl_temp_employees` \
+        LEFT OUTER JOIN companies ON tbl_temp_employees.company_code = companies.company_code \
+        LEFT OUTER JOIN locations ON tbl_temp_employees.location_code = locations.location_code \
+        LEFT OUTER JOIN employees requisition ON tbl_temp_employees.created_by = requisition.emp_id \
+        LEFT OUTER JOIN employees verification ON tbl_temp_employees.verified_by = verification.emp_id \
+        LEFT OUTER JOIN employees approval ON tbl_temp_employees.approved_by = approval.emp_id \
+        WHERE tbl_temp_employees.temp_emp_id  = ?;",
+        [ emp_id ],
+        ( err, rslt ) => {
+
+            if( err )
+            {
+                console.log( err )
+                res.status(500).send(err);
+                res.end();
+            }else 
+            {
+                res.send( rslt );
+                res.end();
+            }
+
+        }
+    );
+
+} );
+
+router.post('/temporary/employee/verification', ( req, res ) => {
+
+    const { emp_id, verified_by, remarks } = req.body;
+    const d = new Date();
+
+    db.query(
+        "UPDATE tbl_temp_employees SET status = 'waiting_for_approval', verified_by = ?, verified_date = ?, verified_time = ?, verification_remarks = ? WHERE temp_emp_id = ? AND status = 'waiting_for_verification';",
+        [ verified_by, d, d.toTimeString(), remarks, emp_id ],
+        ( err ) => {
+            if( err )
+            {
+                res.send('err');
+                res.end();
+            }else 
+            {
+                res.send("SUCCESS");
+                res.end();
+            }
+        }
+    );
+});
+
 router.post('/getemployee', ( req, res ) => {
 
     const { empID, view } = req.body;
 
     db.query(
         "SELECT employees.*, \
-        ADDDATE(employees.date_of_birth, INTERVAL 1 DAY) `date_of_birth`, \
-        ADDDATE(employees.date_of_join, INTERVAL 1 DAY) `date_of_join`, \
+        `date_of_birth`, \
+        `date_of_join`, \
         users.user_name, \
         users.user_image, \
         emp_app_profile.*, \
@@ -433,221 +646,6 @@ router.post('/getemployee', ( req, res ) => {
                     }
                 );
 
-            }
-
-        }
-    );
-
-} );
-
-router.post('/temporary/employee/create', ( req, res ) => {
-
-    const { company_code, location_code, created_by, department, designation, name, f_name, d_o_b, cell, gender, address, cnic_no, cnic_d_o_i, additional_notes, cnic_d_o_e } = req.body;
-    const d = new Date();
-    const cnic_front_img_name = [name, "front", d.getDate(), '.jpg'].join("_");
-    const cnic_back_img_name = [name, "back", d.getDate(), '.jpg'].join("_");
-    const emp_img_name = [name, cnic_no, d.getDate(), '.jpg'].join("_");
-
-    db.getConnection(
-        ( err, connection ) => {
-            connection.beginTransaction(
-                ( err ) => {
-                    if ( err )
-                    {
-                        connection.rollback(() => {console.log(err);connection.release();});
-                        res.send('err');
-                        res.end();
-                    }else
-                    {
-                        connection.query(
-                            "SELECT MAX(temp_emp_id) AS last_emp_id FROM tbl_temp_employees WHERE company_code = ? AND location_code = ?;",
-                            [ company_code, location_code ],
-                            ( err, rslt ) => {
-                                if( err )
-                                {
-                                    connection.rollback(() => {console.log(err);connection.release();});
-                                    res.send('err');
-                                    res.end();
-                                }else 
-                                {
-                                    console.log(rslt[0])
-                                    const last_emp_id = rslt[0] && rslt[0].last_emp_id ? ( rslt[0].last_emp_id + 1 ) : ( company_code + location_code + "001" );
-                                    connection.query(
-                                        "INSERT INTO tbl_temp_employees (temp_emp_id, name, father_name, date_of_birth, address, cell, gender, created_by, cnic_no, cnic_d_o_i, cnic_d_o_e, cnic_front, cnic_back, department, designation, company_code, location_code, image, addItional_notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
-                                        [last_emp_id, name, f_name, d_o_b, address, cell, gender, created_by, cnic_no, cnic_d_o_i, cnic_d_o_e, cnic_front_img_name, cnic_back_img_name, department, designation, company_code, location_code, emp_img_name, additional_notes],
-                                        ( err, rslt ) => {
-                                            if( err )
-                                            {
-                                                connection.rollback(() => {console.log(err);connection.release();});
-                                                res.send('err');
-                                                res.end();
-                                            }else 
-                                            {
-                                                connection.commit((err) => {
-                                                    if ( err ) {
-                                                        connection.rollback(() => {console.log(err);connection.release();});
-                                                        res.send('err');
-                                                        res.end();
-                                                    }else
-                                                    {
-                                                        if ( req.files ) {
-                                                            const { empImage, CNICFront, CNICBack } = req.files;
-                                                            empImage.mv('client/public/images/employees/' + emp_img_name, (err) => {
-                                                                if (err) {
-                                                                    console.log( err );
-                                                                    res.status(500).send(err);
-                                                                    res.end();
-                                                                }else
-                                                                console.log("File Saved Successfully");
-                                                            });
-                                                            CNICFront.mv('client/public/images/documents/cnic/front/' + cnic_front_img_name, (err) => {
-                                                                if (err) {
-                                                                    console.log( err );
-                                                                    res.status(500).send(err);
-                                                                    res.end();
-                                                                }else
-                                                                console.log("File Saved");
-                                                            });
-                                                            CNICBack.mv('client/public/images/documents/cnic/back/' + cnic_back_img_name, (err) => {
-                                                                if (err) {
-                                                                    console.log( err );
-                                                                    res.status(500).send(err);
-                                                                    res.end();
-                                                                }else
-                                                                console.log("File Saved");
-                                                            });
-                                                        }
-                                                        connection.release();
-                                                        res.send("SUCCESS");
-                                                        res.end();
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                        );
-                    }
-                }
-            )
-        }
-    );
-});
-
-router.post('/temporary/employee/confirm', ( req, res ) => {
-
-    const { emp_id, approved_by, remarks } = req.body;
-    const d = new Date();
-
-    db.query(
-        "UPDATE tbl_temp_employees SET status = 'active', approved_by = ?, approved_date = ?, approved_time = ?, approval_remarks = ? WHERE temp_emp_id = ? AND status = 'waiting_for_approval';",
-        [ approved_by, d, d.toTimeString(), remarks, emp_id ],
-        ( err ) => {
-            if( err )
-            {
-                console.log(err)
-                res.send('err');
-                res.end();
-            }else 
-            {
-                res.send("SUCCESS");
-                res.end();
-            }
-        }
-    );
-});
-
-router.post('/temporary/employee/verification', ( req, res ) => {
-
-    const { emp_id, verified_by, remarks } = req.body;
-    const d = new Date();
-
-    db.query(
-        "UPDATE tbl_temp_employees SET status = 'waiting_for_approval', verified_by = ?, verified_date = ?, verified_time = ?, verification_remarks = ? WHERE temp_emp_id = ? AND status = 'waiting_for_verification';",
-        [ verified_by, d, d.toTimeString(), remarks, emp_id ],
-        ( err ) => {
-            if( err )
-            {
-                res.send('err');
-                res.end();
-            }else 
-            {
-                res.send("SUCCESS");
-                res.end();
-            }
-        }
-    );
-});
-
-router.post('/fetch/hr/temporary/employees/list', ( req, res ) => {
-    const { companies, verification_person } = req.body;
-    const parsed_companies = JSON.parse(companies);
-    let query = "SELECT 1;";
-    if (parseInt(verification_person) === 1) {
-        query = "SELECT tbl_temp_employees.*, locations.location_name, companies.company_name, created.name AS created_by_person FROM tbl_temp_employees \
-        LEFT OUTER JOIN locations ON tbl_temp_employees.location_code = locations.location_code \
-        LEFT OUTER JOIN companies ON tbl_temp_employees.company_code = companies.company_code \
-        LEFT OUTER JOIN employees created ON tbl_temp_employees.created_by = created.emp_id;";
-    }else if ( parsed_companies.length > 0 ) {
-        query = "SELECT tbl_temp_employees.*, locations.location_name, companies.company_name, created.name AS created_by_person FROM tbl_temp_employees \
-        LEFT OUTER JOIN locations ON tbl_temp_employees.location_code = locations.location_code \
-        LEFT OUTER JOIN companies ON tbl_temp_employees.company_code = companies.company_code \
-        LEFT OUTER JOIN employees created ON tbl_temp_employees.created_by = created.emp_id \
-        WHERE ";
-        parsed_companies.forEach((company, index) => {
-            query = query.concat(`tbl_temp_employees.company_code = ${company}`);
-            if ( (index+1) < parsed_companies.length ) query = query.concat(` OR `);
-        });
-    }
-    console.log(query);
-    db.query(
-        query,
-        ( err, rslt ) => {
-            if( err )
-            {
-                res.status(500).send(err);
-                res.end();
-            }else 
-            {
-                res.send( rslt );
-                res.end();
-            }
-        }
-    );
-} );
-
-router.post('/hr/temporary/employee/data', ( req, res ) => {
-
-    const { emp_id } = req.body;
-
-    db.query(
-        "SELECT  \
-        `tbl_temp_employees`.*, \
-        `companies`.`company_name`, \
-        `locations`.`location_name`, \
-        `requisition`.`name` AS requisition_name, \
-        `verification`.`name` AS verification_name, \
-        `approval`.`name` AS approval_name \
-        FROM `tbl_temp_employees` \
-        LEFT OUTER JOIN companies ON tbl_temp_employees.company_code = companies.company_code \
-        LEFT OUTER JOIN locations ON tbl_temp_employees.location_code = locations.location_code \
-        LEFT OUTER JOIN employees requisition ON tbl_temp_employees.created_by = requisition.emp_id \
-        LEFT OUTER JOIN employees verification ON tbl_temp_employees.verified_by = verification.emp_id \
-        LEFT OUTER JOIN employees approval ON tbl_temp_employees.approved_by = approval.emp_id \
-        WHERE tbl_temp_employees.temp_emp_id  = ?;",
-        [ emp_id ],
-        ( err, rslt ) => {
-
-            if( err )
-            {
-                console.log( err )
-                res.status(500).send(err);
-                res.end();
-            }else 
-            {
-                res.send( rslt );
-                res.end();
             }
 
         }
@@ -1250,7 +1248,7 @@ router.post(
                                     {
                                         if ( req.body.thumbs[x].img !== '' )
                                         {
-                                            fs.writeFile("client/public/images/thumbs/" + emp_id + "_" + (x+1) + ".bmp", req.body.thumbs[x].img, 'base64', function(err) {
+                                            fs.writeFile("client/images/thumbs/" + emp_id + "_" + (x+1) + ".bmp", req.body.thumbs[x].img, 'base64', function(err) {
                                                 console.log(err);
                                                 console.log("Finger Print " + req.body.thumbs[x].title + " Saved");
                                             });
@@ -1898,7 +1896,7 @@ router.post('/acr/growth-review/additional-tasks', ( req, res ) => {
                         {
                             connection.query(
                                 "INSERT INTO `tbl_acr_growth_review_items`(`category_id`, `assigned_by`, `emp_id`, `year`, `task`, `start_date`, `deadline`, `assigning_date`, `assigning_time`) VALUES (?,?,?,?,?,?,?,?,?);",
-                                [assignedTasks[speccount.length].category == null || assignedTasks[speccount.length].category == 'null' ? null : assignedTasks[speccount.length].category, submit_by, emp_id, d.getFullYear(), assignedTasks[speccount.length].task, assignedTasks[speccount.length].start_date, assignedTasks[speccount.length].deadline, new Date(), new Date().toTimeString()],
+                                [assignedTasks[speccount.length].category == null ? null : assignedTasks[speccount.length].category, submit_by, emp_id, d.getFullYear(), assignedTasks[speccount.length].task, assignedTasks[speccount.length].start_date, assignedTasks[speccount.length].deadline, new Date(), new Date().toTimeString()],
                                 ( err ) => {
                                     if( err )
                                     {
@@ -2162,28 +2160,6 @@ router.post('/acr/growth-review/category/add', ( req, res ) => {
     db.query(
         "INSERT INTO `tbl_acr_growth_review_categories`(`category`, `created_by`, `created_date`, `created_time`, `emp_id`) VALUES (?,?,?,?,?)",
         [ category, created_by, new Date(), new Date().toTimeString(), emp_id ],
-        ( err ) => {
-            if( err )
-            {
-                console.log( err );
-                res.send( err );
-                res.end();
-
-            }else
-            {
-                res.send('success');
-                res.end();
-            }
-
-        }
-    );
-} );
-
-router.post('/acr/growth-review/category/update', ( req, res ) => {
-    const { category, id } = req.body;
-    db.query(
-        "UPDATE `tbl_acr_growth_review_categories` SET category = ? WHERE id = ?;",
-        [ category, id ],
         ( err ) => {
             if( err )
             {
@@ -2618,23 +2594,23 @@ router.post('/hr/employee/update/details', ( req, res ) => {
         const { UploadedEmpImage, UploadedCNICFront, UploadedCNICBack, UploadedCV, UploadedPrfAddress } = req.files;
         if ( UploadedEmpImage )
         {
-            UploadedEmpImage.mv('client/public/images/employees/' + UploadedEmpImageName)
+            UploadedEmpImage.mv('client/images/employees/' + UploadedEmpImageName)
         }
         if ( UploadedCNICFront )
         {
-            UploadedCNICFront.mv('client/public/images/documents/cnic/front/' + UploadedCNICFrontName)
+            UploadedCNICFront.mv('client/images/documents/cnic/front/' + UploadedCNICFrontName)
         }
         if ( UploadedCNICBack )
         {
-            UploadedCNICBack.mv('client/public/images/documents/cnic/back/' + UploadedCNICBackName)
+            UploadedCNICBack.mv('client/images/documents/cnic/back/' + UploadedCNICBackName)
         }
         if ( UploadedCV )
         {
-            UploadedCV.mv('client/public/images/documents/cv/' + UploadedCVName)
+            UploadedCV.mv('client/images/documents/cv/' + UploadedCVName)
         }
         if ( UploadedPrfAddress )
         {
-            UploadedPrfAddress.mv('client/public/images/documents/address/' + UploadedPrfAddressName)
+            UploadedPrfAddress.mv('client/images/documents/address/' + UploadedPrfAddressName)
         }
     }
 
@@ -2933,5 +2909,63 @@ router.post('/access/assign/employees', ( req, res ) => {
     }
     assignAccess();
 } );
+
+router.post('/employees/company_code', ( req, res ) => {
+
+    const { company_code } = req.body;
+
+    db.query(
+        "SELECT  \
+        employees.emp_id, \
+        employees.name, \
+        employees.lock_user, \
+        employees.emp_status, \
+        departments.department_name, \
+        emp_app_profile.emp_image \
+        FROM employees \
+        LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
+        LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id \
+        WHERE employees.company_code = ?;",
+        [company_code],
+        ( err, rslt ) => {
+
+            if( err )
+            {
+
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+
+            }else 
+            {
+
+                res.send( rslt );
+                res.end();
+
+            }
+
+        }
+    );
+
+} );
+
+router.post('/employees/update_lock', ( req, res ) => {
+    const {emp_id, lock_user, remarks} = req.body;
+    db.query(
+        "UPDATE employees SET lock_user = ?, lock_user_dt = ?, lock_user_remarks = ? WHERE emp_id = ?;",
+        [lock_user, new Date(), remarks, emp_id],
+        ( err ) => {
+            if( err ){
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send('success');
+                res.end();
+            }
+        }
+    );
+} );
+
 
 module.exports = router;

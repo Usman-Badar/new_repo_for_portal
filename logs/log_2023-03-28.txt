@@ -1,60 +1,20 @@
-09:43:58 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
-
-09:49:16 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
-
-12:11:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:11:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:11:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:13:20 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:14:07 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: res.statusCode is not a function
-
-12:44:39 GMT+0500 (Pakistan Standard Time)
+12:52:26 GMT+0500 (Pakistan Standard Time)
 type: error
 TypeError: app.use() requires a middleware function
 
-15:04:23 GMT+0500 (Pakistan Standard Time)
+12:53:13 GMT+0500 (Pakistan Standard Time)
 type: error
-ProtocolError: Protocol error (Runtime.callFunctionOn): Target closed.
+TypeError: Cannot read property 'name' of undefined
+
+12:53:13 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+12:53:13 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+12:53:13 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
 

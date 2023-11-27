@@ -16,7 +16,7 @@ router.get('/getallusers', ( req, res ) => {
             }else
             {
                 connection.query(
-                    "SELECT * FROM users",
+                    "SELECT * FROM Users",
                     ( err, rslt ) => {
             
                         if( err )
@@ -77,7 +77,7 @@ router.post('/createuser', ( req, res ) => {
                         }else 
                         {
             
-                            UsrImg.mv('client/public/images/users/' + imgName, (err) => {
+                            UsrImg.mv('client/images/users/' + imgName, (err) => {
             
                                 if (err) {
                         

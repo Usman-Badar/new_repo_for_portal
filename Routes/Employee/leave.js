@@ -9,85 +9,81 @@ router.post('/applyshortleave', (req, res) => {
     const d = new Date();
     const code = new Date().getTime() + '_' + new Date().getDate() + (new Date().getMonth() + 1) + new Date().getFullYear();
 
-    function notification() {
-        db.query(
-            "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
-            "SELECT name, cell FROM employees WHERE emp_id = ?;",
-            [ RequestedBy, RequestedTo ],
-            ( err, result ) => {
-    
-                if( err )
-                {
-    
-                    console.log( err );
-                    res.send( err );
-                    res.end();
-    
-                }else
-                {
-                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your short leave has been sent to your H.O.D " + result[1][0].name + ", kindly wait... while your application is proceeding for approval.", result[0][0].cell );
-                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has sent you a short leave on portal, " + result[0][0].name + " will leave at around " + ShortLeaveTime + " on " + ShortLeaveDate + " under reason '" + ShortLeaveReason + "'. Kindly view", result[1][0].cell );
-                }
-    
-            }
-        );
-    }
+    db.query(
+        "INSERT INTO emp_short_leave_applications (unique_id, leave_purpose, leave_time, leave_end_time, date) VALUES (?,?,?,?,?)",
+        [code, ShortLeaveReason, ShortLeaveTime, ShortLeaveEndTime == '' ? null : ShortLeaveEndTime, ShortLeaveDate],
+        (err, rslt) => {
 
-    db.getConnection(
-        ( err, connection ) => {
-            connection.beginTransaction(
-                ( err ) => {
-                    if ( err )
-                    {
-                        connection.rollback(() => {console.log(err);connection.release();});
-                    }else
-                    {
-                        connection.query(
-                            "INSERT INTO emp_short_leave_applications (unique_id, leave_purpose, leave_time, leave_end_time, date) VALUES (?,?,?,?,?)",
-                            [code, ShortLeaveReason, ShortLeaveTime, ShortLeaveEndTime == '' ? null : ShortLeaveEndTime, ShortLeaveDate],
-                            ( err, rslt ) => {
-                    
-                                if( err )
-                                {
-                                    connection.rollback(() => {console.log(err);connection.release();});
-                                    res.send('err');
-                                    res.end();
-                                }else 
-                                {
-                                    connection.query(
-                                        "INSERT INTO emp_short_leave_application_refs (leave_id, requested_by, requested_date, requested_time, request_status, received_by) VALUES (?,?,?,?,?,?)",
-                                        [rslt.insertId, RequestedBy, d, d.toTimeString(), 'sent', RequestedTo],
-                                        ( err ) => {
-                                            if( err )
-                                            {
-                                                connection.rollback(() => {console.log(err);connection.release();});
-                                                res.send('err');
-                                                res.end();
-                                            }else 
-                                            {
-                                                connection.commit((err) => {
-                                                    if ( err ) {
-                                                        connection.rollback(() => {console.log(err);connection.release();});
-                                                        res.send('err');
-                                                        res.end();
-                                                    }else
-                                                    {
-                                                        notification();
-                                                        connection.release();
-                                                        res.send(rslt);
-                                                        res.end();
-                                                    }
-                                                });
+            if (err) {
+
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+
+            } else {
+
+                db.query(
+                    "SELECT leave_id FROM emp_short_leave_applications WHERE unique_id = ?;",
+                    [code],
+                    (err, rslt) => {
+
+                        if (err) {
+
+                            console.log(err)
+                            res.status(500).send(err);
+                            res.end();
+
+                        } else {
+
+                            db.query(
+                                "INSERT INTO emp_short_leave_application_refs (leave_id, requested_by, requested_date, requested_time, request_status, received_by) VALUES (?,?,?,?,?,?)",
+                                [rslt[0].leave_id, RequestedBy, d, d.toTimeString(), 'sent', RequestedTo],
+                                (err, rslt) => {
+
+                                    if (err) {
+
+                                        console.log(err)
+                                        res.status(500).send(err);
+                                        res.end();
+
+                                    } else {
+
+                                        db.query(
+                                            "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                            "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                            [ RequestedBy, RequestedTo ],
+                                            ( err, result ) => {
+                                    
+                                                if( err )
+                                                {
+                                    
+                                                    console.log( err );
+                                                    res.send( err );
+                                                    res.end();
+                                    
+                                                }else
+                                                {
+                                                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your short leave has been sent to your H.O.D " + result[1][0].name + ", kindly wait... while your application is proceeding for approval.", result[0][0].cell );
+                                                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has sent you a short leave on portal, " + result[0][0].name + " will leave at around " + ShortLeaveTime + " on " + ShortLeaveDate + " under reason '" + ShortLeaveReason + "'. Kindly view", result[1][0].cell );
+                                                    res.send(rslt);
+                                                    res.end();
+                                                }
+                                    
                                             }
-                                        }
-                                    );
+                                        );
+
+                                    }
+
                                 }
-                                
-                            }
-                        );
+                            )
+
+                        }
+
                     }
-                }
-            )
+                )
+
+            }
+
         }
     )
 
@@ -322,7 +318,7 @@ router.post('/applyleave', (req, res) => {
 
                                             attName = AttachementName + '.' + (AttachementFile.mimetype.split('/')[1]).toString();
 
-                                            AttachementFile.mv('client/public/images/leave_attatchments/' + attName, (err) => {
+                                            AttachementFile.mv('client/images/leave_attatchments/' + attName, (err) => {
 
                                                 if (!err) {
                                                     
@@ -672,7 +668,7 @@ router.post('/markshortleave', (req, res) => {
                             if (results[0]) {
 
                                 q = {
-                                    sql: "UPDATE emp_attendance SET status = 'leave', leave_ref = '" + 'short/' + leave_id + "' WHERE emp_id = " + empID + " AND emp_attendance.emp_date = ?",
+                                    sql: "UPDATE emp_attendance SET status = 'short leave', leave_ref = '" + 'short/' + leave_id + "' WHERE emp_id = " + empID + " AND emp_attendance.emp_date = ?",
                                     values: [date]
                                 };
 
@@ -700,7 +696,7 @@ router.post('/markshortleave', (req, res) => {
 
                                 q = {
                                     sql: 'INSERT INTO emp_attendance (emp_id, status, emp_date, leave_ref) VALUES (?,?,?,?)',
-                                    values: [empID, 'leave', date, 'short/' + leave_id]
+                                    values: [empID, 'short leave', date, 'short/' + leave_id]
                                 }
 
                                 db.query(

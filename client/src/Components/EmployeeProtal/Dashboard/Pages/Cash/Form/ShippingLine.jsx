@@ -17,8 +17,8 @@ const ShippingLine = ({ Companies, Locations, DO, LOLO, DET, DMGDT, CSC, Other, 
     const total = parseFloat(DO.amount) + parseFloat(LOLO.amount) + parseFloat(DET.amount) + parseFloat(DMGDT.amount) + parseFloat(CSC.amount) + parseFloat(Other.amount);
     return (
         <>
-            <form onSubmit={onCreateShpCash} className="shipping_line_payment_form page-content p-relative page">
-                <fieldset className='page-content'>
+            <form onSubmit={onCreateShpCash} className="shipping_line_payment_form p-relative">
+                <fieldset>
                     <div className="d-flex align-items-center justify-content-between ">
                         <h3 className="heading">
                             Shipping Line Advance Cash

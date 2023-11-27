@@ -4,14 +4,24 @@ const db = require('../../db/connection');
 
 setInterval(() => {
 
-    db.query(
-        "UPDATE emp_machine_thumbs SET emp_machine_thumbs.status = 'valid' WHERE emp_machine_thumbs.status = 'Waiting';",
-        () => {
+    db.getConnection(
+        ( err, connection ) => {
 
-            console.log("Update All Thumb Statuses To Valid");
+            if ( !err )
+            {
+                connection.query(
+                    "UPDATE emp_machine_thumbs SET emp_machine_thumbs.status = 'valid' WHERE emp_machine_thumbs.status = 'Waiting'",
+                    () => {
+            
+                        connection.release();
+            
+                    }
+                )
+            }
 
         }
     )
+    
     
 }, ( ( 1000 * 60 ) * 60 ) * 12);
 

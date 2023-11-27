@@ -116,6 +116,8 @@ const ShippingLinePayment = lazy( () => import('./Pages/Forms/ShippingLinePaymen
 const TemporaryEmployees = lazy( () => import('./Pages/HR/TemporaryEmployees/TemporaryEmployees') );
 
 const NotificationManagement = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
+const PortalIssues = lazy( () => import('./Pages/PortalIssues/PortalIssues') );
+const ComapanyEquipmentSetupForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelManagement/FuelManagement') );
 
 const Dashboard = () => {
     
@@ -541,6 +543,14 @@ const Dashboard = () => {
                                 <Route exact path="/cash/shipping/line/list" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
                                 <Route exact path="/cash/shipping/line/form" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
                                 <Route exact path="/cash/shipping/line/details/:id" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
+
+
+                                <Route exact path='/portal/issues' render={ () => <Sus content={ <PortalIssues /> } /> } />
+                                <Route exact path='/portal/issues/new' render={ () => <Sus content={ <PortalIssues /> } /> } />
+                                <Route exact path='/portal/issues/details/:id' render={ () => <Sus content={ <PortalIssues /> } /> } />
+
+                                {/* FUEL MANAGEMENT */}
+                                <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <ComapanyEquipmentSetupForm /> } /> } />
                             </div>
                         }
                     </div>

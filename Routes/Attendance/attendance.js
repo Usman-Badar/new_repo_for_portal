@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
-
 const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNotification;
 
 router.post('/timein', ( req, res ) => {

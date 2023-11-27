@@ -25,7 +25,7 @@
     <h1 class="text-center">Please Wait....</h1>
 
     <div class="container" style="max-height: 200px; overflow-y: overlay; opacity: 1;">
-        <img src="http://192.168.0.162:8888/assets/portal/assets/images/signatures/98989898/signature_to_match.png" width="100%" crossorigin='anonymous' id="test_img_to_match" alt="signature" />
+        <img src="http://182.180.190.108:3443/assets/portal/assets/images/signatures/98989898/signature_to_match.png" width="100%" crossorigin='anonymous' id="test_img_to_match" alt="signature" />
     </div>
 
     <script>
@@ -35,14 +35,14 @@
         let classifier;
         let imgsLoaded = 1;
 
-        $('#test_img_to_match').attr('src', "http://192.168.0.162:8888/assets/portal/assets/images/signatures/" + window.location.href.split('/').pop() + "/signature_to_match.png");
+        $('#test_img_to_match').attr('src', "http://182.180.190.108:3443/assets/portal/assets/images/signatures/" + window.location.href.split('/').pop() + "/signature_to_match.png");
 
         function modelReady()
         {
             console.log("Model is ready!!!");
             socket.emit("signature_validation_process_message_for_approval", { message: 'Model Ready!!!' });
             classifier = mobileNet.classification(video, videoReady);
-            classifier.load('http://192.168.0.162:8888/assets/portal/assets/images/signatures/' + window.location.href.split('/').pop() + '/model.json', customModelReady);
+            classifier.load('http://182.180.190.108:3443/assets/portal/assets/images/signatures/' + window.location.href.split('/').pop() + '/model.json', customModelReady);
         }
 
         function videoReady( err, rslt )
@@ -79,7 +79,7 @@
     <script type="module">
         import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
     
-        socket = io('http://192.168.0.162:8888');
+        socket = io('http://182.180.190.108:3443');
 
         socket.on("connect", () => {
             
@@ -90,8 +90,8 @@
         socket.on("signature_validation_process_approve_again", () => {
             
             socket.emit("signature_validation_process_message_for_approval", { message: "Validating..." });
-            $("#test_img_to_match").attr('src', 'http://192.168.0.162:8888/assets/portal/assets/images/signatures/' + window.location.href.split('/').pop() + '/signature_to_match.png?' + new Date().getTime());
-            classifier.load('http://192.168.0.162:8888/assets/portal/assets/images/signatures/' + window.location.href.split('/').pop() + '/model.json', customModelReady);
+            $("#test_img_to_match").attr('src', 'http://182.180.190.108:3443/assets/portal/assets/images/signatures/' + window.location.href.split('/').pop() + '/signature_to_match.png?' + new Date().getTime());
+            classifier.load('http://182.180.190.108:3443/assets/portal/assets/images/signatures/' + window.location.href.split('/').pop() + '/model.json', customModelReady);
         });
 
     </script>

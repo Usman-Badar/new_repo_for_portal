@@ -29,169 +29,171 @@ function UI({ AccessControls, onCreateShpCash, Slip, SlipCode, attachSlip, SlipA
     return (
         <>
             <BreadCrumb links={[{ label: 'Cash Requests', href: '/cash/requests' }]} currentLabel="Advance Cash Form" />
-            {
-                JSON.parse(AccessControls.access).includes(66) || JSON.parse(AccessControls.access).includes(0)
-                ?
-                <ul className="nav nav-tabs mb-3">
-                    <li className="nav-item" onClick={() => { setStatus('AdvanceCashForm'); sessionStorage.setItem('AdvanceCashStatus', 'AdvanceCashForm') }} >
-                        <a className={Status === 'AdvanceCashForm' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize'}>Advance Cash</a>
-                    </li>
-                    <li className="nav-item" onClick={() => { setStatus('AdvanceShippingLineForm'); sessionStorage.setItem('AdvanceCashStatus', 'AdvanceShippingLineForm') }} >
-                        <a className={Status === 'AdvanceShippingLineForm' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize'}>Advance Shipping Line Cash</a>
-                    </li>
-                </ul>
-                :null
-            }
-            {
-                Status === 'AdvanceShippingLineForm'
-                ?
-                <ShippingLine 
-                    Companies={Companies}
-                    Locations={Locations}
-                    DO={DO}
-                    LOLO={LOLO}
-                    DET={DET}
-                    DMGDT={DMGDT}
-                    CSC={CSC}
-                    Other={Other}
-                    
-                    setDET={setDET}
-                    setDMGDT={setDMGDT}
-                    setCSC={setCSC}
-                    setOther={setOther}
-                    setDO={setDO}
-                    setLOLO={setLOLO}
-                    onCreateShpCash={onCreateShpCash}
-                />
-                :
-                <>
-                    <form onSubmit={onCreateAdvanceCash} className="advance_cash page">
-                        <Modal show={PRAttachment} Hide={() => setPRAttachment(!PRAttachment)} content={<PRAttachmentModal PR={PR} attachPR={attachPR} PRList={PRList} />} />
-                        <Modal show={SlipAttachment} Hide={() => setSlipAttachment(!SlipAttachment)} content={<SlipAttachmentModal Slip={Slip} attachSlip={attachSlip} SlipList={SlipList} />} />
-                        <fieldset className="advance_cash_container page-content">
-                            <div className="d-flex align-items-center justify-content-between">
-                                <h3 className="heading">
-                                    Advance Cash Form
-                                    <sub>Get Cash Instantly</sub>
-                                </h3>
-                            </div>
-                            <hr />
-                            <div className='grid-container-5050'>
-                                {/* <div>
-                        <label className='mb-0'>
-                            <b>Employee On Behalf Of</b>
-                        </label>
-                        <div className="employees_list_container">
-                            <input type="text" className="form-control" value={ Keyword } onChange={ ( e ) => setKeyword( e.target.value ) } required />
-                            {
-                                Arr && !Selected?
-                                <div className="employees_list">
+            <div className='page'>
+                <div className='page-content'>
+                    {
+                        JSON.parse(AccessControls.access).includes(66) || JSON.parse(AccessControls.access).includes(0)
+                        ?
+                        <ul className="nav nav-tabs mb-3">
+                            <li className="nav-item" onClick={() => { setStatus('AdvanceCashForm'); sessionStorage.setItem('AdvanceCashStatus', 'AdvanceCashForm') }} >
+                                <a className={Status === 'AdvanceCashForm' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize'}>Advance Cash</a>
+                            </li>
+                            <li className="nav-item" onClick={() => { setStatus('AdvanceShippingLineForm'); sessionStorage.setItem('AdvanceCashStatus', 'AdvanceShippingLineForm') }} >
+                                <a className={Status === 'AdvanceShippingLineForm' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize'}>Advance Shipping Line Cash</a>
+                            </li>
+                        </ul>
+                        :null
+                    }
+                    {
+                        Status === 'AdvanceShippingLineForm'
+                        ?
+                        <ShippingLine 
+                            Companies={Companies}
+                            Locations={Locations}
+                            DO={DO}
+                            LOLO={LOLO}
+                            DET={DET}
+                            DMGDT={DMGDT}
+                            CSC={CSC}
+                            Other={Other}
+                            
+                            setDET={setDET}
+                            setDMGDT={setDMGDT}
+                            setCSC={setCSC}
+                            setOther={setOther}
+                            setDO={setDO}
+                            setLOLO={setLOLO}
+                            onCreateShpCash={onCreateShpCash}
+                        />
+                        :
+                        <>
+                            <form onSubmit={onCreateAdvanceCash} className="advance_cash">
+                                <Modal show={PRAttachment} Hide={() => setPRAttachment(!PRAttachment)} content={<PRAttachmentModal PR={PR} attachPR={attachPR} PRList={PRList} />} />
+                                <Modal show={SlipAttachment} Hide={() => setSlipAttachment(!SlipAttachment)} content={<SlipAttachmentModal Slip={Slip} attachSlip={attachSlip} SlipList={SlipList} />} />
+                                <fieldset className="advance_cash_container">
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <h3 className="heading">
+                                            Advance Cash Form
+                                            <sub>Get Cash Instantly</sub>
+                                        </h3>
+                                    </div>
+                                    <hr />
+                                    <div className='grid-container-5050'>
+                                        {/* <div>
+                                <label className='mb-0'>
+                                    <b>Employee On Behalf Of</b>
+                                </label>
+                                <div className="employees_list_container">
+                                    <input type="text" className="form-control" value={ Keyword } onChange={ ( e ) => setKeyword( e.target.value ) } required />
                                     {
-                                        Arr.map(
-                                            ( val, index ) => {
-                                                return (
-                                                    <div className="employee" key={index} onClick={ () => setEmployee({ emp_id: val.emp_id, name: val.name }) }>
-                                                        <img src={ 'images/employees/' + val.emp_image } className="rounded-circle" alt="emp" width={35} height={35} />
-                                                        <div className="ml-2">
-                                                            <b>{ val.name }</b>
-                                                            <p className="mb-0">{ val.designation_name }</p>
-                                                        </div>
-                                                    </div>
+                                        Arr && !Selected?
+                                        <div className="employees_list">
+                                            {
+                                                Arr.map(
+                                                    ( val, index ) => {
+                                                        return (
+                                                            <div className="employee" key={index} onClick={ () => setEmployee({ emp_id: val.emp_id, name: val.name }) }>
+                                                                <img src={ 'images/employees/' + val.emp_image } className="rounded-circle" alt="emp" width={35} height={35} />
+                                                                <div className="ml-2">
+                                                                    <b>{ val.name }</b>
+                                                                    <p className="mb-0">{ val.designation_name }</p>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
                                                 )
                                             }
-                                        )
+                                        </div>
+                                        :null
                                     }
                                 </div>
-                                :null
-                            }
-                        </div>
-                    </div> */}
-                                <div>
-                                    <label className='mb-0'>
-                                        <b>Company</b>
-                                    </label>
-                                    <select className="form-control" name="company_code" onChange={(e) => setCompany(e.target.value)} required>
-                                        <option value=''>Select the option</option>
-                                        {
-                                            Companies.map(
-                                                val => {
+                            </div> */}
+                                        <div>
+                                            <label className='mb-0'>
+                                                <b>Company</b>
+                                            </label>
+                                            <select className="form-control" name="company_code" onChange={(e) => setCompany(e.target.value)} required>
+                                                <option value=''>Select the option</option>
+                                                {
+                                                    Companies.map(
+                                                        val => {
 
-                                                    return <option key={val.company_code} value={val.company_code}> {val.company_name} </option>
+                                                            return <option key={val.company_code} value={val.company_code}> {val.company_name} </option>
 
+                                                        }
+                                                    )
                                                 }
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className='mb-0'>
-                                        <b>Cash Collection At</b>
-                                    </label>
-                                    <select className="form-control" name="location_code" required>
-                                        <option value=''>Select the option</option>
-                                        {
-                                            Locations.map(
-                                                val => {
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className='mb-0'>
+                                                <b>Cash Collection Location</b>
+                                            </label>
+                                            <select className="form-control" name="location_code" required>
+                                                <option value=''>Select the option</option>
+                                                {
+                                                    Locations.map(
+                                                        val => {
 
-                                                    return <option key={val.location_code} value={val.location_code}> {val.location_name} </option>
+                                                            return <option key={val.location_code} value={val.location_code}> {val.location_name} </option>
 
+                                                        }
+                                                    )
                                                 }
-                                            )
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <label className='mb-0 mt-3'>
+                                        <b>Reason</b>
+                                    </label>
+                                    <textarea placeholder='Enter a valid reason in detail' className="form-control mb-3" name="reason" minLength={20} required />
+                                    <label className='mb-0'>
+                                        <b>Amount</b>
+                                    </label>
+                                    <input type='number' value={Amount} onChange={(e) => setAmount(e.target.value)} min={1} className="form-control mb-3" required />
+                                    <label className='mb-0'>
+                                        <b>Amount In Words (PKR)</b>
+                                    </label>
+                                    <input id="amount_in_words" className="form-control mb-3 text-capitalize" value={Amount > 0 ? (convertCurrency(Amount) + " Rupees Only") : ''} disabled />
+                                    {/* <label className="mb-0"><b>Submit To</b></label>
+                        <select className="form-control mb-3" name="request_to" required>
+                            <option value="">Select the option</option>
+                            {
+                                Company && Relations
+                                ?
+                                Relations.map(
+                                    (val, index) => {
+                                        let option;
+                                        if ( val.category === 'all' || val.category.includes('purchase_order') )
+                                        {
+                                            if ( val.companies.includes( parseInt(Company) ) )
+                                            {
+                                                option = <option value={val.sr} key={index}> {val.name} </option>
+                                            }
                                         }
-                                    </select>
-                                </div>
-                            </div>
-                            <label className='mb-0 mt-3'>
-                                <b>Reason</b>
-                            </label>
-                            <textarea placeholder='Enter a valid reason in detail' className="form-control mb-3" name="reason" minLength={20} required />
-                            <label className='mb-0'>
-                                <b>Amount</b>
-                            </label>
-                            <input type='number' value={Amount} onChange={(e) => setAmount(e.target.value)} min={1} className="form-control mb-3" required />
-                            <label className='mb-0'>
-                                <b>Amount In Words (PKR)</b>
-                            </label>
-                            <input id="amount_in_words" className="form-control mb-3 text-capitalize" value={Amount > 0 ? (convertCurrency(Amount) + " Rupees Only") : ''} disabled />
-                            {/* <label className="mb-0"><b>Submit To</b></label>
-                <select className="form-control mb-3" name="request_to" required>
-                    <option value="">Select the option</option>
-                    {
-                        Company && Relations
-                        ?
-                        Relations.map(
-                            (val, index) => {
-                                let option;
-                                if ( val.category === 'all' || val.category.includes('purchase_order') )
-                                {
-                                    if ( val.companies.includes( parseInt(Company) ) )
-                                    {
-                                        option = <option value={val.sr} key={index}> {val.name} </option>
+
+                                        return option;
                                     }
-                                }
-
-                                return option;
+                                ):null
                             }
-                        ):null
+                        </select> */}
+                                    <div className='d-flex justify-content-between'>
+                                        <div className='btn-group'>
+                                            <button title={SPRSpecifications} className="btn submit" type='button' onClick={() => setPRAttachment(true)}> {PR ? "PR (" + PRCode + ") Attached" : "Attach PR"}</button>
+                                            <button className="btn light" type='button' onClick={() => setSlipAttachment(true)}>{Slip ? "Slip (" + SlipCode + ") Attached" : "Attach Previous Slip"}</button>
+                                        </div>
+                                        <div className='d-flex justify-content-end'>
+                                            <button className='btn light' type='button' onClick={() => history.goBack()}>Back</button>
+                                            <button className='btn submit ml-2' type='submit'>Submit</button>
+                                            <button className='btn submit d-none ml-auto' id="resetBtn" type='reset'>Reset</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </>
                     }
-                </select> */}
-                            <div className='d-flex justify-content-between'>
-                                <div className='btn-group'>
-                                    <button title={SPRSpecifications} className="btn submit" type='button' onClick={() => setPRAttachment(true)}> {PR ? "PR (" + PRCode + ") Attached" : "Attach PR"}</button>
-                                    <button className="btn light" type='button' onClick={() => setSlipAttachment(true)}>{Slip ? "Slip (" + SlipCode + ") Attached" : "Attach Previous Slip"}</button>
-                                </div>
-                                <div className='d-flex justify-content-end'>
-                                    <button className='btn light' type='button' onClick={() => history.goBack()}>Back</button>
-                                    <button className='btn submit ml-2' type='submit'>Submit</button>
-                                    <button className='btn submit d-none ml-auto' id="resetBtn" type='reset'>Reset</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                </>
-            }
-
-
+                </div>
+            </div>
         </>
     );
 

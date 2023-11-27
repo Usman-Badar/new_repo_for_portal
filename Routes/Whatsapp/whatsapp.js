@@ -32,13 +32,19 @@ client.on("ready", () => {
 });
 
 const checkConditions = (body, client, message) => {
+    if(checkIfIncludes(body, ['send admin notification to all'])) {
+        message.reply('Sending Admin Notification...');
+        setTimeout(() => {
+            sendMediaMessageToAll(client, message, message.body.split(':').pop());
+        }, 1000);
+    }else
     if(checkIfIncludes(body, ['hello']) && (message.from.includes('3303744620') || message.from.includes('3422618990'))) {
         if (message.from.includes('3303744620')) {
             message.reply('Welcome Usman Badar!');
         }else {
             message.reply('Welcome Malahim!');
         }
-        client.sendMessage(message.from, `*Commands List*\n\n1. remove duplicate records: [date] like 2023-09-09..\n2. fix all attendance:[month]/[year] like 9/2023...\n3. send notification: [notification_body] --[location_code] --[company_code]\n4. fix my attendance: [month]/[year] like 9/2023\n5. get my credentials\n6. get my monthly attendance: [month]/[year] like 9/2023\n7. refresh indexes`);
+        client.sendMessage(message.from, `*Commands List*\n\n1. remove duplicate records: [date] like 2023-09-09..\n2. fix all attendance:[month]/[year] like 9/2023...\n3. send notification: [notification_body] --[location_code] --[company_code]\n4. fix my attendance: [month]/[year] like 9/2023\n5. get my credentials\n6. get my monthly attendance: [month]/[year] like 9/2023\n7. refresh indexes\n8. send admin notification to all:[company_code]`);
     }else
     if(checkIfIncludes(body, ['this is'])) {
         message.reply('Hello!');
@@ -46,7 +52,7 @@ const checkConditions = (body, client, message) => {
     }else
     if (checkIfIncludes(body, ['remove', 'duplicate', 'records', ':'])) {
         message.reply('Removing...');
-        if ( message.body.toLocaleLowerCase().split('-').length === 2 ) {
+        if ( message.body.toLocaleLowerCase().split(':').pop().split('-').length === 3 ) {
             removeDuplicateAttendance(message.body.toLocaleLowerCase().split(':').pop());
         }else {
             client.sendMessage(message.from, 'Invalid date format!');
@@ -640,7 +646,7 @@ function sendNotifications( client, message, msg, q, dont_send )
 
 const SendWhatsappNotification = ( receiverID, senderID, Title, NotificationBody, cell ) => {
     const code = '92';
-    const message = `*Employee Portal*\n\n${Title}\n_${NotificationBody}_\n...............................\nhttps://.portal.seaboard.pk`;
+    const message = `*Employee Portal*\n\n${Title}\n_${NotificationBody}_\n...............................\nhttps://portal.seaboard.pk`;
     let standardNumber;
     if ( cell.includes('+') ) {
         standardNumber = cell.replace('+', '') + '@c.us';
@@ -657,10 +663,71 @@ const SendWhatsappNotification = ( receiverID, senderID, Title, NotificationBody
     )
 }
 
+function sendMediaMessageToAll( client, message, company_code )
+{
+    message.reply("Sending.....");
+    db.query(
+        // "SELECT emp_id, name, cell FROM employees WHERE emp_status = 'Active' AND company_code = ? AND location_code = 1;",
+        "SELECT emp_id, name, cell FROM employees WHERE emp_status = 'Active' AND company_code = ?;",
+        [ company_code ],
+        ( err, rslt ) => {
+    
+            if ( !err )
+            {
+                let specLimit = rslt.length;
+                let speccount = [];
+                let count = 0;
+                function sendNote()
+                {
+                    count = count + 1;
+                    let standardNumber;
+                    let code = '92';
+                    let num = "";
+                    if ( rslt[speccount.length].cell.includes('+') )
+                    {
+                        num = rslt[speccount.length].cell.replace('+', '');
+                        standardNumber = num + '@c.us';
+                    }else   
+                    {
+                        num = rslt[speccount.length].cell.substring(1, 11);
+                        standardNumber = code + num + '@c.us';
+                    }
+                    console.log(standardNumber);
+
+                    const media = MessageMedia.fromFilePath('./Routes/Whatsapp/attachment-to-all/attachment (2).pdf');
+                    console.log(media);
+                    if ( media )
+                    {
+                        client.sendMessage(standardNumber, media);
+                    }
+                    if ( ( speccount.length + 1 ) === specLimit )
+                    // if ( speccount.length === 2 )
+                    {
+                        console.log("Completed");
+                        message.reply('Notification has been sent! (' + count + ')');
+                    }else
+                    {
+                        speccount.push(1);
+                        sendNote();
+                    }
+                }
+                sendNote();
+                
+            }else
+            {
+                client.sendMessage(message.from, 'Error!');
+                client.sendMessage(message.from, err);
+            }
+    
+        }
+    )
+}
+
+// 2023-11-08: UPDATED FUNCTION FOR NOTICES
 function sendMediaMessageSelected(mediaUrl, standardNumber)
 {
     const media = MessageMedia.fromFilePath(mediaUrl);
-    if (media) client.sendMessage('923303744620@c.us', media);
+    if (media) client.sendMessage(standardNumber, media);
 }
 
 module.exports = {

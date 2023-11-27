@@ -143,10 +143,11 @@ export const onCreateShpCash = ( e, history, Total, DO, LOLO, DET, DMGDT, CSC, O
     }else if (Other.required && parseFloat(Other.amount) < 1) {
         JSAlert.alert('Other amount should be greater than 0.', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
         return false;
-    }else if (Other.required && Other.specification.trim().length < 10) {
-        JSAlert.alert('Please specify the purpose in other specification field in at least 10 characters.', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-        return false;
     }
+    // else if (Other.required && Other.specification.trim().length < 10) {
+    //     JSAlert.alert('Please specify the purpose in other specification field in at least 10 characters.', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+    //     return false;
+    // }
 
     $('fieldset').prop('disabled', true);
     axios.post(

@@ -6,6 +6,158 @@ const encryptor = require('simple-encryptor')(key);
 
 const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNotification;
 
+// function reminder_on_absent_for_leave()
+// {
+//     var prev_date = new Date();
+//     prev_date.setDate(prev_date.getDate() - 1);
+
+//     db.query(
+//         "SELECT \
+//         emp_attendance.*, \
+//         `employees`.`cell`, \
+//         `employees`.`name` \
+//         FROM emp_attendance \
+//         LEFT OUTER JOIN employees ON emp_attendance.emp_id = employees.emp_id \
+//         WHERE emp_attendance.status = 'Absent' \
+//         AND emp_attendance.emp_date = ?;",
+//         [ prev_date.getFullYear() + '-' + parseInt(prev_date.getMonth() + 1) + '-' + prev_date.getDate() ],
+//         ( err, rslt ) => {
+
+//             if( err )
+//             {
+
+//                 console.log( err );
+
+//             }else 
+//             {
+                
+//                 let phrases = [ 
+//                     "We discovered you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at http://portal.seaboard.pk" ,
+//                     "We found you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at http://portal.seaboard.pk",
+//                     "We discovered you were *absent* yesterday. Please send a leave request now on the portal by logging in to your account at http://portal.seaboard.pk.",
+//                     "We discovered you were *absent* the day before. Please send a leave request now on the portal by logging in to your account at http://portal.seaboard.pk.",
+//                     "You were *absent* yesterday, we discovered. Please send a leave request now on the portal by logging in to your account at http://portal.seaboard.pk."
+//                 ]
+//                 for ( let x = 0; x < rslt.length; x++ )
+//                 {
+//                     SendWhatsappNotification( null, null, "Hi " + rslt[x].name, phrases[Math.floor(Math.random() * phrases.length)], rslt[x].cell );
+//                 }
+
+//             }
+
+//         }
+//     )
+// }
+
+// function reminder_on_absent_for_leave()
+// {
+//     var prev_date = new Date();
+//     prev_date.setDate(prev_date.getDate() - 1);
+
+//     db.query(
+//         "SELECT \
+//         emp_attendance.*, \
+//         `employees`.`cell`, \
+//         `employees`.`name` \
+//         FROM emp_attendance \
+//         LEFT OUTER JOIN employees ON emp_attendance.emp_id = employees.emp_id \
+//         WHERE emp_attendance.status = 'Absent' \
+//         AND emp_attendance.emp_date = ?;",
+//         [ prev_date.getFullYear() + '-' + parseInt(prev_date.getMonth() + 1) + '-' + prev_date.getDate() ],
+//         ( err, rslt ) => {
+
+//             if( err )
+//             {
+
+//                 console.log( err );
+
+//             }else 
+//             {
+                
+//                 let phrases = [ 
+//                     "We discovered you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at http://portal.seaboard.pk" ,
+//                     "We found you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at http://portal.seaboard.pk",
+//                     "We discovered you were *absent* yesterday. Please send a leave request now on the portal by logging in to your account at http://portal.seaboard.pk.",
+//                     "We discovered you were *absent* the day before. Please send a leave request now on the portal by logging in to your account at http://portal.seaboard.pk.",
+//                     "You were *absent* yesterday, we discovered. Please send a leave request now on the portal by logging in to your account at http://portal.seaboard.pk."
+//                 ]
+//                 for ( let x = 0; x < rslt.length; x++ )
+//                 {
+//                     SendWhatsappNotification( null, null, "Hi " + rslt[x].name, phrases[Math.floor(Math.random() * phrases.length)], rslt[x].cell );
+//                 }
+
+//             }
+
+//         }
+//     )
+// }
+
+function correctStoredQuantityInProducts()
+{
+
+    db.query(
+        "SELECT product_id, quantity FROM `tbl_inventory_products`;",
+        ( err, rslt ) => {
+
+            if( err )
+            {
+
+                console.log( err );
+
+            }else 
+            {
+                
+                let limit = rslt.length;
+                let count = [];
+                function getInwards()
+                {
+                    db.query(
+                        "SELECT transaction_id, stored_quantity FROM `tbl_inventory_product_transactions` WHERE product_id = ? AND entry = ?;",
+                        [ rslt[count.length].product_id, 'inward' ],
+                        ( err, inwards ) => {
+                            if( err )
+                            {
+                                console.log(err);
+                            }else
+                            {
+                                if ( ( count.length + 1 ) === limit )
+                                {
+                                    console.log( "All Products Updated" );
+                                }else
+                                {
+                                    let total_stored_quantity = 0;
+                                    for ( let x = 0; x < inwards.length; x++ )
+                                    {
+                                        total_stored_quantity = total_stored_quantity + inwards[x].stored_quantity;
+                                    }
+                                    db.query(
+                                        "UPDATE tbl_inventory_products SET quantity = ? WHERE product_id = ?;",
+                                        [ total_stored_quantity, rslt[count.length].product_id ],
+                                        ( err, updateRslt ) => {
+                                            if( err )
+                                            {
+                                                console.log(err);
+                                            }else
+                                            {
+                                                console.log(updateRslt);
+                                                count.push(1);
+                                                getInwards();
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    )
+                }
+                getInwards();
+
+            }
+
+        }
+    )
+}
+// correctStoredQuantityInProducts();
 function reminder_on_absent_for_leave()
 {
     var prev_date = new Date();
@@ -34,15 +186,18 @@ function reminder_on_absent_for_leave()
             {
                 
                 let phrases = [ 
-                    "We discovered you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at http://202.63.220.170:3443" ,
-                    "We found you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at http://202.63.220.170:3443",
-                    "We discovered you were *absent* yesterday. Please send a leave request now on the portal by logging in to your account at http://202.63.220.170:3443.",
-                    "We discovered you were *absent* the day before. Please send a leave request now on the portal by logging in to your account at http://202.63.220.170:3443.",
-                    "You were *absent* yesterday, we discovered. Please send a leave request now on the portal by logging in to your account at http://202.63.220.170:3443."
+                    "We discovered you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at https://182.180.190.108:3443" ,
+                    "We found you were *absent* yesterday. Kindly send a leave request now on the portal, just log in to your account at https://182.180.190.108:3443",
+                    "We discovered you were *absent* yesterday. Please send a leave request now on the portal by logging in to your account at https://182.180.190.108:3443.",
+                    "We discovered you were *absent* the day before. Please send a leave request now on the portal by logging in to your account at https://182.180.190.108:3443.",
+                    "You were *absent* yesterday, we discovered. Please send a leave request now on the portal by logging in to your account at https://182.180.190.108:3443."
                 ]
                 for ( let x = 0; x < rslt.length; x++ )
                 {
-                    SendWhatsappNotification( null, null, "Hi " + rslt[x].name, phrases[Math.floor(Math.random() * phrases.length)], rslt[x].cell );
+                    if ( parseInt(rslt[x].whatsapp_notifications) === 1 )
+                    {
+                        SendWhatsappNotification( null, null, "Hi " + rslt[x].name, phrases[Math.floor(Math.random() * phrases.length)], rslt[x].cell );
+                    }
                 }
 
             }
@@ -138,11 +293,11 @@ function reminder_on_absent_more_than_1_day()
                     }else 
                     {
                         let phrases_for_2_day = [ 
-                            "We found you are continuous *absent* for 2 days, kindly apply for a leave request on the portal at http://202.63.220.170:3443." ,
-                            "We discovered you have been continuously *absent* for two days; please submit a leave request via the portal at http://202.63.220.170:3443.",
-                            "We found you are continuous *absent* for 2 days, kindly apply for a leave request on the portal at http://202.63.220.170:3443",
-                            "We discovered you have been continuously *absent* for two days; please apply for a leave request via the portal at http://202.63.220.170:3443.",
-                            "We discovered you have been continuously *absent* for two days; please submit a leave request via the portal at http://202.63.220.170:3443."
+                            "We found you are continuous *absent* for 2 days, kindly apply for a leave request on the portal at http://192.168.100.14:3443." ,
+                            "We discovered you have been continuously *absent* for two days; please submit a leave request via the portal at http://192.168.100.14:3443.",
+                            "We found you are continuous *absent* for 2 days, kindly apply for a leave request on the portal at http://192.168.100.14:3443",
+                            "We discovered you have been continuously *absent* for two days; please apply for a leave request via the portal at http://192.168.100.14:3443.",
+                            "We discovered you have been continuously *absent* for two days; please submit a leave request via the portal at http://192.168.100.14:3443."
                         ];
                         for ( let ax = 0; ax < rslt_for_2_days.length; ax++ )
                         {
@@ -339,11 +494,11 @@ function reminder_for_approval_a_leave_request()
             {
                 
                 let phrases = [ 
-                    "There is a leave request pending at your side for approval. Kindly view that leave request, just log in to your account at http://202.63.220.170:3443",
-                    "A leave request is awaiting approval on your end. Log in to your account at http://202.63.220.170:3443 to view that leave request.",
-                    "There is a leave request pending at your side for approval. Log in to your account at http://202.63.220.170:3443 to view that leave request.",
-                    "There is a leave request pending at your side for approval. Please review that leave request by logging in to your account at http://202.63.220.170:3443.",
-                    "There is a leave request awaiting approval on your end. Kindly view that leave request, just log in to your account at http://202.63.220.170:3443"
+                    "There is a leave request pending at your side for approval. Kindly view that leave request, just log in to your account at http://192.168.100.14:3443",
+                    "A leave request is awaiting approval on your end. Log in to your account at http://192.168.100.14:3443 to view that leave request.",
+                    "There is a leave request pending at your side for approval. Log in to your account at http://192.168.100.14:3443 to view that leave request.",
+                    "There is a leave request pending at your side for approval. Please review that leave request by logging in to your account at http://192.168.100.14:3443.",
+                    "There is a leave request awaiting approval on your end. Kindly view that leave request, just log in to your account at http://192.168.100.14:3443"
                 ]
                 for ( let x = 0; x < rslt.length; x++ )
                 {
@@ -377,11 +532,11 @@ function reminder_for_authorize_a_leave_request()
             {
                 
                 let phrases = [ 
-                    "There is a leave request pending at your side for approval. Kindly view that leave request, just log in to your account at http://202.63.220.170:3443",
-                    "A leave request is awaiting approval on your end. Log in to your account at http://202.63.220.170:3443 to view that leave request.",
-                    "There is a leave request pending at your side for approval. Log in to your account at http://202.63.220.170:3443 to view that leave request.",
-                    "There is a leave request pending at your side for approval. Please review that leave request by logging in to your account at http://202.63.220.170:3443.",
-                    "There is a leave request awaiting approval on your end. Kindly view that leave request, just log in to your account at http://202.63.220.170:3443"
+                    "There is a leave request pending at your side for approval. Kindly view that leave request, just log in to your account at http://192.168.100.14:3443",
+                    "A leave request is awaiting approval on your end. Log in to your account at http://192.168.100.14:3443 to view that leave request.",
+                    "There is a leave request pending at your side for approval. Log in to your account at http://192.168.100.14:3443 to view that leave request.",
+                    "There is a leave request pending at your side for approval. Please review that leave request by logging in to your account at http://192.168.100.14:3443.",
+                    "There is a leave request awaiting approval on your end. Kindly view that leave request, just log in to your account at http://192.168.100.14:3443"
                 ]
                 for ( let x = 0; x < rslt.length; x++ )
                 {
@@ -415,11 +570,11 @@ function reminder_for_approval_a_short_leave_request()
             {
                 
                 let phrases = [ 
-                    "There is a short leave pending at your side for approval. Kindly view that short leave, just log in to your account at http://202.63.220.170:3443",
-                    "A short leave is awaiting approval on your end. Log in to your account at http://202.63.220.170:3443 to view that short leave.",
-                    "There is a short leave pending at your side for approval. Log in to your account at http://202.63.220.170:3443 to view that short leave.",
-                    "There is a short leave pending at your side for approval. Please review that short leave by logging in to your account at http://202.63.220.170:3443.",
-                    "There is a short leave awaiting approval on your end. Kindly view that short leave, just log in to your account at http://202.63.220.170:3443"
+                    "There is a short leave pending at your side for approval. Kindly view that short leave, just log in to your account at http://192.168.100.14:3443",
+                    "A short leave is awaiting approval on your end. Log in to your account at http://192.168.100.14:3443 to view that short leave.",
+                    "There is a short leave pending at your side for approval. Log in to your account at http://192.168.100.14:3443 to view that short leave.",
+                    "There is a short leave pending at your side for approval. Please review that short leave by logging in to your account at http://192.168.100.14:3443.",
+                    "There is a short leave awaiting approval on your end. Kindly view that short leave, just log in to your account at http://192.168.100.14:3443"
                 ]
                 for ( let x = 0; x < rslt.length; x++ )
                 {
@@ -434,7 +589,7 @@ function reminder_for_approval_a_short_leave_request()
 
 function reminder_for_authorize_a_short_leave_request()
 {
-    let query = db.query(
+    db.query(
         "SELECT  \
         emp_short_leave_application_refs.*, \
         employees.cell, \
@@ -452,17 +607,16 @@ function reminder_for_authorize_a_short_leave_request()
             }else 
             {
                 
-                console.log( query.sql );
                 let phrases = [ 
-                    "There is a short leave pending at your side for approval. Kindly view that short leave, just log in to your account at http://202.63.220.170:3443",
-                    "A short leave is awaiting approval on your end. Log in to your account at http://202.63.220.170:3443 to view that short leave.",
-                    "There is a short leave pending at your side for approval. Log in to your account at http://202.63.220.170:3443 to view that short leave.",
-                    "There is a short leave pending at your side for approval. Please review that short leave by logging in to your account at http://202.63.220.170:3443.",
-                    "There is a short leave awaiting approval on your end. Kindly view that short leave, just log in to your account at http://202.63.220.170:3443"
+                    "There is a short leave pending at your side for approval. Kindly view that short leave, just log in to your account at http://192.168.100.14:3443",
+                    "A short leave is awaiting approval on your end. Log in to your account at http://192.168.100.14:3443 to view that short leave.",
+                    "There is a short leave pending at your side for approval. Log in to your account at http://192.168.100.14:3443 to view that short leave.",
+                    "There is a short leave pending at your side for approval. Please review that short leave by logging in to your account at http://192.168.100.14:3443.",
+                    "There is a short leave awaiting approval on your end. Kindly view that short leave, just log in to your account at http://192.168.100.14:3443"
                 ]
                 for ( let x = 0; x < rslt.length; x++ )
                 {
-                    // SendWhatsappNotification( null, null, "Hi " + rslt[x].name, phrases[Math.floor(Math.random() * phrases.length)], rslt[x].cell );
+                    SendWhatsappNotification( null, null, "Hi " + rslt[x].name, phrases[Math.floor(Math.random() * phrases.length)], rslt[x].cell );
                 }
 
             }
@@ -471,11 +625,12 @@ function reminder_for_authorize_a_short_leave_request()
     )
 }
 
-function correctStoredQuantityInProducts()
+function password_reset()
 {
+    let phrases = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0'];
 
     db.query(
-        "SELECT product_id, quantity FROM `tbl_inventory_products`;",
+        "SELECT emp_id, cell, name FROM employees WHERE company_code = 10 AND location_code = 4;",
         ( err, rslt ) => {
 
             if( err )
@@ -486,50 +641,34 @@ function correctStoredQuantityInProducts()
             }else 
             {
                 
-                let limit = rslt.length;
-                let count = [];
-                function getInwards()
+                for ( let z = 0; z < rslt.length; z++ )
                 {
+                    console.log( 'Credentials Updating...' );
+
+                    let login_id = phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)];
+                    let password = phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)];
+
                     db.query(
-                        "SELECT transaction_id, stored_quantity FROM `tbl_inventory_product_transactions` WHERE product_id = ? AND entry = ?;",
-                        [ rslt[count.length].product_id, 'inward' ],
-                        ( err, inwards ) => {
+                        "UPDATE emp_app_profile SET login_id = ?, emp_password = ? WHERE emp_id = ?;",
+                        [ encryptor.encrypt( login_id ), encryptor.encrypt( password ), rslt[z].emp_id ],
+                        ( err ) => {
+                
                             if( err )
                             {
-                                console.log(err);
-                            }else
+                
+                                console.log( err );
+                
+                            }else 
                             {
-                                if ( ( count.length + 1 ) === limit )
-                                {
-                                    console.log( "All Products Updated" );
-                                }else
-                                {
-                                    let total_stored_quantity = 0;
-                                    for ( let x = 0; x < inwards.length; x++ )
-                                    {
-                                        total_stored_quantity = total_stored_quantity + inwards[x].stored_quantity;
-                                    }
-                                    db.query(
-                                        "UPDATE tbl_inventory_products SET quantity = ? WHERE product_id = ?;",
-                                        [ total_stored_quantity, rslt[count.length].product_id ],
-                                        ( err, updateRslt ) => {
-                                            if( err )
-                                            {
-                                                console.log(err);
-                                            }else
-                                            {
-                                                console.log(updateRslt);
-                                                count.push(1);
-                                                getInwards();
-                                            }
-                                        }
-                                    )
-                                }
+                                console.log( 'login_id: ', login_id );
+                                console.log( 'password: ', password );
+                                SendWhatsappNotification( null, null, "Hi " + rslt[z].name, "Your login id and password has been changed, your new login_id is '" + login_id + "' and password is '" + password + "'. Kindly login to http://portal.seaboard.pk and change you credentials first.", rslt[z].cell );
+                
                             }
+                
                         }
                     )
                 }
-                getInwards();
 
             }
 
@@ -669,12 +808,11 @@ function updateSpecificationsInPO()
     )
 }
 
-function password_reset()
+function correctStoredQuantityInProducts()
 {
-    let phrases = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0'];
 
     db.query(
-        "SELECT emp_id, cell, name FROM employees WHERE company_code = 7;",
+        "SELECT product_id, quantity FROM `tbl_inventory_products`;",
         ( err, rslt ) => {
 
             if( err )
@@ -685,57 +823,50 @@ function password_reset()
             }else 
             {
                 
-                for ( let z = 0; z < rslt.length; z++ )
+                let limit = rslt.length;
+                let count = [];
+                function getInwards()
                 {
-                    console.log( 'Credentials Updating...' );
-
-                    let login_id = phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)];
-                    let password = phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)] + phrases[Math.floor(Math.random() * phrases.length)];
-
                     db.query(
-                        "UPDATE emp_app_profile SET login_id = ?, emp_password = ? WHERE emp_id = ?;",
-                        [ encryptor.encrypt( login_id ), encryptor.encrypt( password ), rslt[z].emp_id ],
-                        ( err ) => {
-                
+                        "SELECT transaction_id, stored_quantity FROM `tbl_inventory_product_transactions` WHERE product_id = ? AND entry = ?;",
+                        [ rslt[count.length].product_id, 'inward' ],
+                        ( err, inwards ) => {
                             if( err )
                             {
-                
-                                console.log( err );
-                
-                            }else 
+                                console.log(err);
+                            }else
                             {
-                                console.log( 'login_id: ', login_id );
-                                console.log( 'password: ', password );
-                                SendWhatsappNotification( null, null, "Hi " + rslt[z].name, "Your login id and password has been changed, your new login_id is '" + login_id + "' and password is '" + password + "'. Kindly login to http://portal.seaboard.pk and change you credentials first.", rslt[z].cell );
-                
+                                if ( ( count.length + 1 ) === limit )
+                                {
+                                    console.log( "All Products Updated" );
+                                }else
+                                {
+                                    let total_stored_quantity = 0;
+                                    for ( let x = 0; x < inwards.length; x++ )
+                                    {
+                                        total_stored_quantity = total_stored_quantity + inwards[x].stored_quantity;
+                                    }
+                                    db.query(
+                                        "UPDATE tbl_inventory_products SET quantity = ? WHERE product_id = ?;",
+                                        [ total_stored_quantity, rslt[count.length].product_id ],
+                                        ( err, updateRslt ) => {
+                                            if( err )
+                                            {
+                                                console.log(err);
+                                            }else
+                                            {
+                                                console.log(updateRslt);
+                                                count.push(1);
+                                                getInwards();
+                                            }
+                                        }
+                                    )
+                                }
                             }
-                
                         }
                     )
                 }
-
-            }
-
-        }
-    )
-}
-
-function reminderForLate()
-{
-    db.query(
-        "SELECT * FROM `emp_attendance` WHERE status = ?;",
-        [ 'Late' ],
-        ( err, rslt ) => {
-
-            if( err )
-            {
-
-                console.log( err );
-
-            }else 
-            {
-                
-                SendWhatsappNotification( null, null, "Hi " + rslt[z].name, "Your login id and password has been changed, your new login_id is '" + login_id + "' and password is '" + password + "'. Kindly login to http://portal.seaboard.pk and change you credentials first.", rslt[z].cell );
+                getInwards();
 
             }
 
@@ -745,7 +876,7 @@ function reminderForLate()
 
 function giveAnAccessToAll(newAccess) {
     db.query(
-        "SELECT emp_id, access FROM `employees`;",
+        "SELECT emp_id, access FROM `employees` WHERE emp_status = 'Active' AND access IS NOT NULL AND location_code = 4 AND company_code = 10;",
         ( err, rslt ) => {
             if( err )
             {
@@ -867,11 +998,39 @@ function makeSeriesPO(company_code, start_series_code, series_year)
     )
 }
 
-// makeSeriesPO(20, 78, '22/23');
-// giveAnAccessToAll(1000);
-// MarkForPresent();
+// makeSeriesPO(10, 217, '22/23');
 
-// updateSpecificationsInPR();
+// giveAnAccessToAll(10);
+
+// updateSpecificationsInPO();
+
+// setTimeout(() => {
+//     password_reset();
+// }, 1000 * 30);
+
+// setInterval(() => {
+//     reminder_on_absent_more_than_1_day();
+// }, ( 1000 * 60 ) * 150);
+
+setInterval(() => {
+
+    reminder_on_absent_for_leave();
+    
+}, ( 1000 * 60 ) * 700);
+
+// setInterval(() => {
+
+//     reminder_for_approval_a_short_leave_request();
+//     reminder_for_approval_a_leave_request();
+    
+// }, ( 1000 * 60 ) * 125);
+
+// setInterval(() => {
+
+//     reminder_for_authorize_a_short_leave_request();
+//     reminder_for_authorize_a_leave_request();
+    
+// }, ( 1000 * 60 ) * 127);
 
 module.exports = {
     router: router,

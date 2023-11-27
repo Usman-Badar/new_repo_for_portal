@@ -1322,6 +1322,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
         setFilters({start_date: '', end_date: ''});
         $('input[name=start_date]').val('');
         $('input[name=end_date]').val('');
+        // setFilterOn(false);
     }
 
     const [DateFilter, setDateFilter] = useState('');
@@ -1352,23 +1353,6 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                 {ConfirmAcceptance && <Modal show={ConfirmAcceptance} Hide={() => setConfirmAcceptance(!ConfirmAcceptance)} content={AcceptanceContent} />}
                 {ConfirmAction && <Modal show={ConfirmAction} Hide={() => setConfirmAction(!ConfirmAction)} content={ActionContent} />}
                 {ShowModal && <Modal show={ShowModal} Hide={() => setShowModal(!ShowModal)} content={Content} />}
-                {FilterOn && <Modal show={FilterOn} Hide={() => setFilterOn(!FilterOn)} content={
-                    <>
-                        <h5><b>Apply Filters</b></h5>
-                        <hr />
-                        <div className="d-flex mb-3" style={{ gap: '20px' }}>
-                            <div className="w-50">
-                                <label className="mb-0"><b>Start Date</b></label>
-                                <input type="date" name="start_date" defaultValue={Filters.start_date} onChange={(e) => setFilters({...Filters, start_date: e.target.value})} className="form-control" />
-                            </div>
-                            <div className="w-50">
-                                <label className="mb-0"><b>End Date</b></label>
-                                <input type="date" name="end_date" defaultValue={Filters.end_date} onChange={(e) => setFilters({...Filters, end_date: e.target.value})} className="form-control" />
-                            </div>
-                        </div>
-                        <button className="btn submit mt-3 ml-auto d-block" onClick={clearFilters}>Clear</button>
-                    </>
-                } />}
                 <BreadCrumb links={[{ label: 'Performance Review', href: '/acr/options' }]} currentLabel="Growth Review Details" />
                 <div className="d-grid-growth-details page pb-3">
                     <div className="ticket_container page-content">
@@ -1392,6 +1376,10 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                 {
                                     JSON.parse(AccessControls.access).includes(72)
                                     ?
+                                    FilterOn
+                                    ?
+                                    <button onClick={() => setFilterOn(false)} className="btn cancle ml-2">Close{Filters.start_date !== '' || Filters.end_date !== '' ? <sup className="text-danger">*</sup> : null}</button>
+                                    :
                                     <button onClick={() => setFilterOn(true)} className="btn light ml-2">Filters{Filters.start_date !== '' || Filters.end_date !== '' ? <sup className="text-danger">*</sup> : null}</button>
                                     :null
                                 }
@@ -1437,6 +1425,26 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                     <br />
                                 </>
                                 : null
+                        }
+                        {
+                            FilterOn
+                            ?
+                            <>
+                                <h5><b>Apply Filters</b></h5>
+                                <hr />
+                                <div className="d-flex mb-3" style={{ gap: '20px' }}>
+                                    <div className="w-50">
+                                        <label className="mb-0"><b>Start Date</b></label>
+                                        <input type="date" name="start_date" defaultValue={Filters.start_date} onChange={(e) => setFilters({...Filters, start_date: e.target.value})} className="form-control" />
+                                    </div>
+                                    <div className="w-50">
+                                        <label className="mb-0"><b>End Date</b></label>
+                                        <input type="date" name="end_date" defaultValue={Filters.end_date} onChange={(e) => setFilters({...Filters, end_date: e.target.value})} className="form-control" />
+                                    </div>
+                                </div>
+                                <button className="btn submit mt-3 ml-auto d-block" onClick={clearFilters}>Clear</button>
+                            </>
+                            :null
                         }
                         <table className="table table-borderless mb-0">
                             <tbody>
@@ -1676,7 +1684,7 @@ const GrowthReviewDetailsComponent = ({ updateCategory, AccessControls, GrowthCa
                                                                             <>
                                                                                 <div className="d-flex align-items-center justify-content-between">
                                                                                     <p className="text-capitalize font-weight-bold mb-0">{confirmed === 1 ? "Confirmation" : "Declining"} Remarks:</p>
-                                                                                    <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <span className="text-success">Confirmed</span> : <span className="text-danger">Declined</span>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
+                                                                                    <p className="mb-0 text-right text-secondary">{confirmed === 1 ? <b className="text-success">Confirmed</b> : <b className="text-danger">Declined</b>} on {confirmed_date && moment(new Date(confirmed_date)).format('DD-MMM-YYYY')}</p>
                                                                                 </div>
                                                                                 <p className="mb-0">
                                                                                     {confirmed_remarks}

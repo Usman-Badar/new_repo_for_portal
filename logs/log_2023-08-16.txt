@@ -1,83 +1,52 @@
-10:28:51 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+ReferenceError: emp_id is not defined
 
-11:37:21 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+ReferenceError: emp_id is not defined
 
-12:25:31 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+TypeError: Cannot read property 'today' of undefined
 
-14:00:27 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+TypeError: Cannot read property 'name' of undefined
 
-14:00:52 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+TypeError: Cannot read property 'accepted_by' of undefined
 
-14:00:52 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
-    at __puppeteer_evaluation_script__:2:53
+TypeError: Cannot read property 'today' of undefined
 
-14:00:52 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
-    at __puppeteer_evaluation_script__:2:53
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
 
-14:00:52 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
-    at __puppeteer_evaluation_script__:2:53
+TypeError: Cannot read property 'name' of undefined
 
-14:00:52 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'createWid')
-    at __puppeteer_evaluation_script__:2:53
+TypeError: Cannot read property 'name' of undefined
 
-16:46:11 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+TypeError: Cannot read property 'name' of undefined
 
-16:51:40 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+TypeError: Cannot read property 'name' of undefined
 
-16:53:34 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+TypeError: Cannot read property 'name' of undefined
 
-16:57:12 GMT+0500 (Pakistan Standard Time)
+09:39:08 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
-
-17:04:08 GMT+0500 (Pakistan Standard Time)
-type: error
-ReferenceError: connection is not defined
-
-17:05:00 GMT+0500 (Pakistan Standard Time)
-type: error
-ReferenceError: connection is not defined
-
-17:05:43 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
-
-17:11:40 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'CallCollection')
-    at __puppeteer_evaluation_script__:9:66
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
 

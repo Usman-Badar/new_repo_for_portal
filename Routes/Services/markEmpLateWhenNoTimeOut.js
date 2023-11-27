@@ -29,15 +29,14 @@ function UpdateAtt(month, year)
                         "UPDATE emp_attendance a \
                         JOIN employees b ON a.emp_id = b.emp_id \
                         SET a.status = 'Present' \
-                        WHERE b.time_in = ? AND a.time_in < ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND a.edit_by IS NULL; \
-                        UPDATE emp_attendance a \
-                        JOIN employees b ON a.emp_id = b.emp_id \
-                        SET a.status = 'Present' \
-                        WHERE MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.status = 'Absent' AND a.time_in IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND a.edit_by IS NULL; \
+                        WHERE b.time_in = ? AND a.time_in < ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND a.status != 'leave' AND a.status != 'short leave' AND a.edit_by IS NULL; \
+                        UPDATE emp_attendance \
+                        SET emp_attendance.status = 'Present' \
+                        WHERE MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ? AND emp_attendance.status = 'Absent' AND emp_attendance.time_in IS NOT NULL AND emp_attendance.emp_date != CURDATE() AND emp_attendance.status != 'OFF' AND emp_attendance.status != 'leave' AND emp_attendance.status != 'short leave' AND emp_attendance.edit_by IS NULL; \
                         UPDATE emp_attendance a \
                         JOIN employees b ON a.emp_id = b.emp_id \
                         SET a.status = 'Late' \
-                        WHERE b.time_in = ? AND a.time_in > ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_in IS NOT NULL AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND a.edit_by IS NULL;", 
+                        WHERE b.time_in = ? AND a.time_in > ? AND MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.time_in IS NOT NULL AND a.time_out IS NOT NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND a.status != 'leave' AND a.status != 'short leave' AND a.edit_by IS NULL;", 
                         [ 
                             rslt[count.length].time_in, time, month, year, 
                             month, year, 
@@ -52,10 +51,9 @@ function UpdateAtt(month, year)
                                 if ( ( count.length + 1 ) === limit )
                                 {
                                     db.query(
-                                        "UPDATE emp_attendance a \
-                                        JOIN employees b ON a.emp_id = b.emp_id \
-                                        SET a.status = 'Late' \
-                                        WHERE MONTH(a.emp_date) = ? AND YEAR(a.emp_date) = ? AND a.status = 'Present' AND a.time_out IS NULL AND a.emp_date != CURDATE() AND a.status != 'OFF' AND a.edit_by IS NULL;",
+                                        "UPDATE emp_attendance \
+                                        SET emp_attendance.status = 'Late' \
+                                        WHERE MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ? AND emp_attendance.status = 'Present' AND emp_attendance.time_out IS NULL AND emp_attendance.emp_date != CURDATE() AND emp_attendance.status != 'OFF' AND emp_attendance.status != 'leave' AND emp_attendance.status != 'short leave' AND emp_attendance.edit_by IS NULL;",
                                         [ month, year ],
                                         ( err ) => {
                                             if( err )

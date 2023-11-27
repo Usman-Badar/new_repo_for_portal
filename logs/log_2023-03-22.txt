@@ -1,44 +1,16 @@
-12:25:51 GMT+0500 (Pakistan Standard Time)
+15:39:16 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'report_id')
+TypeError: Cannot read property 'name' of undefined
 
-14:04:19 GMT+0500 (Pakistan Standard Time)
+15:39:16 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Cannot find module './data.json'
-Require stack:
-- F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js
-- F:\IT\Web Development\MERN\portal\Routes\Employee\employee.js
-- F:\IT\Web Development\MERN\portal\server.js
+TypeError: Cannot read property 'name' of undefined
 
-14:05:37 GMT+0500 (Pakistan Standard Time)
+15:39:16 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Cannot find module './data.json'
-Require stack:
-- F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js
-- F:\IT\Web Development\MERN\portal\Routes\Employee\employee.js
-- F:\IT\Web Development\MERN\portal\server.js
+TypeError: Cannot read property 'name' of undefined
 
-14:06:15 GMT+0500 (Pakistan Standard Time)
+15:39:16 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Cannot find module 'data.json'
-Require stack:
-- F:\IT\Web Development\MERN\portal\Routes\Whatsapp\whatsapp.js
-- F:\IT\Web Development\MERN\portal\Routes\Employee\employee.js
-- F:\IT\Web Development\MERN\portal\server.js
-
-14:45:24 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
-
-16:08:45 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
-
-16:20:24 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
-
-16:44:32 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
 

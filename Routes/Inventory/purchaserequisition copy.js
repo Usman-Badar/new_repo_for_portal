@@ -772,7 +772,7 @@ router.post('/setprtowaitforapproval', ( req, res ) => {
                                             }else 
                                             {
                                 
-                                                fs.mkdir('client/public/images/Inventory/pr_attachments/' + folderName,
+                                                fs.mkdir('client/images/Inventory/pr_attachments/' + folderName,
                                                     { recursive: true },
                                                     (err) => {
                                                         if (err) {
@@ -784,7 +784,7 @@ router.post('/setprtowaitforapproval', ( req, res ) => {
                                                         }
                                                         else {
     
-                                                            Attachments[x].mv('client/public/images/Inventory/pr_attachments/' + folderName + '/' + Attachments[x].name, (err) => {
+                                                            Attachments[x].mv('client/images/Inventory/pr_attachments/' + folderName + '/' + Attachments[x].name, (err) => {
     
                                                                 if (err) {
     

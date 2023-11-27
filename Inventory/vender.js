@@ -303,7 +303,7 @@ router.post(
         const { key } = req.body;
 
         db.query(
-            "SELECT * FROM `tbl_inventory_venders` WHERE tbl_inventory_venders.name LIKE '%" + key + "%' AND status = 'active' AND verified = 1;",
+            "SELECT * FROM `tbl_inventory_venders` WHERE tbl_inventory_venders.name LIKE '%" + key + "%' AND status = 'active';",
             ( err, rslt ) => {
     
                 if( err )

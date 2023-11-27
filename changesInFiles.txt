@@ -1,0 +1,53 @@
+FOR V3.0.3
+
+add CreateLogs() in response
+E:\IT\Web Development\MERN\portal\Routes\ItemRequests\itemrequests.js
+route = /approveitemrequest
+date = 2022-08-01
+
+--------------------------------------------------------
+
+add new table tbl_items_inward_entry
+date = 2022-08-02
+
+--------------------------------------------------------
+
+add columns in tblitems
+date = 2022-08-02
+
+--------------------------------------------------------
+
+change in query
+E:\IT\Web Development\MERN\portal\Routes\Store\store.js
+route = /getmatchedstoreitems
+date = 2022-08-02
+
+--------------------------------------------------------
+
+drop quantity columns in tblitems
+date = 2022-08-02
+
+--------------------------------------------------------
+
+add new route
+E:\IT\Web Development\MERN\portal\Routes\Store\store.js
+route = /getallitemsnames
+date = 2022-08-02
+
+--------------------------------------------------------
+
+add new file menu.js
+E:\IT\Web Development\MERN\portal\Routes\Admin_Modules\menu.js
+date = 2022-08-08
+
+--------------------------------------------------------
+
+add new table in MySQL `tbl_portal_menu`
+date = 2022-08-08
+
+--------------------------------------------------------
+
+change in notifications.js
+date = 2022-08-15
+
+--------------------------------------------------------
