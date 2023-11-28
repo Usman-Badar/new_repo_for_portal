@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../db/portal_issues');
+const db = require('../../db/conn_portal_issues');
 
 router.get('/portal/issues/categories', ( req, res ) => {
     db.query(

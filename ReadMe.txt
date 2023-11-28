@@ -1,1 +1,1 @@
-auth.js
+Cash.js file has been changed.

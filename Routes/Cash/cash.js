@@ -178,10 +178,11 @@ router.post('/cash/advance/create', ( req, res ) => {
 
 router.post('/cash/load/requests', ( req, res ) => {
 
-    const { emp_id, cashier, location_code, accessKey } = req.body;
-
-    db.query(
-        "SELECT  \
+    // const { shipViewer, cashViewer, emp_id, cashier, location_code, accessKey } = req.body;
+    const { shp_line_adv_cash_viewer, cashViewer, emp_id, cashier, location_code, accessKey } = req.body;
+    let query = "";
+    if (shp_line_adv_cash_viewer === 1) {
+        query = "SELECT  \
         db_cash_receipts.*, \
         locations.location_name, \
         companies.company_name, \
@@ -195,10 +196,58 @@ router.post('/cash/load/requests', ( req, res ) => {
         LEFT OUTER JOIN employees req ON db_cash_receipts.emp_id = req.emp_id \
         LEFT OUTER JOIN locations ON db_cash_receipts.location = locations.location_code \
         LEFT OUTER JOIN companies ON db_cash_receipts.company = companies.company_code \
-        " + ( accessKey === 1 ? "" : cashier ? ("WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued' OR db_cash_receipts.status = 'cleared')") : "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" ) + " ORDER BY `id` DESC;",
+        WHERE db_cash_receipts.shp_line_adv = 'Y' OR approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ? ORDER BY `id` DESC;";
+    }else  {
+        query = "SELECT  \
+        db_cash_receipts.*, \
+        locations.location_name, \
+        companies.company_name, \
+        companies.code AS company_code_name, \
+        record.name AS record_emp_name, \
+        appr.name AS appr_emp_name, \
+        req.name AS requested_emp_name \
+        FROM `db_cash_receipts`  \
+        LEFT OUTER JOIN employees record ON db_cash_receipts.verified_by = record.emp_id \
+        LEFT OUTER JOIN employees appr ON db_cash_receipts.approved_by = appr.emp_id \
+        LEFT OUTER JOIN employees req ON db_cash_receipts.emp_id = req.emp_id \
+        LEFT OUTER JOIN locations ON db_cash_receipts.location = locations.location_code \
+        LEFT OUTER JOIN companies ON db_cash_receipts.company = companies.company_code \
+        " + ( accessKey === 1 ? 
+            (cashViewer === 1 ? 
+                "WHERE db_cash_receipts.shp_line_adv = 'N' OR approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ? " 
+                : 
+                ""
+            ) 
+            : cashier === 1 ? 
+                (
+                "WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued')"
+                )    
+                :   
+                "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" 
+                ) + " ORDER BY `id` DESC;";
+    }
+    console.log(query);
+
+    // PREVIOUS QUERY
+    // "SELECT  \
+    // db_cash_receipts.*, \
+    // locations.location_name, \
+    // companies.company_name, \
+    // companies.code AS company_code_name, \
+    // record.name AS record_emp_name, \
+    // appr.name AS appr_emp_name, \
+    // req.name AS requested_emp_name \
+    // FROM `db_cash_receipts`  \
+    // LEFT OUTER JOIN employees record ON db_cash_receipts.verified_by = record.emp_id \
+    // LEFT OUTER JOIN employees appr ON db_cash_receipts.approved_by = appr.emp_id \
+    // LEFT OUTER JOIN employees req ON db_cash_receipts.emp_id = req.emp_id \
+    // LEFT OUTER JOIN locations ON db_cash_receipts.location = locations.location_code \
+    // LEFT OUTER JOIN companies ON db_cash_receipts.company = companies.company_code \
+    // " + ( accessKey === 1 ? (cashViewer ? "WHERE db_cash_receipts.shp_line_adv = 'N' OR approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" : shipViewer ? "WHERE db_cash_receipts.shp_line_adv = 'Y' OR approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" : "") : cashier ? ("WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued')") : "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" ) + " ORDER BY `id` DESC;",
+    db.query(
+        query,
         [ emp_id, emp_id, emp_id, emp_id ],
         ( err, rslt ) => {
-
             if( err )
             {
                 console.log(err);
@@ -662,9 +711,11 @@ router.post('/cash/load/request/cancel', ( req, res ) => {
     const { request_id, remarks, amount, employee, appr_by, emp_id } = req.body;
     const d = new Date();
 
+    // "UPDATE db_cash_receipts SET approved_by = ?, status = ?, approved_date = ?, approved_time = ?, hod_remarks = ? WHERE id = ? AND verified_by = ?;",
+    // [ emp_id, 'cancelled', d, d.toTimeString(), remarks, request_id, emp_id ],
     db.query(
-        "UPDATE db_cash_receipts SET approved_by = ?, status = ?, approved_date = ?, approved_time = ?, hod_remarks = ? WHERE id = ? AND verified_by = ?;",
-        [ emp_id, 'cancelled', d, d.toTimeString(), remarks, request_id, emp_id ],
+        "UPDATE db_cash_receipts SET cancelled_by = ?, status = ?, cancelled_at = ?, cancellation_remarks = ? WHERE id = ? AND emp_id = ?;",
+        [ emp_id, 'cancelled', d, remarks, request_id, emp_id ],
         ( err ) => {
 
             if( err )
@@ -681,7 +732,7 @@ router.post('/cash/load/request/cancel', ( req, res ) => {
                     "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
                     "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
                     "SELECT name, cell FROM employees WHERE emp_id = ?;",
-                    [ emp_id, employee, appr_by ],
+                    [ emp_id, appr_by ],
                     ( err, result ) => {
                         if( err )
                         {
@@ -692,9 +743,8 @@ router.post('/cash/load/request/cancel', ( req, res ) => {
                         {
                             const message = result[0][0].name + " has cancelled an advance cash for PKR (" + amount.toLocaleString('en') + ")";
                             administrativeNotifications( link, owner, message );
-                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your advance cash request has been successfully canceled, the requested employee " + result[1][0].name + " has been notified about this decision. Thank you", result[0][0].cell );
-                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "We regret to inform you that your advance cash request has been cancelled by " + result[0][0].name +  " with the following remarks '" + remarks + "'" + " If you have any concerns or wish to discuss this further, please feel free to reach out to us." , result[1][0].cell );
-                            SendWhatsappNotification( null, null, "Hi " + result[2][0].name, "We regret to inform you that" + result[0][0].name + " has cancelled an advance cash request with the following remarks '" + remarks + "'", result[2][0].cell );
+                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "The advance cash request has been successfully canceled", result[0][0].cell );
+                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "The advance cash request has been successfully canceled", result[1][0].cell );
                         }
                     }
                 );

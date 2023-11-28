@@ -29,6 +29,19 @@ export const GetLocations = ( setLocations ) => {
     )
 }
 
+export const GetCompanyLocations = ( company_code, setLocations ) => {
+    console.log(company_code)
+    axios.post('/getcompanylocations', {company_code: company_code}).then(
+        res => {
+            setLocations( res.data );
+        }
+    ).catch(
+        err => {
+            console.log( err );
+        }
+    )
+}
+
 export const loadEmployees = ( setEmployees ) => {
     axios.post(
         '/get/employees/all',

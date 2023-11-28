@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { GetCompanies, GetLocations, loadEmployees, loadPRList, loadSlipList, onCreateAdvanceCash, onCreateShpCash } from './Functions';
+import { GetCompanies, GetCompanyLocations, GetLocations, loadEmployees, loadPRList, loadSlipList, onCreateAdvanceCash, onCreateShpCash } from './Functions';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 const UI = lazy( () => import('./Ui') );
@@ -68,9 +68,16 @@ function Form() {
     useEffect(
         () => {
             GetCompanies( setCompanies );
-            GetLocations( setLocations );
             loadEmployees( setEmployees );
         }, []
+    );
+
+    useEffect(
+        () => {
+            if (Status === 'AdvanceCashForm') {
+                GetLocations( setLocations );
+            }
+        }, [Status]
     );
     useEffect(
         () => {
@@ -140,6 +147,7 @@ function Form() {
                 Other={ Other }
                 AccessControls={AccessControls}
 
+                GetCompanyLocations={(value) => GetCompanyLocations(value, setLocations)}
                 onCreateShpCash={(e) => onCreateShpCash(e, history, parseFloat(DO.amount) + parseFloat(LOLO.amount) + parseFloat(DET.amount) + parseFloat(DMGDT.amount) + parseFloat(CSC.amount) + parseFloat(Other.amount), DO, LOLO, DET, DMGDT, CSC, Other)}
                 setSlipAttachment={ setSlipAttachment }
                 attachPR={ ( pr_id, pr_code, specifications ) => { setPRCode(pr_code); setPR( pr_id ); setPRAttachment(false); setSPRSpecifications(specifications); } }

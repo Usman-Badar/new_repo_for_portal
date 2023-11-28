@@ -106,7 +106,7 @@ const LockUser = () => {
                                         <td>{i+1}</td>
                                         <td>
                                             <div className="d-flex align-items-center">
-                                                <img src={`images/employees/${val.emp_image}`} alt='employee' width={50} height={50} className='rounded-circle' />
+                                                <img src={`${process.env.REACT_APP_SERVER}/images/employees/${val.emp_image}`} alt='employee' width={50} height={50} className='rounded-circle' />
                                                 <div className='pl-2'>
                                                     <b>{val.name}</b><br />
                                                     <span>{val.department_name}</span>
