@@ -91,98 +91,187 @@ router.post('/applyshortleave', (req, res) => {
 
 router.post('/getallleaves', (req, res) => {
 
-    const { empID } = req.body;
+    const { empID, all } = req.body;
 
-    db.query(
-        "SELECT \
-        employees.emp_id, \
-        employees.name, \
-        emp_leave_application_refs.*, \
-        emp_leave_applications.*  \
-        FROM employees \
-        RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
-        LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
-        WHERE emp_leave_application_refs.requested_by = " + empID + " OR emp_leave_application_refs.received_by = " + empID + " OR emp_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_leave_applications.leave_id DESC",
-        (err, rslt) => {
-
-            if (err) {
-
-                res.status(500).send(err);
-                res.end();
-
-            } else {
-
-                res.send(rslt);
-                res.end();
-
+    if (parseInt(all) === 1) {
+        db.query(
+            "SELECT \
+            employees.emp_id, \
+            employees.name, \
+            emp_leave_application_refs.*, \
+            emp_leave_applications.*  \
+            FROM employees \
+            RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
+            LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
+            ORDER BY emp_leave_applications.leave_id DESC",
+            (err, rslt) => {
+    
+                if (err) {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                } else {
+    
+                    res.send(rslt);
+                    res.end();
+    
+                }
+    
             }
-
-        }
-    )
+        )
+    }else {
+        db.query(
+            "SELECT \
+            employees.emp_id, \
+            employees.name, \
+            emp_leave_application_refs.*, \
+            emp_leave_applications.*  \
+            FROM employees \
+            RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
+            LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
+            WHERE emp_leave_application_refs.requested_by = " + empID + " OR emp_leave_application_refs.received_by = " + empID + " OR emp_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_leave_applications.leave_id DESC",
+            (err, rslt) => {
+    
+                if (err) {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                } else {
+    
+                    res.send(rslt);
+                    res.end();
+    
+                }
+    
+            }
+        )
+    }
 
 });
 
 router.post('/getallrecentleaves', (req, res) => {
 
-    const { empID } = req.body;
+    const { empID, all } = req.body;
 
-    db.query(
-        "SELECT \
-        employees.emp_id, \
-        employees.name, \
-        emp_leave_application_refs.*, \
-        emp_leave_applications.*  \
-        FROM employees \
-        RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
-        LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
-        WHERE emp_leave_application_refs.received_by = " + empID + " OR emp_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_leave_applications.leave_id DESC LIMIT 10",
-        (err, rslt) => {
-
-            if (err) {
-
-                res.status(500).send(err);
-                res.end();
-
-            } else {
-
-                if ( rslt.length === 0 )
-                {
-                    db.query(
-                        "SELECT \
-                        employees.emp_id, \
-                        employees.name, \
-                        emp_leave_application_refs.*, \
-                        emp_leave_applications.*  \
-                        FROM employees \
-                        RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
-                        LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
-                        WHERE emp_leave_application_refs.requested_by = " + empID + " OR emp_leave_application_refs.received_by = " + empID + " OR emp_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_leave_applications.leave_id DESC LIMIT 5",
-                        (err, rslt) => {
-                
-                            if (err) {
-                
-                                res.status(500).send(err);
-                                res.end();
-                
-                            } else {
-                
-                                res.send(rslt);
-                                res.end();
-                
-                            }
-                
-                        }
-                    )
-                }else
-                {
-                    res.send(rslt);
+    if (all === 1) {
+        db.query(
+            "SELECT \
+            employees.emp_id, \
+            employees.name, \
+            emp_leave_application_refs.*, \
+            emp_leave_applications.*  \
+            FROM employees \
+            RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
+            LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
+            ORDER BY emp_leave_applications.leave_id DESC LIMIT 10",
+            (err, rslt) => {
+    
+                if (err) {
+    
+                    res.status(500).send(err);
                     res.end();
+    
+                } else {
+    
+                    if ( rslt.length === 0 )
+                    {
+                        db.query(
+                            "SELECT \
+                            employees.emp_id, \
+                            employees.name, \
+                            emp_leave_application_refs.*, \
+                            emp_leave_applications.*  \
+                            FROM employees \
+                            RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
+                            LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
+                            ORDER BY emp_leave_applications.leave_id DESC LIMIT 10",
+                            (err, rslt) => {
+                    
+                                if (err) {
+                    
+                                    res.status(500).send(err);
+                                    res.end();
+                    
+                                } else {
+                    
+                                    res.send(rslt);
+                                    res.end();
+                    
+                                }
+                    
+                            }
+                        )
+                    }else
+                    {
+                        res.send(rslt);
+                        res.end();
+                    }
+    
                 }
-
+    
             }
-
-        }
-    )
+        )
+    }else {
+        db.query(
+            "SELECT \
+            employees.emp_id, \
+            employees.name, \
+            emp_leave_application_refs.*, \
+            emp_leave_applications.*  \
+            FROM employees \
+            RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
+            LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
+            WHERE emp_leave_application_refs.received_by = " + empID + " OR emp_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_leave_applications.leave_id DESC LIMIT 10",
+            (err, rslt) => {
+    
+                if (err) {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                } else {
+    
+                    if ( rslt.length === 0 )
+                    {
+                        db.query(
+                            "SELECT \
+                            employees.emp_id, \
+                            employees.name, \
+                            emp_leave_application_refs.*, \
+                            emp_leave_applications.*  \
+                            FROM employees \
+                            RIGHT OUTER JOIN emp_leave_application_refs ON emp_leave_application_refs.requested_by = employees.emp_id \
+                            LEFT OUTER JOIN emp_leave_applications ON emp_leave_applications.leave_id = emp_leave_application_refs.leave_id \
+                            WHERE emp_leave_application_refs.requested_by = " + empID + " OR emp_leave_application_refs.received_by = " + empID + " OR emp_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_leave_applications.leave_id DESC LIMIT 5",
+                            (err, rslt) => {
+                    
+                                if (err) {
+                    
+                                    res.status(500).send(err);
+                                    res.end();
+                    
+                                } else {
+                    
+                                    res.send(rslt);
+                                    res.end();
+                    
+                                }
+                    
+                            }
+                        )
+                    }else
+                    {
+                        res.send(rslt);
+                        res.end();
+                    }
+    
+                }
+    
+            }
+        )
+    }
 
 });
 
@@ -235,34 +324,63 @@ router.post('/getallavailedleaves', (req, res) => {
 
 router.post('/getallshortleaves', (req, res) => {
 
-    const { empID } = req.body;
+    const { empID, all } = req.body;
 
-    db.query(
-        "SELECT \
-        employees.emp_id, \
-        employees.name, \
-        emp_short_leave_application_refs.*, \
-        emp_short_leave_applications.* \
-        FROM employees \
-        RIGHT OUTER JOIN emp_short_leave_application_refs ON emp_short_leave_application_refs.requested_by = employees.emp_id \
-        LEFT OUTER JOIN emp_short_leave_applications ON emp_short_leave_applications.leave_id = emp_short_leave_application_refs.leave_id \
-        WHERE emp_short_leave_application_refs.requested_by = " + empID + " OR emp_short_leave_application_refs.received_by = " + empID + " OR emp_short_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_short_leave_applications.leave_id DESC",
-        (err, rslt) => {
-
-            if (err) {
-
-                res.status(500).send(err);
-                res.end();
-
-            } else {
-
-                res.send(rslt);
-                res.end();
-
+    if (parseInt(all) === 1) {
+        db.query(
+            "SELECT \
+            employees.emp_id, \
+            employees.name, \
+            emp_short_leave_application_refs.*, \
+            emp_short_leave_applications.* \
+            FROM employees \
+            RIGHT OUTER JOIN emp_short_leave_application_refs ON emp_short_leave_application_refs.requested_by = employees.emp_id \
+            LEFT OUTER JOIN emp_short_leave_applications ON emp_short_leave_applications.leave_id = emp_short_leave_application_refs.leave_id \
+            ORDER BY emp_short_leave_applications.leave_id DESC",
+            (err, rslt) => {
+    
+                if (err) {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                } else {
+    
+                    res.send(rslt);
+                    res.end();
+    
+                }
+    
             }
-
-        }
-    )
+        )
+    }else {
+        db.query(
+            "SELECT \
+            employees.emp_id, \
+            employees.name, \
+            emp_short_leave_application_refs.*, \
+            emp_short_leave_applications.* \
+            FROM employees \
+            RIGHT OUTER JOIN emp_short_leave_application_refs ON emp_short_leave_application_refs.requested_by = employees.emp_id \
+            LEFT OUTER JOIN emp_short_leave_applications ON emp_short_leave_applications.leave_id = emp_short_leave_application_refs.leave_id \
+            WHERE emp_short_leave_application_refs.requested_by = " + empID + " OR emp_short_leave_application_refs.received_by = " + empID + " OR emp_short_leave_application_refs.authorized_to = " + empID + " ORDER BY emp_short_leave_applications.leave_id DESC",
+            (err, rslt) => {
+    
+                if (err) {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                } else {
+    
+                    res.send(rslt);
+                    res.end();
+    
+                }
+    
+            }
+        )
+    }
 
 });
 
