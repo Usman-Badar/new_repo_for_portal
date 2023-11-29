@@ -11,6 +11,7 @@ import $ from 'jquery';
 import JSAlert from 'js-alert';
 import Modal from '../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 
 const PortalIssues = () => {
     const history = useHistory();
@@ -304,8 +305,13 @@ const IssueDetails = ({ history, AccessControls }) => {
 }
 
 const IssuesListView = ({ history, AccessControls }) => {
-    const [ status, setStatus ] = useState('pending');
+    const [ RequestStatuses, setRequestStatuses ] = useState([]);
+    const [ status, setStatus ] = useState('');
     const [ issues, setIssues ] = useState();
+    const [ ShowFilters, setShowFilters ] = useState(false);
+    const [ filterSubject, setFilterSubject ] = useState('');
+    const [ filterDescription, setFilterDescription ] = useState('');
+    const [ filterPriority, setFilterPriority ] = useState('');
 
     useEffect(
         () => {
@@ -315,6 +321,33 @@ const IssuesListView = ({ history, AccessControls }) => {
                 isActive = false;
             }
         }, []
+    );
+    useEffect(
+        () => {
+            if (issues) {
+                const statuses = [];
+                for ( let x = 0; x < issues.length; x++ )
+                {
+                    if ( !statuses.includes(issues[x].status.toLowerCase()) ) {
+                        statuses.push(issues[x].status.toLowerCase());
+                    }
+                }
+                setRequestStatuses(statuses);
+
+                if ( sessionStorage.getItem('portal_issue') )
+                {
+                    setStatus(sessionStorage.getItem('portal_issue'));
+                }
+                if ( sessionStorage.getItem('pi_subject') )
+                {
+                    setFilterSubject(sessionStorage.getItem('pi_subject'));
+                }
+                if ( sessionStorage.getItem('pi_desc') )
+                {
+                    setFilterDescription(sessionStorage.getItem('pi_desc'));
+                }
+            }
+        }, [issues]
     );
 
     const loadReportedIssues = (isActive) => {
@@ -330,6 +363,14 @@ const IssuesListView = ({ history, AccessControls }) => {
             setIssues(res.data);
         } ).catch(err => console.log(err));
     }
+    const resetFilters = () => {
+        sessionStorage.removeItem('pi_subject');
+        sessionStorage.removeItem('pi_desc');
+        sessionStorage.removeItem('pi_priority');
+        setFilterSubject("");
+        setFilterDescription("");
+        setFilterPriority("");
+    }
     return (
         <>
             <div className="d-flex align-items-center justify-content-between">
@@ -337,17 +378,84 @@ const IssuesListView = ({ history, AccessControls }) => {
                     Portal Issues
                     <sub>Report any issue on the portal</sub>
                 </h3>
-                <button className="btn submit" type='reset' onClick={ () => history.push('/portal/issues/new') }>
-                    Report an Issue
-                </button>
+                <div>
+                    <button className="btn submit" type='reset' onClick={ () => history.push('/portal/issues/new') }>
+                        Report an Issue
+                    </button>
+                    <button className="btn submit px-2 ml-2 filter-emit" onClick={() => setShowFilters(!ShowFilters)} type='button'>
+                        {
+                            ShowFilters
+                                ?
+                                <>
+                                    <i className="las la-times"></i>
+                                </>
+                                :
+                                <div data-tip data-for='filter'>
+                                    {
+                                        filterSubject !== '' || filterDescription !== ''
+                                        ?
+                                        <div className='filterisOpen'></div>
+                                        :
+                                        null
+                                    }
+                                    <i className="las la-filter"></i>
+                                    <ReactTooltip id='filter' place="top">
+                                        Filters
+                                    </ReactTooltip>
+                                </div>
+                        }
+                    </button>
+                </div>
             </div>
             <hr />
+            {
+                ShowFilters && (
+                    <>
+                        <div className='filter-content popUps'>
+                            <div className='flex'>
+                                <div className='w-100'>
+                                    <label className="font-weight-bold mb-0">Search Subject</label>
+                                    <input value={filterSubject} placeholder='Search Keywords...' type="search" onChange={(e) => {setFilterSubject(e.target.value); sessionStorage.setItem('pi_subject', e.target.value)}} className='form-control mb-2' />
+                                </div>
+                                <div className='w-100'>
+                                    <label className="font-weight-bold mb-0">Search Description</label>
+                                    <input value={filterDescription} placeholder='Search Keywords...' type="search" onChange={(e) => {setFilterDescription(e.target.value); sessionStorage.setItem('pi_desc', e.target.value)}} className='form-control mb-2' />
+                                </div>
+                                <div className='w-100'>
+                                    <label className="font-weight-bold mb-0">Priority</label>
+                                    <select value={filterPriority} onChange={(e) => {setFilterPriority(e.target.value); sessionStorage.setItem('pi_priority', e.target.value)}} className='form-control mb-2'>
+                                        <option value={""}>All</option>
+                                        <option value={"Low"}>Low</option>
+                                        <option value={"Medium"}>Medium</option>
+                                        <option value={"High"}>High</option>
+                                    </select>
+                                </div>
+                                <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
+                            </div>
+                        </div>
+                        <br />
+                    </>
+                )
+            }
             <ul className="nav nav-tabs my-3">
-                <li className="nav-item" onClick={ () => { setStatus('all'); sessionStorage.setItem('reportingStatus', 'all') } }>
-                    <a className={ status === 'all' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize' }>
-                        { 'all' } { status === 'all' ? `(${issues?issues.length:0})` : "" }
+                <li className="nav-item" onClick={ () => { setStatus(''); sessionStorage.setItem('portal_issue', '') } }>
+                    <a className={ status === '' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize' }>
+                        { 'all' } { status === '' ? `(${issues?issues.length:0})` : "" }
                     </a>
                 </li>
+                    {
+                        RequestStatuses.map(
+                            (st, index) => {
+                                return (
+                                    <li className="nav-item" onClick={() => { setStatus(st); sessionStorage.setItem('portal_issue', st) }} key={index}>
+                                        <a className={st === status ? 'nav-link active text-capitalize' : 'nav-link text-capitalize'}>
+                                            {st.split('_').join(' ')} {st === status ? `(${issues ? issues.filter(val => val.status.toLowerCase().includes(status)).length : 0})` : ""}
+                                        </a>
+                                    </li>
+                                )
+                            }
+                        )
+                    }
             </ul>
             {
                 !issues
@@ -372,7 +480,12 @@ const IssuesListView = ({ history, AccessControls }) => {
                     </thead>
                     <tbody>
                         {
-                            issues.map(
+                            issues.filter(val => 
+                                val.status.toLowerCase().includes(status) && 
+                                val.subject.toLocaleLowerCase().includes(filterSubject.toLocaleLowerCase()) && 
+                                val.description.toLocaleLowerCase().includes(filterDescription.toLocaleLowerCase()) && 
+                                val.priority.toLocaleLowerCase().includes(filterPriority.toLocaleLowerCase())
+                            ).map(
                                 ( val, index ) => {
 
                                     return (
@@ -578,4 +691,4 @@ const NewIssue = ({ history, AccessControls }) => {
             </div>
         </>
     )
-}
+};

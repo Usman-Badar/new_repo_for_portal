@@ -21,6 +21,7 @@ const Leave_Application = () => {
 
     const moment = require('moment');
     const history = useHistory();
+    const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
     const Relations = useSelector((state) => state.EmpAuth.Relations);
 
     const [ModalShow, setModalShow] = useState(false);
@@ -108,11 +109,11 @@ const Leave_Application = () => {
                                 getDetails(history.location.pathname.split('/').pop());
                             }else
                             {
-                                GetRecentLeave('/getallrecentleaves', { empID: localStorage.getItem('EmpID') })
+                                if (AccessControls) GetRecentLeave('/getallrecentleaves', { empID: localStorage.getItem('EmpID'), all: JSON.parse(AccessControls.access).includes(82) ? 1 : 0 })
                             }
                         }
 
-        }, [history]
+        }, [history, AccessControls]
     )
 
     useEffect(
@@ -217,6 +218,7 @@ const Leave_Application = () => {
 
         const Data = new FormData();
         Data.append('empID', localStorage.getItem('EmpID'));
+        Data.append('all', JSON.parse(AccessControls.access).includes(82) ? 1 : 0);
         setLeaves([]);
 
         if (type === 'Leaves') {

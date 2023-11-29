@@ -4,7 +4,7 @@ const db = require('../../db/conn_portal_issues');
 
 router.get('/portal/issues/categories', ( req, res ) => {
     db.query(
-        "SELECT * FROM `tbl_pi_categories` WHERE status = 'Active' ORDER BY pi_category_id DESC",
+        "SELECT * FROM `tbl_pi_categories` WHERE status = 'Active' ORDER BY pi_category_id",
         ( err, rslt ) => {
             if( err ) {
                 res.status(500).send(err);

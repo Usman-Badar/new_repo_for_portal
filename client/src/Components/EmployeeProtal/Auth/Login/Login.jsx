@@ -71,6 +71,7 @@ const Employee_Login = () => {
         axios.get('/authemployee').then(response => {
 
             let failed = true;
+            let failed2 = false;
 
             for (let x = 0; x < response.data.length; x++) {
 
@@ -79,16 +80,21 @@ const Employee_Login = () => {
 
                 if ( UserData.LoginID === encryptor.decrypt( response.data[x].login_id ) ) {
 
-                    $('.LoginDiv').fadeOut(0);
-                    $('.PassDiv').fadeIn();
-                    $('.ButtonDiv2').show();
-                    $('.ButtonDiv1').hide();
-                    $('.Emp_Login2_Grid .HideDiv').css('left', '50%');
-                    $('.Emp_Login2_Grid .HideDiv').html('PASSWORD');
-
-                    setEmployee(response.data[x]);
+                    if (response.data[x].lock_user === 'Y') {
+                        failed = false;
+                        failed2 = true;
+                    }else {
+                        $('.LoginDiv').fadeOut(0);
+                        $('.PassDiv').fadeIn();
+                        $('.ButtonDiv2').show();
+                        $('.ButtonDiv1').hide();
+                        $('.Emp_Login2_Grid .HideDiv').css('left', '50%');
+                        $('.Emp_Login2_Grid .HideDiv').html('PASSWORD');
+    
+                        setEmployee(response.data[x]);
+                        failed = false;
+                    }
                     setStartLoading(false);
-                    failed = false;
                     
                 } else {
 
@@ -100,10 +106,8 @@ const Employee_Login = () => {
 
             }
 
-            if ( failed )
-            {
-                JSAlert.alert("No Employee Found").dismissIn(1000 * 2);
-            }
+            if ( failed ) JSAlert.alert("No Employee Found", 'Failed', JSAlert.Icons.Failed).dismissIn(1000 * 2);
+            if ( failed2 ) JSAlert.alert("Authorization Failed", 'Warning', JSAlert.Icons.Warning).dismissIn(1000 * 2);
 
         }).catch(error => {
 

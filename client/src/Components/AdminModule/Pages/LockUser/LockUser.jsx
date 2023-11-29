@@ -61,7 +61,7 @@ const LockUser = () => {
                                 <option value="Y" selected={modal.lock_user === 'Y'}>Lock User</option>
                             </select>
                             <label className="mb-0"><b>Remarks</b></label>
-                            <textarea required minLength={20} name="remarks" className='form-control mb-3' />
+                            <textarea name="remarks" className='form-control mb-3' required />
 
                             <button className="submit btn d-block ml-auto">Update</button>
                         </fieldset>
