@@ -35,128 +35,151 @@ function checkAdvanceCashPendingForVerification() {
 
                                 issueTickets(parsed_offDays, holidays, time_out, offDays[2]);
                             }
-                        );
-                        async function issueTickets(parsed_offDays, holidays, time_out, isPresent)
+                        )
+                        function issueTickets(parsed_offDays, holidays, time_out, isPresent)
                         {
                             const submitDate = new Date(rslt[count.length].submit_date);
                             const currentDate = new Date(rslt[count.length].today);
                             const dayName = days[currentDate.getDay()];
                             let issueTicket = false;
 
-                            if (holidays.includes(rslt[count.length].today) || dayName === 'Sunday') {
-                                next(parsed_offDays, holidays, time_out, isPresent);
-                            }else if (isPresent.length === 0) {
-                                next(parsed_offDays, holidays, time_out, isPresent);
-                            }else if (isPresent[0].status.toLowerCase() === 'leave') {
-                                next(parsed_offDays, holidays, time_out, isPresent);
+                            const ticket_issue_date_time = predictTicketTime(submitDate, rslt[count.length].submit_time);
+                            return;
+
+
+                            if (currentDate > submitDate) {
+                                issueTicket = true;
+                                console.log(1);
+                                checkIsInWorkingHours(false);
                             }else {
-                                const ticket_issue_date_time = await predictTicketTime(submitDate, rslt[count.length].submit_time, currentDate, time_out, isPresent);
-                                console.log();
-                                if ( issueTicket ) {
-                                    const code = rslt[count.length].company_code_name + '-' + rslt[count.length].series_year + '-' + rslt[count.length].serial_no;
-                                    const remarks = "Yellow ticket has been issued by the system on behalf of Mr. Jahanzeb Punjwani due to the late verification of the advance cash request with serial number:\n" + code;
-                                    db.query(
-                                        "INSERT INTO `emp_tickets`(`emp_id`, `generated_by`, `generated_date`, `generated_time`, `ticket`, `remarks`) VALUES (?,?,?,?,?,?);" +
-                                        "UPDATE db_cash_receipts SET ticket_issued_for_late_verification = 1 WHERE id = ?;",
-                                        [ 
-                                            inv2, owner, new Date(), new Date().toTimeString(), 'yellow', remarks,
-                                            rslt[count.length].id
-                                        ],
-                                        ( err ) => {
-                                            if( err ) {
-                                                console.log( err );
-                                                checkAdvanceCashPendingForVerification();
-                                            }else 
-                                            {
-                                                db.query(
-                                                    "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
-                                                    "SELECT name, cell FROM employees WHERE emp_id = ?;",
-                                                    [ 
-                                                        owner, 
-                                                        inv2 
-                                                    ],
-                                                    ( err, result ) => {
-                                                        if( err ) {
-                                                            console.log( err );
+                                const startTime = moment(rslt[count.length].submit_time, 'HH:mm:ss a');
+                                const endTime = moment(new Date().toTimeString().substring(0,8), 'HH:mm:ss a');
+                                const duration = moment.duration(endTime.diff(startTime));
+                                const hours = parseInt(duration.asHours());
+                                if ( hours >= 4 ) {
+                                    console.log(2);
+                                    issueTicket = true;
+                                }
+                                checkIsInWorkingHours(true);
+                            }
+                            if (
+                                // parsed_offDays.includes(dayName) || 
+                                holidays.includes(rslt[count.length].today) || 
+                                dayName === 'Sunday'
+                            ) {
+                                console.log(3);
+                                issueTicket = false;
+                            }
+                            function checkIsInWorkingHours(isSubmittedToday) {
+                                const startTime = moment(rslt[count.length].submit_time, 'HH:mm:ss a');
+                                const addHoursInStartTime = startTime.add(4, 'hours').format('HH:mm:ss');
+                                const empOutTime = moment(time_out, 'HH:mm:ss a').format('HH:mm:ss');
+                                if (isSubmittedToday) {
+                                    if (addHoursInStartTime.valueOf() > empOutTime.valueOf()) {
+                                        console.log(4);
+                                        issueTicket = false;
+                                    }
+                                }else {
+                                    if (isPresent.length === 0) {
+                                        console.log(5);
+                                        issueTicket = false;
+                                    }
+                                    // CONDITION FOR LEAVE
+                                    // else if (isPresent[0].time_in == null || isPresent[0].time_in == 'null') {
+                                    //     console.log(6);
+                                    //     issueTicket = false;
+                                    // }
+                                    else if (isPresent[0].status.toLowerCase() === 'leave') {
+                                        issueTicket = false;
+                                    }
+                                    else {
+                                        console.log(7);
+                                        const empInTime = moment(isPresent[0].time_in, 'HH:mm:ss a');
+                                        const addHoursInStartTime = empInTime.add(4, 'hours').format('HH:mm:ss');
+                                        const currentTime = moment(new Date().toTimeString().substring(0,8), 'HH:mm:ss a').format('HH:mm:ss');
+                                        // if (addHoursInStartTime.valueOf() > currentTime.valueOf()) {
+                                        //     console.log(8);
+                                        //     issueTicket = false;
+                                        // }
+
+                                        if (currentTime.valueOf() >= addHoursInStartTime.valueOf()) {
+                                            console.log(80);
+                                            issueTicket = true;
+                                        }else {
+                                            console.log(81);
+                                            issueTicket = false;
+                                        }
+                                    }
+                                }
+                            }
+
+                            console.log('issueTicket', issueTicket);
+                            if ( issueTicket ) {
+                                const code = rslt[count.length].company_code_name + '-' + rslt[count.length].series_year + '-' + rslt[count.length].serial_no;
+                                const remarks = "Yellow ticket has been issued by the system on behalf of Mr. Jahanzeb Punjwani due to the late verification of the advance cash request with serial number:\n" + code;
+                                db.query(
+                                    "INSERT INTO `emp_tickets`(`emp_id`, `generated_by`, `generated_date`, `generated_time`, `ticket`, `remarks`) VALUES (?,?,?,?,?,?);" +
+                                    "UPDATE db_cash_receipts SET ticket_issued_for_late_verification = 1 WHERE id = ?;",
+                                    [ 
+                                        inv2, owner, new Date(), new Date().toTimeString(), 'yellow', remarks,
+                                        rslt[count.length].id
+                                    ],
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log( err );
+                                            checkAdvanceCashPendingForVerification();
+                                        }else 
+                                        {
+                                            db.query(
+                                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                                [ 
+                                                    owner, 
+                                                    inv2 
+                                                ],
+                                                ( err, result ) => {
+                                                    if( err ) {
+                                                        console.log( err );
+                                                        checkAdvanceCashPendingForVerification();
+                                                    }else
+                                                    {
+                                                        const message = "Yellow ticket has been given to the employee(s) " + result[1][0].name + " due to late advance cash (" + code + ") verification.";
+                                                        administrativeNotifications( '/cash/request/' + rslt[count.length].id, owner, message );
+                                                        SendWhatsappNotification( null, null, "Hi " + result[0][0].name, message, result[0][0].cell );
+                                                        SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has given you a yellow ticket with remarks '" + remarks + "'.", result[1][0].cell );
+                                                        if ( ( count.length + 1 ) === limit )
+                                                        {
+                                                            console.log( "Ticket Issued (Verification) Regarding Advance Cash!!!" );
                                                             checkAdvanceCashPendingForVerification();
                                                         }else
                                                         {
-                                                            const message = "Yellow ticket has been given to the employee(s) " + result[1][0].name + " due to late advance cash (" + code + ") verification.";
-                                                            administrativeNotifications( '/cash/request/' + rslt[count.length].id, owner, message );
-                                                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, message, result[0][0].cell );
-                                                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has given you a yellow ticket with remarks '" + remarks + "'.", result[1][0].cell );
-                                                            if ( ( count.length + 1 ) === limit )
-                                                            {
-                                                                console.log( "Ticket Issued (Verification) Regarding Advance Cash!!!" );
-                                                                checkAdvanceCashPendingForVerification();
-                                                            }else
-                                                            {
-                                                                count.push(1);
-                                                                issueTickets(parsed_offDays, holidays, time_out, isPresent);
-                                                            }
+                                                            count.push(1);
+                                                            issueTickets(parsed_offDays, holidays, time_out, isPresent);
                                                         }
                                                     }
-                                                );
-                                            }
+                                                }
+                                            );
                                         }
-                                    );
-                                }else {
-                                    next(parsed_offDays, holidays, time_out, isPresent);
+                                    }
+                                );
+                            }else
+                            {
+                                if ( ( count.length + 1 ) === limit )
+                                {
+                                    console.log( "Ticket Not Issued For (Verification) Regarding Advance Cash!!!" );
+                                    checkAdvanceCashPendingForVerification();
+                                }else
+                                {
+                                    count.push(1);
+                                    issueTickets(parsed_offDays, holidays, time_out, isPresent);
                                 }
                             }
                         };
-                        function next(parsed_offDays, holidays, time_out, isPresent) {
-                            if ((count.length + 1) === limit) {
-                                console.log( "Ticket Not Issued For (Verification) Regarding Advance Cash!!!" );
-                                checkAdvanceCashPendingForVerification();
-                            }else {
-                                count.push(1);
-                                issueTickets(parsed_offDays, holidays, time_out, isPresent);
-                            }
-                        }
-                        async function predictTicketTime(submit_date, submit_time, curren_date, time_out, isPresent) {
-                            try {
-                                let currentDateRequest = true;
-                                let ticket_should_issue = false;
-                                const dt = new Date(submit_date.toISOString().slice(0, 10).replace('T', ' ') + ' ' + submit_time);
-                                const date_time = moment(dt);
-                                const addHours = date_time.add(4, 'hours').format('YYYY-MM-DD HH:mm:ss');
-
-                                const startTime = moment(submit_time, 'HH:mm:ss a');
-                                const emp_time_out = moment(time_out, 'HH:mm:ss a');
-                                const duration = moment.duration(emp_time_out.diff(startTime));
-                                const last_day_minutes = parseInt(duration.asMinutes());
-
-                                console.log('last_day_minutes', last_day_minutes);
-
-                                const emp_time_in = moment(isPresent[0].time_in, 'HH:mm:ss a');
-                                const currentTime = moment(new Date().toTimeString().substring(0,8), 'HH:mm:ss a');
-                                const today_duration = moment.duration(currentTime.diff(emp_time_in));
-                                const today_minutes = parseInt(today_duration.asMinutes());
-
-                                const total_minutes_passed = parseInt(last_day_minutes) + parseInt(today_minutes);
-
-                                const predicted_time_is_in_working_hours = addHours.valueOf() <= emp_time_out.format('HH:mm:ss').valueOf();
-                                const predicted_time_for_next_day_is_exceed = total_minutes_passed > 240; // 60 minutes * 4 hours = 240 minutes
-                                
-                                if (curren_date > submit_date) {
-                                    currentDateRequest = false;
-                                }
-    
-                                if (currentDateRequest) {
-                                    if (predicted_time_is_in_working_hours) {
-                                        ticket_should_issue = true;
-                                    }
-                                    return {predicted_dt: addHours, ticket_should_issue: ticket_should_issue};
-                                }else {
-                                    if (predicted_time_for_next_day_is_exceed) {
-                                        ticket_should_issue = true;
-                                    }
-                                    return {predicted_dt: total_minutes_passed, ticket_should_issue: ticket_should_issue};
-                                }
-                            }catch (err) {
-                                console.log(err);
-                            }
+                        function predictTicketTime(submit_date, submit_time) {
+                            const dt = new Date(submit_date.toISOString().slice(0, 10).replace('T', ' ') + ' ' + submit_time);
+                            const date_time = moment(dt).format('YYYY-MM-DD HH:MM:SS');
+                            console.log(date_time.valueOf());
+                            return date_time;
                         }
                     }else
                     {
@@ -256,14 +279,10 @@ function checkAdvanceCashPendingForApproval() {
     }, 1000 * 30);
 }
 
-// setTimeout(() => {
-//     checkAdvanceCashPendingForVerification();
-//     checkAdvanceCashPendingForApproval();
-// }, 1000);
-
-const today_duration = moment.duration(moment('2023-11-25 18:00:00', 'YYYY-MM-DD HH:mm:ss').diff(moment('2023-11-25 14:50:00', 'YYYY-MM-DD HH:mm:ss')));
-const totalHours = parseFloat(today_duration.asHours());
-console.log('totalHours', totalHours);
+setTimeout(() => {
+    checkAdvanceCashPendingForVerification();
+    checkAdvanceCashPendingForApproval();
+}, 1000);
 
 module.exports = {
     router: router,
