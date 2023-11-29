@@ -343,9 +343,9 @@ const IssuesListView = ({ history, AccessControls }) => {
             </div>
             <hr />
             <ul className="nav nav-tabs my-3">
-                <li className="nav-item" onClick={ () => { setStatus('pending'); sessionStorage.setItem('reportingStatus', 'pending') } }>
-                    <a className={ status === 'pending' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize' }>
-                        { 'pending' } { status === 'pending' ? `(${issues?issues.length:0})` : "" }
+                <li className="nav-item" onClick={ () => { setStatus('all'); sessionStorage.setItem('reportingStatus', 'all') } }>
+                    <a className={ status === 'all' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize' }>
+                        { 'all' } { status === 'all' ? `(${issues?issues.length:0})` : "" }
                     </a>
                 </li>
             </ul>
@@ -569,7 +569,7 @@ const NewIssue = ({ history, AccessControls }) => {
                             </div>
                         </div>
                         <label className='mb-0 font-weight-bold'>Subject</label>
-                        <input type="text" name='subject' className="form-control mb-2" maxLength={30} required />
+                        <input type="text" name='subject' className="form-control mb-2" maxLength={200} required />
                         <label className='mb-0 font-weight-bold'>Description</label>
                         <ReactQuill style={{ backgroundColor: "#fff" }} theme="snow" modules={modules} formats={formats} value={description} onChange={setDescription} />
                         <button className='btn submit d-block ml-auto mt-3'>Submit</button>
