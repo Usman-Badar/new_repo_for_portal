@@ -51,8 +51,7 @@ function checkAdvanceCashPendingForVerification() {
                                 next(parsed_offDays, holidays, time_out, isPresent);
                             }else {
                                 const ticket_issue_date_time = await predictTicketTime(submitDate, rslt[count.length].submit_time, currentDate, time_out, isPresent);
-                                console.log();
-                                if ( issueTicket ) {
+                                if ( ticket_issue_date_time.ticket_should_issue ) {
                                     const code = rslt[count.length].company_code_name + '-' + rslt[count.length].series_year + '-' + rslt[count.length].serial_no;
                                     const remarks = "Yellow ticket has been issued by the system on behalf of Mr. Jahanzeb Punjwani due to the late verification of the advance cash request with serial number:\n" + code;
                                     db.query(
@@ -133,6 +132,8 @@ function checkAdvanceCashPendingForVerification() {
                                 const currentTime = moment(new Date().toTimeString().substring(0,8), 'HH:mm:ss a');
                                 const today_duration = moment.duration(currentTime.diff(emp_time_in));
                                 const today_minutes = parseInt(today_duration.asMinutes());
+
+                                console.log('today_minutes', today_minutes);
 
                                 const total_minutes_passed = parseInt(last_day_minutes) + parseInt(today_minutes);
 
@@ -256,14 +257,14 @@ function checkAdvanceCashPendingForApproval() {
     }, 1000 * 30);
 }
 
-// setTimeout(() => {
-//     checkAdvanceCashPendingForVerification();
-//     checkAdvanceCashPendingForApproval();
-// }, 1000);
+setTimeout(() => {
+    checkAdvanceCashPendingForVerification();
+    checkAdvanceCashPendingForApproval();
+}, 1000);
 
-const today_duration = moment.duration(moment('2023-11-25 18:00:00', 'YYYY-MM-DD HH:mm:ss').diff(moment('2023-11-25 14:50:00', 'YYYY-MM-DD HH:mm:ss')));
-const totalHours = parseFloat(today_duration.asHours());
-console.log('totalHours', totalHours);
+// const today_duration = moment.duration(moment('2023-11-25 18:00:00', 'YYYY-MM-DD HH:mm:ss').diff(moment('2023-11-25 14:50:00', 'YYYY-MM-DD HH:mm:ss')));
+// const totalHours = parseFloat(today_duration.asHours());
+// console.log('totalHours', totalHours);
 
 module.exports = {
     router: router,
