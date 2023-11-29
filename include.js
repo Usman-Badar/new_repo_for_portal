@@ -22,6 +22,7 @@ app.use( require('./Routes/Services/markEmpAbsent').router );
 app.use( require('./Routes/Services/markEmpLateWhenNoTimeOut').router );
 app.use( require('./Routes/Services/SetInOutStatusToValid') );
 
+app.use( require('./Routes/Services/AdvanceCashExpiry') );
 app.use( require('./Routes/Services/AutoTickets').router );
 app.use( require('./Routes/Refund/csc').router );
 app.use( require('./Routes/Employee/leave') );
@@ -29,6 +30,7 @@ app.use( require('./Routes/Employee/leave') );
 
 
 app.use( require('./Routes/Inventory/assets') );
+app.use( require('./Routes/PortalIssues/portal_issues') );
 
 
 
@@ -41,8 +43,10 @@ app.use( require('./Routes/Employee/chat') );
 app.use( require('./Routes/Employee/guests') );
 app.use( require('./Routes/Employee/courses') );
 app.use( require('./Routes/Employee/attendance') );
+
 app.use( require('./Routes/Employee/newspaper') );
 app.use( require('./Routes/Employee/notifications').router );
+
 app.use( require('./Routes/Employee/drive') );
 app.use( require('./Routes/Employee/attendance_requests') );
 app.use( require('./Routes/Admin_Modules/auth') );
@@ -70,18 +74,18 @@ app.use( require('./Routes/Admin_Modules/menu') );
 
 
 
-app.use( require('./Inventory/home') );
-app.use( require('./Inventory/products').router );
-app.use( require('./Inventory/auth') );
-app.use( require('./Inventory/vender') );
-app.use( require('./Inventory/locations') );
-app.use( require('./Inventory/categories') );
-app.use( require('./Inventory/itemrequests') );
-app.use( require('./Inventory/repair_request') );
+app.use( require('./inventory/home') );
+app.use( require('./inventory/products').router );
+app.use( require('./inventory/auth') );
+app.use( require('./inventory/vender') );
+app.use( require('./inventory/locations') );
+app.use( require('./inventory/categories') );
+app.use( require('./inventory/itemrequests') );
+app.use( require('./inventory/repair_request') );
 
 
 
-app.use( require('./attendance/auth') );
+// app.use( require('./attendance/auth') );
 
 
 
@@ -98,7 +102,7 @@ app.use( require('./Routes/Whatsapp/whatsapp').router );
 
 
 
-app.use( require('./Routes/Containers/container') );
+// app.use( require('./Routes/Containers/container') );
 
 
 
@@ -110,8 +114,8 @@ app.use( require('./Routes/Containers/container') );
 
 
 
-app.use( require('./Management/auth') );
-app.use( require('./Management/attendance') );
+// app.use( require('./Management/auth') );
+// app.use( require('./Management/attendance') );
 
 
 
@@ -134,8 +138,8 @@ app.use( require('./Routes/AI/signature') );
 
 
 
-app.use( require('./Routes/Cash/adv_cash_shp_line') );
-app.use( require('./Routes/Cash/cash') );
+app.use( require('./Routes/Cash/adv_cash_shp_line') ); // Shipping Line Advance Cash
+app.use( require('./Routes/Cash/cash') ); // Advance Cash
 
 
 
@@ -151,8 +155,8 @@ app.use( require('./Routes/Cash/cash') );
 
 
 
-app.use( require('./Workshop/auth') );
-app.use( require('./Workshop/workshop') );
+app.use( require('./workshop/auth') );
+app.use( require('./workshop/workshop') );
 
 
 

@@ -46,8 +46,36 @@
     transform: rotate(40deg);
 }
 
-/* @media only screen and (max-width: 1280px) {
-    .advance_cash_request .table tbody tr .attached_pr {
-        right: -50px;
+@media only screen and (max-width: 1550px) {
+    .advance_cash_request .table {
+        font-size: 12px;
     }
-} */
+}
+
+@media only screen and (max-width: 1280px) {
+    .advance_cash_request .table {
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .advance_cash_request .table tr td:nth-child(6),
+    .advance_cash_request .table tr th:nth-child(6) {
+        display: none;
+    }
+    .advance_cash_request .table tr td:nth-child(7),
+    .advance_cash_request .table tr th:nth-child(7) {
+        display: none;
+    }
+    .advance_cash_request .table tr td:nth-child(9),
+    .advance_cash_request .table tr th:nth-child(9) {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .advance_cash_request .table tr td:nth-child(3),
+    .advance_cash_request .table tr th:nth-child(3) {
+        display: none;
+    }
+}

@@ -5,6 +5,7 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const compression = require('compression');
+const fs = require('fs');
 const { server_file_logger, file_logger } = require('./utils/logger');
 require('dotenv').config();
 const port = process.env.SERVER_PORT || 8080;
@@ -21,8 +22,9 @@ const https = require('https');
 
 // const sslServer = https.createServer(
 //     {
-//         key: fs.readFileSync('client/SSL/key.pem'),
-//         cert: fs.readFileSync('client/SSL/cert.pem')
+//         key: fs.readFileSync('client/SSL/private.key'),
+//         ca: fs.readFileSync('client/SSL/ca_bundle.crt'),
+//         cert: fs.readFileSync('client/SSL/certificate.crt')
 //     },
 //     app
 // )

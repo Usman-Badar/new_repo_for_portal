@@ -1,104 +1,96 @@
-10:22:45 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-10:35:20 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-10:36:18 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot set property 'companies' of undefined
 
-12:51:03 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:51:03 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:51:03 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'today')
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'today')
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot set property 'companies' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot set property 'companies' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'name')
+TypeError: Cannot set property 'companies' of undefined
 
-12:55:50 GMT+0500 (Pakistan Standard Time)
+13:12:55 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot set property 'companies' of undefined
+
+13:12:55 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'today' of undefined
+
+13:12:55 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'today' of undefined
 

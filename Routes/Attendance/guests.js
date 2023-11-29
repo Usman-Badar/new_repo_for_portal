@@ -2,30 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
 
-router.get('/get_employees_having_guests', ( req, res ) => {
-    db.query(
-        "SELECT employees.*, companies.company_name, locations.location_name, designations.designation_name, departments.department_name, emp_app_profile.emp_image FROM employees \
-        LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id \
-        LEFT OUTER JOIN companies ON employees.company_code = companies.company_code \
-        LEFT OUTER JOIN locations ON employees.location_code = locations.location_code \
-        LEFT OUTER JOIN designations ON employees.designation_code = designations.designation_code \
-        LEFT OUTER JOIN departments ON employees.department_code = departments.department_code \
-        WHERE employees.emp_id IN (SELECT DISTINCT(emp_id) FROM `guest_meetings`);",
-        ( err, rslt ) => {
-            if( err )
-            {
-                res.status(500).send(err);
-                res.end();
-            }else 
-            {
-                res.send( rslt );
-                res.end();
-            }
-        }
-    )
-
-} );
-
 router.get('/getallmeetableemployees', ( req, res ) => {
     
     db.query(

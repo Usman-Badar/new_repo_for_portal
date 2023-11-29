@@ -2,8 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { convertCurrency } from '../../../../../../utils/currency';
 
-const ShippingLine = ({ Companies, Locations, DO, LOLO, DET, DMGDT, CSC, Other, setDET, setDMGDT, setCSC, setOther, setLOLO, setDO, onCreateShpCash }) => {
+const ShippingLine = ({ GetCompanyLocations, Companies, Locations, DO, LOLO, DET, DMGDT, CSC, Other, setDET, setDMGDT, setCSC, setOther, setLOLO, setDO, onCreateShpCash }) => {
     const [reason, setReason] = useState('');
+    useEffect(
+        () => {
+            GetCompanyLocations(12345);
+        }, []
+    )
     useEffect(
         () => {
             if (!DO.required && DO.amount !== 0) setDO({...DO, amount: 0});
@@ -17,8 +22,8 @@ const ShippingLine = ({ Companies, Locations, DO, LOLO, DET, DMGDT, CSC, Other, 
     const total = parseFloat(DO.amount) + parseFloat(LOLO.amount) + parseFloat(DET.amount) + parseFloat(DMGDT.amount) + parseFloat(CSC.amount) + parseFloat(Other.amount);
     return (
         <>
-            <form onSubmit={onCreateShpCash} className="shipping_line_payment_form page-content p-relative page">
-                <fieldset className='page-content'>
+            <form onSubmit={onCreateShpCash} className="shipping_line_payment_form p-relative">
+                <fieldset>
                     <div className="d-flex align-items-center justify-content-between ">
                         <h3 className="heading">
                             Shipping Line Advance Cash
@@ -37,7 +42,7 @@ const ShippingLine = ({ Companies, Locations, DO, LOLO, DET, DMGDT, CSC, Other, 
                             <label className='mb-0'>
                                 <b>Company</b>
                             </label>
-                            <select className="form-control" name="company_code" required>
+                            <select className="form-control" name="company_code" onChange={(e) => GetCompanyLocations(e.target.value)} required>
                                 <option value=''>Select the option</option>
                                 {Companies.map(val => <option key={val.company_code} value={val.company_code}> {val.company_name} </option>)}
                             </select>

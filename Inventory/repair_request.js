@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/connection');
 const MakeDir = require('fs');
-const owner = 5000; // JP
+const owner = 1; // JP
 const inv = 20015; // Antash
 const inv2 = 5000; // Saima
 

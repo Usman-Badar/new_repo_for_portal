@@ -1,8 +1,28 @@
-09:50:21 GMT+0500 (Pakistan Standard Time)
+16:32:27 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'includes' of undefined
 
-11:03:30 GMT+0500 (Pakistan Standard Time)
+16:32:27 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'accepted_by' of undefined
+
+16:32:27 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'accepted_by' of undefined
+
+16:32:27 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'accepted_by' of undefined
+
+16:32:27 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'accepted_by' of undefined
+
+16:32:27 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:32:27 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'includes' of undefined
 

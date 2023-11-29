@@ -26,6 +26,10 @@ router.post('/servers/connectivity', ( req, res ) => {
         );
     }
 } );
+setInterval(() => {
+    checkServersConnectivity();
+}, 1000 * 60);
+
 const checkServersConnectivity = () => {
     const date = new Date().toISOString().substring(0,10);
     fileRead.readdir('./servers', (_, servers) => {
@@ -56,36 +60,10 @@ const checkServersConnectivity = () => {
             `\nnotification sent: ${new Date().toTimeString()}`, 'utf-8',
             ( err ) => {
                 if ( err ) throw err;
-                res.send("SUCCESS");
-                res.end();
             }
         );
     }
 }
-setInterval(() => {
-    checkServersConnectivity();
-}, 1000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -185,8 +163,26 @@ router.post('/mark_employees_attendance', ( req, res ) => {
     const employees_attendance = JSON.parse( data );
     let limit = employees_attendance.length;
     let count = [];
-    function checkProgress( connection, res, markAttendance )
+    function checkProgress( connection, res, status, d, in_out, name, cell, markAttendance )
     {
+        // if ( in_out === "IN" ) {
+        //     let message = "Your time has been marked " + d + " with the status '" + status + "'.";
+        //     SendWhatsappNotification( 
+        //         null, 
+        //         null, 
+        //         "Hi " + name, 
+        //         message, 
+        //         cell 
+        //     );
+        // }else {
+        //     SendWhatsappNotification( 
+        //         null, 
+        //         null, 
+        //         "Hi " + name, 
+        //         "We hope this message finds you well. We wanted to inform you that your time out has been successfully recorded in our system. Your exit time was " + new Date().toTimeString() + ".", 
+        //         cell 
+        //     );
+        // }
         if ( ( count.length + 1 ) === limit )
         {
             connection.commit((err) => {
@@ -258,9 +254,10 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                         if ( !rslt[0] )
                                                         {
                                                             connection.query(
-                                                                "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_in`, `emp_date`) VALUES (?,?,?,?);",
-                                                                [ employees_attendance[count.length].emp_id, status, employees_attendance[count.length].time, d ],
-                                                                ( err ) => {
+                                                                "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_in`, `emp_date`) VALUES (?,?,?,?);" +
+                                                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                                                [ employees_attendance[count.length].emp_id, status, employees_attendance[count.length].time, d, employees_attendance[count.length].emp_id ],
+                                                                ( err, result ) => {
                                                                     if( err )
                                                                     {
                                                                         connection.rollback(() => {console.log(err);connection.release();});
@@ -269,7 +266,7 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                                     }else 
                                                                     {
                                                                         console.log("RECORD INSERTED REF# - EMP-ID => (" + employees_attendance[count.length].emp_id + ") AT: ", new Date().toTimeString());
-                                                                        checkProgress( connection, res, markAttendance );
+                                                                        checkProgress( connection, res, status, d, employees_attendance[count.length].in_out, result[1][0].name, result[1][0].cell, markAttendance );
                                                                     }
                                                                 }
                                                             );
@@ -279,24 +276,26 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                             let params = [];
                                                             if ( rslt[0].time_in === 'null' || rslt[0].time_in === null || employees_attendance[count.length].time < rslt[0].time_in )
                                                             {
-                                                                query = "UPDATE `emp_attendance` SET time_in = ? WHERE emp_id = ? AND emp_date = ?;";
+                                                                query = "UPDATE `emp_attendance` SET time_in = ? WHERE emp_id = ? AND emp_date = ?;SELECT name, cell FROM employees WHERE emp_id = ?;";
                                                                 params = [
                                                                     employees_attendance[count.length].time,
                                                                     employees_attendance[count.length].emp_id, 
-                                                                    d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ) 
+                                                                    d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ),
+                                                                    employees_attendance[count.length].emp_id
                                                                 ]
                                                             }else
                                                             {
-                                                                query = "UPDATE `emp_attendance` SET time_out = ? WHERE emp_id = ? AND emp_date = ?;";
+                                                                query = "UPDATE `emp_attendance` SET time_out = ? WHERE emp_id = ? AND emp_date = ?;SELECT name, cell FROM employees WHERE emp_id = ?;";
                                                                 params = [
                                                                     employees_attendance[count.length].time,
                                                                     employees_attendance[count.length].emp_id, 
-                                                                    d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ) 
+                                                                    d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ),
+                                                                    employees_attendance[count.length].emp_id
                                                                 ]
                                                             }
                                                             connection.query(
                                                                 query,params,
-                                                                ( err ) => {
+                                                                ( err, result ) => {
                                                                     if( err )
                                                                     {
                                                                         connection.rollback(() => {console.log(err);connection.release();});
@@ -305,7 +304,7 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                                     }else 
                                                                     {
                                                                         console.log("RECORD UPDATED REF# - EMP-ID => (" + employees_attendance[count.length].emp_id + ") AT: ", new Date().toTimeString());
-                                                                        checkProgress( connection, res, markAttendance );
+                                                                        checkProgress( connection, res, status, d, employees_attendance[count.length].in_out, result[1][0].name, result[1][0].cell, markAttendance );
                                                                     }
                                                                 }
                                                             );
@@ -339,9 +338,10 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                         if ( !rslt[0] )
                                                         {
                                                             connection.query(
-                                                                "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_out`, `emp_date`) VALUES (?,?,?,?);",
-                                                                [ employees_attendance[count.length].emp_id, status, employees_attendance[count.length].time, d ],
-                                                                ( err ) => {
+                                                                "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_out`, `emp_date`) VALUES (?,?,?,?);" +
+                                                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                                                [ employees_attendance[count.length].emp_id, status, employees_attendance[count.length].time, d, employees_attendance[count.length].emp_id ],
+                                                                ( err, result ) => {
                                                                     if( err )
                                                                     {
                                                                         connection.rollback(() => {console.log(err);connection.release();});
@@ -350,20 +350,22 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                                     }else 
                                                                     {
                                                                         console.log("RECORD INSERTED REF# - EMP-ID => (" + employees_attendance[count.length].emp_id + ") AT: ", new Date().toTimeString());
-                                                                        checkProgress( connection, res, markAttendance );
+                                                                        checkProgress( connection, res, status, d, employees_attendance[count.length].in_out, result[1][0].name, result[1][0].cell, markAttendance );
                                                                     }
                                                                 }
                                                             );
                                                         }else
                                                         {
                                                             connection.query(
-                                                                "UPDATE `emp_attendance` SET time_out = ? WHERE emp_id = ? AND emp_date = ?;",
+                                                                "UPDATE `emp_attendance` SET time_out = ? WHERE emp_id = ? AND emp_date = ?;" +
+                                                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
                                                                 [
                                                                     employees_attendance[count.length].time,
                                                                     employees_attendance[count.length].emp_id, 
-                                                                    d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ) 
+                                                                    d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ),
+                                                                    employees_attendance[count.length].emp_id, 
                                                                 ],
-                                                                ( err ) => {
+                                                                ( err, result ) => {
                                                                     if( err )
                                                                     {
                                                                         connection.rollback(() => {console.log(err);connection.release();});
@@ -372,7 +374,7 @@ router.post('/mark_employees_attendance', ( req, res ) => {
                                                                     }else 
                                                                     {
                                                                         console.log("RECORD UPDATED REF# - EMP-ID => (" + employees_attendance[count.length].emp_id + ") AT: ", new Date().toTimeString());
-                                                                        checkProgress( connection, res, markAttendance );
+                                                                        checkProgress( connection, res, status, d, employees_attendance[count.length].in_out, result[1][0].name, result[1][0].cell, markAttendance );
                                                                     }
                                                                 }
                                                             );
@@ -392,6 +394,184 @@ router.post('/mark_employees_attendance', ( req, res ) => {
         }
     )
 });
+
+router.post('/mark_employees_attendance_qfs_port', ( req, res ) => {
+
+    const { data } = req.body;
+    const employees_attendance = JSON.parse( data );
+
+    db.query(
+        "SELECT * FROM `tbl_holidays`;",
+        ( err, holidays ) => {
+    
+            if ( err )
+            {
+                console.log( err );
+            }else
+            {
+                for ( let x = 0; x < employees_attendance.length; x++ )
+                {
+                    const d = new Date(employees_attendance[x].emp_date);
+                    const date_time = (d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ));
+                    let status = employees_attendance[x].status;
+                    console.log(date_time);
+
+                    if ( employees_attendance[x].in_out === 'IN' )
+                    {
+                        let query = db.query(
+                            "SELECT emp_id, time_in, time_out FROM emp_attendance WHERE emp_id = ? AND emp_date = ?;",
+                            [ employees_attendance[x].emp_id, date_time ],
+                            ( err, rslt ) => {
+                        
+                                console.log("IN: ", query.sql);
+                                console.log("IN: ", rslt);
+                                if ( err )
+                                {
+                                    console.log( err );
+                                }else
+                                {
+    
+                                    for ( let x = 0; x < holidays.length; x++ )
+                                    {
+                                        const h_d = new Date(holidays[x].day);
+    
+                                        if ( ( h_d.getFullYear() + '-' + (h_d.getMonth() + 1) + '-' + h_d.getDate() ) === ( d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() ) )
+                                        {
+                                            status = holidays[x].status;
+                                        }
+                                    }
+
+                                    if ( !rslt[0] )
+                                    {
+                                        db.query(
+                                            "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_in`, `emp_date`) VALUES (?,?,?,?);",
+                                            [ employees_attendance[x].emp_id, status, employees_attendance[x].time, d ],
+                                            ( err ) => {
+                                        
+                                                if ( err )
+                                                {
+                                                    console.log( err );
+                                                }else
+                                                {
+                                                    console.log("RECORD INSERTED REF# - EMP-ID => (" + employees_attendance[x].emp_id + ") AT: ", new Date().toTimeString());
+                                                }
+                                        
+                                            }
+                                        )
+                                    }else
+                                    {
+                                        db.query(
+                                            "UPDATE `emp_attendance` SET time_in = ?, status = ? WHERE emp_id = ? AND emp_date = ?;",
+                                            [ 
+                                                rslt[0].time_in === 'null' || employees_attendance[x].time < rslt[0].time_in || rslt[0].time_in === null
+                                                ?
+                                                employees_attendance[x].time
+                                                :
+                                                rslt[0].time_in,
+                                                employees_attendance[x].status,
+                                                employees_attendance[x].emp_id, 
+                                                d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ) 
+                                            ],
+                                            ( err ) => {
+                                        
+                                                if ( err )
+                                                {
+                                                    console.log( err );
+                                                }else
+                                                {
+                                                    console.log("RECORD UPDATED REF# - EMP-ID => (" + employees_attendance[x].emp_id + ") AT: ", new Date().toTimeString());
+                                                }
+                                        
+                                            }
+                                        )
+                                    }
+                                }
+                        
+                            }
+                        )
+                    }else
+                    {
+                        let query = db.query(
+                            "SELECT emp_id, time_in, time_out FROM emp_attendance WHERE emp_id = ? AND emp_date = ?;",
+                            [ employees_attendance[x].emp_id, date_time ],
+                            ( err, rslt ) => {
+                        
+                                console.log("OUT: ", query.sql);
+                                console.log("OUT: ", rslt);
+                                if ( err )
+                                {
+                                    console.log( err );
+                                }else
+                                {
+    
+                                    for ( let x = 0; x < holidays.length; x++ )
+                                    {
+                                        const h_d = new Date(holidays[x].day);
+    
+                                        if ( ( h_d.getFullYear() + '-' + (h_d.getMonth() + 1) + '-' + h_d.getDate() ) === ( d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() ) )
+                                        {
+                                            status = holidays[x].status;
+                                        }
+                                    }
+
+                                    if ( !rslt[0] )
+                                    {
+                                        db.query(
+                                            "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_out`, `emp_date`) VALUES (?,?,?,?);",
+                                            [ employees_attendance[x].emp_id, status, employees_attendance[x].time, d ],
+                                            ( err ) => {
+                                        
+                                                if ( err )
+                                                {
+                                                    console.log( err );
+                                                }else
+                                                {
+                                                    console.log("RECORD INSERTED REF# - EMP-ID => (" + employees_attendance[x].emp_id + ") AT: ", new Date().toTimeString());
+                                                }
+                                        
+                                            }
+                                        )
+                                    }else
+                                    {
+                                        db.query(
+                                            "UPDATE `emp_attendance` SET time_out = ? WHERE emp_id = ? AND emp_date = ?;",
+                                            [
+                                                employees_attendance[x].time,
+                                                employees_attendance[x].emp_id, 
+                                                d.getFullYear() + '-' + ( parseInt(d.getMonth() + 1).toString().length === 1 ? '0' + parseInt(d.getMonth() + 1).toString() : parseInt(d.getMonth() + 1).toString() ) + '-' + ( d.getDate().toString().length === 1 ? '0' + d.getDate().toString() : d.getDate() ) 
+                                            ],
+                                            ( err ) => {
+                                        
+                                                if ( err )
+                                                {
+                                                    console.log( err );
+                                                }else
+                                                {
+                                                    console.log("RECORD UPDATED REF# - EMP-ID => (" + employees_attendance[x].emp_id + ") AT: ", new Date().toTimeString());
+                                                }
+                                        
+                                            }
+                                        )
+                                    }
+                                }
+                        
+                            }
+                        )
+                    }
+            
+                    if ( ( x + 1 ) === employees_attendance.length )
+                    {
+                        res.send("SUCCESS");
+                        res.end();
+                    }
+            
+                }
+            }
+    
+        }
+    )
+
+})
 
 router.post('/mark_temp_employees_attendance', ( req, res ) => {
 

@@ -108,9 +108,13 @@ export const loadCashiers = ( setCashiers ) => {
     );
 }
 
-export const approveRequest = ( e, emp_id, amount, history ) => {
+export const approveRequest = ( e, emp_id, amount, AccessControls, history ) => {
 
     e.preventDefault();
+    if (!JSON.parse(AccessControls.access).includes(75)) {
+        JSAlert.alert("You don't have access!!!", 'Validation Error', JSAlert.Icons.Failed).dismissIn(1000 * 2);
+        return false;
+    }
 
     const remarks = e.target['remarks'].value;
     const cashiers = e.target['cashiers'].value;
@@ -153,10 +157,18 @@ export const approveRequest = ( e, emp_id, amount, history ) => {
     );
 }
 
-export const verifyRequest = ( e, emp_id, amount, history ) => {
+export const verifyRequest = ( e, emp_id, amount, shp_line_adv, AccessControls, history ) => {
 
     e.preventDefault();
 
+    if (shp_line_adv === 'Y' && !JSON.parse(AccessControls.access).includes(74)) {
+        JSAlert.alert("You don't have access!!!", 'Validation Error', JSAlert.Icons.Failed).dismissIn(1000 * 2);
+        return false;
+    }
+    if (shp_line_adv === 'N' && !JSON.parse(AccessControls.access).includes(51)) {
+        JSAlert.alert("You don't have access!!!", 'Validation Error', JSAlert.Icons.Failed).dismissIn(1000 * 2);
+        return false;
+    }
     const remarks = e.target['remarks'].value;
     const submit_to = e.target['submit_to'].value;
     $('fieldset').prop('disabled', true);

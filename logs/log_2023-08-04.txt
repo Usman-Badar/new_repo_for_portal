@@ -1,26 +1,136 @@
-15:25:01 GMT+0500 (Pakistan Standard Time)
+17:02:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-15:25:01 GMT+0500 (Pakistan Standard Time)
+17:02:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-16:42:36 GMT+0500 (Pakistan Standard Time)
+17:02:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-16:43:23 GMT+0500 (Pakistan Standard Time)
+17:02:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-16:43:58 GMT+0500 (Pakistan Standard Time)
+17:02:11 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: data.id.id.substring is not a function
+TypeError: Cannot set property 'companies' of undefined
 
-16:44:57 GMT+0500 (Pakistan Standard Time)
+17:02:11 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: data.id.id.substring is not a function
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'today' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'today' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
+
+17:02:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot set property 'companies' of undefined
 

@@ -46,7 +46,7 @@ router.post('/updateprofile', ( req, res ) => {
                         q = q.concat("UPDATE emp_cv SET cv = ? WHERE emp_id = ?;");
                         pera.push(CVName + '.' + CV.name.split('.').pop());
                         pera.push(emp_id);
-                        CV.mv('client/public/images/documents/cv/' + CVName + '.' + CV.name.split('.').pop(), (err) => {
+                        CV.mv('client/images/documents/cv/' + CVName + '.' + CV.name.split('.').pop(), (err) => {
             
                             if (err) {
                     
@@ -62,7 +62,7 @@ router.post('/updateprofile', ( req, res ) => {
                         q = q.concat("UPDATE emp_prf_address SET proof_of_address = ? WHERE emp_id = ?;");
                         pera.push(PRFName + '.' + PRF.name.split('.').pop());
                         pera.push(emp_id);
-                        PRF.mv('client/public/images/documents/address/' + PRFName + '.' + PRF.name.split('.').pop(), (err) => {
+                        PRF.mv('client/images/documents/address/' + PRFName + '.' + PRF.name.split('.').pop(), (err) => {
             
                             if (err) {
                     
@@ -269,27 +269,6 @@ router.get('/dashboard/home/advance_cash', ( req, res ) => {
     )
 } );
 
-router.post('/dashboard/home/monthly/attendance', ( req, res ) => {
-    const { year } = req.body;
-    db.query(
-        "SELECT COUNT(emp_attendance.id) AS attendance, MONTH(emp_attendance.emp_date) AS month, emp_attendance.status AS status FROM emp_attendance WHERE YEAR(emp_attendance.emp_date) = ? AND ( emp_attendance.status = 'Absent' OR emp_attendance.status = 'Late' OR emp_attendance.status = 'leave' OR emp_attendance.status = 'Present' ) GROUP BY emp_attendance.status, MONTH(emp_attendance.emp_date);" +
-        "SELECT COUNT(emp_attendance.id) AS total_attendance, MONTH(emp_attendance.emp_date) AS month FROM emp_attendance WHERE YEAR(emp_attendance.emp_date) = ? AND ( emp_attendance.status = 'Absent' OR emp_attendance.status = 'Late' OR emp_attendance.status = 'leave' OR emp_attendance.status = 'Present' ) GROUP BY MONTH(emp_attendance.emp_date);",
-        [ year, year ],
-        ( err, rslt ) => {
-            if( err )
-            {
-                console.log(err);
-                res.status(500).send(err);
-                res.end();
-            }else 
-            {
-                res.send( rslt );
-                res.end();
-            }
-        }
-    )
-} );
-
 router.post('/dashboard/home/monthly/purchases', ( req, res ) => {
 
     const { month, year } = req.body;
@@ -312,6 +291,27 @@ router.post('/dashboard/home/monthly/purchases', ( req, res ) => {
         }
     )
 
+} );
+
+router.post('/dashboard/home/monthly/attendance', ( req, res ) => {
+    const { year } = req.body;
+    db.query(
+        "SELECT COUNT(emp_attendance.id) AS attendance, MONTH(emp_attendance.emp_date) AS month, emp_attendance.status AS status FROM emp_attendance WHERE YEAR(emp_attendance.emp_date) = ? AND ( emp_attendance.status = 'Absent' OR emp_attendance.status = 'Late' OR emp_attendance.status = 'leave' OR emp_attendance.status = 'Present' ) GROUP BY emp_attendance.status, MONTH(emp_attendance.emp_date);" +
+        "SELECT COUNT(emp_attendance.id) AS total_attendance, MONTH(emp_attendance.emp_date) AS month FROM emp_attendance WHERE YEAR(emp_attendance.emp_date) = ? AND ( emp_attendance.status = 'Absent' OR emp_attendance.status = 'Late' OR emp_attendance.status = 'leave' OR emp_attendance.status = 'Present' ) GROUP BY MONTH(emp_attendance.emp_date);",
+        [ year, year ],
+        ( err, rslt ) => {
+            if( err )
+            {
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else 
+            {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    )
 } );
 
 router.post('/dashboard/home/monthly/attendance/zero_lates', ( req, res ) => {
@@ -378,64 +378,5 @@ router.post('/dashboard/home/monthly/attendance/absents', ( req, res ) => {
     )
 
 } );
-
-// router.post('/dashboard/home/data', ( req, res ) => {
-
-//     const { emp_id } = req.body;
-//     const date = new Date().toISOString().slice(0, 10).replace('T', ' ');
-//     const month = new Date().getMonth() + 1;
-//     const year = new Date().getFullYear();
-
-//     db.query(
-//         "SELECT * FROM `emp_attendance` WHERE emp_date = ? AND emp_id = ?;" +
-//         "SELECT COUNT(id) AS count, status FROM `emp_attendance` WHERE MONTH(emp_date) = ? AND YEAR(emp_date) = ? AND emp_id = ? GROUP BY status;" +
-//         "SELECT emp_chats.*, sender.name AS sender, emp_app_profile.emp_image FROM `emp_chats` LEFT OUTER JOIN employees sender ON emp_chats.sender_id = sender.emp_id LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id WHERE emp_chats.receiver_id = ? ORDER BY emp_chats.id DESC;" +
-        
-//         "SELECT COUNT(product_id) AS total_products FROM `tbl_inventory_products`;" +
-//         "SELECT SUM(quantity) AS total_inward_quantity, SUM(quantity*unit_price) AS total_inward_value, COUNT(transaction_id) AS total_inward_entries FROM `tbl_inventory_product_transactions` WHERE entry = 'inward';" +
-//         "SELECT SUM(quantity) AS total_outward_quantity, SUM(quantity*unit_price) AS total_outward_value, COUNT(transaction_id) AS total_outward_entries FROM `tbl_inventory_product_transactions` WHERE entry = 'outward';" +
-//         "SELECT SUM(stored_quantity) AS total_stored_quantity, SUM(stored_quantity*unit_price) AS total_stored_value FROM `tbl_inventory_product_transactions` WHERE entry = 'inward';" +
-//         "SELECT product_id, name, quantity FROM `tbl_inventory_product_transactions` WHERE entry = 'inward' ORDER BY quantity DESC LIMIT 3;" +
-//         "SELECT product_id, name, quantity FROM `tbl_inventory_product_transactions` WHERE entry = 'outward' ORDER BY quantity DESC LIMIT 3;" +
-//         "SELECT COUNT(tbl_inventory_product_transactions.transaction_id) AS total_inward_entries, SUM(tbl_inventory_product_transactions.quantity) AS total_inward_quantity, SUM(tbl_inventory_product_transactions.stored_quantity) AS total_stored_quantity, SUM(tbl_inventory_product_transactions.unit_price*tbl_inventory_product_transactions.stored_quantity) AS current_value, tbl_inventory_products.product_type FROM `tbl_inventory_product_transactions` LEFT OUTER JOIN tbl_inventory_products ON tbl_inventory_product_transactions.product_id = tbl_inventory_products.product_id WHERE tbl_inventory_product_transactions.entry = 'inward' GROUP BY tbl_inventory_products.product_type;" +
-//         "SELECT COUNT(transaction_id) AS total_issued, SUM(quantity) AS quantity_issued, SUM(unit_price*quantity) AS value_issued FROM `tbl_inventory_product_transactions` WHERE status = 'issued';" +
-//         "SELECT COUNT(transaction_id) AS total_issued, SUM(quantity) AS quantity_issued, SUM(unit_price*quantity) AS value_issued FROM `tbl_inventory_product_transactions` WHERE status = 'signature pending';" +
-//         "SELECT COUNT(transaction_id) AS total_entries, SUM(stored_quantity) AS quantity FROM `tbl_inventory_product_transactions` WHERE preview IS NULL AND entry = 'inward';" +
-        
-//         "SELECT COUNT(id) AS total_requests FROM `db_cash_receipts`;" +
-//         "SELECT SUM(amount) AS total_amount_issued FROM `db_cash_receipts` WHERE receival_date IS NOT NULL OR status = 'approved' OR status = 'cleared' OR status = 'issued';" +
-//         "SELECT SUM(amount) AS total_amount_collected FROM `db_cash_receipts` WHERE receival_date IS NOT NULL;" +
-//         "SELECT SUM(amount) AS total_amount_not_collected FROM `db_cash_receipts` WHERE receival_date IS NULL AND status = 'approved';" + 
-//         "SELECT SUM(amount) AS total_amount_pending FROM `db_cash_receipts` WHERE receival_date IS NOT NULL AND clearance_date IS NULL;" +
-//         "SELECT SUM(amount) AS total_amount_cleared FROM `db_cash_receipts` WHERE receival_date IS NOT NULL AND clearance_date IS NOT NULL;" +
-//         "SELECT  \
-//         db_cash_balance.*, \
-//         employees.name, \
-//         designations.designation_name, \
-//         companies.company_name, \
-//         emp_app_profile.emp_image \
-//         FROM `db_cash_balance`  \
-//         LEFT OUTER JOIN employees ON db_cash_balance.emp_id = employees.emp_id \
-//         LEFT OUTER JOIN designations ON employees.designation_code = designations.designation_code \
-//         LEFT OUTER JOIN companies ON employees.company_code = companies.company_code \
-//         LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id \
-//         ORDER BY balance DESC;",
-//         [ date, emp_id, month, year, emp_id, emp_id ],
-//         ( err, rslt ) => {
-//             if( err )
-//             {
-//                 console.log(err);
-//                 res.status(500).send(err);
-//                 res.end();
-//             }else 
-//             {
-//                 res.send( rslt );
-//                 res.end();
-//             }
-
-//         }
-//     )
-
-// } );
 
 module.exports = router;

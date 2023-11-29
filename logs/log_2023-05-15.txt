@@ -1,4 +1,40 @@
-09:23:01 GMT+0500 (Pakistan Standard Time)
+16:39:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+ReferenceError: emp_id is not defined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: emp_id is not defined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: emp_id is not defined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+16:39:11 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
 

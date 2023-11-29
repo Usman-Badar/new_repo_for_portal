@@ -1,56 +1,8 @@
-10:48:18 GMT+0500 (Pakistan Standard Time)
+13:12:26 GMT+0500 (Pakistan Standard Time)
 type: error
-SyntaxError: missing ) after argument list
+TypeError: Cannot read property 'name' of undefined
 
-12:21:23 GMT+0500 (Pakistan Standard Time)
+13:12:26 GMT+0500 (Pakistan Standard Time)
 type: error
-ReferenceError: outer is not defined
-
-12:22:00 GMT+0500 (Pakistan Standard Time)
-type: error
-ReferenceError: outer is not defined
-
-13:01:22 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: Cannot read properties of undefined (reading 'release')
-
-14:17:16 GMT+0500 (Pakistan Standard Time)
-type: error
-ReferenceError: app is not defined
-
-14:20:57 GMT+0500 (Pakistan Standard Time)
-type: error
-ReferenceError: app is not defined
-
-16:48:27 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: Cannot read properties of undefined (reading 'thumbs')
-
-16:48:27 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: Cannot read properties of undefined (reading 'thumbs')
-
-16:48:27 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: Cannot read properties of undefined (reading 'thumbs')
-
-16:51:06 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: Cannot read properties of undefined (reading 'thumbs')
-
-17:33:59 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError [ERR_INVALID_ARG_VALUE]: The argument 'id' must be a non-empty string. Received ''
-
-17:34:57 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError [ERR_INVALID_ARG_VALUE]: The argument 'id' must be a non-empty string. Received ''
-
-17:35:08 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError [ERR_INVALID_ARG_VALUE]: The argument 'id' must be a non-empty string. Received ''
-
-17:36:12 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError [ERR_INVALID_ARG_VALUE]: The argument 'id' must be a non-empty string. Received ''
+TypeError: Cannot read property 'name' of undefined
 

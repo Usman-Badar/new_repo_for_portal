@@ -4,8 +4,6 @@ const db = require('../../db/connection');
 const moment = require('moment');
 const io = require('../../server');
 
-const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNotification;
-
 io.on('connection', ( socket ) => {
 
     socket.on(
@@ -722,8 +720,7 @@ router.post('/attendance_request/submit', ( req, res ) => {
             
                         }else 
                         {
-
-                            SendWhatsappNotification( null, null, "Hi " + rslt[0][0].name, "Your time in has been marked at: \n" + d.toTimeString(), rslt[0][0].cell );
+            
                             res.send('success');
                             res.end();
             
@@ -769,30 +766,30 @@ router.post('/attendance_request/cancel', ( req, res ) => {
 
 router.post('/attendance_request/reject', ( req, res ) => {
 
-const { request_id, remarks } = req.body;
-const d = new Date();
+    const { request_id, remarks } = req.body;
+    const d = new Date();
 
-db.query(
-    "UPDATE `tbl_attendance_request_refs` SET update_date = ?, update_time = ?, request_status = ?, remarks = ? WHERE request_id = ?;",
-    [ d, d.toTimeString(), 'rejected', remarks, request_id ],
-    ( err, rslt ) => {
+    db.query(
+        "UPDATE `tbl_attendance_request_refs` SET update_date = ?, update_time = ?, request_status = ?, remarks = ? WHERE request_id = ?;",
+        [ d, d.toTimeString(), 'rejected', remarks, request_id ],
+        ( err, rslt ) => {
 
-        if( err )
-        {
+            if( err )
+            {
 
-            res.status(500).send(err);
-            res.end();
+                res.status(500).send(err);
+                res.end();
 
-        }else 
-        {
+            }else 
+            {
 
-            res.send( rslt );
-            res.end();
+                res.send( rslt );
+                res.end();
+
+            }
 
         }
-
-    }
-);
+    );
 
 } );
 

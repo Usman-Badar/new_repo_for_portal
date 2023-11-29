@@ -160,7 +160,7 @@ router.post('/uploaddocument', ( req, res ) => {
                         }else 
                         {
                             let nm = employee_name;
-                            MakeDir.mkdir('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString(), 
+                            MakeDir.mkdir('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString(), 
                                 { recursive: true }, 
                                 ( err ) => {
                                     if (err) 
@@ -171,7 +171,7 @@ router.post('/uploaddocument', ( req, res ) => {
                                     }
                                     else
                                     {
-                                        MyDocs.mv('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + docsName, (err) => {
+                                        MyDocs.mv('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + docsName, (err) => {
             
                                             if (err) {
                                     
@@ -231,7 +231,7 @@ router.post('/createnewfolder', ( req, res ) => {
                         }else 
                         {
                             
-                            MakeDir.mkdir('client/public/images/drive/' + employee_name.replace(/\s/g, '') + '_' + empId.toString() + '/' + foldername, 
+                            MakeDir.mkdir('client/images/drive/' + employee_name.replace(/\s/g, '') + '_' + empId.toString() + '/' + foldername, 
                                 { recursive: true }, 
                                 ( err ) => {
                                     if (err) 
@@ -307,7 +307,7 @@ router.post('/uploaddocuments', ( req, res ) => {
                                 }
     
                                 let nm = employee_name;
-                                    MakeDir.mkdir('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName,
+                                    MakeDir.mkdir('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName,
                                         { recursive: true },
                                         (err) => {
                                             if (err) {
@@ -319,7 +319,7 @@ router.post('/uploaddocuments', ( req, res ) => {
                                             }
                                             else {
                 
-                                                Attachments[x].mv('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName + '/' + Attachments[x].name, (err) => {
+                                                Attachments[x].mv('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName + '/' + Attachments[x].name, (err) => {
                                                     if (err) 
                                                     {
                                                     
@@ -355,7 +355,7 @@ router.post('/uploaddocuments', ( req, res ) => {
                                 }
     
                                 let nm = employee_name;
-                                    MakeDir.mkdir('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString(),
+                                    MakeDir.mkdir('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString(),
                                         { recursive: true },
                                         (err) => {
                                             if (err) {
@@ -367,7 +367,7 @@ router.post('/uploaddocuments', ( req, res ) => {
                                             }
                                             else {
                 
-                                                Attachments[x].mv('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + Attachments[x].name, (err) => {
+                                                Attachments[x].mv('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + Attachments[x].name, (err) => {
                                                     if (err) 
                                                     {
                                                     
@@ -438,7 +438,7 @@ router.post('/deletedoc', ( req, res ) => {
                                 if ( docName.indexOf('.') !== -1 ) 
                                 {
                                     // would be true. Period found in file name
-                                    MakeDir.unlinkSync('client/public/images/drive/' + docName);
+                                    MakeDir.unlinkSync('client/images/drive/' + docName);
                                     res.send( rslt );
                                     res.end();
                                     connection.release();
@@ -463,7 +463,7 @@ router.post('/deletedoc', ( req, res ) => {
                                                     let length = rslt.length;
                                                     for ( let x = 0; x < length; x++ )
                                                     {
-                                                        MakeDir.unlinkSync('client/public/images/drive/' + rslt[0].name);
+                                                        MakeDir.unlinkSync('client/images/drive/' + rslt[0].name);
                                                     }
                                                 }
                                                 res.send( rslt );
@@ -496,7 +496,7 @@ router.post('/deletedoc', ( req, res ) => {
                             }else 
                             {
                                 
-                                MakeDir.unlinkSync('client/public/images/drive/' + docName);
+                                MakeDir.unlinkSync('client/images/drive/' + docName);
                                 res.send( rslt );
                                 res.end();
                                 connection.release();
@@ -545,7 +545,7 @@ router.post('/uploadsubdocs', ( req, res ) => {
                         }else 
                         {
                             let nm = employee_name;
-                            MakeDir.mkdir('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName, 
+                            MakeDir.mkdir('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName, 
                                 { recursive: true }, 
                                 ( err ) => {
                                     if (err) 
@@ -556,7 +556,7 @@ router.post('/uploadsubdocs', ( req, res ) => {
                                     }
                                     else
                                     {
-                                        MyDocs.mv('client/public/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName + '/' + docsName, (err) => {
+                                        MyDocs.mv('client/images/drive/' + nm.replace(/\s/g, '') + '_' + empId.toString() + '/' + FolderName + '/' + docsName, (err) => {
             
                                             if (err) {
                                     
@@ -643,7 +643,7 @@ router.post('/movedoctofolder', ( req, res ) => {
                                                 }else 
                                                 {
 
-                                                    MakeDir.mkdir('client/public/images/drive/' + employee_name.replace(/\s/g, '') + '_' + EmpID.toString() + '/' + folderName,
+                                                    MakeDir.mkdir('client/images/drive/' + employee_name.replace(/\s/g, '') + '_' + EmpID.toString() + '/' + folderName,
                                                         { recursive: true },
                                                         (err) => {
                                                             if (err) {
@@ -655,7 +655,7 @@ router.post('/movedoctofolder', ( req, res ) => {
                                                             else {
 
                                                                 fs.move(
-                                                                    'client/public/images/drive/' + driveName, 'client/public/images/drive/' + employee_name.replace(/\s/g, '') + '_' + EmpID.toString() + '/' + folderName + '/' + driveName.toString().split('/').pop()
+                                                                    'client/images/drive/' + driveName, 'client/images/drive/' + employee_name.replace(/\s/g, '') + '_' + EmpID.toString() + '/' + folderName + '/' + driveName.toString().split('/').pop()
                                                                     , ( err ) => {
                                                                         if ( err )
                                                                         {

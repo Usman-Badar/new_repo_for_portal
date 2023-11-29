@@ -1,115 +1,72 @@
-09:25:11 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-09:25:11 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:25:11 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:25:11 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'name')
+TypeError: Cannot read property 'name' of undefined
 
-09:44:09 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:44:09 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:47:29 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:47:29 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:47:29 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'name')
+TypeError: Cannot read property 'name' of undefined
 
-09:52:58 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:52:58 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:52:58 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'name')
+TypeError: Cannot read property 'name' of undefined
 
-09:54:37 GMT+0500 (Pakistan Standard Time)
+10:23:11 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:54:37 GMT+0500 (Pakistan Standard Time)
+15:54:17 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
+TypeError: Cannot read property 'name' of undefined
 
-09:54:37 GMT+0500 (Pakistan Standard Time)
+15:54:17 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'name')
+TypeError: Cannot read property 'name' of undefined
 
-10:17:25 GMT+0500 (Pakistan Standard Time)
+15:54:17 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-10:19:04 GMT+0500 (Pakistan Standard Time)
+15:54:17 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-12:18:39 GMT+0500 (Pakistan Standard Time)
+15:54:17 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'name')
-
-15:07:52 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
-
-15:07:52 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
-
-16:23:07 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
-
-16:23:07 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
-
-16:23:07 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
-
-16:23:07 GMT+0500 (Pakistan Standard Time)
-type: error
-Error: Evaluation failed: TypeError: Cannot read properties of undefined (reading 'WidFactory')
-    at __puppeteer_evaluation_script__:2:42
-
-16:23:07 GMT+0500 (Pakistan Standard Time)
-type: error
-TypeError: Cannot read properties of undefined (reading 'release')
+TypeError: Cannot read property 'accepted_by' of undefined
 

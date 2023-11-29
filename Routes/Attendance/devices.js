@@ -96,7 +96,7 @@ router.post('/savenewdevice', ( req, res ) => {
     db.query(
         "INSERT INTO `att_devices`(`device_name`, `device_browser`, `machine_id`) VALUES (?,?,?);",
         [ device_name, device_browser, device_machine ],
-        ( err, rslt ) => {
+        ( err ) => {
 
             if( err )
             {
@@ -108,7 +108,7 @@ router.post('/savenewdevice', ( req, res ) => {
             }else 
             {
 
-                res.send(rslt);
+                res.send( 'success' );
                 res.end();
 
             }

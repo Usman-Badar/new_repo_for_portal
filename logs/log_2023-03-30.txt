@@ -1,78 +1,76 @@
-09:27:12 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Cannot find module './Attendance/auth'
-Require stack:
-- H:\IT\React\portal\server.js
+TypeError: Cannot read property 'name' of undefined
 
-09:39:50 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Cannot find module './Attendance/auth'
-Require stack:
-- H:\IT\React\portal\server.js
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
 
-09:40:06 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: Cannot find module './Attendance/auth'
-Require stack:
-- H:\IT\React\portal\server.js
+TypeError: Cannot read property 'name' of undefined
 
-14:34:10 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'pr_id')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:50:45 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:57:44 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
 
-14:57:44 GMT+0500 (Pakistan Standard Time)
+12:52:27 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of undefined (reading 'request_by')
+TypeError: Cannot read property 'name' of undefined
+
+12:52:27 GMT+0500 (Pakistan Standard Time)
+type: error
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
 

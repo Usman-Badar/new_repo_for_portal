@@ -1,4 +1,72 @@
-12:35:11 GMT+0500 (Pakistan Standard Time)
+12:29:08 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: app.use() requires a middleware function
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:29:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:29:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:29:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:29:08 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 10..jpeg'
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 1..jpeg'
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 1..jpeg'
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+Error: ENOENT: no such file or directory, unlink 'assets/inventory/assets/images/products/WhatsApp Image 2023-03-16 at 1..jpeg'
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: emp_id is not defined
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: emp_id is not defined
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+ReferenceError: emp_id is not defined
+
+12:46:46 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+18:14:29 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+18:14:29 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
 

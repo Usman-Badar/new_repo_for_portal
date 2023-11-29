@@ -1,0 +1,9 @@
+.FuelManagement .flex_container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.FuelManagement .flex_container > div {
+    width: 50%;
+}

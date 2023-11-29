@@ -1,28 +1,40 @@
-09:56:51 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of null (reading 'evaluate')
+TypeError: Cannot read property 'today' of undefined
 
-09:56:51 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-TypeError: Cannot read properties of null (reading 'evaluate')
+TypeError: Cannot read property 'today' of undefined
 
-09:56:51 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-ReferenceError: res is not defined
+TypeError: Cannot read property 'cell' of undefined
 
-09:56:51 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-ReferenceError: res is not defined
+TypeError: Cannot read property 'cell' of undefined
 
-10:22:00 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_NAME_NOT_RESOLVED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-12:33:13 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_FAILED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
 
-14:43:12 GMT+0500 (Pakistan Standard Time)
+17:50:21 GMT+0500 (Pakistan Standard Time)
 type: error
-Error: net::ERR_FAILED at https://web.whatsapp.com/
+TypeError: Cannot read property 'name' of undefined
+
+17:50:21 GMT+0500 (Pakistan Standard Time)
+type: error
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+
+17:50:21 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
+
+17:50:21 GMT+0500 (Pakistan Standard Time)
+type: error
+TypeError: Cannot read property 'name' of undefined
 

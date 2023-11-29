@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../db/connection');
 const moment = require('moment');
 const fs = require('fs');
-const owner = 5000; // JP
+const owner = 1; // JP
 
 const SendWhatsappNotification = require('../Whatsapp/whatsapp').SendWhatsappNotification;
 const administrativeNotifications = require('../Employee/notifications').administrativeNotifications;

@@ -5,7 +5,8 @@ export const loadAllRequests = ( ShipViewer, CashViewer, Admin, Cashier, locatio
         '/cash/load/requests',
         {
             emp_id: localStorage.getItem('EmpID'),
-            shipViewer: ShipViewer ? 1 : 0,
+            // shipViewer: ShipViewer ? 1 : 0,
+            shp_line_adv_cash_viewer: ShipViewer ? 1 : 0,
             cashViewer: CashViewer ? 1 : 0,
             accessKey: Admin ? 1 : 0,
             cashier: Cashier ? 1 : 0,

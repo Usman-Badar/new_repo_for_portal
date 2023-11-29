@@ -152,6 +152,7 @@ const App = () => {
                         For Admin Module
                     */}
 
+                    <Route exact path="/fuel-managent/equipment-type-entry" render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/admin/access/management' render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/admin_login' render={ () => <Sus content={ <AdminLogin /> } /> } />
                     <Route exact path='/admin_logout' render={ () => <Sus content={ <AdminLogout /> } /> } />
@@ -170,6 +171,7 @@ const App = () => {
                     <Route exact path='/menu_setup' render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/misc_setup' render={ () => <Sus content={ <AdminModule /> } /> } />
                     <Route exact path='/configure_attendance_request' render={ () => <Sus content={ <AdminModule /> } /> } />
+                    <Route exact path='/employees/lock' render={ () => <Sus content={ <AdminModule /> } /> } />
 
                     {/* FOR INVENTORY MODULE */}
                     
@@ -269,7 +271,13 @@ const App = () => {
                     <Route exact path="/cash/shipping/line/list" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/cash/shipping/line/form" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/cash/shipping/line/details/:id" render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    <Route exact path='/portal/issues' render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path='/portal/issues/new' render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path='/portal/issues/details/:id' render={ () => <Sus content={ <Dashboard /> } /> } />
                     
+                    {/* FUEL MANAGEMENT */}
+                    <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <Dashboard /> } /> } />
                 </Switch>
             </>
         )
