@@ -338,12 +338,54 @@ router.post('/newattendancerequest', ( req, res ) => {
         breakOut = null;
     }
 
-    db.query(
-        "INSERT INTO `tbl_attendance_requests`(`request_type`, `time`, `date`, `reason`, `snapshot`) VALUES (?,?,?,?,?);" +
-        "SELECT id FROM tbl_attendance_requests WHERE request_type = ? AND date = ? AND reason = ? AND" + sn,
-        [ request_type, recordDate.toTimeString(), recordDate, reason, snapshot === 'null' ? null : snapshot, request_type, date2, reason, snapshot === 'null' ? null : snapshot ],
-        ( err, rslt ) => {
+    // BEFORE 2023-11-30
+    // db.query(
+    //     "INSERT INTO `tbl_attendance_requests`(`request_type`, `time`, `date`, `reason`, `snapshot`) VALUES (?,?,?,?,?);" +
+    //     "SELECT id FROM tbl_attendance_requests WHERE request_type = ? AND date = ? AND reason = ? AND" + sn,
+    //     [ request_type, recordDate.toTimeString(), recordDate, reason, snapshot === 'null' ? null : snapshot, request_type, date2, reason, snapshot === 'null' ? null : snapshot ],
+    //     ( err, rslt ) => {
 
+    //         if( err )
+    //         {
+
+    //             console.log( err );
+    //             res.status(500).send(err);
+    //             res.end();
+
+    //         }else 
+    //         {
+
+    //             db.query(
+    //                 "INSERT INTO `tbl_attendance_request_refs`(`request_id`, `request_by`, `request_date`, `request_time`, `request_to`, `request_status`, `time_in`, `time_out`, `break_in`, `break_out`) VALUES (?,?,?,?,?,?,?,?,?,?);",
+    //                 [ rslt[1][0].id, request_by, date, date.toTimeString(), request_to, 'sent', timeIn, timeOut, breakIn, breakOut ],
+    //                 ( err, rslt ) => {
+            
+    //                     if( err )
+    //                     {
+            
+    //                         res.status(500).send(err);
+    //                         res.end();
+            
+    //                     }else 
+    //                     {
+            
+    //                         res.send( rslt );
+    //                         res.end();
+            
+    //                     }
+            
+    //                 }
+    //             );
+
+    //         }
+
+    //     }
+    // );
+
+    db.query(
+        "INSERT INTO `tbl_attendance_requests`(`request_type`, `time`, `date`, `reason`, `snapshot`) VALUES (?,?,?,?,?);",
+        [ request_type, recordDate.toTimeString(), recordDate, reason, snapshot === 'null' ? null : snapshot ],
+        ( err, rslt ) => {
             if( err )
             {
 
@@ -356,7 +398,7 @@ router.post('/newattendancerequest', ( req, res ) => {
 
                 db.query(
                     "INSERT INTO `tbl_attendance_request_refs`(`request_id`, `request_by`, `request_date`, `request_time`, `request_to`, `request_status`, `time_in`, `time_out`, `break_in`, `break_out`) VALUES (?,?,?,?,?,?,?,?,?,?);",
-                    [ rslt[1][0].id, request_by, date, date.toTimeString(), request_to, 'sent', timeIn, timeOut, breakIn, breakOut ],
+                    [ rslt.insertId, request_by, date, date.toTimeString(), request_to, 'sent', timeIn, timeOut, breakIn, breakOut ],
                     ( err, rslt ) => {
             
                         if( err )
