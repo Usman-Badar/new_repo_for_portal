@@ -309,26 +309,29 @@ const Attandence_Request = () => {
     useEffect(
         () => {
 
-            axios.post(
-                '/getallattendancerequests',
-                {
-                    emp_id: localStorage.getItem('EmpID'),
-                }
-            ).then(
-                res => {
+            if (AccessControls) {
+                axios.post(
+                    '/getallattendancerequests',
+                    {
+                        emp_id: localStorage.getItem('EmpID'),
+                        all: JSON.parse(AccessControls.access).includes(83) ? 1 : 0
+                    }
+                ).then(
+                    res => {
+    
+                        setRequestList(res.data);
+    
+                    }
+                ).catch(
+                    err => {
+    
+                        console.log(err)
+    
+                    }
+                )
+            }
 
-                    setRequestList(res.data);
-
-                }
-            ).catch(
-                err => {
-
-                    console.log(err)
-
-                }
-            )
-
-        }, [ Submittion ]
+        }, [ Submittion, AccessControls ]
     )
 
     useEffect(

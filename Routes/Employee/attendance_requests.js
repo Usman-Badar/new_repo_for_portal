@@ -126,40 +126,74 @@ router.post('/getemptimein', ( req, res ) => {
 
 router.post('/getallattendancerequests', ( req, res ) => {
 
-    const { emp_id } = req.body;
+    const { emp_id, all } = req.body;
 
-    db.query(
-        "SELECT  \
-        sender.name as sender_name, \
-        receiver.name as receiver_name, \
-        emp_app_profile.emp_image, \
-        tbl_attendance_request_refs.*, \
-        sender_designation.designation_name \
-        FROM `tbl_attendance_request_refs`  \
-        LEFT OUTER JOIN employees sender ON sender.emp_id = tbl_attendance_request_refs.request_by \
-        LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
-        LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
-        LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
-        WHERE request_by = ? OR request_to = ? OR act_by = ? ORDER BY tbl_attendance_request_refs.id DESC LIMIT 10;",
-        [ emp_id, emp_id, emp_id ],
-        ( err, rslt ) => {
-
-            if( err )
-            {
-
-                res.status(500).send(err);
-                res.end();
-
-            }else 
-            {
-
-                res.send( rslt );
-                res.end();
-
+    if (all === 1) {
+        db.query(
+            "SELECT  \
+            sender.name as sender_name, \
+            receiver.name as receiver_name, \
+            emp_app_profile.emp_image, \
+            tbl_attendance_request_refs.*, \
+            sender_designation.designation_name \
+            FROM `tbl_attendance_request_refs`  \
+            LEFT OUTER JOIN employees sender ON sender.emp_id = tbl_attendance_request_refs.request_by \
+            LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
+            LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
+            LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
+            ORDER BY tbl_attendance_request_refs.id;",
+            ( err, rslt ) => {
+    
+                if( err )
+                {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                }else 
+                {
+    
+                    res.send( rslt );
+                    res.end();
+    
+                }
+    
             }
-
-        }
-    );
+        );
+    }else {
+        db.query(
+            "SELECT  \
+            sender.name as sender_name, \
+            receiver.name as receiver_name, \
+            emp_app_profile.emp_image, \
+            tbl_attendance_request_refs.*, \
+            sender_designation.designation_name \
+            FROM `tbl_attendance_request_refs`  \
+            LEFT OUTER JOIN employees sender ON sender.emp_id = tbl_attendance_request_refs.request_by \
+            LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
+            LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
+            LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
+            WHERE request_by = ? OR request_to = ? OR act_by = ? ORDER BY tbl_attendance_request_refs.id DESC LIMIT 10;",
+            [ emp_id, emp_id, emp_id ],
+            ( err, rslt ) => {
+    
+                if( err )
+                {
+    
+                    res.status(500).send(err);
+                    res.end();
+    
+                }else 
+                {
+    
+                    res.send( rslt );
+                    res.end();
+    
+                }
+    
+            }
+        );
+    }
 
 } );
 

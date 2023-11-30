@@ -220,7 +220,7 @@ router.post('/cash/load/requests', ( req, res ) => {
             ) 
             : cashier === 1 ? 
                 (
-                "WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued')"
+                "WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued' OR db_cash_receipts.status = 'cleared')"
                 )    
                 :   
                 "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" 
