@@ -16,6 +16,7 @@ const AttendanceRequest = () => {
 
     const history = useHistory();
     const Relations = useSelector((state) => state.EmpAuth.Relations);
+    const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
 
     const [ CancelContent, setCancelContent ] = useState();
     const [ Requests, setRequests ] = useState();
@@ -29,8 +30,8 @@ const AttendanceRequest = () => {
 
     useEffect(
         () => {
-            loadRequests();
-        }, []
+            if (AccessControls) loadRequests();
+        }, [AccessControls]
     )
 
     const loadRequests = () => {
@@ -39,6 +40,7 @@ const AttendanceRequest = () => {
             '/getallattendancerequests',
             {
                 emp_id: localStorage.getItem('EmpID'),
+                all: JSON.parse(AccessControls.access).includes(83) ? 1 : 0
             }
         ).then(
             res => {

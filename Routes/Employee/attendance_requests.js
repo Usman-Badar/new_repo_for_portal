@@ -141,7 +141,7 @@ router.post('/getallattendancerequests', ( req, res ) => {
             LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
             LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
             LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
-            ORDER BY tbl_attendance_request_refs.id;",
+            ORDER BY tbl_attendance_request_refs.id DESC;",
             ( err, rslt ) => {
     
                 if( err )
