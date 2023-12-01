@@ -21,10 +21,11 @@ router.post('/portal/issues/list', ( req, res ) => {
     const { requested_by, admin } = req.body;
     if (parseInt(admin) === 1) {
         db.query(
-            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name FROM `tbl_pi_reported` \
+            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name, seaboard.companies.code FROM `tbl_pi_reported` \
             LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
             LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
-            ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
+            LEFT OUTER JOIN seaboard.companies ON seaboard.employees.company_code = seaboard.companies.company_code \
+            ORDER BY tbl_pi_reported.requested_at DESC;",
             ( err, rslt ) => {
                 if( err ) {
                     console.log(err);
@@ -38,10 +39,11 @@ router.post('/portal/issues/list', ( req, res ) => {
         );
     }else {
         db.query(
-            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name FROM `tbl_pi_reported` \
+            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name, seaboard.companies.code FROM `tbl_pi_reported` \
             LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
             LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
-            WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
+            LEFT OUTER JOIN seaboard.companies ON seaboard.employees.company_code = seaboard.companies.company_code \
+            WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at DESC;",
             [ requested_by ],
             ( err, rslt ) => {
                 if( err ) {
