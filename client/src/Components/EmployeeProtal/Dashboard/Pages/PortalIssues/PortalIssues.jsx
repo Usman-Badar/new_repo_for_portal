@@ -306,12 +306,15 @@ const IssueDetails = ({ history, AccessControls }) => {
 
 const IssuesListView = ({ history, AccessControls }) => {
     const [ RequestStatuses, setRequestStatuses ] = useState([]);
+    const [ RequestCategories, setRequestCategories ] = useState([]);
     const [ status, setStatus ] = useState('');
     const [ issues, setIssues ] = useState();
     const [ ShowFilters, setShowFilters ] = useState(false);
     const [ filterSubject, setFilterSubject ] = useState('');
     const [ filterDescription, setFilterDescription ] = useState('');
     const [ filterPriority, setFilterPriority ] = useState('');
+    const [ filterCategory, setFilterCategory ] = useState('');
+    const [ filterIssueDate, setFilterIssueDate ] = useState('');
 
     useEffect(
         () => {
@@ -326,13 +329,18 @@ const IssuesListView = ({ history, AccessControls }) => {
         () => {
             if (issues) {
                 const statuses = [];
+                const categories = [];
                 for ( let x = 0; x < issues.length; x++ )
                 {
                     if ( !statuses.includes(issues[x].status.toLowerCase()) ) {
                         statuses.push(issues[x].status.toLowerCase());
                     }
+                    if ( !categories.includes(issues[x].pi_category.toLowerCase()) ) {
+                        categories.push(issues[x].pi_category.toLowerCase());
+                    }
                 }
                 setRequestStatuses(statuses);
+                setRequestCategories(categories);
 
                 if ( sessionStorage.getItem('portal_issue') )
                 {
@@ -345,6 +353,14 @@ const IssuesListView = ({ history, AccessControls }) => {
                 if ( sessionStorage.getItem('pi_desc') )
                 {
                     setFilterDescription(sessionStorage.getItem('pi_desc'));
+                }
+                if ( sessionStorage.getItem('pi_category') )
+                {
+                    setFilterCategory(sessionStorage.getItem('pi_category'));
+                }
+                if ( sessionStorage.getItem('pi_date') )
+                {
+                    setFilterCategory(sessionStorage.getItem('pi_date'));
                 }
             }
         }, [issues]
@@ -367,9 +383,80 @@ const IssuesListView = ({ history, AccessControls }) => {
         sessionStorage.removeItem('pi_subject');
         sessionStorage.removeItem('pi_desc');
         sessionStorage.removeItem('pi_priority');
+        sessionStorage.removeItem('pi_category');
+        sessionStorage.removeItem('pi_date');
         setFilterSubject("");
         setFilterDescription("");
         setFilterPriority("");
+        setFilterCategory("");
+        setFilterIssueDate("");
+    }
+    const Status = ({ status }) => {
+        return (
+            <div className='d-flex align-items-center'>
+                <div
+                    className={
+                        "dot mr-1 "
+                        +
+                        (
+                            status === 'Resolved'
+                                ?
+                                "bg-success"
+                                :
+                                status === 'Replied'
+                                    ?
+                                    "bg-primary"
+                                    :
+                                    status === 'Pending'
+                                        ?
+                                        "bg-warning"
+                                        :
+                                        status === 'Low'
+                                            ?
+                                            "bg-dark"
+                                            :
+                                            status === 'Medium'
+                                                ?
+                                                "bg-info"
+                                                :
+                                                "bg-danger"
+                        )
+                    }
+                ></div>
+                <div
+                    className={
+                        "text-capitalize "
+                        +
+                        (
+                            status === 'Resolved'
+                                ?
+                                "text-success"
+                                :
+                                status === 'Replied'
+                                    ?
+                                    "text-primary"
+                                    :
+                                    status === 'Pending'
+                                        ?
+                                        "text-warning"
+                                        :
+                                        status === 'Low'
+                                            ?
+                                            "text-dark"
+                                            :
+                                            status === 'Medium'
+                                                ?
+                                                "text-info"
+                                                :
+                                                "text-danger"
+                        )
+                    }
+                    style={{ fontSize: 12 }}
+                >
+                    {status.split('_').join(' ')}
+                </div>
+            </div>
+        )
     }
     return (
         <>
@@ -392,7 +479,11 @@ const IssuesListView = ({ history, AccessControls }) => {
                                 :
                                 <div data-tip data-for='filter'>
                                     {
-                                        filterSubject !== '' || filterDescription !== ''
+                                        filterSubject !== '' || 
+                                        filterDescription !== '' || 
+                                        filterPriority !== '' || 
+                                        filterCategory !== '' || 
+                                        filterIssueDate !== ''
                                         ?
                                         <div className='filterisOpen'></div>
                                         :
@@ -414,6 +505,15 @@ const IssuesListView = ({ history, AccessControls }) => {
                         <div className='filter-content popUps'>
                             <div className='flex'>
                                 <div className='w-100'>
+                                    <label className="font-weight-bold mb-0">Category</label>
+                                    <select value={filterCategory} onChange={(e) => {setFilterCategory(e.target.value); sessionStorage.setItem('pi_category', e.target.value)}} className='form-control mb-2'>
+                                        <option value={""}>All</option>
+                                        {
+                                            RequestCategories.map((category, i) => <option key={i} value={category}>{category}</option>)
+                                        }
+                                    </select>
+                                </div>
+                                <div className='w-100'>
                                     <label className="font-weight-bold mb-0">Search Subject</label>
                                     <input value={filterSubject} placeholder='Search Keywords...' type="search" onChange={(e) => {setFilterSubject(e.target.value); sessionStorage.setItem('pi_subject', e.target.value)}} className='form-control mb-2' />
                                 </div>
@@ -429,6 +529,10 @@ const IssuesListView = ({ history, AccessControls }) => {
                                         <option value={"Medium"}>Medium</option>
                                         <option value={"High"}>High</option>
                                     </select>
+                                </div>
+                                <div className='w-100'>
+                                    <label className="font-weight-bold mb-0">Issue Date</label>
+                                    <input value={filterIssueDate} type="date" onChange={(e) => {setFilterIssueDate(e.target.value); sessionStorage.setItem('pi_date', e.target.value)}} className='form-control mb-2' />
                                 </div>
                                 <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
                             </div>
@@ -474,6 +578,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                             <th className='border-top-0'>Subject</th>
                             <th className='border-top-0'>Description</th>
                             <th className='border-top-0'>Requested By</th>
+                            <th className='border-top-0'>Issue Date</th>
                             <th className='border-top-0'>Status</th>
                             <th className='border-top-0'>Priority</th>
                         </tr>
@@ -484,10 +589,12 @@ const IssuesListView = ({ history, AccessControls }) => {
                                 val.status.toLowerCase().includes(status) && 
                                 val.subject.toLocaleLowerCase().includes(filterSubject.toLocaleLowerCase()) && 
                                 val.description.toLocaleLowerCase().includes(filterDescription.toLocaleLowerCase()) && 
-                                val.priority.toLocaleLowerCase().includes(filterPriority.toLocaleLowerCase())
+                                val.priority.toLocaleLowerCase().includes(filterPriority.toLocaleLowerCase()) && 
+                                val.pi_category.toLocaleLowerCase().includes(filterCategory.toLocaleLowerCase()) && 
+                                val.issue_date.toLocaleLowerCase().includes(filterIssueDate.toLocaleLowerCase())
                             ).map(
                                 ( val, index ) => {
-
+                                    console.log(val.issue_date)
                                     return (
                                         <tr key={ index } onClick={ () => history.push('/portal/issues/details/' + val.portal_issue_id) } className='pointer pointer-hover'>
                                             <td>{ index + 1 }</td>
@@ -503,32 +610,13 @@ const IssuesListView = ({ history, AccessControls }) => {
                                                 {val.department_name}<br />
                                                 {new Date(val.requested_at).toDateString() + ' ' + new Date(val.requested_at).toLocaleTimeString()}
                                             </td>
+                                            <td>{new Date(val.issue_date).toDateString()}</td>
                                             <td>
-                                                {
-                                                    val.status === 'Pending'
-                                                    ?
-                                                    <b className="badge badge-pill badge-warning px-3">{ val.status }</b>
-                                                    :
-                                                    val.status === 'Resolved'
-                                                    ?
-                                                    <b className="badge badge-pill badge-success px-3">{ val.status }</b>
-                                                    :
-                                                    <b className="badge badge-pill badge-info px-3">{ val.status }</b>
-                                                }<br />
-                                                {val.support_at && (new Date(val.support_at).toDateString() + ' ' + new Date(val.support_at).toLocaleTimeString())}
+                                                <Status status={val.status} />
+                                                <div className='mt-1'>{val.support_at && (new Date(val.support_at).toDateString() + ' ' + new Date(val.support_at).toLocaleTimeString())}</div>
                                             </td>
                                             <td>
-                                                {
-                                                    val.priority === 'Low'
-                                                    ?
-                                                    <b className="badge badge-pill badge-secondary px-3">{ val.priority }</b>
-                                                    :
-                                                    val.priority === 'Medium'
-                                                    ?
-                                                    <b className="badge badge-pill badge-info px-3">{ val.priority }</b>
-                                                    :
-                                                    <b className="badge badge-pill badge-danger px-3">{ val.priority }</b>
-                                                }
+                                                <Status status={val.priority} />
                                             </td>
                                         </tr>
                                     )
