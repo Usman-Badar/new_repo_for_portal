@@ -43,8 +43,6 @@ function checkAdvanceCashPendingForVerification() {
                             const currentDate = new Date(rslt[count.length].today);
                             const dayName = days[currentDate.getDay()];
 
-                            console.log()
-
                             if (holidays.includes(rslt[count.length].today) || dayName === 'Sunday') {
                                 next(parsed_offDays, holidays, time_in, time_out, isPresent);
                             }
@@ -91,15 +89,7 @@ function checkAdvanceCashPendingForVerification() {
                                                             administrativeNotifications( '/cash/request/' + rslt[count.length].id, owner, message );
                                                             SendWhatsappNotification( null, null, "Hi " + result[0][0].name, message, result[0][0].cell );
                                                             SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has given you a yellow ticket with remarks '" + remarks + "'.", result[1][0].cell );
-                                                            if ( ( count.length + 1 ) === limit )
-                                                            {
-                                                                console.log( "Ticket Issued (Verification) Regarding Advance Cash!!!" );
-                                                                checkAdvanceCashPendingForVerification();
-                                                            }else
-                                                            {
-                                                                count.push(1);
-                                                                issueTickets(parsed_offDays, holidays, time_out, isPresent);
-                                                            }
+                                                            next(parsed_offDays, holidays, time_in, time_out, isPresent);
                                                         }
                                                     }
                                                 );
@@ -149,9 +139,9 @@ function checkAdvanceCashPendingForVerification() {
 
                                 const predicted_time_is_in_working_hours = 
                                     currentDateRequest ? 
-                                    (addHours.format('HH:mm:ss').valueOf() <= currentDateTime.format('HH:mm:ss').valueOf()) 
+                                    (addHours.format('HH:mm:ss').valueOf() < currentDateTime.format('HH:mm:ss').valueOf()) 
                                     : 
-                                    (addHours.format('HH:mm:ss').valueOf() <= emp_time_out.format('HH:mm:ss').valueOf());
+                                    (addHours.format('HH:mm:ss').valueOf() < emp_time_out.format('HH:mm:ss').valueOf());
                                 const predicted_time_for_next_day_is_exceed = parseInt(total_minutes_passed) > 240; // 60 minutes * 4 hours = 240 minutes
     
                                 if (currentDateRequest) {
