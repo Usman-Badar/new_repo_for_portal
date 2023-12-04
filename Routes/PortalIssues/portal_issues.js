@@ -4,11 +4,7 @@ const db = require('../../db/conn_portal_issues');
 
 router.get('/portal/issues/categories', ( req, res ) => {
     db.query(
-<<<<<<< HEAD
-        "SELECT * FROM `tbl_pi_categories` WHERE status = 'Active' ORDER BY pi_category_id DESC",
-=======
         "SELECT * FROM `tbl_pi_categories` WHERE status = 'Active' ORDER BY pi_category_id",
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
         ( err, rslt ) => {
             if( err ) {
                 res.status(500).send(err);
@@ -25,18 +21,11 @@ router.post('/portal/issues/list', ( req, res ) => {
     const { requested_by, admin } = req.body;
     if (parseInt(admin) === 1) {
         db.query(
-<<<<<<< HEAD
-            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name FROM `tbl_pi_reported` \
-            LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
-            LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
-            ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
-=======
             "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name, seaboard.companies.code FROM `tbl_pi_reported` \
             LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
             LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
             LEFT OUTER JOIN seaboard.companies ON seaboard.employees.company_code = seaboard.companies.company_code \
             ORDER BY tbl_pi_reported.requested_at DESC;",
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
             ( err, rslt ) => {
                 if( err ) {
                     console.log(err);
@@ -50,18 +39,11 @@ router.post('/portal/issues/list', ( req, res ) => {
         );
     }else {
         db.query(
-<<<<<<< HEAD
-            "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name FROM `tbl_pi_reported` \
-            LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
-            LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
-            WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at DESC, tbl_pi_reported.priority;",
-=======
             "SELECT tbl_pi_reported.*, seaboard.employees.name, seaboard.departments.department_name, seaboard.companies.code FROM `tbl_pi_reported` \
             LEFT OUTER JOIN seaboard.employees ON seaboard.employees.emp_id = tbl_pi_reported.requested_by \
             LEFT OUTER JOIN seaboard.departments ON seaboard.employees.department_code = seaboard.departments.department_code \
             LEFT OUTER JOIN seaboard.companies ON seaboard.employees.company_code = seaboard.companies.company_code \
             WHERE tbl_pi_reported.requested_by = ? ORDER BY tbl_pi_reported.requested_at DESC;",
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
             [ requested_by ],
             ( err, rslt ) => {
                 if( err ) {
