@@ -309,26 +309,29 @@ const Attandence_Request = () => {
     useEffect(
         () => {
 
-            axios.post(
-                '/getallattendancerequests',
-                {
-                    emp_id: localStorage.getItem('EmpID'),
-                }
-            ).then(
-                res => {
+            if (AccessControls) {
+                axios.post(
+                    '/getallattendancerequests',
+                    {
+                        emp_id: localStorage.getItem('EmpID'),
+                        all: JSON.parse(AccessControls.access).includes(83) ? 1 : 0
+                    }
+                ).then(
+                    res => {
+    
+                        setRequestList(res.data);
+    
+                    }
+                ).catch(
+                    err => {
+    
+                        console.log(err)
+    
+                    }
+                )
+            }
 
-                    setRequestList(res.data);
-
-                }
-            ).catch(
-                err => {
-
-                    console.log(err)
-
-                }
-            )
-
-        }, [ Submittion ]
+        }, [ Submittion, AccessControls ]
     )
 
     useEffect(
@@ -1118,7 +1121,8 @@ const View = ({ RequestList }) => {
                             <th></th>
                             <th></th>
                             <th>Request By</th>
-                            <th className='column-lg'>Date</th>
+                            <th className='column-lg'>Requested At</th>
+                            <th className='column-lg'>Updated At</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -1126,6 +1130,7 @@ const View = ({ RequestList }) => {
                         {
                             RequestList.map(
                                 (val, index) => {
+                                    console.log(val)
 
                                     const d = new Date(val.request_date);
                                     let newBadge = <p className="newBadge dontSHow"></p>;
@@ -1147,7 +1152,14 @@ const View = ({ RequestList }) => {
                                                 <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink>  
                                             </td>
                                             <td className='column-lg'> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.sender_name}</NavLink>  </td>
-                                            <td className='column-lg'> <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink>  </td>
+                                            <td className='column-lg'>
+                                                <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {d ? d.toDateString() : null}</NavLink><br />
+                                                <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.request_time}</NavLink>
+                                            </td>
+                                            <td className='column-lg'>
+                                                <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.update_date ? new Date(val.update_date).toDateString() : null}</NavLink><br />
+                                                <NavLink to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.update_time}</NavLink>
+                                            </td>
                                             <td> <NavLink style={ { backgroundColor: "var(--black)" } } className="text-white px-3 rounded-pill" to={'/attendance_request/' + val.request_id + '_' + val.id}> {val.request_status}</NavLink>  </td>
                                         </tr>
                                     )

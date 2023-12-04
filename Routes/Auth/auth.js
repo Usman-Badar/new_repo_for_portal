@@ -168,7 +168,11 @@ router.get('/authemployee', ( req, res ) => {
             }else
             {
                 connection.query(
+<<<<<<< HEAD
                     "SELECT emp_app_profile.* FROM emp_app_profile LEFT OUTER JOIN employees ON emp_app_profile.emp_id = employees.emp_id WHERE employees.emp_status = 'Active' AND lock_user = 'N';",
+=======
+                    "SELECT emp_app_profile.*, employees.lock_user FROM emp_app_profile LEFT OUTER JOIN employees ON emp_app_profile.emp_id = employees.emp_id WHERE employees.emp_status = 'Active';",
+>>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
                     ( err, rslt ) => {
             
                         if( err )
@@ -210,7 +214,7 @@ router.get('/getemployeesid&name', ( req, res ) => {
             }else
             {
                 connection.query(
-                    "SELECT emp_id, name FROM employees WHERE emp_status = 'Active'",
+                    "SELECT emp_id, name FROM employees WHERE emp_status = 'Active';",
                     ( err, rslt ) => {
             
                         if( err )

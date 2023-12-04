@@ -108,6 +108,18 @@ const checkConditions = (body, client, message) => {
         message.reply('Finding your id...');
         fetchAttendance(client, message.from, message);
     }else
+    if (checkIfIncludes(body, ['reset', 'my', 'login'])) {
+        message.reply('Finding your employee id...');
+        setTimeout(() => {
+            updateEmpAppStatus(client, message.from, message);
+        }, 300);
+    }else
+    if (checkIfIncludes(body, ['reset', 'employee', 'login', ':'])) {
+        message.reply('Finding employee id...');
+        setTimeout(() => {
+            updateOtherEmpAppStatus(client, message.from, message);
+        }, 300);
+    }else
     if (checkIfIncludes(body, ['refresh', 'index'])) {
         message.reply('Refreshing...');
         db.query(
@@ -251,6 +263,94 @@ const fetchCredentials = ( client, messageFrom, message ) => {
                                 {
                                     message.reply("No credentials matched!!! You are not registered on portal, kindly contact our IT team.");
                                 }
+                            }else
+                            {
+                                client.sendMessage(message.from, 'Error!');
+                                client.sendMessage(message.from, err);
+                            }
+                    
+                        }
+                    )
+                }, 300);
+            }else
+            {
+                console.log( err )
+                client.sendMessage(messageFrom, 'Error!');
+            }
+    
+        }
+    )
+
+}
+
+const updateEmpAppStatus = ( client, messageFrom, message ) => {
+
+    let number = messageFrom.substring(2,12);
+    var key = 'real secret keys should be long and random';
+    var encryptor = require('simple-encryptor')(key);
+
+    number = number.split('@c.us').shift();
+    number = '0' + number;
+
+    db.query(
+        "SELECT emp_id, name FROM employees WHERE cell = ?",
+        [ number ],
+        ( err, rslt ) => {
+    
+            if ( !err )
+            {
+                client.sendMessage(messageFrom, 'Employee Identified!!!');
+                setTimeout(() => {
+                    client.sendMessage(messageFrom, 'Please wait... ' + rslt[0].name);
+                    db.query(
+                        "UPDATE employees SET app_status = '' WHERE emp_id = " + rslt[0].emp_id,
+                        ( err ) => {
+                    
+                            if ( !err )
+                            {
+                                message.reply("Your login has been reset");
+                            }else
+                            {
+                                client.sendMessage(message.from, 'Error!');
+                                client.sendMessage(message.from, err);
+                            }
+                    
+                        }
+                    )
+                }, 300);
+            }else
+            {
+                console.log( err )
+                client.sendMessage(messageFrom, 'Error!');
+            }
+    
+        }
+    )
+
+}
+
+const updateOtherEmpAppStatus = ( client, messageFrom, message ) => {
+
+    let body = message._data.body;
+    let emp_id = parseInt(body.split(':').pop());
+
+    db.query(
+        "SELECT emp_id, name FROM employees WHERE emp_id = ?",
+        [ emp_id ],
+        ( err, rslt ) => {
+    
+            if ( !err && rslt.length > 0 )
+            {
+                client.sendMessage(messageFrom, 'Employee Identified!!!');
+                setTimeout(() => {
+                    client.sendMessage(messageFrom, 'Found: ' + rslt[0].name);
+                    db.query(
+                        "UPDATE employees SET app_status = '' WHERE emp_id = " + rslt[0].emp_id,
+                        ( err ) => {
+                    
+                            if ( !err )
+                            {
+                                message.reply("Employee login has been reset");
                             }else
                             {
                                 client.sendMessage(message.from, 'Error!');

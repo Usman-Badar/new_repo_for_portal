@@ -61,7 +61,7 @@ const LockUser = () => {
                                 <option value="Y" selected={modal.lock_user === 'Y'}>Lock User</option>
                             </select>
                             <label className="mb-0"><b>Remarks</b></label>
-                            <textarea required minLength={20} name="remarks" className='form-control mb-3' />
+                            <textarea name="remarks" className='form-control mb-3' required />
 
                             <button className="submit btn d-block ml-auto">Update</button>
                         </fieldset>
@@ -106,7 +106,7 @@ const LockUser = () => {
                                         <td>{i+1}</td>
                                         <td>
                                             <div className="d-flex align-items-center">
-                                                <img src={`images/employees/${val.emp_image}`} alt='employee' width={50} height={50} className='rounded-circle' />
+                                                <img src={`${process.env.REACT_APP_SERVER}/images/employees/${val.emp_image}`} alt='employee' width={50} height={50} className='rounded-circle' />
                                                 <div className='pl-2'>
                                                     <b>{val.name}</b><br />
                                                     <span>{val.department_name}</span>
