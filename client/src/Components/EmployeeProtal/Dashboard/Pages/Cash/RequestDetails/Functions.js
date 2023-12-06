@@ -359,7 +359,7 @@ export const validateEmployee = ( e, requested_emp_name, Other, CNICFront, CNICB
     const id = emp_id;
 
     Data.append('request_id', window.location.href.split('/').pop());
-    Data.append('passcode', !Other ? e.target['passcode'].value : null);
+    // Data.append('passcode', !Other ? e.target['passcode'].value : null);
     Data.append('receiving_person', Other ? e.target['receiving_person'].value : null);
     Data.append('receiving_person_contact', Other ? e.target['receiving_person_contact'].value : null);
     Data.append('receiving_person_cnic', Other ? e.target['receiving_person_cnic'].value : null);

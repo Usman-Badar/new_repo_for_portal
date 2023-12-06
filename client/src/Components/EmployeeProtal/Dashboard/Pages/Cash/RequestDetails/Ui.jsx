@@ -298,7 +298,27 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                 :null
                                                             }
 
-{
+                                                            <tr>
+                                                                <td>
+                                                                    <h6 className='font-weight-bold'>Reason</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <pre style={{ fontFamily: 'Poppins', fontSize: '13px', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.reason}</pre>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <h6 className='font-weight-bold'>Company</h6>
+                                                                    <h6 className='font-weight-bold'>Cash Collection Location</h6>
+                                                                </td>
+                                                                <td>
+                                                                    <p className='mb-1'>{Details.company_name}</p>
+                                                                    <p>{Details.location_name}</p>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            {
                                                                 Details.shp_line_adv === 'Y'
                                                                 ?
                                                                 <tr>
@@ -404,26 +424,6 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                 </tr>
                                                                 :null
                                                             }
-
-                                                            <tr>
-                                                                <td>
-                                                                    <h6 className='font-weight-bold'>Reason</h6>
-                                                                </td>
-                                                                <td>
-                                                                    <pre style={{ fontFamily: 'Poppins', fontSize: '13px', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.reason}</pre>
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>
-                                                                    <h6 className='font-weight-bold'>Company</h6>
-                                                                    <h6 className='font-weight-bold'>Cash Collection Location</h6>
-                                                                </td>
-                                                                <td>
-                                                                    <p className='mb-1'>{Details.company_name}</p>
-                                                                    <p>{Details.location_name}</p>
-                                                                </td>
-                                                            </tr>
                                                             <tr>
                                                                 <td>
                                                                     <h6 className='font-weight-bold'>{Details.status === 'rejected' && Details.approved_by === null ? "Rejected" : "Verified"} By</h6>
@@ -2125,8 +2125,8 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
                                             <div className='text-center mb-3'>
                                                 <img onClick={() => CallSGIFPGetData(SuccessFunc2, ErrorFunc)} id="FPImage2" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Fingerprint_picture.svg/1413px-Fingerprint_picture.svg.png"} alt="fingerprints" />
                                             </div>
-                                            <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
-                                            <input type='password' name="passcode" className='form-control' required />
+                                            {/* <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
+                                            <input type='password' name="passcode" className='form-control' required /> */}
                                         </>
                                         :
                                         <>
