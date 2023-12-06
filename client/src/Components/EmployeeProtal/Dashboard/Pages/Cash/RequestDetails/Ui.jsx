@@ -2125,8 +2125,8 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
                                             <div className='text-center mb-3'>
                                                 <img onClick={() => CallSGIFPGetData(SuccessFunc2, ErrorFunc)} id="FPImage2" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Fingerprint_picture.svg/1413px-Fingerprint_picture.svg.png"} alt="fingerprints" />
                                             </div>
-                                            <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
-                                            <input type='password' name="passcode" className='form-control' required />
+                                            {/* <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
+                                            <input type='password' name="passcode" className='form-control' required /> */}
                                         </>
                                         :
                                         <>
