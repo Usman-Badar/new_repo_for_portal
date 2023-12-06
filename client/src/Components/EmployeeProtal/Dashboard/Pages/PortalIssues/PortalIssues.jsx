@@ -11,10 +11,7 @@ import $ from 'jquery';
 import JSAlert from 'js-alert';
 import Modal from '../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
-<<<<<<< HEAD
-=======
 import ReactTooltip from 'react-tooltip';
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
 
 const PortalIssues = () => {
     const history = useHistory();
@@ -83,10 +80,6 @@ const IssueDetails = ({ history, AccessControls }) => {
             }
         ).then((res) => {
             if (!isActive) return;
-<<<<<<< HEAD
-            console.log(res.data)
-=======
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
             setDetails(res.data[0]);
         } ).catch(err => console.log(err));
     }
@@ -121,12 +114,15 @@ const IssueDetails = ({ history, AccessControls }) => {
             setTimeout(() => {
                 history.replace('/portal/issues');
             }, 2000);
-        } ).catch(err => console.log(err));
+        } ).catch(err => {
+            console.log(err);
+            $('fieldset').prop('disabled', false);
+        });
     }
     const updatePriority = (e) => {
         const priority = e.target.value;
         
-        if (!JSON.parse(AccessControls.access).includes(76)) {
+        if (!JSON.parse(AccessControls.access).includes(78)) {
             JSAlert.alert("Access Denied", "Validation Error", JSAlert.Icons.Warning);
             return false;
         }
@@ -146,8 +142,6 @@ const IssueDetails = ({ history, AccessControls }) => {
             loadDetails(true);
         } ).catch(err => console.log(err));
     }
-<<<<<<< HEAD
-=======
     // const magnify = (id, zoom) => {
     //     const lensSize = 200;
     //     const els = document.getElementsByTagName('img');
@@ -186,7 +180,6 @@ const IssueDetails = ({ history, AccessControls }) => {
     //     var y = (window.Event) ? e.pageY : e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
     //     return { x: x, y: y };
     // }
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
 
     if (!details) {
         return <h6 className="text-center mb-0">Loading...</h6>
@@ -203,6 +196,7 @@ const IssueDetails = ({ history, AccessControls }) => {
                             <select name='status' className='form-control mb-3' defaultValue={'Resolved'} required>
                                 <option value="Resolved">Resolved</option>
                                 <option value="Replied">Replied</option>
+                                <option value="Closed">Closed</option>
                             </select>
                             <textarea className='form-control' placeholder='Enter your comments here...' name="comment" minLength={20} required />
                             <button className='btn submit d-block ml-auto mt-3'>Submit</button>
@@ -261,23 +255,6 @@ const IssueDetails = ({ history, AccessControls }) => {
                                 <b>Current Status</b><br />
                                 <span>{details.status}</span>
                             </td>
-<<<<<<< HEAD
-                            <td>
-                                <b>Priority</b><br />
-                                {
-                                    JSON.parse(AccessControls.access).includes(78) && details.status === 'Pending'
-                                    ?
-                                    <select className="form-control w-50" onChange={updatePriority}>
-                                        <option value="Low" selected={details.priority === 'Low'}>Low</option>
-                                        <option value="Medium" selected={details.priority === 'Medium'}>Medium</option>
-                                        <option value="High" selected={details.priority === 'High'}>High</option>
-                                    </select>
-                                    :
-                                    <span>{details.priority}</span>
-                                }
-                            </td>
-                        </tr>
-=======
                             {
                                 JSON.parse(AccessControls.access).includes(78)
                                 ?
@@ -313,7 +290,6 @@ const IssueDetails = ({ history, AccessControls }) => {
                             </tr>
                             :null
                         }
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
                     </tbody>
                 </table>
                 :
@@ -341,52 +317,6 @@ const IssueDetails = ({ history, AccessControls }) => {
                                 <b>Current Status</b><br />
                                 <span>{details.status}</span>
                             </td>
-<<<<<<< HEAD
-                            <td>
-                                <b>Priority</b><br />
-                                {
-                                    JSON.parse(AccessControls.access).includes(78) && details.status === 'Pending'
-                                    ?
-                                    <select className="form-control w-50" onChange={updatePriority}>
-                                        <option value="Low" selected={details.priority === 'Low'}>Low</option>
-                                        <option value="Medium" selected={details.priority === 'Medium'}>Medium</option>
-                                        <option value="High" selected={details.priority === 'High'}>High</option>
-                                    </select>
-                                    :
-                                    <span>{details.priority}</span>
-                                }
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            }
-            <h6><b>Subject of the Issue</b></h6>
-            <span>{details.subject}</span>
-            <hr />
-            <h6><b>Description of the Issue</b></h6>
-            <hr />
-            <span className='description' dangerouslySetInnerHTML={{__html: details.description}}></span>
-            <hr />
-            {
-                details.support_emp_name
-                ?
-                <table className='table table-borderless'>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <b>Supported At</b><br />
-                                <span>{new Date(details.support_at).toDateString()} {new Date(details.support_at).toLocaleTimeString()}</span>
-                            </td>
-                            <td>
-                                <b>Support Comments</b><br />
-                                <span>{details.support_comments}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                :null
-            }
-=======
                             {
                                 JSON.parse(AccessControls.access).includes(78)
                                 ?
@@ -434,16 +364,11 @@ const IssueDetails = ({ history, AccessControls }) => {
             <h6><b>Description</b></h6>
             <hr />
             <span className='description' dangerouslySetInnerHTML={{__html: details.description}}></span>
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
         </>
     )
 }
 
 const IssuesListView = ({ history, AccessControls }) => {
-<<<<<<< HEAD
-    const [ status, setStatus ] = useState('pending');
-    const [ issues, setIssues ] = useState();
-=======
     const types = {
         priority: 'priority',
         issue_date: 'issue_date'
@@ -460,7 +385,6 @@ const IssuesListView = ({ history, AccessControls }) => {
     const [ filterCategory, setFilterCategory ] = useState('');
     const [ filterIssueDate, setFilterIssueDate ] = useState('');
     const [ filterID, setFilterID ] = useState('');
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
 
     useEffect(
         () => {
@@ -471,9 +395,6 @@ const IssuesListView = ({ history, AccessControls }) => {
             }
         }, []
     );
-<<<<<<< HEAD
-
-=======
     useEffect(
         () => {
             if (issues) {
@@ -552,7 +473,6 @@ const IssuesListView = ({ history, AccessControls }) => {
         }
         return sorted;
     }
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
     const loadReportedIssues = (isActive) => {
         const admin = JSON.parse(AccessControls.access).includes(77) || JSON.parse(AccessControls.access).includes(0) ? 1 : 0;
         axios.post(
@@ -566,8 +486,6 @@ const IssuesListView = ({ history, AccessControls }) => {
             setIssues(res.data);
         } ).catch(err => console.log(err));
     }
-<<<<<<< HEAD
-=======
     const resetFilters = () => {
         sessionStorage.removeItem('pi_subject');
         sessionStorage.removeItem('pi_desc');
@@ -594,7 +512,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                 ?
                                 "bg-success"
                                 :
-                                status === 'Replied'
+                                status === 'Replied' || status === 'Closed'
                                     ?
                                     "bg-primary"
                                     :
@@ -623,7 +541,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                 ?
                                 "text-success"
                                 :
-                                status === 'Replied'
+                                status === 'Replied' || status === 'Closed'
                                     ?
                                     "text-primary"
                                     :
@@ -650,7 +568,6 @@ const IssuesListView = ({ history, AccessControls }) => {
         )
     }
 
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
     return (
         <>
             <div className="d-flex align-items-center justify-content-between">
@@ -658,19 +575,6 @@ const IssuesListView = ({ history, AccessControls }) => {
                     Portal Issues
                     <sub>Report any issue on the portal</sub>
                 </h3>
-<<<<<<< HEAD
-                <button className="btn submit" type='reset' onClick={ () => history.push('/portal/issues/new') }>
-                    Report an Issue
-                </button>
-            </div>
-            <hr />
-            <ul className="nav nav-tabs my-3">
-                <li className="nav-item" onClick={ () => { setStatus('pending'); sessionStorage.setItem('reportingStatus', 'pending') } }>
-                    <a className={ status === 'pending' ? 'nav-link active text-capitalize' : 'nav-link text-capitalize' }>
-                        { 'pending' } { status === 'pending' ? `(${issues?issues.length:0})` : "" }
-                    </a>
-                </li>
-=======
                 <div>
                     <button className="btn submit" type='reset' onClick={ () => history.push('/portal/issues/new') }>
                         Report an Issue
@@ -725,7 +629,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                     </select>
                                 </div>
                                 <div className='w-100'>
-                                    <label className="font-weight-bold mb-0">Search ID</label>
+                                    <label className="font-weight-bold mb-0">Search Ref#</label>
                                     <input value={filterID} placeholder='Search Keywords...' type="number" onChange={(e) => {setFilterID(e.target.value); sessionStorage.setItem('pi_id', e.target.value)}} className='form-control mb-2' />
                                 </div>
                                 <div className='w-100'>
@@ -779,7 +683,6 @@ const IssuesListView = ({ history, AccessControls }) => {
                             }
                         )
                     }
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
             </ul>
             {
                 !issues
@@ -794,18 +697,11 @@ const IssuesListView = ({ history, AccessControls }) => {
                     <thead>
                         <tr>
                             <th className='border-top-0'>Sr.No</th>
-<<<<<<< HEAD
-=======
-                            <th className='border-top-0'>ID</th>
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
+                            {AccessControls && JSON.parse(AccessControls.access).includes(77) && <th className='border-top-0'>Ref #</th>}
                             <th className='border-top-0'>Category</th>
                             <th className='border-top-0'>Subject</th>
                             <th className='border-top-0'>Description</th>
                             <th className='border-top-0'>Requested By</th>
-<<<<<<< HEAD
-                            <th className='border-top-0'>Status</th>
-                            <th className='border-top-0'>Priority</th>
-=======
                             <th className='border-top-0'>
                                 <div className='d-flex align-items-center'>
                                     Issue Date
@@ -827,19 +723,10 @@ const IssuesListView = ({ history, AccessControls }) => {
                                     </div>
                                 </th>
                             )}
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
                         </tr>
                     </thead>
                     <tbody>
                         {
-<<<<<<< HEAD
-                            issues.map(
-                                ( val, index ) => {
-
-                                    return (
-                                        <tr key={ index } onClick={ () => history.push('/portal/issues/details/' + val.portal_issue_id) } className='pointer pointer-hover'>
-                                            <td>{ index + 1 }</td>
-=======
                             issues.filter(val => 
                                 val.status.toLowerCase().includes(status) && 
                                 val.subject.toLocaleLowerCase().includes(filterSubject.toLocaleLowerCase()) && 
@@ -858,8 +745,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                     return (
                                         <tr key={ index } onClick={ () => history.push('/portal/issues/details/' + val.portal_issue_id) } className='pointer pointer-hover'>
                                             <td>{ index + 1 }</td>
-                                            <td>{ val.portal_issue_id }</td>
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
+                                            {AccessControls && JSON.parse(AccessControls.access).includes(77) && <td>{ val.portal_issue_id }</td>}
                                             <td>{ val.pi_category }</td>
                                             <td>{ val.subject }</td>
                                             <td>
@@ -869,38 +755,6 @@ const IssuesListView = ({ history, AccessControls }) => {
                                             </td>
                                             <td>
                                                 <b>{val.name}</b><br />
-<<<<<<< HEAD
-                                                {val.department_name}<br />
-                                                {new Date(val.requested_at).toDateString() + ' ' + new Date(val.requested_at).toLocaleTimeString()}
-                                            </td>
-                                            <td>
-                                                {
-                                                    val.status === 'Pending'
-                                                    ?
-                                                    <b className="badge badge-pill badge-warning px-3">{ val.status }</b>
-                                                    :
-                                                    val.status === 'Resolved'
-                                                    ?
-                                                    <b className="badge badge-pill badge-success px-3">{ val.status }</b>
-                                                    :
-                                                    <b className="badge badge-pill badge-info px-3">{ val.status }</b>
-                                                }<br />
-                                                {val.support_at && (new Date(val.support_at).toDateString() + ' ' + new Date(val.support_at).toLocaleTimeString())}
-                                            </td>
-                                            <td>
-                                                {
-                                                    val.priority === 'Low'
-                                                    ?
-                                                    <b className="badge badge-pill badge-secondary px-3">{ val.priority }</b>
-                                                    :
-                                                    val.priority === 'Medium'
-                                                    ?
-                                                    <b className="badge badge-pill badge-info px-3">{ val.priority }</b>
-                                                    :
-                                                    <b className="badge badge-pill badge-danger px-3">{ val.priority }</b>
-                                                }
-                                            </td>
-=======
                                                 {val.department_name}, {val.code}<br />
                                                 {moment(new Date(val.requested_at)).format('DD-MM-YYYY hh:mm A')}
                                             </td>
@@ -914,7 +768,6 @@ const IssuesListView = ({ history, AccessControls }) => {
                                                     <Status status={val.priority} />
                                                 </td>
                                             )}
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
                                         </tr>
                                     )
 
@@ -1067,11 +920,7 @@ const NewIssue = ({ history, AccessControls }) => {
                             </div>
                         </div>
                         <label className='mb-0 font-weight-bold'>Subject</label>
-<<<<<<< HEAD
-                        <input type="text" name='subject' className="form-control mb-2" maxLength={30} required />
-=======
                         <input type="text" name='subject' className="form-control mb-2" maxLength={200} required />
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
                         <label className='mb-0 font-weight-bold'>Description</label>
                         <ReactQuill style={{ backgroundColor: "#fff" }} theme="snow" modules={modules} formats={formats} value={description} onChange={setDescription} />
                         <button className='btn submit d-block ml-auto mt-3'>Submit</button>
@@ -1080,8 +929,4 @@ const NewIssue = ({ history, AccessControls }) => {
             </div>
         </>
     )
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> df693b0fb18291af2d490c5bdf70980b9ea78c2d
