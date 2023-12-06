@@ -107,7 +107,7 @@ function EquipmentFuelEntry() {
                             </div>
 
                             <div className='d-flex justify-space-between align-items-center'>
-                                <button className="btn light" type="button">Cancle</button>
+                                <button className="btn light" type="button">Cancel</button>
                                 <button className="btn d-block ml-auto submit mt-3" type='submit'>
                                     Submit
                                 </button>

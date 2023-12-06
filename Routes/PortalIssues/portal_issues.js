@@ -116,6 +116,7 @@ router.post('/portal/issues/update', ( req, res ) => {
         [ status, support_by, new Date(), support_comment, report_id ],
         ( err ) => {
             if( err ) {
+                console.log(err);
                 res.status(500).send(err);
                 res.end();
             }else {

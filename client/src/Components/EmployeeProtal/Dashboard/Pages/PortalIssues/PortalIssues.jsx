@@ -114,7 +114,10 @@ const IssueDetails = ({ history, AccessControls }) => {
             setTimeout(() => {
                 history.replace('/portal/issues');
             }, 2000);
-        } ).catch(err => console.log(err));
+        } ).catch(err => {
+            console.log(err);
+            $('fieldset').prop('disabled', false);
+        });
     }
     const updatePriority = (e) => {
         const priority = e.target.value;
@@ -193,6 +196,7 @@ const IssueDetails = ({ history, AccessControls }) => {
                             <select name='status' className='form-control mb-3' defaultValue={'Resolved'} required>
                                 <option value="Resolved">Resolved</option>
                                 <option value="Replied">Replied</option>
+                                <option value="Closed">Closed</option>
                             </select>
                             <textarea className='form-control' placeholder='Enter your comments here...' name="comment" minLength={20} required />
                             <button className='btn submit d-block ml-auto mt-3'>Submit</button>
@@ -508,7 +512,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                 ?
                                 "bg-success"
                                 :
-                                status === 'Replied'
+                                status === 'Replied' || status === 'Closed'
                                     ?
                                     "bg-primary"
                                     :
@@ -537,7 +541,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                 ?
                                 "text-success"
                                 :
-                                status === 'Replied'
+                                status === 'Replied' || status === 'Closed'
                                     ?
                                     "text-primary"
                                     :
@@ -625,7 +629,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                     </select>
                                 </div>
                                 <div className='w-100'>
-                                    <label className="font-weight-bold mb-0">Search ID</label>
+                                    <label className="font-weight-bold mb-0">Search Ref#</label>
                                     <input value={filterID} placeholder='Search Keywords...' type="number" onChange={(e) => {setFilterID(e.target.value); sessionStorage.setItem('pi_id', e.target.value)}} className='form-control mb-2' />
                                 </div>
                                 <div className='w-100'>
@@ -693,7 +697,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                     <thead>
                         <tr>
                             <th className='border-top-0'>Sr.No</th>
-                            <th className='border-top-0'>ID</th>
+                            {AccessControls && JSON.parse(AccessControls.access).includes(77) && <th className='border-top-0'>Ref #</th>}
                             <th className='border-top-0'>Category</th>
                             <th className='border-top-0'>Subject</th>
                             <th className='border-top-0'>Description</th>
@@ -741,7 +745,7 @@ const IssuesListView = ({ history, AccessControls }) => {
                                     return (
                                         <tr key={ index } onClick={ () => history.push('/portal/issues/details/' + val.portal_issue_id) } className='pointer pointer-hover'>
                                             <td>{ index + 1 }</td>
-                                            <td>{ val.portal_issue_id }</td>
+                                            {AccessControls && JSON.parse(AccessControls.access).includes(77) && <td>{ val.portal_issue_id }</td>}
                                             <td>{ val.pi_category }</td>
                                             <td>{ val.subject }</td>
                                             <td>

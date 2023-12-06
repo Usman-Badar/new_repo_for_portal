@@ -229,7 +229,7 @@ router.post('/inventory/get_all_repair_requests', ( req, res ) => {
 router.post('/inventory/get_incidents', ( req, res ) => {
     const { reported_by } = req.body;
     db.query(
-        "SELECT tbl_inventory_incidents.*, employees.name, locations.location_name FROM `tbl_inventory_incidents` LEFT OUTER JOIN employees ON tbl_inventory_incidents.reported_by = employees.emp_id LEFT OUTER JOIN locations ON tbl_inventory_incidents.location_code = locations.location_code WHERE tbl_inventory_incidents.reported_by = ? ORDER BY tbl_inventory_incidents.report_id DESC;",
+        "SELECT access FROM employees WHERE emp_id = ?;",
         [ reported_by ],
         ( err, rslt ) => {
             if( err )
@@ -238,8 +238,57 @@ router.post('/inventory/get_incidents', ( req, res ) => {
                 res.end();
             }else 
             {
-                res.send(rslt);
-                res.end();
+                if (rslt[0]?.access) {
+                    const access = JSON.parse(rslt[0]?.access);
+                    if (access.includes(0)) {
+                        db.query(
+                            "SELECT tbl_inventory_incidents.*, employees.name, locations.location_name FROM `tbl_inventory_incidents` LEFT OUTER JOIN employees ON tbl_inventory_incidents.reported_by = employees.emp_id LEFT OUTER JOIN locations ON tbl_inventory_incidents.location_code = locations.location_code ORDER BY tbl_inventory_incidents.report_id DESC;",
+                            ( err, rslt ) => {
+                                if( err )
+                                {
+                                    res.send(err);
+                                    res.end();
+                                }else 
+                                {
+                                    res.send(rslt);
+                                    res.end();
+                                }
+                            }
+                        )
+                    }else {
+                        db.query(
+                            "SELECT tbl_inventory_incidents.*, employees.name, locations.location_name FROM `tbl_inventory_incidents` LEFT OUTER JOIN employees ON tbl_inventory_incidents.reported_by = employees.emp_id LEFT OUTER JOIN locations ON tbl_inventory_incidents.location_code = locations.location_code WHERE tbl_inventory_incidents.reported_by = ? ORDER BY tbl_inventory_incidents.report_id DESC;",
+                            [ reported_by ],
+                            ( err, rslt ) => {
+                                if( err )
+                                {
+                                    res.send(err);
+                                    res.end();
+                                }else 
+                                {
+                                    res.send(rslt);
+                                    res.end();
+                                }
+                            }
+                        )
+                    }
+                }else {
+                    db.query(
+                        "SELECT tbl_inventory_incidents.*, employees.name, locations.location_name FROM `tbl_inventory_incidents` LEFT OUTER JOIN employees ON tbl_inventory_incidents.reported_by = employees.emp_id LEFT OUTER JOIN locations ON tbl_inventory_incidents.location_code = locations.location_code WHERE tbl_inventory_incidents.reported_by = ? ORDER BY tbl_inventory_incidents.report_id DESC;",
+                        [ reported_by ],
+                        ( err, rslt ) => {
+                            if( err )
+                            {
+                                res.send(err);
+                                res.end();
+                            }else 
+                            {
+                                res.send(rslt);
+                                res.end();
+                            }
+                        }
+                    )
+                }
             }
         }
     )

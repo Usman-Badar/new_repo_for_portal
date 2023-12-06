@@ -175,7 +175,7 @@ function FuelManagement() {
                                 </div>
                             </div>
                             <div className='d-flex justify-content-end align-items-center mt-3'>
-                                <button className="btn light" type="button">Cancle</button>
+                                <button className="btn light" type="button">Cancel</button>
                                 <button className="btn ml-3 submit" ref={btnRef} type='submit'>
                                     Submit
                                 </button>

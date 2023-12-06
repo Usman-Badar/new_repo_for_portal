@@ -120,6 +120,7 @@ const FuelReceivedForm = lazy( () => import('./Pages/Forms/FuelManagementModule/
 const FuelRequest = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelRequest/FuelRequest') );
 const EquipmentFuelEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/EquipmentFuelEntry/EquipmentFuelEntry') );
 const TripEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/TripEntry/TripEntry') );
+const StockAtWorkshop = lazy( () => import('./Pages/Forms/FuelManagementModule/StockAtWorkshop/StockAtWorkshop') );
 
 const NotificationManagement = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
 
@@ -556,6 +557,7 @@ const Dashboard = () => {
                                 <Route exact path="/fuel-managent/fuel-request-for-station" render={ () => <Sus content={ <FuelRequest /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <EquipmentFuelEntry /> } /> } />
                                 <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <TripEntry /> } /> } />
+                                <Route exact path="/fuel-managent/stock-at-workshop" render={ () => <Sus content={ <StockAtWorkshop /> } /> } />
 
                                 
                                 <Route exact path='/portal/issues' render={ () => <Sus content={ <PortalIssues /> } /> } />
