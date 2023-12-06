@@ -68,6 +68,8 @@ router.post('/portal/issues/details', ( req, res ) => {
         request_dept.department_name AS request_emp_dept, \
         support.name AS support_emp_name, \
         support_dept.department_name AS support_emp_dept, \
+        reply.name AS reply_emp_name, \
+        reply_dept.department_name AS reply_emp_dept, \
         edit.name AS edit_emp_name, \
         edit_dept.department_name AS edit_emp_dept \
         FROM `tbl_pi_reported` \
@@ -75,6 +77,8 @@ router.post('/portal/issues/details', ( req, res ) => {
         LEFT OUTER JOIN seaboard.departments request_dept ON request.department_code = request_dept.department_code \
         LEFT OUTER JOIN seaboard.employees support ON support.emp_id = tbl_pi_reported.support_by \
         LEFT OUTER JOIN seaboard.departments support_dept ON support.department_code = support_dept.department_code \
+        LEFT OUTER JOIN seaboard.employees reply ON reply.emp_id = tbl_pi_reported.replied_by \
+        LEFT OUTER JOIN seaboard.departments reply_dept ON reply.department_code = reply_dept.department_code \
         LEFT OUTER JOIN seaboard.employees edit ON edit.emp_id = tbl_pi_reported.last_edit_by \
         LEFT OUTER JOIN seaboard.departments edit_dept ON edit.department_code = edit_dept.department_code \
         WHERE tbl_pi_reported.portal_issue_id = ?;",
@@ -111,8 +115,12 @@ router.post('/portal/issues/new', ( req, res ) => {
 
 router.post('/portal/issues/update', ( req, res ) => {
     const { report_id, support_by, status, support_comment } = req.body;
+    let query = "UPDATE `tbl_pi_reported` SET status = ?, support_by = ?, support_at = ?, support_comments = ? WHERE portal_issue_id = ?;";
+    if (status === 'Replied') {
+        query = "UPDATE `tbl_pi_reported` SET status = ?, replied_by = ?, replied_at = ?, reply = ? WHERE portal_issue_id = ?;";
+    }
     db.query(
-        "UPDATE `tbl_pi_reported` SET status = ?, support_by = ?, support_at = ?, support_comments = ? WHERE portal_issue_id = ?;",
+        query,
         [ status, support_by, new Date(), support_comment, report_id ],
         ( err ) => {
             if( err ) {

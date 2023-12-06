@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import './Attandence_Request.css';
 
+import moment from 'moment';
 import { NavLink, useHistory } from 'react-router-dom';
 import $ from 'jquery';
 
@@ -314,7 +315,8 @@ const Attandence_Request = () => {
                     '/getallattendancerequests',
                     {
                         emp_id: localStorage.getItem('EmpID'),
-                        all: JSON.parse(AccessControls.access).includes(83) ? 1 : 0
+                        all: JSON.parse(AccessControls.access).includes(83) ? 1 : 0,
+                        attendance_correcton: true,
                     }
                 ).then(
                     res => {
@@ -1177,6 +1179,7 @@ const View = ({ RequestList }) => {
 
 const AttRequestForm = (props) => {
 
+    const [ prevDates, setDates ] = useState([]);
     const [Attendance, setAttendance] = useState(
         {
             time_in: '',
@@ -1188,11 +1191,37 @@ const AttRequestForm = (props) => {
 
     useEffect(
         () => {
-
-            setAttendance(props.Attendance);
-
-        }, [props.Attendance]
+            loadAttConf();
+        }, [props.Dates]
     )
+    useEffect(
+        () => {
+            setAttendance(props.Attendance);
+        }, [props.Attendance]
+    );
+    const loadAttConf = () => {
+        axios.get('/getpreviousdateslimit').then(res => {
+            const limit = parseInt(res.data[0].valueInt1);
+            const dates = props.Dates || [];
+
+            for (let x = 1; x <= limit; x++) {
+                dates.push({
+                    date: moment().subtract(x, 'day').format('YYYY-MM-DD'),
+                    enabled: 1
+                });
+            }
+            setDates(dates);
+
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function sortFunction(a,b){  
+        var dateA = new Date(a.date).getDate();
+        var dateB = new Date(b.date).getDate();
+        return dateA > dateB ? 1 : -1;  
+    }; 
 
     return (
         <form className="Attandence_Request_form" onSubmit={props.Submit}>
@@ -1216,7 +1245,7 @@ const AttRequestForm = (props) => {
                     <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='date' required >
                         <option value={ new Date().toString() }>{ new Date().toDateString() }</option>
                         {
-                            props.Dates.map(
+                            prevDates.sort(sortFunction).map(
                                 val => {
 
                                     return <option value={ new Date(val.date).toString() }>{ new Date(val.date).toDateString() }</option>

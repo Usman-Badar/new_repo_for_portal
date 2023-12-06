@@ -263,6 +263,26 @@ router.post('/getallemployeestodayattendancecompanywise', ( req, res ) => {
 
 } );
 
+router.post('/getmymonthlyattendance', ( req, res ) => {
+    const { DateFrom, DateTo, emp_id } = req.body;
+    db.query(
+        "SELECT emp_attendance.`id`, emp_attendance.`emp_id`, emp_attendance.`time_in`, emp_attendance.`time_out`, emp_attendance.`status`, emp_attendance.`break_in`, emp_attendance.`break_out`, emp_attendance.`emp_date`, employees.company_code, employees.name, employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.emp_id = " + emp_id + " AND emp_attendance.emp_date BETWEEN '" + DateFrom + "' AND '" + DateTo + "' ORDER BY emp_attendance.emp_date DESC, employees.name ASC;",
+        ( err, rslt ) => {
+            if( err )
+            {
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else 
+            {
+                res.send(rslt);
+                res.end();
+            }
+        }
+    )
+
+} );
+
 router.post('/allemployeesattcompanywiseaccordingtodate', ( req, res ) => {
 
     const { CompanyCode, LocationCode, DateFrom, DateTo, AccessControls, temporaryStaff } = req.body;
