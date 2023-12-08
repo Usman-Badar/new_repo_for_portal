@@ -5,8 +5,10 @@ import JSAlert from 'js-alert';
 import $ from 'jquery';
 import axios from '../../../../../../../axios';
 import Modal from '../../../../../../UI/Modal/Modal';
+import { useSelector } from 'react-redux';
 
 function FuelRequest() {
+    const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
     const formRef = useRef();
     const fieldsetRef = useRef();
     const btnRef = useRef();
@@ -93,7 +95,7 @@ function FuelRequest() {
             {
                 Details
                 ?
-                <ReceivalDetails Details={Details} setDetails={setDetails} loadRequests={loadRequests} />
+                <ReceivalDetails AccessControls={AccessControls} Details={Details} setDetails={setDetails} loadRequests={loadRequests} />
                 :
                 <div className='FuelRequest page'>
                     <div className="page-content">
@@ -200,7 +202,7 @@ const Status = ({ status }) => {
     )
 }
 
-const ReceivalDetails = ({ Details, setDetails, loadRequests }) => {
+const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) => {
     const [modal, setModal] = useState();
 
     const reject = () => {
@@ -234,7 +236,7 @@ const ReceivalDetails = ({ Details, setDetails, loadRequests }) => {
     }
     const approveRequest = () => {
         $('#confirm').prop('disabled', true);
-        axios.post('/fuel-managent/fuel-request-for-station/approve', {id: Details?.id}).then(() => {
+        axios.post('/fuel-managent/fuel-request-for-station/approve', {id: Details?.id, quantity: Details?.fuel_required, emp_id: Details?.requested_by, approved_by: localStorage.getItem('EmpID'), requested_at: Details?.requested_at}).then(() => {
             setDetails();
             loadRequests(true);
             JSAlert.alert('Request has been aprroved!', 'Success', JSAlert.Icons.Success).dismissIn(4000);
@@ -255,7 +257,9 @@ const ReceivalDetails = ({ Details, setDetails, loadRequests }) => {
                         </h3>
                         <div>
                             {
-                                Details.status === 'Waiting for approval'
+                                Details.status === 'Waiting for approval' &&
+                                JSON.parse(AccessControls.access).includes(87) &&
+                                parseInt(Details.approved_by) === parseInt(localStorage.getItem('EmpID'))
                                 ?
                                 <>
                                     <button className="btn submit" onClick={approve}>Approve</button>
@@ -316,7 +320,6 @@ const ReceivalDetails = ({ Details, setDetails, loadRequests }) => {
                             </tr>
                         </tbody>
                     </table>
-                    {/* {JSON.stringify(Details)} */}
                 </div>
             </div>
         </>

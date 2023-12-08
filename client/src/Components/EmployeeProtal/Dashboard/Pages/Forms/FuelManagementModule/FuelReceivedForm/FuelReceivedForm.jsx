@@ -207,7 +207,7 @@ function FuelRecievedFrom() {
                                     <label className='mb-0'>
                                         <b>Date</b>
                                     </label>
-                                    <input type="date" className="form-control" ref={dateRef} required />
+                                    <input type="date" max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required />
                                 </div>
                             </div>
 
@@ -380,7 +380,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
     }
     const approveRequest = () => {
         $('#confirm').prop('disabled', true);
-        axios.post('/fuel-managent/fuel-receival-for-workshop/approve', {id: Details?.id, fuel_received: Details.fuel_received, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID')}).then((res) => {
+        axios.post('/fuel-managent/fuel-receival-for-workshop/approve', {id: Details?.id, fuel_received: Details.fuel_received, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID'), received_at: Details.receival_date}).then((res) => {
             console.log(res)
             setDetails();
             loadRequests(true);

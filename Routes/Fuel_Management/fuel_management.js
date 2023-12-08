@@ -199,6 +199,35 @@ router.post('/fuel-managent/fuel-receival-for-workshop/requests', ( req, res ) =
     );
 } );
 
+router.post('/fuel-managent/fuel-receival-for-workshop/request/details', ( req, res ) => {
+    const { id } = req.body;
+
+    db.query(
+        "SELECT tbl_fuel_receival_for_workshop.*, \
+        locations.location_name, \
+        companies.company_name, \
+        submit.name AS submit_person, \
+        verify.name AS verifier_person  \
+        FROM tbl_fuel_receival_for_workshop  \
+        LEFT OUTER JOIN locations ON tbl_fuel_receival_for_workshop.location_code = locations.location_code \
+        LEFT OUTER JOIN companies ON tbl_fuel_receival_for_workshop.company_code = companies.company_code \
+        LEFT OUTER JOIN employees submit ON tbl_fuel_receival_for_workshop.submitted_by = submit.emp_id \
+        LEFT OUTER JOIN employees verify ON tbl_fuel_receival_for_workshop.verified_by = verify.emp_id \
+        WHERE tbl_fuel_receival_for_workshop.id = ? ORDER BY id DESC;",
+        [id],
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send( rslt );
+                res.end();
+            }
+        }
+    );
+} );
+
 router.post('/fuel-managent/fuel-receival-for-workshop/reject', ( req, res ) => {
     const { id, emp_id, verifier } = req.body;
 
@@ -228,7 +257,7 @@ router.post('/fuel-managent/fuel-receival-for-workshop/reject', ( req, res ) => 
 } );
 
 router.post('/fuel-managent/fuel-receival-for-workshop/approve', ( req, res ) => {
-    const { id, fuel_received, emp_id, verifier } = req.body;
+    const { id, fuel_received, emp_id, verifier, received_at } = req.body;
 
     db.query(
         "UPDATE `tbl_fuel_receival_for_workshop` SET verified_at = ?, status = ? WHERE id = ?;",
@@ -240,8 +269,8 @@ router.post('/fuel-managent/fuel-receival-for-workshop/approve', ( req, res ) =>
                 res.end();
             }else {
                 db.query(
-                    'INSERT INTO `tbl_fuel_stock_at_workshop`(`request_id`, `quantity_in_ltr`) VALUES (?,?);',
-                    [ id, fuel_received ],
+                    'INSERT INTO `tbl_fuel_stock_at_workshop`(`request_id`, `quantity_in_ltr`, `fuel_received_at`) VALUES (?,?,?);',
+                    [ id, fuel_received, received_at ],
                     ( err ) => {
                         if( err ) {
                             console.log(err)
@@ -317,6 +346,31 @@ router.post('/fuel-managent/fuel-request-for-station/requests', ( req, res ) => 
     );
 } );
 
+router.post('/fuel-managent/fuel-request-for-station/request/details', ( req, res ) => {
+    const { id } = req.body;
+
+    db.query(
+        "SELECT tbl_fuel_request_for_station.*, \
+        submit.name AS submit_person, \
+        approve.name AS approval_person  \
+        FROM tbl_fuel_request_for_station  \
+        LEFT OUTER JOIN employees submit ON tbl_fuel_request_for_station.requested_by = submit.emp_id \
+        LEFT OUTER JOIN employees approve ON tbl_fuel_request_for_station.approved_by = approve.emp_id \
+        WHERE tbl_fuel_request_for_station.id = ? ORDER BY id DESC;",
+        [id],
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
 router.post('/fuel-managent/fuel-request-for-station/reject', ( req, res ) => {
     const { id } = req.body;
 
@@ -337,7 +391,7 @@ router.post('/fuel-managent/fuel-request-for-station/reject', ( req, res ) => {
 } );
 
 router.post('/fuel-managent/fuel-request-for-station/approve', ( req, res ) => {
-    const { id } = req.body;
+    const { id, quantity, emp_id, approved_by, requested_at } = req.body;
 
     db.query(
         "UPDATE `tbl_fuel_request_for_station` SET approved_at = ?, status = ? WHERE id = ?;",
@@ -348,7 +402,45 @@ router.post('/fuel-managent/fuel-request-for-station/approve', ( req, res ) => {
                 res.status(500).send(err);
                 res.end();
             }else {
-                res.send('success');
+                db.query(
+                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`) VALUES (?,?,?);' +
+                    'INSERT INTO `tbl_fuel_stock_at_workshop`(`request_id`, `quantity_in_ltr`, `fuel_received_at`, `in_out`) VALUES (?,?,?,?);',
+                    [ id, quantity, requested_at, id, quantity, requested_at, 'OUT' ],
+                    ( err ) => {
+                        if( err ) {
+                            console.log(err)
+                            res.status(500).send(err);
+                            res.end();
+                        }else {
+                            db.query(
+                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                [ emp_id, approved_by ],
+                                ( err, result ) => {
+                                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your fuel request has been approved by " + result[1][0].name + ".", result[0][0].cell );
+                                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "You have approved a fuel request on the portal.", result[1][0].cell );
+                                    res.send('success');
+                                    res.end();
+                                }
+                            );
+                        }
+                    }
+                );
+            }
+        }
+    );
+} );
+
+router.get('/fuel-managent/fuel-request-for-station/transactions', ( req, res ) => {
+    db.query(
+        "SELECT * FROM `tbl_fuel_stock_at_fueling_station` ORDER BY inserted_at DESC;",
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send( rslt );
                 res.end();
             }
         }

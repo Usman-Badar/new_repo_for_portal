@@ -818,6 +818,10 @@ td .iconic:hover {
     cursor: pointer;
 }
 
+.pointer-underline:hover {
+    text-decoration: underline;
+}
+
 .pointer-hover {
     transition: .5s;
 }
