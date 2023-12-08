@@ -8,13 +8,14 @@
 
 .Profile .ContainerHeader {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
 }
 
 .Profile .ContainerHeader .ModeContainer {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
+    gap: 20px;
     font-size: 12px;
 }
 

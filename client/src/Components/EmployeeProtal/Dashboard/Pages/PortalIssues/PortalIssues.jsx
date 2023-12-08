@@ -88,7 +88,7 @@ const IssueDetails = ({ history, AccessControls }) => {
         const comment = e.target['comment'].value;
         const status = e.target['status'].value;
         
-        if (!JSON.parse(AccessControls.access).includes(77) || details.status !== 'Pending') {
+        if (!JSON.parse(AccessControls.access).includes(77)) {
             JSAlert.alert("You don't have access.", "Validation Error", JSAlert.Icons.Warning);
             return false;
         }
@@ -195,7 +195,7 @@ const IssueDetails = ({ history, AccessControls }) => {
                             <lable className="mb-0"><b>Status</b></lable>
                             <select name='status' className='form-control mb-3' defaultValue={'Resolved'} required>
                                 <option value="Resolved">Resolved</option>
-                                <option value="Replied">Replied</option>
+                                {details.status !== 'Replied' && <option value="Replied">Replied</option>}
                                 <option value="Closed">Closed</option>
                             </select>
                             <textarea className='form-control' placeholder='Enter your comments here...' name="comment" minLength={20} required />
@@ -211,10 +211,10 @@ const IssueDetails = ({ history, AccessControls }) => {
                 </h3>
                 <div>
                     {
-                        JSON.parse(AccessControls.access).includes(79) && details.status === 'Pending'
+                        JSON.parse(AccessControls.access).includes(79) && details.status !== 'Resolved' && details.status !== 'Closed'
                         ?
                         <button className="btn submit" onClick={() => setShowReplyModal(true)}>
-                            Comment
+                            {details.status === 'Replied' ? 'Close' : 'Comment'}
                         </button>
                         :null
                     }
@@ -276,15 +276,30 @@ const IssueDetails = ({ history, AccessControls }) => {
                             }
                         </tr>
                         {
+                            details.reply_emp_name
+                            ?
+                            <tr>
+                                <td>
+                                    <b>Replied At</b><br />
+                                    <span>{new Date(details.replied_at).toDateString()} {new Date(details.replied_at).toLocaleTimeString()}</span>
+                                </td>
+                                <td colSpan={2}>
+                                    <b>Reply</b><br />
+                                    <span>{details.reply}</span>
+                                </td>
+                            </tr>
+                            :null
+                        }
+                        {
                             details.support_emp_name
                             ?
                             <tr>
                                 <td>
-                                    <b>Supported At</b><br />
+                                    <b>Closed At</b><br />
                                     <span>{new Date(details.support_at).toDateString()} {new Date(details.support_at).toLocaleTimeString()}</span>
                                 </td>
                                 <td colSpan={2}>
-                                    <b>Support Comments</b><br />
+                                    <b>Close/Resolve Comments</b><br />
                                     <span>{details.support_comments}</span>
                                 </td>
                             </tr>
@@ -337,24 +352,43 @@ const IssueDetails = ({ history, AccessControls }) => {
                                 :null
                             }
                         </tr>
-                        {
-                            details.support_emp_name
-                            ?
-                            <tr>
-                                <td>
-                                    <b>Supported At</b><br />
-                                    <span>{new Date(details.support_at).toDateString()} {new Date(details.support_at).toLocaleTimeString()}</span>
-                                </td>
-                                <td colSpan={2}>
-                                    <b>Support Comments</b><br />
-                                    <span>{details.support_comments}</span>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            :null
-                        }
+                        <tr>
+                            {
+                                details.reply_emp_name
+                                ?
+                                <>
+                                    <td>
+                                        <b>Replied At</b><br />
+                                        <span>{new Date(details.replied_at).toDateString()} {new Date(details.replied_at).toLocaleTimeString()}</span>
+                                    </td>
+                                    <td>
+                                        <b>Reply</b><br />
+                                        <span>{details.reply}</span>
+                                    </td>
+                                </>
+                                :null
+                            }
+                            {
+                                details.support_emp_name
+                                ?
+                                <>
+                                    <td>
+                                        <b>Closed At</b><br />
+                                        <span>{new Date(details.support_at).toDateString()} {new Date(details.support_at).toLocaleTimeString()}</span>
+                                    </td>
+                                    <td colSpan={2}>
+                                        <b>Close/Resolve Comments</b><br />
+                                        <span>{details.support_comments}</span>
+                                    </td>
+                                </>
+                                :
+                                <>
+                                    <td></td>
+                                    <td></td>
+                                </>
+                            }
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             }
@@ -508,11 +542,11 @@ const IssuesListView = ({ history, AccessControls }) => {
                         "dot mr-1 "
                         +
                         (
-                            status === 'Resolved'
+                            status === 'Resolved' || status === 'Closed'
                                 ?
                                 "bg-success"
                                 :
-                                status === 'Replied' || status === 'Closed'
+                                status === 'Replied'
                                     ?
                                     "bg-primary"
                                     :
@@ -537,11 +571,11 @@ const IssuesListView = ({ history, AccessControls }) => {
                         "text-capitalize "
                         +
                         (
-                            status === 'Resolved'
+                            status === 'Resolved' || status === 'Closed'
                                 ?
                                 "text-success"
                                 :
-                                status === 'Replied' || status === 'Closed'
+                                status === 'Replied'
                                     ?
                                     "text-primary"
                                     :

@@ -1000,43 +1000,44 @@ const Notification = ({ title, body, event_id, key, date_time }) => {
 }
 
 const Attendance = () => {
-
     const ref = React.createRef();
+    const last_two_months = moment().subtract(1,'months').startOf('month').format('YYYY-MM-DD');
+    const currentDate = moment().format('YYYY-MM-DD');
+    const [ startDate, setStartDate ] = useState(moment().startOf('month').format('YYYY-MM-DD'));
+    const [ endDate, setEndDate ] = useState(moment().format('YYYY-MM-DD'));
 
     const [Sheet, setSheet] = useState([]);
 
     useEffect(
         () => {
 
+            console.log(startDate);
             axios.post(
-                '/getempattdetails',
+                '/getmymonthlyattendance',
                 {
-                    empID: localStorage.getItem('EmpID')
+                    DateFrom: startDate, 
+                    DateTo: endDate, 
+                    emp_id: localStorage.getItem('EmpID')
                 }
-            ).then(
-                res => {
+            ).then(res => setSheet(res.data)).catch(err => console.log(err));
 
-                    setSheet(res.data);
-
-                }
-            ).catch(
-                err => {
-
-                    console.log(err);
-
-                }
-            )
-
-        }, []
+        }, [ startDate, endDate ]
     )
 
     return (
         <div className="AttendanceContainer">
 
             <div className="ContainerHeader">
-
-                <h4> Attendance </h4>
+                <h4 className='mb-0'> Attendance </h4>
                 <div className="ModeContainer">
+                    <div>
+                        <label className="mb-0"><b>Start Date</b></label>
+                        <input defaultValue={startDate} type="date" min={last_two_months} max={currentDate} onChange={(e) => setStartDate(e.target.value)} className="form-control form-control-sm" />
+                    </div>
+                    <div>
+                        <label className="mb-0"><b>End Date</b></label>
+                        <input defaultValue={endDate} type="date" min={last_two_months} max={currentDate} onChange={(e) => setEndDate(e.target.value)} className="form-control form-control-sm" />
+                    </div>
                     {/* <div id="Normal" onClick={ () => {} } style={ { backgroundColor: "var(--orange)" } } className="mode text-white mr-2">Print</div> */}
                     <div id="Edit" onClick={() => { }} style={{ backgroundColor: "var(--blue)" }} className="mode text-white">
                         <ReactHTMLTableToExcel

@@ -124,21 +124,27 @@ router.post('/getemptimein', ( req, res ) => {
 
 router.post('/getallattendancerequests', ( req, res ) => {
 
-    const { emp_id, all } = req.body;
+    const { emp_id, all, attendance_correcton } = req.body;
 
     if (all === 1) {
-        db.query(
+        let correction_query = 'WHERE tbl_attendance_requests.latitude IS NOT NULL';
+        if (attendance_correcton) {
+            correction_query = 'WHERE tbl_attendance_requests.latitude IS NULL';
+        }
+        let abc = db.query(
             "SELECT  \
             sender.name as sender_name, \
             receiver.name as receiver_name, \
             emp_app_profile.emp_image, \
             tbl_attendance_request_refs.*, \
+            tbl_attendance_requests.latitude, \
             sender_designation.designation_name \
             FROM `tbl_attendance_request_refs`  \
             LEFT OUTER JOIN employees sender ON sender.emp_id = tbl_attendance_request_refs.request_by \
             LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
             LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
             LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
+            LEFT OUTER JOIN tbl_attendance_requests ON tbl_attendance_request_refs.request_id = tbl_attendance_requests.id " + correction_query + " \
             ORDER BY tbl_attendance_request_refs.id DESC;",
             ( err, rslt ) => {
     
@@ -150,7 +156,7 @@ router.post('/getallattendancerequests', ( req, res ) => {
     
                 }else 
                 {
-    
+                    console.log(abc.sql)
                     res.send( rslt );
                     res.end();
     
@@ -159,19 +165,25 @@ router.post('/getallattendancerequests', ( req, res ) => {
             }
         );
     }else {
-        db.query(
+        let correction_query = ' tbl_attendance_requests.latitude IS NOT NULL ';
+        if (attendance_correcton) {
+            correction_query = ' tbl_attendance_requests.latitude IS NULL ';
+        }
+        let abc = db.query(
             "SELECT  \
             sender.name as sender_name, \
             receiver.name as receiver_name, \
             emp_app_profile.emp_image, \
             tbl_attendance_request_refs.*, \
+            tbl_attendance_requests.latitude, \
             sender_designation.designation_name \
             FROM `tbl_attendance_request_refs`  \
             LEFT OUTER JOIN employees sender ON sender.emp_id = tbl_attendance_request_refs.request_by \
             LEFT OUTER JOIN designations sender_designation ON sender.designation_code = sender_designation.designation_code \
             LEFT OUTER JOIN employees receiver ON receiver.emp_id = tbl_attendance_request_refs.request_to \
             LEFT OUTER JOIN emp_app_profile ON sender.emp_id = emp_app_profile.emp_id \
-            WHERE request_by = ? OR request_to = ? OR act_by = ? ORDER BY tbl_attendance_request_refs.id DESC LIMIT 10;",
+            LEFT OUTER JOIN tbl_attendance_requests ON tbl_attendance_request_refs.request_id = tbl_attendance_requests.id \
+            WHERE " + correction_query + " AND (request_by = ? OR request_to = ? OR act_by = ?) ORDER BY tbl_attendance_request_refs.id DESC;",
             [ emp_id, emp_id, emp_id ],
             ( err, rslt ) => {
     
@@ -184,6 +196,7 @@ router.post('/getallattendancerequests', ( req, res ) => {
                 }else 
                 {
     
+                    console.log(abc.sql)
                     res.send( rslt );
                     res.end();
     
@@ -420,6 +433,25 @@ router.post('/newattendancerequest', ( req, res ) => {
 
         }
     );
+
+} );
+
+router.get('/getpreviousdateslimit', ( req, res ) => {
+
+    db.query(
+        "SELECT valueInt1 FROM tblmisc WHERE id = 3;",
+        ( err, rslt ) => {
+
+            if ( err )
+            {
+                console.log( err );
+            }else
+            {
+                res.send( rslt );
+            }
+
+        }
+    )
 
 } );
 
