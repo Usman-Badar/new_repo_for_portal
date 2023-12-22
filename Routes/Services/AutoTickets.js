@@ -660,6 +660,168 @@ function checkIfPortalIssueIsClosed() {
     }, 1000);
 }
 
+function checkPendingLeavesForApproval() {
+    setTimeout(() => {
+        db.query(
+            "SELECT db_cash_receipts.*, companies.code AS company_code_name, CURDATE() AS today FROM `db_cash_receipts` LEFT OUTER JOIN companies ON db_cash_receipts.company = companies.company_code WHERE db_cash_receipts.shp_line_adv = 'N' AND db_cash_receipts.status = 'waiting for approval' AND db_cash_receipts.ticket_issued_for_late_approval = 0 AND db_cash_receipts.approved_by IS NOT NULL ORDER BY db_cash_receipts.id DESC;",
+            (err, rslt) => {
+                if (err) {
+                    console.log(err);
+                    checkPendingLeavesForApproval();
+                }else {
+                    if ( rslt.length > 0 ) {
+                        console.log('Found Requests:', rslt.length);
+                        const limit = rslt.length;
+                        const count = [];
+                        db.query(
+                            "SELECT additional_off, time_in, time_out FROM employees WHERE emp_id = ?;" +
+                            "SELECT day FROM tbl_holidays;" +
+                            "SELECT time_in, status FROM emp_attendance WHERE emp_id = ? AND emp_date = ?;",
+                            [rslt[count.length].approved_by, rslt[count.length].approved_by, new Date().toISOString().slice(0, 10).replace('T', ' ')],
+                            ( _, offDays ) => {
+                                const { additional_off, time_in, time_out } = offDays[0][0];
+                                const parsed_offDays = JSON.parse(additional_off);
+                                const holidays = [];
+                                offDays[1].forEach(({day}) => holidays.push(day));
+
+                                issueTickets(parsed_offDays, holidays, time_in, time_out, offDays[2]);
+                            }
+                        );
+                        async function issueTickets(parsed_offDays, holidays, time_in, time_out, isPresent)
+                        {
+                            const submitDate = new Date(rslt[count.length].verified_date);
+                            const currentDate = new Date(rslt[count.length].today);
+                            const dayName = days[currentDate.getDay()];
+
+                            if (holidays.includes(rslt[count.length].today) || dayName === 'Sunday') {
+                                next(parsed_offDays, holidays, time_in, time_out, isPresent);
+                            }
+                            // else 
+                            // if (isPresent.length === 0) {
+                            //     next(parsed_offDays, holidays, time_in, time_out, isPresent);
+                            // }
+                            else if (isPresent[0]?.status.toLowerCase() === 'leave') {
+                                next(parsed_offDays, holidays, time_in, time_out, isPresent);
+                            }else {
+                                console.log('Predicting Time...');
+                                const ticket_issue_date_time = await predictTicketTime(submitDate, rslt[count.length].verified_time, currentDate, time_in, time_out, isPresent);
+                                console.log('ticket_issue_date_time', ticket_issue_date_time)
+                                if ( ticket_issue_date_time.ticket_should_issue ) {
+                                    const code = rslt[count.length].company_code_name + '-' + rslt[count.length].series_year + '-' + rslt[count.length].serial_no;
+                                    const remarks = "Yellow ticket has been issued by the system on behalf of Mr. Jahanzeb Punjwani due to the late verification of the advance cash request with serial number:\n" + code;
+                                    db.query(
+                                        "INSERT INTO `emp_tickets`(`emp_id`, `generated_by`, `generated_date`, `generated_time`, `ticket`, `remarks`) VALUES (?,?,?,?,?,?);" +
+                                        "UPDATE db_cash_receipts SET ticket_issued_for_late_approval = 1 WHERE id = ?;",
+                                        [ 
+                                            rslt[count.length].approved_by, owner, new Date(), new Date().toTimeString(), 'yellow', remarks,
+                                            rslt[count.length].id
+                                        ],
+                                        ( err ) => {
+                                            if( err ) {
+                                                console.log( err );
+                                                checkPendingLeavesForApproval();
+                                            }else 
+                                            {
+                                                db.query(
+                                                    "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                                    "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                                    [ 
+                                                        owner, 
+                                                        rslt[count.length].approved_by 
+                                                    ],
+                                                    ( err, result ) => {
+                                                        if( err ) {
+                                                            console.log( err );
+                                                            checkPendingLeavesForApproval();
+                                                        }else
+                                                        {
+                                                            const message = "Yellow ticket has been given to the employee(s) " + result[1][0].name + " due to late advance cash (" + code + ") approval.";
+                                                            administrativeNotifications( '/cash/request/' + rslt[count.length].id, owner, message );
+                                                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, message, result[0][0].cell );
+                                                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, result[0][0].name + " has given you a yellow ticket with remarks '" + remarks + "'.", result[1][0].cell );
+                                                            next(parsed_offDays, holidays, time_in, time_out, isPresent);
+                                                        }
+                                                    }
+                                                );
+                                            }
+                                        }
+                                    );
+                                }else {
+                                    next(parsed_offDays, holidays, time_in, time_out, isPresent);
+                                }
+                            }
+                        };
+                        function next(parsed_offDays, holidays, time_in, time_out, isPresent) {
+                            if ((count.length + 1) === limit) {
+                                console.log( "Ticket Not Issued For (Verification) Regarding Advance Cash!!!" );
+                                checkPendingLeavesForApproval();
+                            }else {
+                                count.push(1);
+                                issueTickets(parsed_offDays, holidays, time_in, time_out, isPresent);
+                            }
+                        }
+                        async function predictTicketTime(submit_date, submit_time, curren_date, time_in, time_out, isPresent) {
+                            try {
+                                let currentDateRequest = true;
+                                let ticket_should_issue = false;
+                                const dt = new Date(submit_date.toISOString().slice(0, 10).replace('T', ' ') + ' ' + submit_time);
+                                const date_time = moment(dt);
+                                const addHours = date_time.add(2, 'hours');
+
+                                const startTime = moment(submit_time, 'HH:mm:ss a');
+                                const emp_time_out = moment(time_out, 'HH:mm:ss a');
+                                const currentDateTime = moment(new Date());
+                                const duration = moment.duration(emp_time_out.diff(startTime));
+                                const last_day_minutes = parseInt(duration.asMinutes());
+
+                                console.log('startTime', startTime)
+                                console.log('last_day_minutes', last_day_minutes)
+
+                                // FOR CURRENT DATE TIMINGS
+                                // const emp_time_in = moment(isPresent[0].time_in, 'HH:mm:ss a');
+                                const emp_time_in = moment(time_in, 'HH:mm:ss a');
+                                const currentTime = moment(new Date().toTimeString().substring(0,8), 'HH:mm:ss a');
+                                const today_duration = moment.duration(currentTime.diff(emp_time_in));
+                                const today_minutes = parseInt(today_duration.asMinutes());
+
+                                const total_minutes_passed = parseInt(last_day_minutes) + parseInt(today_minutes);
+                                
+                                if (curren_date > submit_date) {
+                                    currentDateRequest = false;
+                                }
+
+                                const predicted_time_is_in_working_hours = 
+                                    currentDateRequest ? 
+                                    (addHours.format('HH:mm:ss').valueOf() < currentDateTime.format('HH:mm:ss').valueOf()) && (currentDateTime.format('HH:mm:ss').valueOf() < emp_time_out.format('HH:mm:ss').valueOf())
+                                    : 
+                                    (addHours.format('HH:mm:ss').valueOf() < emp_time_out.format('HH:mm:ss').valueOf());
+                                const predicted_time_for_next_day_is_exceed = parseInt(total_minutes_passed) > 120; // 60 minutes * 2 hours = 120 minutes
+    
+                                if (currentDateRequest) {
+                                    if (predicted_time_is_in_working_hours) {
+                                        ticket_should_issue = true;
+                                    }
+                                    return {predicted_dt: addHours, ticket_should_issue: ticket_should_issue};
+                                }else {
+                                    if (predicted_time_for_next_day_is_exceed) {
+                                        ticket_should_issue = true;
+                                    }
+                                    return {predicted_dt: total_minutes_passed, ticket_should_issue: ticket_should_issue};
+                                }
+                            }catch (err) {
+                                console.log(err);
+                            }
+                        }
+                    }else
+                    {
+                        checkPendingLeavesForApproval();
+                    }
+                }
+            }
+        )
+    }, 1000);
+}
+
 setTimeout(() => {
     checkAdvanceCashPendingForVerification();
     checkAdvanceCashPendingForApproval();

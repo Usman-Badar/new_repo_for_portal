@@ -869,6 +869,44 @@ export const ApproveRequisition = ( e, po_id, requested_by, history ) => {
 
 }
 
+export const unApproveRequest = ( e, po_id, requested_by, history ) => {
+
+    e.preventDefault();
+    const reason = e.target['remarks'].value;
+    $('fieldset').prop('disabled', true);
+    axios.post(
+        '/purchase/order/unapproval',
+        {
+            po_id: po_id,
+            emp_id: localStorage.getItem('EmpID'),
+            reason: reason,
+            requested_by: requested_by,
+        }
+    )
+    .then(
+        res => 
+        {
+                
+            if ( res.data === 'success' )
+            {
+                setTimeout(() => {
+                    history.push('/purchase/order/requests');
+                }, 1500);
+                $('#error_alert_approval').removeClass('d-none').text("The application has been unapproved.");
+            }
+
+        }
+    ).catch(
+        err => {
+
+            $('fieldset').prop('disabled', false);
+            console.log(err);
+
+        }
+    );
+
+}
+
 export const overrideRequisition = ( e, status, RequestDetails, history ) => {
 
     e.preventDefault();

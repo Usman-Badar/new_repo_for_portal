@@ -8,6 +8,7 @@ const StockAtWorkshop = () => {
     const [modal, setModal] = useState();
     const [Requests, setRequests] = useState();
     const [Total, setTotal] = useState(0);
+    const [DateFilter, setDate] = useState('');
 
     useEffect(
         () => {
@@ -18,21 +19,11 @@ const StockAtWorkshop = () => {
             }
         }, []
     );
-    useEffect(
-        () => {
-            if (Requests) {
-                let total = 0;
-                for (let x = 0; x < Requests.length; x++) {
-                    total += parseFloat($('#quantity_' + (x+1)).text());
-                }
-                setTotal(total);
-            }
-        }, [Requests]
-    );
     const loadTransactions = (isActive) => {
         axios.get('/fuel-managent/fuel-receival-for-workshop/transactions').then(res => {
             if (!isActive) return;
-            setRequests(res.data);
+            setTotal(res.data[0].total);
+            setRequests(res.data[1]);
         }).catch(err => console.log(err));
     }
     const loadTransactionDetails = (id, in_out) => {
@@ -213,9 +204,15 @@ const StockAtWorkshop = () => {
                                 </div>
                             </div>
                             <div className="col-8" style={{maxHeight: '75vh', overflow: 'auto'}}>
-                                <h6>
-                                    <b>No. of Transactions:</b> {Requests?.length}
-                                </h6>
+                                <div className='d-flex justify-content-between align-items-center mb-3'>
+                                    <h5 className='mb-0'>
+                                        <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
+                                    </h5>
+                                    <div>
+                                        <label className="mb-0">Date</label>
+                                        <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
+                                    </div>
+                                </div>
                                 <table className="table">
                                     <thead>
                                         <tr>
@@ -228,7 +225,7 @@ const StockAtWorkshop = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            Requests.map((val, i) => {
+                                            Requests.filter(val => val.inserted_at.includes(DateFilter)).map((val, i) => {
                                                 const { in_out, request_id, quantity_in_ltr, inserted_at, fuel_received_at } = val;
                                                 const d = new Date(inserted_at);
                                                 return (

@@ -60,7 +60,11 @@ function FuelRequest() {
         });
     }
     const loadRequests = (isActive) => {
-        axios.post('/fuel-managent/fuel-request-for-station/requests', {emp_id: localStorage.getItem("EmpID")}).then(res => {
+        axios.post('/fuel-managent/fuel-request-for-station/requests',
+        {
+            emp_id: localStorage.getItem("EmpID"), 
+            access: AccessControls?.access && JSON.parse(AccessControls.access).includes(87) ? 1 : 0
+        }).then(res => {
             if (!isActive) return;
             setRequests(res.data);
         }).catch(err => console.log(err));
@@ -225,7 +229,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
     }
     const rejectRequest = () => {
         $('#confirm').prop('disabled', true);
-        axios.post('/fuel-managent/fuel-request-for-station/reject', {id: Details?.id}).then(() => {
+        axios.post('/fuel-managent/fuel-request-for-station/reject', {id: Details?.id, rejected_by: localStorage.getItem('EmpID')}).then(() => {
             setDetails();
             loadRequests(true);
             JSAlert.alert('Request has been rejected!', 'Success', JSAlert.Icons.Warning).dismissIn(4000);
@@ -258,8 +262,9 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                         <div>
                             {
                                 Details.status === 'Waiting for approval' &&
-                                JSON.parse(AccessControls.access).includes(87) &&
-                                parseInt(Details.approved_by) === parseInt(localStorage.getItem('EmpID'))
+                                JSON.parse(AccessControls.access).includes(87) 
+                                // &&
+                                // parseInt(Details.approved_by) === parseInt(localStorage.getItem('EmpID'))
                                 ?
                                 <>
                                     <button className="btn submit" onClick={approve}>Approve</button>

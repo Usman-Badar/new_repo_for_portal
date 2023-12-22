@@ -239,7 +239,7 @@ const PeerReviewDetailsComponent = ({ history, PeerReviewDetails, loadPeerReview
                         <tr>
                             <td>
                                 <b>Submitted Date</b><br />
-                                <span>{moment(PeerReviewDetails.review_date).utc().format('MM-DD-YYYY')}</span>
+                                <span>{moment(new Date(PeerReviewDetails.review_date)).format('MM-DD-YYYY')}</span>
                             </td>
                             <td>
                                 <b>Submitted Time</b><br />
@@ -617,7 +617,7 @@ const SelfAssessmentDetailsComponent = ({ history, SelfAssessmentDetails, loadSe
                         <tr>
                             <td>
                                 <b>Submitted Date</b><br />
-                                <span>{moment(SelfAssessmentDetails.details.submit_date).utc().format('MM-DD-YYYY')}</span>
+                                <span>{moment(new Date(SelfAssessmentDetails.details.submit_date)).format('MM-DD-YYYY')}</span>
                             </td>
                             <td>
                                 <b>Submitted Time</b><br />

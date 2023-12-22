@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './FuelManagement.css';
 import axios from '../../../../../../../axios';
 import JSAlert from 'js-alert';
+import moment from 'moment';
 
 function FuelManagement() {
     const companyRef = useRef();
@@ -15,6 +16,9 @@ function FuelManagement() {
     const [Companies, setCompanies] = useState([]);
     const [Locations, setLocations] = useState([]);
     const [Equipments, setEquipments] = useState([]);
+    const [List, setList] = useState([]);
+    const [RowDetails, setRowDetails] = useState();
+    const [Loading, setLoading] = useState(false);
 
     useEffect(
         () => {
@@ -29,13 +33,21 @@ function FuelManagement() {
         () => {
             window.addEventListener("beforeunload", beforeunload);
             let isActive = true;
-            GetCompanies(isActive);
+            loadRequests(isActive);
             return () => {
                 isActive = false;
             }
         }, []
     );
 
+    const loadRequests = (isActive) => {
+        axios.get('/fuel-managent/equipments')
+        .then(res => {
+            if (!isActive) return;
+            setList(res.data);
+            GetCompanies(isActive);
+        }).catch(err => console.log(err));
+    }
     const beforeunload = (e, ) => {
         if (fieldsetRef.current.disabled) {
             e.preventDefault();
@@ -75,6 +87,7 @@ function FuelManagement() {
             formRef.current.reset();
             JSAlert.alert('Equiment has been setup', 'Success', JSAlert.Icons.Success).dismissIn(2000);
             loadEquipments(true);
+            loadRequests(true);
         }).catch(err => {
             console.log(err);
             JSAlert.alert('Failed To Add!!', 'Request Failed', JSAlert.Icons.Failed).dismissIn(4000);
@@ -96,12 +109,23 @@ function FuelManagement() {
             GetLocations();
         }).catch(err => console.log(err));
     }
+    const loadDetails = (val) => {
+        setLoading(true);
+        axios.post('/fuel-managent/equipments/details', {id: val.id})
+        .then(res => {
+            setRowDetails({
+                data: val,
+                total: res.data[0].total,
+                transactions: res.data[1]
+            });
+            setLoading(false);
+        }).catch(err => console.log(err));
+    }
     const GetLocations = () => axios.get('/getalllocations').then(res => setLocations(res.data)).catch(err => console.log(err));
 
     return (
         <>
             <div className='FuelManagement page'>
-
                 <div className="page-content">
                     <h3 className="heading">
                         Fuel Management Module
@@ -183,6 +207,124 @@ function FuelManagement() {
                         </fieldset>
                     </form>
                 </div>
+                <br />
+                {
+                    Loading || RowDetails
+                    ?
+                    <div className="page-content popUps">
+                        {
+                            RowDetails && (
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div className="col-3">
+                                            <table className="table mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <h3 className='text-center mb-0' style={{fontFamily: 'Maersk'}}>
+                                                                <b>{parseFloat(RowDetails?.total).toFixed(2)}</b> {' '}
+                                                                <small style={{fontSize: '12px'}} className='text-secondary'><b>Ltr.</b></small>
+                                                            </h3>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Equipment Type</b><br />
+                                                            {RowDetails?.data?.equipment_type_name}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Equipment Number</b><br />
+                                                            {RowDetails?.data?.equipment_number}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Created At</b><br />
+                                                            {moment(new Date(RowDetails?.data?.created_at)).format('DD-MM-YYYY HH:mm a')}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div className="col-9">
+                                            <div className="d-flex justify-content-between align-items-center mb-3">
+                                                <h4 className='mb-0'><b>Transactions:</b> {RowDetails?.transactions?.length}</h4>
+                                                <button className='btn light' onClick={() => setRowDetails()}>Back</button>
+                                            </div>
+                                            <table className="table mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Quantity</th>
+                                                        <th>Inserted At</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        RowDetails?.transactions?.map(
+                                                            (val, i) => {
+                                                                return (
+                                                                    <tr key={i}>
+                                                                        <td>{i+1}</td>
+                                                                        {
+                                                                            val.in_out === 'IN'
+                                                                            ?
+                                                                            <td className='text-success'>+{val.quantity_in_ltr}</td>
+                                                                            :
+                                                                            <td className='text-danger'>-{val.quantity_in_ltr}</td>
+                                                                        }
+                                                                        <td>{moment(new Date(val.inserted_at)).format('YYYY-MM-DD HH:mm a')}</td>
+                                                                    </tr>
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+                    :
+                    <div className="page-content popUps">
+                        {
+                            List.length === 0
+                            ?
+                            <h5 className="text-center mb-0">Please Wait...</h5>
+                            :
+                            <table className="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Equipment Type</th>
+                                        <th>Equipment Number</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        List.map((val, i) => {
+                                            const { equipment_type_name, equipment_number, created_at } = val;
+                                            const d = new Date(created_at);
+                                            return (
+                                                <tr key={i} className='pointer' onClick={(() => loadDetails(val))}>
+                                                    <td>{i+1}</td>
+                                                    <td>{equipment_type_name}</td>
+                                                    <td>{equipment_number}</td>
+                                                    <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                }
             </div>
         </>
     )

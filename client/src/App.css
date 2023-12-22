@@ -598,7 +598,8 @@ td {
     background: var(--success);
 }
 
-.status_div.rejected {
+.status_div.rejected,
+.status_div.unapproved {
     background: var(--orange);
 }
 

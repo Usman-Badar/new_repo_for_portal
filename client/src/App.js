@@ -233,6 +233,11 @@ const App = () => {
                     <Route exact path="/purchase/order/requests" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/purchase/order/details" render={ () => <Sus content={ <Dashboard /> } /> } />
                     
+                    <Route exact path="/purchase/order/recursive/form" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/purchase/order/recursive/requests" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/purchase/order/recursive/form&&po_id=:id" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/purchase/order/recursive/details" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    
                     {/* 
                         For Container
                     */}

@@ -114,7 +114,11 @@ function FuelRecievedFrom() {
         });
     }
     const loadRequests = (isActive) => {
-        axios.post('/fuel-managent/fuel-receival-for-workshop/requests', {emp_id: localStorage.getItem("EmpID")}).then(res => {
+        axios.post('/fuel-managent/fuel-receival-for-workshop/requests', 
+        {
+            emp_id: localStorage.getItem("EmpID"), 
+            access: AccessControls?.access && JSON.parse(AccessControls.access).includes(85) ? 1 : 0
+        }).then(res => {
             if (!isActive) return;
             setRequests(res.data);
         }).catch(err => console.log(err));
@@ -403,8 +407,9 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                         <div>
                             {
                                 Details.status === 'Waiting for verification' && 
-                                JSON.parse(AccessControls.access).includes(85) &&
-                                parseInt(Details.verified_by) === parseInt(localStorage.getItem('EmpID'))
+                                JSON.parse(AccessControls.access).includes(85) 
+                                // &&
+                                // parseInt(Details.verified_by) === parseInt(localStorage.getItem('EmpID'))
                                 ?
                                 <>
                                     <button className="btn submit" onClick={approve}>Verify</button>

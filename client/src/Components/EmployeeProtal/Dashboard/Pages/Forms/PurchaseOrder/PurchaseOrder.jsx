@@ -2,7 +2,7 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { loadPRList, addRow, SubTotalCostCalculation, TotalCostCalculation, ApproveRequisition, RejectRequisition, CancelRequisition, openRequestDetails, loadRequests, GetLocations, POSubmittion, SubmitPO, onAttachBills, GetCompanies, onContentInput, searchVendor, addAdditionalRow, onFooterContentInput, loadSubOrdinands, updatePO, POUpdate, overrideRequisition } from './Functions';
+import { loadPRList, addRow, SubTotalCostCalculation, TotalCostCalculation, ApproveRequisition, RejectRequisition, CancelRequisition, openRequestDetails, loadRequests, GetLocations, POSubmittion, SubmitPO, onAttachBills, GetCompanies, onContentInput, searchVendor, addAdditionalRow, onFooterContentInput, loadSubOrdinands, updatePO, POUpdate, overrideRequisition, unApproveRequest } from './Functions';
 import { useSelector } from 'react-redux';
 const UI = lazy( () => import('./UI') );
 
@@ -42,7 +42,7 @@ function PurchaseOrder() {
     const [ FilterCompany, setFilterCompany ] = useState('');
     const [ FilterPRCompany, setFilterPRCompany ] = useState('');
     const [ SpecKeyword, setSpecKeyword ] = useState('');
-    const [ FilterAmount, setFilterAmount ] = useState(-100000);
+    const [ FilterAmount, setFilterAmount ] = useState('');
     const [ Status, setStatus ] = useState('');
     const [ RequestStatuses, setRequestStatuses ] = useState([]);
 
@@ -184,6 +184,7 @@ function PurchaseOrder() {
                     Status={ Status }
                     RequestStatuses={ RequestStatuses }
 
+                    unApproveRequest={ (e, po_id, requested_by) => unApproveRequest(e, po_id, requested_by, history) }
                     overrideRequisition={ (e, type) => overrideRequisition( e, type, RequestDetails, history ) }
                     setStatus={ setStatus }
                     setRemovedBills={ setRemovedBills }

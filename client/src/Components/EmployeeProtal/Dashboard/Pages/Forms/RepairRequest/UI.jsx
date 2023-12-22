@@ -382,7 +382,7 @@ const Requests = ( { RequestsList, ListAttachments } ) => {
                                                     }
                                                 </td>
                                                 <td>{ val.location_name }</td>
-                                                <td>{ moment(val.request_date).utc().format('MM-DD-YYYY') }</td>
+                                                <td>{ moment(new Date(val.request_date)).format('MM-DD-YYYY') }</td>
                                                 <td>
                                                     <span className="badge badge-pill badge-secondary px-3">{ val.status }</span>
                                                 </td>
@@ -445,7 +445,7 @@ const RepairRequests = ( { history, RequestsList } ) => {
                                                 <td>{ val.description }</td>
                                                 <td>{ val.location_name }</td>
                                                 <td>
-                                                    { moment(val.request_date).utc().format('MM-DD-YYYY') }<br />
+                                                    { moment(new Date(val.request_date)).format('MM-DD-YYYY') }<br />
                                                     { moment(val.request_time,'h:mm:ss a').format('hh:mm A') }
                                                 </td>
                                                 <td>
@@ -512,7 +512,9 @@ const IncidentRequests = ( { IncidentsList, history, RequestsList, getIncidents 
                                                 <td>{ val.subject }</td>
                                                 <td>{ val.location_name }</td>
                                                 <td>
-                                                    { moment(val.reported_date).utc().format('MM-DD-YYYY') }<br />
+                                                    {/* BEFORE 2023-12-11 */}
+                                                    {/* { moment(new Date(val.reported_date)).format('MM-DD-YYYY') }<br /> */}
+                                                    { moment(new Date(val.reported_date)).format('MM-DD-YYYY') }<br />
                                                     { moment(val.reported_time,'h:mm:ss a').format('hh:mm A') }
                                                 </td>
                                                 <td>
@@ -571,7 +573,7 @@ const RepairRequestDetails = ({ Details, Attachments, history, getDetails }) => 
                         <td>
                             <b>Requested Date & Time</b><br />
                             <span>
-                                { moment(Details.request_date).utc().format('MM-DD-YYYY') }<br />
+                                { moment(new Date(Details.request_date)).format('MM-DD-YYYY') }<br />
                                 { Details.request_time }
                             </span>
                         </td>
@@ -582,7 +584,7 @@ const RepairRequestDetails = ({ Details, Attachments, history, getDetails }) => 
                                 <b>Assigned To</b><br />
                                 <span>{ Details.assigned_person }</span>
                                 <span>
-                                    { moment(Details.assign_date).utc().format('MM-DD-YYYY') }<br />
+                                    { moment(new Date(Details.assign_date)).format('MM-DD-YYYY') }<br />
                                     { Details.assign_time }
                                 </span>
                             </td>
@@ -700,7 +702,7 @@ const IncidentDetails = ({ Incident, history, getIncidentDetails }) => {
                         <td>
                             <b>Requested Date & Time</b><br />
                             <span>
-                                { moment(Incident.reported_date).utc().format('MM-DD-YYYY') }<br />
+                                { moment(new Date(Incident.reported_date)).format('MM-DD-YYYY') }<br />
                                 { Incident.reported_time }
                             </span>
                         </td>

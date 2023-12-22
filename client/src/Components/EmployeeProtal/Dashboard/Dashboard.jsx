@@ -88,6 +88,7 @@ const PeerReview = lazy( () => import('./Pages/PeerReview/PeerReview') );
 
 const PurchaseRequisition = lazy( () => import('./Pages/Forms/PurchaseRequisition/PurchaseRequisition') );
 const PurchaseOrder = lazy( () => import('./Pages/Forms/PurchaseOrder/PurchaseOrder') );
+const RecursivePurchaseOrder = lazy( () => import('./Pages/Forms/PurchaseOrderRecurring/RecursivePurchaseOrder') );
 
 const DeliveryChallan = lazy( () => import('./Pages/Inventory/DeliveryChallan/DeliveryChallan') );
 
@@ -526,6 +527,11 @@ const Dashboard = () => {
                                 <Route exact path="/purchase/order/form&&po_id=:id" render={ () => <Sus content={ <PurchaseOrder /> } /> } />
                                 <Route exact path="/purchase/order/requests" render={ () => <Sus content={ <PurchaseOrder /> } /> } />
                                 <Route exact path="/purchase/order/details" render={ () => <Sus content={ <PurchaseOrder /> } /> } />
+
+                                <Route exact path="/purchase/order/recursive/form" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                <Route exact path="/purchase/order/recursive/requests" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                <Route exact path="/purchase/order/recursive/form&&po_id=:id" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                <Route exact path="/purchase/order/recursive/details" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
                                 
                                 {/* 
                                     For Container
