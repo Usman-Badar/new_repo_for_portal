@@ -16,7 +16,7 @@ import { convertTZ } from './../../../../../../utils/date';
 
 import ReactTooltip from 'react-tooltip';
 
-const UI = ( { CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefined, Admin, SPRSpecifications, PRCode, FilterPRCompany, FilterCompany, SpecKeyword, FilterAmount, LoadedCompanies, POUpdate, EditConfirmation, setStatus, setRemovedBills, setFilterPRCompany, setBills, setFilterAmount, setFilterCompany, setSpecKeyword, setEditConfirmation, updatePO, Vendor, Data, SubOrdinands, loadSubOrdinands, SubTotalCostCalculation, TotalCostCalculation, PRSpecifications, PRequestDetails, AdditionalRows, addAdditionalRow, PR, PRList, attachPR, PRAttachment, onFooterContentInput, selectVendor, Vendors, addRow, setPRAttachment, ApproveRequisition, AttachedBills, Specifications, RequestDetails, history, Requests, RejectRequisition, searchVendor, CancelRequisition, SubmitConfirmation, ShowBillModal, Bills, Locations, Companies, SubmitPO, loadRequests, openRequestDetails, POSubmittion, setSubmitConfirmation, onAttachBills, onContentInput, setShowBillModal } ) => {
+const UI = ( { unApproveRequest, CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefined, Admin, SPRSpecifications, PRCode, FilterPRCompany, FilterCompany, SpecKeyword, FilterAmount, LoadedCompanies, POUpdate, EditConfirmation, setStatus, setRemovedBills, setFilterPRCompany, setBills, setFilterAmount, setFilterCompany, setSpecKeyword, setEditConfirmation, updatePO, Vendor, Data, SubOrdinands, loadSubOrdinands, SubTotalCostCalculation, TotalCostCalculation, PRSpecifications, PRequestDetails, AdditionalRows, addAdditionalRow, PR, PRList, attachPR, PRAttachment, onFooterContentInput, selectVendor, Vendors, addRow, setPRAttachment, ApproveRequisition, AttachedBills, Specifications, RequestDetails, history, Requests, RejectRequisition, searchVendor, CancelRequisition, SubmitConfirmation, ShowBillModal, Bills, Locations, Companies, SubmitPO, loadRequests, openRequestDetails, POSubmittion, setSubmitConfirmation, onAttachBills, onContentInput, setShowBillModal } ) => {
     
     const { FormatMoney } = require('format-money-js');
     const fm = new FormatMoney({ symbol: 'Rs ', decimals: 2 });
@@ -136,7 +136,9 @@ const UI = ( { CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefin
                                     Admin={ Admin }
                                     fm={ fm }
                                     CompanyViewer={ CompanyViewer }
+                                    AccessControls={AccessControls}
 
+                                    unApproveRequest={ unApproveRequest }
                                     loadSubOrdinands={ loadSubOrdinands }
                                     openRequestDetails={ openRequestDetails }
                                     CancelRequisition={ CancelRequisition }
@@ -880,7 +882,7 @@ const POFormForEditing = ( { PRCode, SPRSpecifications, updatePO, AdditionalRows
 
 }
 
-const RequestDetailsView = ( { CompanyViewer, fm, Admin, SubOrdinands, loadSubOrdinands, PRSpecifications, PRequestDetails, AdditionalRows, ApproveRequisition, history, Bills, Specifications, RequestDetails, CancelRequisition, RejectRequisition, openRequestDetails } ) => {
+const RequestDetailsView = ( { unApproveRequest, AccessControls, CompanyViewer, fm, Admin, SubOrdinands, loadSubOrdinands, PRSpecifications, PRequestDetails, AdditionalRows, ApproveRequisition, history, Bills, Specifications, RequestDetails, CancelRequisition, RejectRequisition, openRequestDetails } ) => {
 
     const onBeforeGetContentResolve = useRef();
     
@@ -933,7 +935,7 @@ const RequestDetailsView = ( { CompanyViewer, fm, Admin, SubOrdinands, loadSubOr
                 parseInt(RequestDetails.appr_rejct_by) === parseInt(localStorage.getItem("EmpID")) ||
                 parseInt(RequestDetails.submitted_to) === parseInt(localStorage.getItem("EmpID"))
                 ?
-                <Detailing fm={ fm } componentRef={ componentRef } StartPrint={ StartPrint } printPO={ printPO } SubOrdinands={ SubOrdinands } loadSubOrdinands={ loadSubOrdinands } PRSpecifications={ PRSpecifications } PRequestDetails={ PRequestDetails } AdditionalRows={ AdditionalRows } ApproveRequisition={ ApproveRequisition } po_id={ window.location.href.split('?').pop().split('=').pop() } RejectRequisition={ RejectRequisition } CancelRequisition={ CancelRequisition } history={ history } Bills={ Bills } setView={ setView } View={ View } RequestDetails={ RequestDetails } Specifications={ Specifications } />
+                <Detailing unApproveRequest={unApproveRequest} AccessControls={AccessControls} fm={ fm } componentRef={ componentRef } StartPrint={ StartPrint } printPO={ printPO } SubOrdinands={ SubOrdinands } loadSubOrdinands={ loadSubOrdinands } PRSpecifications={ PRSpecifications } PRequestDetails={ PRequestDetails } AdditionalRows={ AdditionalRows } ApproveRequisition={ ApproveRequisition } po_id={ window.location.href.split('?').pop().split('=').pop() } RejectRequisition={ RejectRequisition } CancelRequisition={ CancelRequisition } history={ history } Bills={ Bills } setView={ setView } View={ View } RequestDetails={ RequestDetails } Specifications={ Specifications } />
                 :
                 <>
                     <h6 className="text-center">Access Denied</h6>
@@ -949,8 +951,9 @@ const RequestDetailsView = ( { CompanyViewer, fm, Admin, SubOrdinands, loadSubOr
 
 }
 
-const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadSubOrdinands, PRSpecifications, PRequestDetails, AdditionalRows, po_id, CancelRequisition, ApproveRequisition, RejectRequisition, history, Bills, View, setView, RequestDetails, Specifications } ) => {
+const Detailing = ( { unApproveRequest, AccessControls, fm, componentRef, StartPrint, printPO, SubOrdinands, loadSubOrdinands, PRSpecifications, PRequestDetails, AdditionalRows, po_id, CancelRequisition, ApproveRequisition, RejectRequisition, history, Bills, View, setView, RequestDetails, Specifications } ) => {
 
+    const [ unApprove, setUnApprove ] = useState(false);
     const [ CancelConfirm, setCancelConfirm ] = useState(false);
     const [ RejectConfirm, setRejectConfirm ] = useState(false);
     const [ ApprovalConfirm, setApprovalConfirm ] = useState(false);
@@ -980,6 +983,19 @@ const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadS
         <>
             <div className='details_container'>
                 <div className="purchase_requisition_details w-100">
+                    <Modal show={ unApprove } Hide={ () => unApprove(false) } content={
+                        <>
+                            <form onSubmit={(e) => unApproveRequest(e, po_id, RequestDetails.requested_by)}>
+                                <fieldset>
+                                    <h6 className="mb-0">Confirm to unapprove an approved request</h6>
+                                    <hr />
+                                    <label className='mb-0'><b>Your Remarks</b></label>
+                                    <textarea name='remarks' className="form-control mb-3" minLength={20} required />
+                                    <button className='btn d-block ml-auto cancle'>Confirm</button>
+                                </fieldset>
+                            </form>
+                        </>
+                    } />
                     <Modal show={ CancelConfirm } Hide={ () => setCancelConfirm(false) } content={ <CancelConfirmation po_id={ po_id } CancelRequisition={ CancelRequisition } /> } />
                     <Modal show={ ApprovalConfirm } Hide={ () => setApprovalConfirm(false) } content={ <ApprovalConfirmation SubOrdinands={ SubOrdinands } loadSubOrdinands={ loadSubOrdinands } requested_by={ RequestDetails.requested_by } po_id={ po_id } ApproveRequisition={ ApproveRequisition } /> } />
                     <Modal show={ RejectConfirm } Hide={ () => setRejectConfirm(false) } content={ <RejectConfirmation RequestDetails={ RequestDetails } Specifications={ Specifications } po_id={ po_id } RejectRequisition={ RejectRequisition } /> } />
@@ -1012,6 +1028,14 @@ const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadS
                                 ?
                                 <>
                                     <button className="btn cancle" onClick={ () => setCancelConfirm(true) }>Cancel</button>
+                                </>
+                                :null
+                            }
+                            {
+                                AccessControls.access && JSON.parse(AccessControls.access).includes(90) && RequestDetails.status === 'approved'
+                                ?
+                                <>
+                                    <button className="btn cancle" onClick={ () => setUnApprove(true) }>UnApprove</button>
                                 </>
                                 :null
                             }
@@ -1101,7 +1125,7 @@ const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadS
                                                 :
                                                 <>
                                                     {
-                                                        RequestDetails.status === 'approved'
+                                                        RequestDetails.status === 'approved' || RequestDetails.status === 'unapproved'
                                                         ?
                                                         <>
                                                             <td>
@@ -1120,6 +1144,26 @@ const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadS
                                             }
                                         </>
                                     </tr>
+                                    {
+                                        RequestDetails.status === 'unapproved' && (
+                                            <tr>
+                                                <td>
+                                                    <b>Unapproved By</b><br />
+                                                    <span>{ RequestDetails.unapproved_person_name }</span><br />
+                                                    <span>{ RequestDetails.unapproved_person_designation_name }</span>
+                                                </td>
+                                                <td>
+                                                    <b>Unapproved At</b><br />
+                                                    <span>{ new Date(RequestDetails.unapproved_at).toDateString() }</span><br />
+                                                    <span>{ new Date(RequestDetails.unapproved_at).toTimeString().substring(0,5) }</span>
+                                                </td>
+                                                <td colSpan={2}>
+                                                    <b>Reamrks</b><br />
+                                                    <span>{ RequestDetails.unapproved_comments }</span>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                     <tr>
                                         <td colSpan={4}>
                                             <b>Additional Notes</b><br />
@@ -1955,9 +1999,28 @@ const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadS
                                                 :null
                                             }
                                         </div>
-                                        <div style={ { width: '33.33%', padding: 10 } }>
-                                            <b style={ { marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 17 } }>Proceed To</b>
-                                        </div>
+                                        {
+                                            RequestDetails.status === 'unapproved'
+                                            ?
+                                            <div style={ { width: '33.33%', padding: 10 } }>
+                                                <b style={ { marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 17 } }>Unapprvoed By</b>
+                                                {
+                                                    RequestDetails.unapproved_person_name
+                                                    ?
+                                                    <>
+                                                        <p style={ { textAlign: 'center', fontSize: 30, fontFamily: "Tangerine", transform: "rotate(-10deg) translate(0, 5px)" } }>
+                                                            { RequestDetails.unapproved_person_name }
+                                                        </p>
+                                                        <p style={ { marginTop: 10, display: 'block', textAlign: 'center', fontSize: 17 } }>{ RequestDetails.unapproved_person_designation_name }</p>
+                                                    </>
+                                                    :null
+                                                }
+                                            </div>
+                                            :
+                                            <div style={ { width: '33.33%', padding: 10 } }>
+                                                <b style={ { marginBottom: 10, display: 'block', textAlign: 'center', fontSize: 17 } }>Proceed To</b>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -2109,12 +2172,16 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
     
     useEffect(
         () => {
-            const Arr = Requests ? Requests.filter(
-                val => {
-                    return val.status.toLowerCase().includes(Status.toLowerCase()) && val.company_name.toLowerCase().includes(FilterCompany.toLowerCase()) && val.specifications.toLowerCase().includes(SpecKeyword.toLowerCase()) && val.total_value >= FilterAmount;
-                }
-            ):null;
-            setList(Arr);
+            if (Requests) {
+                const Arr = Requests.filter(
+                    val => {
+                        return val.status.toLowerCase().includes(Status.toLowerCase()) && val.company_name.toLowerCase().includes(FilterCompany.toLowerCase()) && val.specifications.toLowerCase().includes(SpecKeyword.toLowerCase())
+                    }
+                );
+                const moreFiltered = Status.length === 0 ? Arr : Arr.filter(val => val.status.toLowerCase().length === Status.toLowerCase().length);
+                const amountFiltered = FilterAmount.length === 0 ? moreFiltered : moreFiltered.filter(val => val.total_value >= parseFloat(FilterAmount));
+                setList(amountFiltered);
+            }
         }, [ Status, Requests, FilterCompany, SpecKeyword, FilterAmount ]
     )
     useEffect(
@@ -2187,7 +2254,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
         sessionStorage.removeItem('FilterAmount');
         setFilterCompany("");
         setSpecKeyword("");
-        setFilterAmount(-100000);
+        setFilterAmount('');
     }
 
     return (
@@ -2218,7 +2285,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                     :
                                     <div data-tip data-for='filter'>
                                         {
-                                            SpecKeyword !== '' || FilterCompany !== '' || FilterAmount !== -100000
+                                            SpecKeyword !== '' || FilterCompany !== '' || FilterAmount !== ''
                                             ?
                                             <div className='filterisOpen'></div>
                                             :
@@ -2368,7 +2435,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                                                         ?
                                                                         "bg-success"
                                                                         :
-                                                                        val.status === 'rejected'
+                                                                        val.status === 'rejected' || val.status === 'unapproved'
                                                                         ?
                                                                         "bg-danger"
                                                                         :
@@ -2389,7 +2456,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                                                         ?
                                                                         "text-success"
                                                                         :
-                                                                        val.status === 'rejected'
+                                                                        val.status === 'rejected' || val.status === 'unapproved'
                                                                         ?
                                                                         "text-danger"
                                                                         :

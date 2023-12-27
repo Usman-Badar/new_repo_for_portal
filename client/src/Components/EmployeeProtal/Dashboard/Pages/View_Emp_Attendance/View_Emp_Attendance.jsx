@@ -441,6 +441,7 @@ const View_Emp_Attendance = () => {
                                                             <th className='d-none'>Employee ID</th>
                                                             <th className='d-none'>Employee Name</th>
                                                             <th>Locations</th>
+                                                            <th>Code</th>
                                                             <th>Time</th>
                                                             <th>Date</th>
                                                         </tr>
@@ -454,6 +455,7 @@ const View_Emp_Attendance = () => {
                                                                             <td className='d-none'>{val.emp_id}</td>
                                                                             <td className='d-none'>{AttendanceDetails.name}</td>
                                                                             <td>{val.location_name}</td>
+                                                                            <td>{val.status_code ? val.status_code : '-'}</td>
                                                                             <td>{val.time}</td>
                                                                             <td>{new Date(val.date).toDateString()}</td>
                                                                         </tr>

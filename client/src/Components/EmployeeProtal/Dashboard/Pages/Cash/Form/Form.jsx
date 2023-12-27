@@ -141,7 +141,7 @@ function Form() {
                 AccessControls={AccessControls}
 
                 GetCompanyLocations={(value) => GetCompanyLocations(value, setLocations)}
-                onCreateShpCash={(e) => onCreateShpCash(e, history, parseFloat(DO.amount) + parseFloat(LOLO.amount) + parseFloat(DET.amount) + parseFloat(DMGDT.amount) + parseFloat(CSC.amount) + parseFloat(Other.amount), DO, LOLO, DET, DMGDT, CSC, Other)}
+                onCreateShpCash={(e) => onCreateShpCash(AccessControls, e, history, parseFloat(DO.amount) + parseFloat(LOLO.amount) + parseFloat(DET.amount) + parseFloat(DMGDT.amount) + parseFloat(CSC.amount) + parseFloat(Other.amount), DO, LOLO, DET, DMGDT, CSC, Other)}
                 setSlipAttachment={ setSlipAttachment }
                 attachPR={ ( pr_id, pr_code, specifications ) => { setPRCode(pr_code); setPR( pr_id ); setPRAttachment(false); setSPRSpecifications(specifications); } }
                 attachSlip={ ( id, code ) => { setSlipCode(code); setSlip( id ); setSlipAttachment(false); } }

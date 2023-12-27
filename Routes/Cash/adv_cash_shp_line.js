@@ -9,7 +9,7 @@ const administrativeNotifications = require('../Employee/notifications').adminis
 const moment = require('moment');
 const key = 'real secret keys should be long and random';
 const encryptor = require('simple-encryptor')(key);
-const owner = 5000; // JP
+const owner = 1; // JP
 const inv = 20004; // Mahmood ul Hassan
 
 io.on('connection', ( socket ) => {
@@ -148,7 +148,7 @@ router.post('/cash/shipping/create', ( req, res ) => {
                                     }else
                                     {
                                         connection.query(
-                                            "INSERT INTO `db_cash_receipts`(`shp_line_adv`, `line`, `d_o`, `lolo`, `detention`, `damage_dirty`, `csc`, `other_purpose_amount`, `other_purpose_specification`, `serial_no`, `series_year`, `emp_id`, `submit_date`, `submit_time`, `amount`, `amount_in_words`, `company`, `location`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);" +
+                                            "INSERT INTO `db_cash_receipts`(`shp_line_adv`, `line`, `d_o`, `lolo`, `detention`, `damage_dirty`, `csc`, `other_purpose_amount`, `other_purpose_specification`, `serial_no`, `series_year`, `emp_id`, `submit_date`, `submit_time`, `amount`, `amount_in_words`, `company`, `location`, `reason`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);" +
                                             "INSERT INTO `db_cash_balance`(`emp_id`, `balance`, `last_updated`) VALUES (?,?,?);",
                                             [ 'Y', line, d_o, lolo, detention, damage_dirty, csc, other, other_specification, serial_no, financial_year, emp_id, d, d.toTimeString(), amount, amountInWords, company_code, location_code, reason, emp_id, balance, d ],
                                             ( err, result ) => {

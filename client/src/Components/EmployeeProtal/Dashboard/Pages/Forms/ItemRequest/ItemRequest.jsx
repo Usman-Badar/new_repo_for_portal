@@ -1376,7 +1376,7 @@ const ItemView = ( { Companies, history, Inwards, Items, ItemDetails, GetCompani
                                                                 <td>{ val.company_name }</td>
                                                                 <td>{ val.quantity }</td>
                                                                 <td>{ val.stored_quantity }</td>
-                                                                <td>{ moment(val.record_date).utc().format('MM-DD-YYYY') }</td>
+                                                                <td>{ moment(new Date(val.record_date)).format('MM-DD-YYYY') }</td>
                                                             </tr>
                                                         );
                                                     }
@@ -1569,7 +1569,7 @@ const DetailsView = ( { AccessControls, Action, RequestDetails, history, onActio
                                 <th className='bg-light'>Requested By</th>
                                 <td>{ details.sender_name }</td>
                                 <th className='bg-light'>Request Date</th>
-                                <td>{ moment(details.request_date).utc().format('MM-DD-YYYY') }</td>
+                                <td>{ moment(new Date(details.request_date)).format('MM-DD-YYYY') }</td>
                                 <th className='bg-light'>Received By</th>
                                 <td>{ details.receiver_name }</td>
                             </tr>
@@ -1622,7 +1622,7 @@ const DetailsView = ( { AccessControls, Action, RequestDetails, history, onActio
                                     } 
                                     Date
                                 </th>
-                                <td>{ details.acted_date === null ? "Not Approve Yet" : moment(details.acted_date).utc().format('MM-DD-YYYY') }</td>
+                                <td>{ details.acted_date === null ? "Not Approve Yet" : moment(new Date(details.acted_date)).format('MM-DD-YYYY') }</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1776,7 +1776,7 @@ const DetailsView = ( { AccessControls, Action, RequestDetails, history, onActio
                                         <tbody>
                                             <tr>
                                                 <th>Delivery Date: </th>
-                                                <td>{ moment(RequestDetails.details.delivery_date).utc().format('MM-DD-YYYY') }</td>
+                                                <td>{ moment(new Date(RequestDetails.details.delivery_date)).format('MM-DD-YYYY') }</td>
                                             </tr>
                                             <tr>
                                                 <th>Delivery Time: </th>
@@ -1974,7 +1974,7 @@ const ListView = ( { FilterLocation, ReqEmployee, FilterCompany, List, history, 
                                                 </div>
                                             </td>
                                             <td>
-                                                { moment(val.request_date).utc().format('MM-DD-YYYY') } at { val.request_time.substring(0,5) }
+                                                { moment(new Date(val.request_date)).format('MM-DD-YYYY') } at { val.request_time.substring(0,5) }
                                             </td>
                                         </tr>
                                     )
