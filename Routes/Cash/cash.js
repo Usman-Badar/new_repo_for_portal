@@ -762,7 +762,7 @@ router.post('/cash/load/thumbs', ( req, res ) => {
     const cashierThumbs = [];
     for ( let x = 0; x < fingerpos.length; x++ )
     {
-        const img = 'client/public/images/thumbs/' + cashier + '/' + fingerpos[x] + "_" + cashier + ".txt";
+        const img = 'client/images/thumbs/' + cashier + '/' + fingerpos[x] + "_" + cashier + ".txt";
         var imageAsBase64 = fs.readFileSync(img, 'utf8');
         cashierThumbs.push(imageAsBase64);
     }
