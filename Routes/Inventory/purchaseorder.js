@@ -641,7 +641,7 @@ router.post('/purchase/order/load/subordinates', ( req, res ) => {
         employees \
         LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id \
         LEFT OUTER JOIN tbl_er ON employees.emp_id = tbl_er.jr \
-        WHERE emp_props.po_receival = 1 AND tbl_er.sr = ?;",
+        WHERE emp_props.po_receival = 1 AND tbl_er.sr = ? AND employees.emp_status = 'Active';",
         [ emp_id ],
         ( err, rslt ) => {
 
