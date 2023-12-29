@@ -2105,6 +2105,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
     const [ generatePos, setGeneratePos ] = useState(false);
     const [ ShowFilters, setShowFilters ] = useState(false);
     const [ List, setList ] = useState();
+    const [ checkedPOs, setCheckedPOs ] = useState([]);
     const types = {
         total_value: 'total_value',
         series_code: 'series_code',
@@ -2198,14 +2199,31 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
     const generatePO = () => {
         if (AccessControls.access && JSON.parse(AccessControls.access).includes(89)) {
             setGeneratePos(false);
+            if (checkedPOs.length === 0) {
+                JSAlert.alert("No PO is checked, atleast one PO must checked!!", "Validation Error", JSAlert.Icons.Failed).dismissIn(1000 * 2);
+                return;
+            }
             JSAlert.alert("Please Wait, generating PO(s)...").dismissIn(1000 * 2);
-            axios.post('/purchase/order/recursive/generate/all', {arr: JSON.stringify(List), emp_id: localStorage.getItem('EmpID')})
+            axios.post('/purchase/order/recursive/generate/all', {arr: JSON.stringify(List), checkedArr: JSON.stringify(checkedPOs), emp_id: localStorage.getItem('EmpID')})
             .then(() => {
-                JSAlert.alert("All Purchase Orders Has Been Generated!!", "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
+                $('input.checkboxes').prop('checked', false);
+                setCheckedPOs([]);
+                JSAlert.alert("All Purchase Orders (" + checkedPOs.length + ") Has Been Generated!!", "Success", JSAlert.Icons.Success).dismissIn(1000 * 2);
             }).catch(err => console.log(err));
         }else {
             JSAlert.alert("You don't have access", "Access Denied", JSAlert.Icons.Failed).dismissIn(1000 * 2);
         }
+    }
+
+    const checkPO = (e, po_id) => {
+        const { checked } = e.target;
+        let arr = checkedPOs.slice();
+        if (checked) {
+            arr.push(po_id);
+        }else {
+            arr = arr.filter(id => id !== po_id);
+        }
+        setCheckedPOs(arr);
     }
 
     return (
@@ -2233,7 +2251,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                             :null
                         } */}
                         {
-                            AccessControls.access && JSON.parse(AccessControls.access).includes(89)
+                            AccessControls.access && JSON.parse(AccessControls.access).includes(89) && checkedPOs.length > 0
                             ?
                             <button className='btn submit mr-2' onClick={() => setGeneratePos(true)}>Generate POs</button>
                             :null
@@ -2354,6 +2372,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                             </div>
                                         </div>
                                     </th> */}
+                                    <th className='border-top-0'></th>
                                     <th className='border-top-0'>Sr.No</th>
                                     <th className='border-top-0'>Co & Loc</th>
                                     <th className='border-top-0'>Specifications</th>
@@ -2384,17 +2403,20 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                     List.map(
                                         ( val, index ) => {
                                             return (
-                                                <tr key={ index } className='pointer pointer-hover' onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }>
+                                                <tr key={ index } className='pointer pointer-hover'>
                                                     {/* <td>{ val.code + '-' + val.series_year + '-' + val.series_code }</td> */}
-                                                    <td>{ index + 1 }</td>
-                                                    <td>{ val.company_name } <br /> { val.location_name }</td>
-                                                    <td>{ val.specifications }</td>
-                                                    {/* <td>{ val.no_items_requested > 1 ? (val.no_items_requested + " Items") : (val.no_items_requested + " Item") }</td> */}
                                                     <td>
+                                                        <input onChange={(e) => checkPO(e, val.po_id)} type="checkbox" className='checkboxes form-control' />
+                                                    </td>
+                                                    <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }>{ index + 1 }</td>
+                                                    <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }>{ val.company_name } <br /> { val.location_name }</td>
+                                                    <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }>{ val.specifications }</td>
+                                                    {/* <td>{ val.no_items_requested > 1 ? (val.no_items_requested + " Items") : (val.no_items_requested + " Item") }</td> */}
+                                                    <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }>
                                                         { convertTZ(val.requested_date).toDateString() } <br />
                                                         { val.requested_time }
                                                     </td>
-                                                    <td><span style={{ fontFamily: "Exo", fontWeight: 500 }}>{ fm.from(val.total_value) }</span></td>
+                                                    <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }><span style={{ fontFamily: "Exo", fontWeight: 500 }}>{ fm.from(val.total_value) }</span></td>
                                                     {/* <td>
                                                         <div className='d-flex align-items-center'>
                                                             <div 

@@ -651,9 +651,10 @@ router.post('/purchase/order/recursive/cancellation', ( req, res ) => {
 
 router.post('/purchase/order/recursive/generate/all', ( req, res ) => {
 
-    const { emp_id, arr } = req.body;
+    const { emp_id, arr, checkedArr } = req.body;
 
     const List = JSON.parse(arr);
+    const checkedPOs = JSON.parse(checkedArr);
     const limit = List.length;
     const count = [];
     const financial_year = getFinancialYear();
@@ -661,121 +662,132 @@ router.post('/purchase/order/recursive/generate/all', ( req, res ) => {
     function generatePO()
     {
         const obj = List[count.length];
-        db.query(
-            "INSERT INTO `tbl_inventory_purchase_order`(`series_year`, `series_code`, `pr_id`, `invoice_no`, `entry`, `specifications`, `vendor_id`, `company_code`, `ship_to`, `new_purchase`, `repair`, `replace_recycle`, `invoice_attached`, `requested_by`, `requested_date`, `requested_time`, `total_value`, `total_sub_value`, `no_items_requested`, `status`, `appr_rejct_by`, `bills_attached`, `note`) SELECT ?,(select MAX(ifnull((select series_code from tbl_inventory_purchase_order where company_code = ? AND series_year = ? ORDER BY po_id DESC LIMIT 1),0)) + 1),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;",
-            [financial_year, obj.company_code, financial_year, obj.pr_id, obj.invoice_no, code, obj.specifications, obj.vendor_id, obj.company_code, obj.ship_to, obj.new_purchase, obj.repair, obj.replace_recycle, obj.invoice_attached, emp_id, new Date(), new Date().toTimeString(), obj.total_value, obj.total_sub_value, obj.no_items_requested, 'waiting_for_approval', obj.appr_rejct_by, obj.bills_attached, obj.note],
-            ( err, rslt ) => {
-                if( err )
-                {
-                    console.log( err );
-                    res.send( err );
-                    res.end();
-                }else 
-                {
-                    const mPoId = rslt.insertId;
-                    db.query(
-                        "SELECT * FROM tbl_recursive_purchase_order_additional_specifications WHERE po_id = ?;",
-                        [obj.po_id],
-                        ( err, addtionalSpec ) => {
-                            const spec_limit = addtionalSpec.length;
-                            const spec_count = [];
-                            function addAddtionalSpec() {
-                                const spec_obj = addtionalSpec[spec_count.length];
-                                db.query(
-                                    "INSERT INTO `tbl_inventory_purchase_order_additional_specifications`(`po_id`, `label`, `value`, `entered_by`, `entered_date`) VALUES (?,?,?,?,?);",
-                                    [mPoId, spec_obj.label, spec_obj.value, emp_id, new Date()],
-                                    () => {
-                                        if ((spec_count.length+1) === spec_limit){
-                                            console.log("PO specifications added");
-                                        }else{
-                                            spec_count.push(1);
-                                            addAddtionalSpec();
+        if (checkedPOs.includes(obj.po_id)) {
+            db.query(
+                "INSERT INTO `tbl_inventory_purchase_order`(`series_year`, `series_code`, `pr_id`, `invoice_no`, `entry`, `specifications`, `vendor_id`, `company_code`, `ship_to`, `new_purchase`, `repair`, `replace_recycle`, `invoice_attached`, `requested_by`, `requested_date`, `requested_time`, `total_value`, `total_sub_value`, `no_items_requested`, `status`, `appr_rejct_by`, `bills_attached`, `note`) SELECT ?,(select MAX(ifnull((select series_code from tbl_inventory_purchase_order where company_code = ? AND series_year = ? ORDER BY po_id DESC LIMIT 1),0)) + 1),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;",
+                [financial_year, obj.company_code, financial_year, obj.pr_id, obj.invoice_no, code, obj.specifications, obj.vendor_id, obj.company_code, obj.ship_to, obj.new_purchase, obj.repair, obj.replace_recycle, obj.invoice_attached, emp_id, new Date(), new Date().toTimeString(), obj.total_value, obj.total_sub_value, obj.no_items_requested, 'waiting_for_approval', obj.appr_rejct_by, obj.bills_attached, obj.note],
+                ( err, rslt ) => {
+                    if( err )
+                    {
+                        console.log( err );
+                        res.send( err );
+                        res.end();
+                    }else 
+                    {
+                        const mPoId = rslt.insertId;
+                        db.query(
+                            "SELECT * FROM tbl_recursive_purchase_order_additional_specifications WHERE po_id = ?;",
+                            [obj.po_id],
+                            ( err, addtionalSpec ) => {
+                                const spec_limit = addtionalSpec.length;
+                                const spec_count = [];
+                                function addAddtionalSpec() {
+                                    const spec_obj = addtionalSpec[spec_count.length];
+                                    db.query(
+                                        "INSERT INTO `tbl_inventory_purchase_order_additional_specifications`(`po_id`, `label`, `value`, `entered_by`, `entered_date`) VALUES (?,?,?,?,?);",
+                                        [mPoId, spec_obj.label, spec_obj.value, emp_id, new Date()],
+                                        () => {
+                                            if ((spec_count.length+1) === spec_limit){
+                                                console.log("PO specifications added");
+                                            }else{
+                                                spec_count.push(1);
+                                                addAddtionalSpec();
+                                            }
                                         }
-                                    }
-                                );
+                                    );
+                                }
+                                if (addtionalSpec.length > 0) addAddtionalSpec();
                             }
-                            if (addtionalSpec.length > 0) addAddtionalSpec();
-                        }
-                    );
-                    db.query(
-                        "SELECT * FROM tbl_recursive_purchase_order_bills WHERE po_id = ?;",
-                        [obj.po_id],
-                        ( err, bills ) => {
-                            const bill_limit = bills.length;
-                            const bill_count = [];
-                            function addBills() {
-                                const bill_obj = bills[bill_count.length];
-                                db.query(
-                                    "INSERT INTO `tbl_inventory_purchase_order_bills`(`bill`, `uploaded_by`, `uploaded_date`, `uploaded_time`, `po_id`) VALUES (?,?,?,?,?);",
-                                    [bill_obj.bill, emp_id, new Date(), new Date().toTimeString(), mPoId],
-                                    () => {
-                                        if ((bill_count.length+1) === bill_limit){
-                                            console.log("PO bills added");
-                                        }else{
-                                            bill_count.push(1);
-                                            addBills();
+                        );
+                        db.query(
+                            "SELECT * FROM tbl_recursive_purchase_order_bills WHERE po_id = ?;",
+                            [obj.po_id],
+                            ( err, bills ) => {
+                                const bill_limit = bills.length;
+                                const bill_count = [];
+                                function addBills() {
+                                    const bill_obj = bills[bill_count.length];
+                                    db.query(
+                                        "INSERT INTO `tbl_inventory_purchase_order_bills`(`bill`, `uploaded_by`, `uploaded_date`, `uploaded_time`, `po_id`) VALUES (?,?,?,?,?);",
+                                        [bill_obj.bill, emp_id, new Date(), new Date().toTimeString(), mPoId],
+                                        () => {
+                                            if ((bill_count.length+1) === bill_limit){
+                                                console.log("PO bills added");
+                                            }else{
+                                                bill_count.push(1);
+                                                addBills();
+                                            }
                                         }
-                                    }
-                                );
+                                    );
+                                }
+                                if (bills.length > 0) addBills();
                             }
-                            if (bills.length > 0) addBills();
-                        }
-                    );
-                    db.query(
-                        "SELECT * FROM tbl_recursive_purchase_order_details WHERE po_id = ?;",
-                        [obj.po_id],
-                        ( err, spec ) => {
-                            const spec_limit = spec.length;
-                            const spec_count = [];
-                            function addSPecs() {
-                                const spec_obj = spec[spec_count.length];
-                                db.query(
-                                    "INSERT INTO `tbl_inventory_purchase_order_specifications`(`po_id`, `sr_no`, `description`, `quantity`, `unit`, `unit_price`, `total_cost`, `entered_by`, `entered_date`) VALUES (?,?,?,?,?,?,?,?,?);",
-                                    [mPoId, spec_obj.sr_no, spec_obj.description, spec_obj.quantity, spec_obj.unit, spec_obj.unit_price, spec_obj.total_cost, emp_id, new Date()],
-                                    () => {
-                                        if ((spec_count.length+1) === spec_limit){
-                                            console.log("PO specifications added");
-                                        }else{
-                                            spec_count.push(1);
-                                            addSPecs();
+                        );
+                        db.query(
+                            "SELECT * FROM tbl_recursive_purchase_order_details WHERE po_id = ?;",
+                            [obj.po_id],
+                            ( err, spec ) => {
+                                const spec_limit = spec.length;
+                                const spec_count = [];
+                                function addSPecs() {
+                                    const spec_obj = spec[spec_count.length];
+                                    db.query(
+                                        "INSERT INTO `tbl_inventory_purchase_order_specifications`(`po_id`, `sr_no`, `description`, `quantity`, `unit`, `unit_price`, `total_cost`, `entered_by`, `entered_date`) VALUES (?,?,?,?,?,?,?,?,?);",
+                                        [mPoId, spec_obj.sr_no, spec_obj.description, spec_obj.quantity, spec_obj.unit, spec_obj.unit_price, spec_obj.total_cost, emp_id, new Date()],
+                                        () => {
+                                            if ((spec_count.length+1) === spec_limit){
+                                                console.log("PO specifications added");
+                                            }else{
+                                                spec_count.push(1);
+                                                addSPecs();
+                                            }
                                         }
-                                    }
+                                    );
+                                }
+                                if (spec.length > 0) addSPecs();
+                            }
+                        );
+                        db.query(
+                            "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                            "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                            [ emp_id, obj.appr_rejct_by ],
+                            ( err, rslt ) => {
+                                SendWhatsappNotification( 
+                                    null, 
+                                    null, 
+                                    "Dear " + rslt[1][0].name,
+                                    "I hope this message finds you well. I wanted to inform you that " + rslt[0][0].name + " has sent a purchase order for various items, including " + obj.specifications + ". The total value of the requisition amounts to Rs " + obj.total_value + "/-.\
+                                    Before proceeding further, could you kindly review the order to ensure that everything is in order and matches our requirements? Once you have thoroughly checked it, please confirm its accuracy so that we can process the purchase accordingly.\
+                                    If you have any questions or need any clarification, please don't hesitate to reach out. Your prompt attention to this matter is greatly appreciated.\
+                                    Thank you for your cooperation.\n\
+                                    Best regards",
+                                    rslt[1][0].cell 
                                 );
+                                SendWhatsappNotification( null, null, "Hi " + rslt[0][0].name, "Thank you for submitting your purchase order! We want to assure you that we have received it successfully. Our dedicated accounts department is already on the job and will begin processing it promptly. Kindly allow us a short time to ensure everything is handled accurately and efficiently. If you have any questions or need further assistance, feel free to reach out to our customer support team. We truly appreciate your business and look forward to fulfilling your order with utmost care and attention to detail.", rslt[0][0].cell );
+                                if ((count.length+1) === limit){
+                                    console.log("All Po Generated");
+                                    res.send('success');
+                                    res.end();
+                                }else {
+                                    count.push(1);
+                                    generatePO();
+                                }
+                    
                             }
-                            if (spec.length > 0) addSPecs();
-                        }
-                    );
-                    db.query(
-                        "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
-                        "SELECT name, cell FROM employees WHERE emp_id = ?;",
-                        [ emp_id, obj.appr_rejct_by ],
-                        ( err, rslt ) => {
-                            SendWhatsappNotification( 
-                                null, 
-                                null, 
-                                "Dear " + rslt[1][0].name,
-                                "I hope this message finds you well. I wanted to inform you that " + rslt[0][0].name + " has sent a purchase order for various items, including " + obj.specifications + ". The total value of the requisition amounts to Rs " + obj.total_value + "/-.\
-                                Before proceeding further, could you kindly review the order to ensure that everything is in order and matches our requirements? Once you have thoroughly checked it, please confirm its accuracy so that we can process the purchase accordingly.\
-                                If you have any questions or need any clarification, please don't hesitate to reach out. Your prompt attention to this matter is greatly appreciated.\
-                                Thank you for your cooperation.\n\
-                                Best regards",
-                                rslt[1][0].cell 
-                            );
-                            SendWhatsappNotification( null, null, "Hi " + rslt[0][0].name, "Thank you for submitting your purchase order! We want to assure you that we have received it successfully. Our dedicated accounts department is already on the job and will begin processing it promptly. Kindly allow us a short time to ensure everything is handled accurately and efficiently. If you have any questions or need further assistance, feel free to reach out to our customer support team. We truly appreciate your business and look forward to fulfilling your order with utmost care and attention to detail.", rslt[0][0].cell );
-                            if ((count.length+1) === limit){
-                                console.log("All Po Generated");
-                                res.send('success');
-                                res.end();
-                            }else {
-                                count.push(1);
-                                generatePO();
-                            }
-                
-                        }
-                    );
+                        );
+                    }
                 }
+            );
+        }else {
+            if ((count.length+1) === limit){
+                console.log("All Po Generated");
+                res.send('success');
+                res.end();
+            }else {
+                count.push(1);
+                generatePO();
             }
-        );
+        }
     }
     generatePO();
 
