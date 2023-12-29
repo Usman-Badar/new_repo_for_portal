@@ -398,7 +398,8 @@ export const getZeroLatesEmployees = ( date, setZeroLatesEmps ) => {
         '/dashboard/home/monthly/attendance/zero_lates',
         {
             month: date.split('-').pop(),
-            year: date.split('-').shift()
+            year: date.split('-').shift(),
+            emp_id: localStorage.getItem('EmpID')
         }
     )
     .then(

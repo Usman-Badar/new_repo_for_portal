@@ -316,21 +316,12 @@ router.post('/dashboard/home/monthly/purchases', ( req, res ) => {
 
 router.post('/dashboard/home/monthly/attendance/zero_lates', ( req, res ) => {
 
-    const { month, year } = req.body;
+    const { month, year, emp_id } = req.body;
 
     db.query(
-        "SELECT DISTINCT employees.emp_id, employees.name, companies.company_name  \
-        FROM employees  \
-        LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id  \
-        LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id  \
-        LEFT OUTER JOIN companies ON employees.company_code = companies.company_code  \
-        WHERE employees.emp_id not in  \
-        (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Late' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id not in  \
-        (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Absent' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id in  \
-        (SELECT DISTINCT emp_attendance.emp_id FROM emp_attendance WHERE MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND  \
-        employees.emp_status = 'Active' AND emp_props.attendance_enable = 1;",
-        [ month, year, month, year, month, year ],
-        ( err, rslt ) => {
+        "SELECT access, company_code from employees WHERE emp_id = ?;",
+        [emp_id],
+        ( err, access ) => {
             if( err )
             {
                 console.log(err);
@@ -338,8 +329,120 @@ router.post('/dashboard/home/monthly/attendance/zero_lates', ( req, res ) => {
                 res.end();
             }else 
             {
-                res.send( rslt );
-                res.end();
+                const accessParsed = JSON.parse(access[0].access);
+                if (accessParsed.includes(99)) {
+                    db.query(
+                        "SELECT DISTINCT employees.emp_id, employees.name, companies.company_name, locations.location_name  \
+                        FROM employees  \
+                        LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id  \
+                        LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id  \
+                        LEFT OUTER JOIN companies ON employees.company_code = companies.company_code  \
+                        LEFT OUTER JOIN locations ON employees.location_code = locations.location_code  \
+                        WHERE employees.emp_id not in  \
+                        (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Late' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id not in  \
+                        (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Absent' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id in  \
+                        (SELECT DISTINCT emp_attendance.emp_id FROM emp_attendance WHERE MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND  \
+                        employees.emp_status = 'Active' AND emp_props.attendance_enable = 1;",
+                        [ month, year, month, year, month, year ],
+                        ( err, rslt ) => {
+                            if( err )
+                            {
+                                console.log(err);
+                                res.status(500).send(err);
+                                res.end();
+                            }else 
+                            {
+                                console.log(rslt)
+                                res.send( rslt );
+                                res.end();
+                            }
+                
+                        }
+                    )
+                }else
+                if (accessParsed.includes(100)) {
+                    db.query(
+                        "SELECT company_code FROM invtry_emp_approval_to_related_companies WHERE emp_id = ?;",
+                        [ emp_id ],
+                        ( err, companies ) => {
+                            if( err )
+                            {
+                                console.log(err);
+                                res.status(500).send(err);
+                                res.end();
+                            }else 
+                            {
+                                let query = "SELECT DISTINCT employees.emp_id, employees.name, companies.company_name, locations.location_name  \
+                                FROM employees  \
+                                LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id  \
+                                LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id  \
+                                LEFT OUTER JOIN companies ON employees.company_code = companies.company_code  \
+                                LEFT OUTER JOIN locations ON employees.location_code = locations.location_code  \
+                                WHERE employees.emp_id not in  \
+                                (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Late' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id not in  \
+                                (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Absent' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id in  \
+                                (SELECT DISTINCT emp_attendance.emp_id FROM emp_attendance WHERE MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND  \
+                                employees.emp_status = 'Active' AND emp_props.attendance_enable = 1 ";
+                                for (let x = 0; x < companies.length; x++) {
+                                    if (x === 0) {
+                                        query = query + ' AND ( '    
+                                    }else {
+                                        query = query + ' OR '
+                                    }
+                                    query = query + ' employees.company_code = ' + companies[x].company_code
+                                }
+
+                                query = query + ');';
+                                db.query(
+                                    query,
+                                    [ month, year, month, year, month, year ],
+                                    ( err, rslt ) => {
+                                        if( err )
+                                        {
+                                            console.log(err);
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else 
+                                        {
+                                            res.send( rslt );
+                                            res.end();
+                                        }
+                            
+                                    }
+                                )
+                            }
+                
+                        }
+                    )
+                }else
+                if (accessParsed.includes(101)) {
+                    db.query(
+                        "SELECT DISTINCT employees.emp_id, employees.name, companies.company_name, locations.location_name  \
+                        FROM employees  \
+                        LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id  \
+                        LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id  \
+                        LEFT OUTER JOIN companies ON employees.company_code = companies.company_code  \
+                        LEFT OUTER JOIN locations ON employees.location_code = locations.location_code  \
+                        WHERE employees.emp_id not in  \
+                        (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Late' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id not in  \
+                        (SELECT DISTINCT employees.emp_id FROM employees LEFT OUTER JOIN emp_attendance ON employees.emp_id = emp_attendance.emp_id WHERE emp_attendance.status = 'Absent' AND MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND employees.emp_id in  \
+                        (SELECT DISTINCT emp_attendance.emp_id FROM emp_attendance WHERE MONTH(emp_attendance.emp_date) = ? AND YEAR(emp_attendance.emp_date) = ?) AND  \
+                        employees.emp_status = 'Active' AND emp_props.attendance_enable = 1 AND employees.company_code = " + access[0].company_code,
+                        [ month, year, month, year, month, year ],
+                        ( err, rslt ) => {
+                            if( err )
+                            {
+                                console.log(err);
+                                res.status(500).send(err);
+                                res.end();
+                            }else 
+                            {
+                                res.send( rslt );
+                                res.end();
+                            }
+                        }
+                    )
+                }
             }
 
         }

@@ -371,9 +371,7 @@ const UI = ({ getAbsentsOfEmployees, Absents, AdvanceCashData, Vendors, Purchase
             <div className='page homepage'>
                 <Modal show={ ShowACDetails } Hide={ () => setShowACDetails( !ShowACDetails ) } content={ <ACContent history={ history } Employee={ Employee } Requests={ Requests } /> } />
                 {
-                    AccessControls.access && Admin
-                    ?
-                    <>
+                    AccessControls.access && Admin && (
                         <div className='mb-4 grid grid-gap-3 grid-4-6 popUps'>
                             <div className='page-content'>
                                 <div className='d-flex align-items-center justify-content-between'>
@@ -491,6 +489,10 @@ const UI = ({ getAbsentsOfEmployees, Absents, AdvanceCashData, Vendors, Purchase
                                 </div>
                             </div>
                         </div>
+                    )
+                }
+                {
+                    AccessControls.access && Admin && (
                         <div className='page-content mb-4'>
                             <div className='d-flex justify-content-between align-items-center'>
                                 <h5 className='mb-0 font-weight-bold text-capitalize'>Attendance Summary ({new Date().getFullYear()})</h5>
@@ -531,51 +533,62 @@ const UI = ({ getAbsentsOfEmployees, Absents, AdvanceCashData, Vendors, Purchase
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
-                        <div className='mb-4 grid grid-gap-3 grid-2-2 popUps'>
-                            <div className='page-content'>
-                                <div className='d-flex justify-content-between align-items-center'>
-                                    <h5 className='mb-0 font-weight-bold text-capitalize'>employees having zero lates <sup>({ZeroLatesEmps.length})</sup></h5>
-                                    <div>
-                                        <label className='mb-0 label-small font-weight-bold'>Month</label>
-                                        <input type='month' onChange={ (e) => getZeroLatesEmployees( e.target.value ) } defaultValue={moment(moment()).format('YYYY-MM')} className='form-control form-control-small' />
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className='records-container' style={{ maxHeight: '250px' }}>
-                                    {
-                                        ZeroLatesEmps.length === 0
-                                        ?
-                                        <h6 className='text-center'>No Employee Found</h6>
-                                        :
-                                        <table className='table table-sm mb-0'>
-                                            <thead>
-                                                <tr>
-                                                    <th className='border-top-0'>Sr.No</th>
-                                                    <th className='border-top-0'>Employee Code</th>
-                                                    <th className='border-top-0'>Employee</th>
-                                                    <th className='border-top-0'>Company</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    ZeroLatesEmps.map(
-                                                        ( val, index ) => {
-                                                            return (
-                                                                <tr key={index} className='clickable pointer' onClick={ () => history.push('/hr/employee/details/' + val.emp_id) }>
-                                                                    <td>{ index + 1 }</td>
-                                                                    <td>{ val.emp_id }</td>
-                                                                    <td>{ val.name }</td>
-                                                                    <td>{ val.company_name }</td>
-                                                                </tr>
-                                                            )
-                                                        }
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    }
+                    )
+                }
+                <div className='mb-4 grid grid-gap-3 grid-2-2 popUps'>
+                    {
+                        JSON.parse(AccessControls.access).includes(98)
+                        ?
+                        <div className='page-content'>
+                            <div className='d-flex justify-content-between align-items-center'>
+                                <h5 className='mb-0 font-weight-bold text-capitalize'>employees having zero lates <sup>({ZeroLatesEmps.length})</sup></h5>
+                                <div>
+                                    <label className='mb-0 label-small font-weight-bold'>Month</label>
+                                    <input type='month' onChange={ (e) => getZeroLatesEmployees( e.target.value ) } defaultValue={moment(moment()).format('YYYY-MM')} className='form-control form-control-small' />
                                 </div>
                             </div>
+                            <hr />
+                            <div className='records-container' style={{ maxHeight: '250px' }}>
+                                {
+                                    ZeroLatesEmps.length === 0
+                                    ?
+                                    <h6 className='text-center'>No Employee Found</h6>
+                                    :
+                                    <table className='table table-sm mb-0'>
+                                        <thead>
+                                            <tr>
+                                                <th className='border-top-0'>Sr.No</th>
+                                                <th className='border-top-0'>Employee Code</th>
+                                                <th className='border-top-0'>Employee</th>
+                                                <th className='border-top-0'>Company</th>
+                                                <th className='border-top-0'>Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                ZeroLatesEmps.map(
+                                                    ( val, index ) => {
+                                                        return (
+                                                            <tr key={index} className='clickable pointer' onClick={ () => history.push('/hr/employee/details/' + val.emp_id) }>
+                                                                <td>{ index + 1 }</td>
+                                                                <td>{ val.emp_id }</td>
+                                                                <td>{ val.name }</td>
+                                                                <td>{ val.company_name }</td>
+                                                                <td>{ val.location_name }</td>
+                                                            </tr>
+                                                        )
+                                                    }
+                                                )
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
+                        </div>
+                        :null
+                    }
+                    {
+                        AccessControls.access && Admin && (
                             <div className='page-content'>
                                 <div className='d-flex justify-content-between align-items-center'>
                                     <h5 className='mb-0 font-weight-bold text-capitalize'>employees having absents <sup>({Absents.length})</sup></h5>
@@ -622,7 +635,11 @@ const UI = ({ getAbsentsOfEmployees, Absents, AdvanceCashData, Vendors, Purchase
                                     }
                                 </div>
                             </div>
-                        </div>
+                        )
+                    }
+                </div>
+                {
+                    AccessControls.access && Admin && (
                         <div className='mb-4 grid grid-gap-3 grid-7-3 popUps'>
                             <div className='page-content'>
                                 <div className='d-flex justify-content-between align-items-center'>
@@ -671,115 +688,114 @@ const UI = ({ getAbsentsOfEmployees, Absents, AdvanceCashData, Vendors, Purchase
                                 <CanvasJSChart options={option5} />
                             </div>
                         </div>
-                        {/* <div className='mb-4 grid grid-gap-3 grid-2-2 popUps'>
-                            <div className='page-content'>
-                                <h6 className='mb-0 font-weight-bold text-capitalize'>list of employees have issued tickets recently</h6>
-                                <hr />
-                                <div className='records-container' style={{ maxHeight: '35vh' }}>
-                                    <table className='table table-sm mb-0'>
-                                        <thead>
-                                            <tr>
-                                                <th className='border-top-0'>Code</th>
-                                                <th className='border-top-0'>Employee</th>
-                                                <th className='border-top-0'>Company</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div className='page-content'>
-                                <h6 className='mb-0 font-weight-bold text-capitalize'>list of employees got tickets recently</h6>
-                                <hr />
-                                <div className='records-container' style={{ maxHeight: '35vh' }}>
-                                    <table className='table table-sm mb-0'>
-                                        <thead>
-                                            <tr>
-                                                <th className='border-top-0'>Code</th>
-                                                <th className='border-top-0'>Employee</th>
-                                                <th className='border-top-0'>Company</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Code</td>
-                                                <td>Employee</td>
-                                                <td>Company</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div> */}
-                    </>
-                    :null
+                    )
                 }
+                {/* <div className='mb-4 grid grid-gap-3 grid-2-2 popUps'>
+                    <div className='page-content'>
+                        <h6 className='mb-0 font-weight-bold text-capitalize'>list of employees have issued tickets recently</h6>
+                        <hr />
+                        <div className='records-container' style={{ maxHeight: '35vh' }}>
+                            <table className='table table-sm mb-0'>
+                                <thead>
+                                    <tr>
+                                        <th className='border-top-0'>Code</th>
+                                        <th className='border-top-0'>Employee</th>
+                                        <th className='border-top-0'>Company</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className='page-content'>
+                        <h6 className='mb-0 font-weight-bold text-capitalize'>list of employees got tickets recently</h6>
+                        <hr />
+                        <div className='records-container' style={{ maxHeight: '35vh' }}>
+                            <table className='table table-sm mb-0'>
+                                <thead>
+                                    <tr>
+                                        <th className='border-top-0'>Code</th>
+                                        <th className='border-top-0'>Employee</th>
+                                        <th className='border-top-0'>Company</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Employee</td>
+                                        <td>Company</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> */}
                 <div className='mb-4 grid grid-gap-3 grid-3-7 popUps'>
                     <div className='page-content'>
                         <h5>Today's Attendance</h5>

@@ -80,16 +80,6 @@ app.get('/testing', function ( req, res ) {
 
 // INCLUDING ALL FILES HERE
 app.use( require('./include') );
-const imageDiff = require('image-diff');
-imageDiff.getFullResult({
-    actualImage: 'employee.png',
-    expectedImage: 'employee1.png',
-    diffImage: 'employee2.png',
-}, function (err, result) {
-    console.log(err);
-    console.log(result);
-    // result = {total: 46340.2, difference: 0.707107}
-});
 
 sslServer.listen(port, () => {
     server_file_logger.info(`listening on port: ${port}`, {label: 'server restarted'});
