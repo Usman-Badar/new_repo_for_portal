@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/role-supports-aria-props */
 /* eslint-disable no-mixed-operators */
@@ -19,7 +20,7 @@ import Override from '../../../../../../utils/Override';
 
 import ReactTooltip from 'react-tooltip';
 
-const UI = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Logs, overrideRequisition, TotalCostCalculation, Status, RequestStatuses, RemovedQuotations, EditConfirmation, AccessDefined, Admin, InvRejectRequisition, setRemovedQuotations, sendForApproveRequisition, Relations, Data, HodList, setStatus, updatePR, loadHods, Employee, PRUpdate, selectEmpInBehalf, setQuotations, setEditConfirmation, onSearchEmployees, Employees, AccessControls, FilterAmount, FilterCompany, SpecKeyword, setFilterAmount, LoadedCompanies, setFilterCompany, setSpecKeyword, ApproveRequisition, AttachedQuotations, Specifications, RequestDetails, history, Requests, addRow, RejectRequisition, CancelRequisition, SubmitConfirmation, ShowQuotationModal, Quotations, Locations, Companies, SubmitPR, loadRequests, openRequestDetails, PRSubmittion, setSubmitConfirmation, onAttachQuotations, onContentInput, onContentEdit, setShowQuotationModal }) => {
+const UI = ({ FilterEmployees, setFilterEmployees, CompanyLocations, setCompanyLocations, FilterLocation, setFilterLocation, setFilterCondition, FilterCondition, SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyViewer, Logs, overrideRequisition, TotalCostCalculation, Status, RequestStatuses, RemovedQuotations, EditConfirmation, AccessDefined, Admin, InvRejectRequisition, setRemovedQuotations, sendForApproveRequisition, Relations, Data, HodList, setStatus, updatePR, loadHods, Employee, PRUpdate, selectEmpInBehalf, setQuotations, setEditConfirmation, onSearchEmployees, Employees, AccessControls, FilterAmount, FilterCompany, SpecKeyword, setFilterAmount, LoadedCompanies, setFilterCompany, setSpecKeyword, ApproveRequisition, AttachedQuotations, Specifications, RequestDetails, history, Requests, addRow, RejectRequisition, CancelRequisition, SubmitConfirmation, ShowQuotationModal, Quotations, Locations, Companies, SubmitPR, loadRequests, openRequestDetails, PRSubmittion, setSubmitConfirmation, onAttachQuotations, onContentInput, onContentEdit, setShowQuotationModal }) => {
 
     return (
         <>
@@ -74,7 +75,14 @@ const UI = ({ SiteManagerRejectionConfirm, SiteManagerApprovalConfirm, CompanyVi
                                     AccessDefined={AccessDefined}
                                     Status={Status}
                                     RequestStatuses={RequestStatuses}
+                                    FilterCondition={FilterCondition}
+                                    CompanyLocations={CompanyLocations}
+                                    FilterLocation={FilterLocation}
+                                    FilterEmployees={FilterEmployees}
 
+                                    setFilterEmployees={setFilterEmployees}
+                                    setFilterLocation={setFilterLocation}
+                                    setFilterCondition={setFilterCondition}
                                     setStatus={setStatus}
                                     setFilterAmount={setFilterAmount}
                                     setFilterCompany={setFilterCompany}
@@ -1961,7 +1969,7 @@ const SiteManagerRejectionModal = ({ RequestDetails, Specifications, pr_id, Site
 
 }
 
-const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, FilterAmount, FilterCompany, SpecKeyword, history, setStatus, setFilterAmount, LoadedCompanies, Requests, setSpecKeyword, setFilterCompany, loadRequests }) => {
+const PRequests = ({ FilterEmployees, setFilterEmployees, FilterLocation, setFilterLocation, CompanyLocations, Status, FilterCondition, RequestStatuses, AccessDefined, AccessControls, FilterAmount, FilterCompany, SpecKeyword, history, setStatus, setFilterAmount, LoadedCompanies, Requests, setSpecKeyword, setFilterCondition, setFilterCompany, loadRequests }) => {
 
     const [ShowReportModal, setShowReportModal] = useState(false);
     const [ReportProgress, setReportProgress] = useState(<></>);
@@ -1985,11 +1993,16 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
         () => {
             const Arr = Requests ? Requests.filter(
                 val => {
-                    return val.status.toLowerCase().includes(Status.toLowerCase()) && val.company_name.toLowerCase().includes(FilterCompany.toLowerCase()) && val.specifications.toLowerCase().includes(SpecKeyword.toLowerCase()) && val.total_value >= FilterAmount;
+                    return val.status.toLowerCase().includes(Status.toLowerCase()) && 
+                    val.company_name.toLowerCase().includes(FilterCompany.toLowerCase()) && 
+                    val.location_name.toLowerCase().includes(FilterLocation.toLowerCase()) && 
+                    val.specifications.toLowerCase().includes(SpecKeyword.toLowerCase()) &&
+                    val.requested_employee_name?.toLowerCase().includes(FilterEmployees.toLowerCase());
                 }
-            ) : null;
-            setList(Arr);
-        }, [Status, Requests, FilterCompany, SpecKeyword, FilterAmount]
+            ) : [];
+            const amountFilter = FilterAmount.toString().length === 0 ? Arr : Arr.filter(val => eval(val.total_value + FilterCondition + FilterAmount))
+            setList(amountFilter);
+        }, [Status, FilterEmployees, FilterLocation, Requests, FilterCompany, SpecKeyword, FilterAmount, FilterCondition]
     );
 
     const sortArray = (type, in_de, dataType) => {
@@ -2045,9 +2058,15 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
         sessionStorage.removeItem('PR_FilterCompany');
         sessionStorage.removeItem('PR_SpecKeyword');
         sessionStorage.removeItem('PR_FilterAmount');
+        sessionStorage.removeItem('PR_FilterCondition');
+        sessionStorage.removeItem('PR_FilterLocation');
+        sessionStorage.removeItem('PR_FilterEmployee');
         setFilterCompany("");
         setSpecKeyword("");
-        setFilterAmount(-100000);
+        setFilterAmount('');
+        setFilterCondition('>=');
+        setFilterLocation('');
+        setFilterEmployees('');
     }
 
     const checkAll = (e) => {
@@ -2154,7 +2173,7 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                                     :
                                     <div data-tip data-for='filter'>
                                         {
-                                            SpecKeyword !== '' || FilterCompany !== '' || FilterAmount !== -100000
+                                            SpecKeyword !== '' || FilterCompany !== '' || FilterLocation !== '' || FilterAmount !== ''
                                                 ?
                                                 <div className='filterisOpen'></div>
                                                 :
@@ -2187,6 +2206,10 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                                         <input value={SpecKeyword} placeholder='Search Keywords...' type="search" onChange={(e) => setSpecKeyword(e.target.value)} className='form-control mb-2' />
                                     </div>
                                     <div className='w-50'>
+                                        <label className="font-weight-bold mb-0">Search Employees</label>
+                                        <input value={FilterEmployees} placeholder='Search Names...' type="search" onChange={(e) => setFilterEmployees(e.target.value)} className='form-control mb-2' />
+                                    </div>
+                                    <div className='w-50'>
                                         {
                                             LoadedCompanies
                                                 ?
@@ -2208,9 +2231,40 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                                                 : null
                                         }
                                     </div>
+                                    {
+                                        FilterCompany !== '' && CompanyLocations.length > 0
+                                        ?
+                                        <div className='w-50'>
+                                            <label className="font-weight-bold mb-0">Location</label>
+                                            <select value={FilterLocation} className='form-control mb-2' onChange={(e) => setFilterLocation(e.target.value)}>
+                                                <option value=''>All</option>
+                                                {
+                                                    CompanyLocations.sort().map(
+                                                        (location, index) => {
+
+                                                            return <option key={index} value={location.location_name}>{location.location_name}</option>;
+
+                                                        }
+                                                    )
+                                                }
+                                            </select>
+                                        </div>
+                                        :null
+                                    }
+                                    <div className='w-50'>
+                                        <label className="font-weight-bold mb-0">Amount Condition</label>
+                                        <select value={FilterCondition} className='form-control mb-2' onChange={(e) => setFilterCondition(e.target.value)}>
+                                            <option value='>='>(&gt;=) Greater or Equal</option>
+                                            <option value='<='>(&lt;=) Less or Equal</option>
+                                            <option value='==='>(===) Equal</option>
+                                            <option value='>'>(&gt;) Greater</option>
+                                            <option value='<'>(&lt;) Less</option>
+                                            <option value='!=='>(!==) Not Equal</option>
+                                        </select>
+                                    </div>
                                     <div className='w-50'>
                                         <label className="font-weight-bold mb-0">Amount</label>
-                                        <input value={FilterAmount} placeholder='Amount Greater (>) Than' type="number" onChange={(e) => setFilterAmount(e.target.value)} className='form-control mb-2' />
+                                        <input value={FilterAmount} type="number" onChange={(e) => setFilterAmount(e.target.value)} className='form-control mb-2' />
                                     </div>
                                     <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
                                 </div>
@@ -2296,21 +2350,21 @@ const PRequests = ({ Status, RequestStatuses, AccessDefined, AccessControls, Fil
                                             List.map(
                                                 (val, index) => {
                                                     return (
-                                                        <tr key={index} className='pointer pointer-hover' onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>
+                                                        <tr key={index} className='pointer pointer-hover'>
                                                             <td>
                                                                 <input type='checkbox' id={"checkbox_" + val.pr_id} className='checkboxes' onChange={(e) => checkBox(e, val)} />
                                                             </td>
-                                                            <td>{val.code + '-' + val.series_year + '-' + val.series_code}</td>
-                                                            <td>{val.company_name} <br /> {val.location_name}</td>
-                                                            <td>{val.specifications}</td>
-                                                            {/* <td>{ val.no_items_requested > 1 ? (val.no_items_requested + " Items") : (val.no_items_requested + " Item") }</td> */}
-                                                            <td>Rs {val.total_value.toLocaleString('en')}</td>
-                                                            <td>
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>{val.code + '-' + val.series_year + '-' + val.series_code}</td>
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>{val.company_name} <br /> {val.location_name}</td>
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>{val.specifications}</td>
+                                                            {/* <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>{ val.no_items_requested > 1 ? (val.no_items_requested + " Items") : (val.no_items_requested + " Item") }</td> */}
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>Rs {val.total_value.toLocaleString('en')}</td>
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>
                                                                 {new Date(val.requested_date).toDateString()} <br />
                                                                 {val.requested_time}
                                                             </td>
-                                                            <td><b>{val.requested_employee_name}</b> <br /> {val.requested_employee_designation_name}</td>
-                                                            <td>
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}><b>{val.requested_employee_name}</b> <br /> {val.requested_employee_designation_name}</td>
+                                                            <td  onClick={() => history.push('/purchase/requisition/details?pr_id=' + val.pr_id)}>
                                                                 <div className='d-flex align-items-center'>
                                                                     <div
                                                                         className={

@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import axios from '../../../../../../axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,14 +28,18 @@ function PurchaseRequisition() {
     const [ AttachedQuotations, setAttachedQuotations ] = useState([]);
     const [ Companies, setCompanies ] = useState([]);
     const [ Locations, setLocations ] = useState([]);
+    const [ CompanyLocations, setCompanyLocations ] = useState([]);
     const [ Specifications, setSpecifications ] = useState([]);
     const [ Data, setData ] = useState();
     const [ Requests, setRequests ] = useState();
     const [ RequestDetails, setRequestDetails ] = useState();
     const [ LoadedCompanies, setLoadedCompanies ] = useState();
+    const [ FilterEmployees, setFilterEmployees ] = useState('');
     const [ FilterCompany, setFilterCompany ] = useState('');
+    const [ FilterLocation, setFilterLocation ] = useState('');
+    const [ FilterCondition, setFilterCondition ] = useState('>=');
     const [ SpecKeyword, setSpecKeyword ] = useState('');
-    const [ FilterAmount, setFilterAmount ] = useState(-100000);
+    const [ FilterAmount, setFilterAmount ] = useState('');
     const [ Employees, setEmployees ] = useState();
     const [ Employee, setEmployee ] = useState();
     const [ HodList, setHodList ] = useState();
@@ -125,8 +131,41 @@ function PurchaseRequisition() {
             {
                 setFilterAmount(parseFloat(sessionStorage.getItem('PR_FilterAmount')));
             }
+            if ( sessionStorage.getItem('PR_FilterCondition') && sessionStorage.getItem('PR_FilterCondition') !== '>=' )
+            {
+                setFilterCondition(sessionStorage.getItem('PR_FilterCondition'));
+            }
+            if ( sessionStorage.getItem('PR_FilterLocation') && sessionStorage.getItem('PR_FilterLocation') !== '' )
+            {
+                setFilterLocation(sessionStorage.getItem('PR_FilterLocation'));
+            }
+            if ( sessionStorage.getItem('PR_FilterEmployee') && sessionStorage.getItem('PR_FilterEmployee') !== '' )
+            {
+                setFilterEmployees(sessionStorage.getItem('PR_FilterEmployee'));
+            }
         }, []
     );
+
+    useEffect(
+        () => {
+            setFilterLocation('');
+            if (sessionStorage.getItem('PR_FilterLocation')) sessionStorage.removeItem('PR_FilterLocation');
+            setCompanyLocations([]);
+
+            if (FilterCompany !== '') {
+                const company_code = Companies.filter(val => val.company_name === FilterCompany)[0]?.company_code;
+                axios.post('/getcompanylocations', {company_code: company_code}).then(
+                    res => {
+                        setCompanyLocations( res.data );
+                    }
+                ).catch(
+                    err => {
+                        console.log( err );
+                    }
+                )
+            }
+        }, [FilterCompany]
+    )
 
     if (!AccessControls) {
         return <></>
@@ -164,7 +203,12 @@ function PurchaseRequisition() {
                     RequestStatuses={ RequestStatuses }
                     Logs={ Logs }
                     CompanyViewer={ CompanyViewer }
+                    FilterCondition={ FilterCondition }
+                    FilterLocation={ FilterLocation }
+                    CompanyLocations={CompanyLocations}
+                    FilterEmployees={FilterEmployees}
                     
+                    setCompanyLocations={ setCompanyLocations }
                     SiteManagerRejectionConfirm={ ( e, pr_id, requested_by, Specifications ) => SiteManagerRejectionConfirm( e, pr_id, requested_by, Specifications, history, (RequestDetails?.company_short_code + '-' + RequestDetails?.series_year + '-' + RequestDetails?.series_code) ) }
                     SiteManagerApprovalConfirm={ ( e, pr_id, requested_by, Specifications ) => SiteManagerApprovalConfirm( e, pr_id, requested_by, Specifications, history, (RequestDetails?.company_short_code + '-' + RequestDetails?.series_year + '-' + RequestDetails?.series_code) ) }
                     overrideRequisition={ (e, type) => overrideRequisition( e, type, RequestDetails, history ) }
@@ -179,6 +223,9 @@ function PurchaseRequisition() {
                     setSpecKeyword={ (val) => { setSpecKeyword(val); sessionStorage.setItem('PR_SpecKeyword', val) } }
                     setFilterAmount={ (val) => { setFilterAmount(val); sessionStorage.setItem('PR_FilterAmount', val) } }
                     setFilterCompany={ (val) => { setFilterCompany(val); sessionStorage.setItem('PR_FilterCompany', val) } }
+                    setFilterCondition={ (val) => { setFilterCondition(val); sessionStorage.setItem('PR_FilterCondition', val) } }
+                    setFilterLocation={ (val) => { setFilterLocation(val); sessionStorage.setItem('PR_FilterLocation', val) } }
+                    setFilterEmployees={ (val) => { setFilterEmployees(val); sessionStorage.setItem('PR_FilterEmployee', val) } }
                     addRow={ addRow }
                     openRequestDetails={ ( pr_id ) => openRequestDetails( AccessControls, pr_id, setRequestDetails, setSpecifications, setAttachedQuotations, setQuotations, setLogs ) }
                     PRSubmittion={ ( e ) => PRSubmittion( e, history, toast, Quotations, Data, Employee, AccessControls ) }
