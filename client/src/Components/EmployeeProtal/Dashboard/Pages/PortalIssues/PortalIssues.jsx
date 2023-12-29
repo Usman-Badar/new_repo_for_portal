@@ -198,7 +198,7 @@ const IssueDetails = ({ history, AccessControls }) => {
                                 {details.status !== 'Replied' && <option value="Replied">Replied</option>}
                                 <option value="Closed">Closed</option>
                             </select>
-                            <textarea className='form-control' placeholder='Enter your comments here...' name="comment" minLength={20} required />
+                            <textarea className='form-control' placeholder='Enter your comments here...' name="comment" required />
                             <button className='btn submit d-block ml-auto mt-3'>Submit</button>
                         </fieldset>
                     </form>

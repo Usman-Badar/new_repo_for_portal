@@ -5,8 +5,8 @@ const Modal = ( props ) =>{
     return (
         <>
             <div className="Attandence_Request_Div" style={ { display: props.show ? 'flex' : 'none'  } }>
-                <div className="dark" onClick={ props.Hide }>
-                </div>
+                {/* <div className="dark" onClick={ props.Hide }></div> */}
+                <div className="dark"></div>
                 <div style={ { animationDelay: ( 0 + '.' + 1 ).toString() + 's', width: props.width || null } } className={ props.show ? "Attandence_Request_Div_Content Attandence_Request_Div_Content2" : "Attandence_Request_Div_Content" }>
                     <i className="lar la-times-circle cross" onClick={ props.Hide }></i>
                     {

@@ -633,16 +633,6 @@ router.post('/purchase/order/load/subordinates', ( req, res ) => {
     const { emp_id } = req.body;
 
     db.query(
-        // 2023-10-17
-        // "SELECT \
-        // employees.emp_id, \
-        // employees.name, \
-        // emp_props.po_receival \
-        // FROM \
-        // employees \
-        // LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id \
-        // LEFT OUTER JOIN tbl_er ON employees.emp_id = tbl_er.jr \
-        // WHERE emp_props.po_receival = 1 AND tbl_er.sr = ?;",
         "SELECT \
         employees.emp_id, \
         employees.name, \
@@ -687,10 +677,12 @@ router.post('/purchase/order/details', ( req, res ) => {
         submit_to_employee.name AS submit_to_employee_name, \
         hod_employee.name AS hod_employee_name, \
         override_person.name AS override_person_name, \
+        unapproved_person.name AS unapproved_person_name, \
         requested_employee.name AS requested_employee_name, \
         requested_employee_designation.designation_name AS requested_employee_designation_name, \
         submit_to_employee_designation.designation_name AS submit_to_employee_designation_name, \
         hod_employee_designation.designation_name AS hod_employee_designation_name, \
+        unapproved_person_designation.designation_name AS unapproved_person_designation_name, \
         locations.location_code, \
         locations.location_name, \
         locations.address, \
@@ -707,9 +699,11 @@ router.post('/purchase/order/details', ( req, res ) => {
         LEFT OUTER JOIN employees submit_to_employee ON tbl_inventory_purchase_order.submitted_to = submit_to_employee.emp_id \
         LEFT OUTER JOIN employees hod_employee ON tbl_inventory_purchase_order.appr_rejct_by = hod_employee.emp_id \
         LEFT OUTER JOIN employees override_person ON tbl_inventory_purchase_order.override_by = override_person.emp_id \
+        LEFT OUTER JOIN employees unapproved_person ON tbl_inventory_purchase_order.unapproved_by = unapproved_person.emp_id \
         LEFT OUTER JOIN designations requested_employee_designation ON requested_employee.designation_code = requested_employee_designation.designation_code \
         LEFT OUTER JOIN designations submit_to_employee_designation ON submit_to_employee.designation_code = submit_to_employee_designation.designation_code \
         LEFT OUTER JOIN designations hod_employee_designation ON hod_employee.designation_code = hod_employee_designation.designation_code \
+        LEFT OUTER JOIN designations unapproved_person_designation ON unapproved_person.designation_code = unapproved_person_designation.designation_code \
         WHERE po_id = ?;" +
         "SELECT * FROM `tbl_inventory_purchase_order_specifications` WHERE po_id = ? ORDER BY sr_no;" +
         "SELECT * FROM `tbl_inventory_purchase_order_bills` WHERE po_id = ?;" +
@@ -850,6 +844,57 @@ router.post('/purchase/order/approval', ( req, res ) => {
                             SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "You have approved the purchase order with PO NO # " + (result[3][0].code + '-' + result[3][0].series_year + '-' + result[3][0].series_code) + ", and the requested employee has been notified.", result[0][0].cell );
                             SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "Your purchase order with PO NO # " + (result[3][0].code + '-' + result[3][0].series_year + '-' + result[3][0].series_code) + " has been approved by the accounts department.", result[1][0].cell );
                             SendWhatsappNotification( null, null, "Hi " + result[2][0].name, "The accounts department has proceed you a purchase order with PO NO # " + (result[3][0].code + '-' + result[3][0].series_year + '-' + result[3][0].series_code) + ". Kindly review.", result[2][0].cell );
+                            res.send('success');
+                            res.end();
+                        }
+            
+                    }
+                );
+
+            }
+
+        }
+    );
+
+} );
+
+router.post('/purchase/order/unapproval', ( req, res ) => {
+
+    const { emp_id, reason, po_id, requested_by } = req.body;
+
+    db.query(
+        "UPDATE tbl_inventory_purchase_order SET status = ?, unapproved_by = ?, unapproved_at = ?, unapproved_comments = ? WHERE po_id = ?;",
+        [ 'unapproved', emp_id, new Date(), reason, po_id ],
+        ( err ) => {
+
+            if( err )
+            {
+
+                console.log( err );
+                res.send( err );
+                res.end();
+
+            }else 
+            {
+                
+                db.query(
+                    "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                    "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                    "SELECT tbl_inventory_purchase_order.series_year, tbl_inventory_purchase_order.series_code, companies.code FROM tbl_inventory_purchase_order LEFT OUTER JOIN companies ON tbl_inventory_purchase_order.company_code = companies.company_code WHERE tbl_inventory_purchase_order.po_id = ?;",
+                    [ emp_id, requested_by, po_id ],
+                    ( err, result ) => {
+            
+                        if( err )
+                        {
+            
+                            console.log( err );
+                            res.send( err );
+                            res.end();
+            
+                        }else
+                        {
+                            SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "You have *unapproved* the purchase order with PO NO # " + (result[2][0].code + '-' + result[2][0].series_year + '-' + result[2][0].series_code) + ", and the requested employee has been notified.", result[0][0].cell );
+                            SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "Your purchase order with PO NO # " + (result[2][0].code + '-' + result[2][0].series_year + '-' + result[2][0].series_code) + " has been *unapproved* by " + result[0][0].name, result[1][0].cell );
                             res.send('success');
                             res.end();
                         }
@@ -1491,7 +1536,7 @@ router.post('/purchase_order/new', ( req, res ) => {
                                                 
                             //                 }else
                             //                 {
-                            //                     fs.mkdir('client/images/Inventory/po_attachments/' + nm,
+                            //                     fs.mkdir('client/public/images/Inventory/po_attachments/' + nm,
                             //                     { recursive: true },
                             //                     (err) => {
                             //                         if (err) {
@@ -1501,7 +1546,7 @@ router.post('/purchase_order/new', ( req, res ) => {
                             //                             connection.release();
                             //                             }
                             //                             else {
-                            //                                 Attachments[x].mv('client/images/Inventory/po_attachments/' + nm + '/' + Attachments[x].name, (err) => {
+                            //                                 Attachments[x].mv('client/public/images/Inventory/po_attachments/' + nm + '/' + Attachments[x].name, (err) => {
 
                             //                                     if (err) {
 

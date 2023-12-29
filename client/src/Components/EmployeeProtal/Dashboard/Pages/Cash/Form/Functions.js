@@ -113,7 +113,7 @@ export const onCreateAdvanceCash = ( e, history, PR, Amount, Employee, Slip ) =>
     );
 }
 
-export const onCreateShpCash = ( e, history, Total, DO, LOLO, DET, DMGDT, CSC, Other ) => {
+export const onCreateShpCash = ( AccessControls, e, history, Total, DO, LOLO, DET, DMGDT, CSC, Other ) => {
 
     e.preventDefault();
     const line = e.target['line'].value;
@@ -161,6 +161,12 @@ export const onCreateShpCash = ( e, history, Total, DO, LOLO, DET, DMGDT, CSC, O
     //     JSAlert.alert('Please specify the purpose in other specification field in at least 10 characters.', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
     //     return false;
     // }
+
+    // 2023-12-27
+    if (!JSON.parse(AccessControls.access).includes(66)) {
+        JSAlert.alert("You don't have access to submit shipping line request!!!", 'Validation Error', JSAlert.Icons.Failed).dismissIn(1000 * 2);
+        return false;
+    }
 
     $('fieldset').prop('disabled', true);
     axios.post(

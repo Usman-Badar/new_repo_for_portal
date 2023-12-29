@@ -201,7 +201,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                 <h1 className='mb-0'>
                                                     <small className='text-success' style={{ fontSize: 16 }}>Rs</small><span className='font-weight-bold'>{Details.amount.toLocaleString('en')}</span>/-
                                                 </h1>
-                                                <h6 className='text-capitalize mb-0'>{Details.amount_in_words} Rupees Only</h6>
+                                                <h6 className='text-capitalize mb-0'>{Details.amount_in_words}</h6>
 
                                             </div>
 
