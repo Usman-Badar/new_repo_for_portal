@@ -344,7 +344,8 @@ router.post('/getemployee', ( req, res ) => {
         employees.name,  \
         employees.email,  \
         employees.gender, \
-        emp_props.pr_approval_limit \
+        emp_props.pr_approval_limit, \
+        emp_props.adv_cash_approval_limit \
         FROM tbl_er  \
         LEFT OUTER JOIN employees ON employees.emp_id = tbl_er.sr \
         LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id  \
