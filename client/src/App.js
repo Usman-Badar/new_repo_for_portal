@@ -10,6 +10,7 @@ import Bills from './Components/EmployeeProtal//Dashboard/Components/Bills/Bills
 
 import LoadingIcon from './images/loadingIcons/icons8-loading-circle.gif';
 
+const Biometric = lazy( () => import( './Components/UI/Biometric/Biometric' ) );
 const Login = lazy( () => import( './Components/EmployeeProtal/Auth/Login/Login' ) );
 const Dashboard = lazy( () => import( './Components/EmployeeProtal/Dashboard/Dashboard' ) );
 const Logout = lazy( () => import( './Components/EmployeeProtal/Auth/Logout/Logout' ) );
@@ -279,6 +280,9 @@ const App = () => {
                     <Route exact path='/portal/issues' render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path='/portal/issues/new' render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path='/portal/issues/details/:id' render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    
+                    <Route exact path='/biometric' render={ () => <Sus content={ <Biometric /> } /> } />
                     
                 </Switch>
             </>

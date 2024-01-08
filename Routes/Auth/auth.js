@@ -5,6 +5,7 @@ const db = require('../../db/connection');
 const io = require('../../server');
 
 io.on('connection', ( socket ) => {
+    console.log( 'CONNECTED', socket.id );
 
     // WHEN NEW USER LOGGED IN
     socket.on(

@@ -773,7 +773,7 @@ router.post('/cash/load/thumbs', ( req, res ) => {
 
 router.post('/cash/validation', ( req, res ) => {
     // const { template1, template2, receiving_person, receiving_person_cnic, receiving_person_contact, request_id, amount, other, passcode, employee, emp_id, signature } = req.body;
-    const { template1, template2, receiving_person, receiving_person_cnic, receiving_person_contact, request_id, amount, other, employee, emp_id, signature } = req.body;
+    const { template1, template2, receiving_person, receiving_person_cnic, receiving_person_contact, request_id, amount, other, passcode, passcode_required, employee, emp_id, signature } = req.body;
     const d = new Date();
     let other_person = 0;
     if ( other === 'yes' )
@@ -812,91 +812,187 @@ router.post('/cash/validation', ( req, res ) => {
                         res.end();
                     }else
                     {
-                        let fingerprint1Name = "cashier.bmp";
-                        let fingerprint2Name = "employee.bmp";
-                        fs.mkdir('assets/portal/assets/AC/' + request_id + '/thumbs/', { recursive: true }, (err) => {
-                            if ( err )
-                            {
-                                console.log(err)
-                                res.send('err');
-                                res.end();
-                            }else
-                            {
-                                if ( template1 !== 'null' )
-                                {
-                                    fs.writeFile('assets/portal/assets/AC/' + request_id + '/thumbs/' + fingerprint1Name, template1, 'base64', function(err) {
-                                        if ( err )
-                                        {
-                                            connection.rollback(() => {console.log(err);connection.release();});
-                                            res.send('err');
-                                            res.end();
-                                        }
-                                    });
-                                }
-                                if ( template2 !== 'null' )
-                                {
-                                    fs.writeFile('assets/portal/assets/AC/' + request_id + '/thumbs/' + fingerprint2Name, template2, 'base64', function(err) {
-                                        if ( err )
-                                        {
-                                            connection.rollback(() => {console.log(err);connection.release();});
-                                            res.send('err');
-                                            res.end();
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                        if ( other_person === 1 )
+                        if (parseInt(passcode_required) === 1)
                         {
-                            const { CNICFront, CNICBack } = req.files;
-                            fs.mkdir('assets/portal/assets/AC/' + request_id + '/',
-                                { recursive: true },
-                                (err) => {
+                            connection.query(
+                                "SELECT emp_password FROM `emp_app_profile` WHERE emp_id = ?;",
+                                [employee],
+                                (err, rslt) => {
                                     if (err) {
-                                        connection.rollback(() => {console.log(err);connection.release();});
-                                        res.status(500).send(err);
+                                        connection.rollback(() => { console.log(err); connection.release(); });
+                                        res.send('err');
                                         res.end();
+                                    } else {
+                                        if ( other_person === 1 || encryptor.decrypt(rslt[0].emp_password) === passcode ) {
+                                            let fingerprint1Name = "cashier.bmp";
+                                            let fingerprint2Name = "employee.bmp";
+                                            fs.mkdir('assets/portal/assets/AC/' + request_id + '/thumbs/', { recursive: true }, (err) => {
+                                                if (err) {
+                                                    console.log(err)
+                                                    res.send('err');
+                                                    res.end();
+                                                } else {
+                                                    if (template1 !== 'null') {
+                                                        fs.writeFile('assets/portal/assets/AC/' + request_id + '/thumbs/' + fingerprint1Name, template1, 'base64', function (err) {
+                                                            if (err) {
+                                                                connection.rollback(() => { console.log(err); connection.release(); });
+                                                                res.send('err');
+                                                                res.end();
+                                                            }
+                                                        });
+                                                    }
+                                                    if (template2 !== 'null') {
+                                                        fs.writeFile('assets/portal/assets/AC/' + request_id + '/thumbs/' + fingerprint2Name, template2, 'base64', function (err) {
+                                                            if (err) {
+                                                                connection.rollback(() => { console.log(err); connection.release(); });
+                                                                res.send('err');
+                                                                res.end();
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                            if (other_person === 1) {
+                                                const { CNICFront, CNICBack } = req.files;
+                                                fs.mkdir('assets/portal/assets/AC/' + request_id + '/',
+                                                    { recursive: true },
+                                                    (err) => {
+                                                        if (err) {
+                                                            connection.rollback(() => { console.log(err); connection.release(); });
+                                                            res.status(500).send(err);
+                                                            res.end();
+                                                        }
+                                                        else {
+                                                            CNICFront.mv('assets/portal/assets/AC/' + request_id + '/front.png', (err) => { if (err) { connection.rollback(() => { console.log(err); connection.release(); }); res.status(500).send(err); res.end(); } })
+                                                            CNICBack.mv('assets/portal/assets/AC/' + request_id + '/back.png', (err) => { if (err) { connection.rollback(() => { console.log(err); connection.release(); }); res.status(500).send(err); res.end(); } })
+                                                            fs.writeFile('assets/portal/assets/AC/' + request_id + '/signature.png', signature.split('data:image/png;base64,').pop(), 'base64', function (err) {
+                                                                console.log(err);
+                                                            });
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                            connection.query(
+                                                "UPDATE `db_cash_balance` SET balance = balance + ?, last_updated = ? WHERE emp_id = ?;" +
+                                                "UPDATE db_cash_receipts SET receival_date = ?, receival_time = ?, status = ?, other = ?, received_person_name = ?, received_person_contact = ?, received_person_cnic = ?, cnic_front = ?, cnic_back = ?, signature = ?, emp_finger_print = ?, cashier = ? WHERE id = ? AND status = 'approved';",
+                                                [parseFloat(amount), d, employee, d, d.toTimeString(), 'issued', other_person, receiving_person == 'null' ? null : receiving_person, receiving_person_contact == 'null' ? null : receiving_person_contact, receiving_person_cnic == 'null' ? null : receiving_person_cnic, 'front.png', 'back.png', 'signature.png', fingerprint2Name, emp_id, request_id],
+                                                (err, rslt) => {
+                                                    if (err) {
+                                                        connection.rollback(() => { console.log(err); connection.release(); });
+                                                        res.send('err');
+                                                        res.end();
+                                                    } else {
+                                                        connection.commit((err) => {
+                                                            if (err) {
+                                                                connection.rollback(() => { console.log(err); connection.release(); });
+                                                                res.send('err');
+                                                                res.end();
+                                                            } else {
+                                                                const link = '/cash/request/' + request_id.toString();
+                                                                sendNote(link, owner);
+                                                                connection.release();
+                                                                res.send({ message: 'success', link: link, owner: owner, date: new Date().toDateString(), time: moment(new Date().toTimeString(), 'h:mm:ss a').format('hh:mm A') });
+                                                                res.end();
+                                                            }
+                                                        });
+                                                    }
+    
+                                                }
+                                            );
+                                        }else {
+                                            res.send('not matched');
+                                            res.end();
+                                        }
                                     }
-                                    else {
-                                        CNICFront.mv('assets/portal/assets/AC/' + request_id + '/front.png', (err) => {if (err){connection.rollback(() => {console.log(err);connection.release();});res.status(500).send(err);res.end();}})
-                                        CNICBack.mv('assets/portal/assets/AC/' + request_id + '/back.png', (err) => {if (err){connection.rollback(() => {console.log(err);connection.release();});res.status(500).send(err);res.end();}})
-                                        fs.writeFile('assets/portal/assets/AC/' + request_id + '/signature.png', signature.split('data:image/png;base64,').pop(), 'base64', function(err) {
-                                            console.log(err);
+                                }
+                            );
+                        }else {
+                            let fingerprint1Name = "cashier.bmp";
+                            let fingerprint2Name = "employee.bmp";
+                            fs.mkdir('assets/portal/assets/AC/' + request_id + '/thumbs/', { recursive: true }, (err) => {
+                                if ( err )
+                                {
+                                    console.log(err)
+                                    res.send('err');
+                                    res.end();
+                                }else
+                                {
+                                    if ( template1 !== 'null' )
+                                    {
+                                        fs.writeFile('assets/portal/assets/AC/' + request_id + '/thumbs/' + fingerprint1Name, template1, 'base64', function(err) {
+                                            if ( err )
+                                            {
+                                                connection.rollback(() => {console.log(err);connection.release();});
+                                                res.send('err');
+                                                res.end();
+                                            }
+                                        });
+                                    }
+                                    if ( template2 !== 'null' )
+                                    {
+                                        fs.writeFile('assets/portal/assets/AC/' + request_id + '/thumbs/' + fingerprint2Name, template2, 'base64', function(err) {
+                                            if ( err )
+                                            {
+                                                connection.rollback(() => {console.log(err);connection.release();});
+                                                res.send('err');
+                                                res.end();
+                                            }
                                         });
                                     }
                                 }
-                            )
-                        }
-                        connection.query(
-                            "UPDATE `db_cash_balance` SET balance = balance + ?, last_updated = ? WHERE emp_id = ?;" + 
-                            "UPDATE db_cash_receipts SET receival_date = ?, receival_time = ?, status = ?, other = ?, received_person_name = ?, received_person_contact = ?, received_person_cnic = ?, cnic_front = ?, cnic_back = ?, signature = ?, emp_finger_print = ?, cashier = ? WHERE id = ? AND status = 'approved';",
-                            [ parseFloat(amount), d, employee, d, d.toTimeString(), 'issued', other_person, receiving_person == 'null' ? null : receiving_person, receiving_person_contact == 'null' ? null : receiving_person_contact, receiving_person_cnic == 'null' ? null : receiving_person_cnic, 'front.png', 'back.png', 'signature.png', fingerprint2Name, emp_id, request_id ],
-                            ( err, rslt ) => {
-                                if( err )
-                                {
-                                    connection.rollback(() => {console.log(err);connection.release();});
-                                    res.send('err');
-                                    res.end();
-                                }else 
-                                {
-                                    connection.commit((err) => {
-                                        if ( err ) {
+                            });
+                            if ( other_person === 1 )
+                            {
+                                const { CNICFront, CNICBack } = req.files;
+                                fs.mkdir('assets/portal/assets/AC/' + request_id + '/',
+                                    { recursive: true },
+                                    (err) => {
+                                        if (err) {
                                             connection.rollback(() => {console.log(err);connection.release();});
-                                            res.send('err');
-                                            res.end();
-                                        }else
-                                        {
-                                            const link = '/cash/request/' + request_id.toString();
-                                            sendNote(link, owner);
-                                            connection.release();
-                                            res.send({ message: 'success', link: link, owner: owner, date: new Date().toDateString(), time: moment(new Date().toTimeString(),'h:mm:ss a').format('hh:mm A') });
+                                            res.status(500).send(err);
                                             res.end();
                                         }
-                                    });
-                                }
-                                
+                                        else {
+                                            CNICFront.mv('assets/portal/assets/AC/' + request_id + '/front.png', (err) => {if (err){connection.rollback(() => {console.log(err);connection.release();});res.status(500).send(err);res.end();}})
+                                            CNICBack.mv('assets/portal/assets/AC/' + request_id + '/back.png', (err) => {if (err){connection.rollback(() => {console.log(err);connection.release();});res.status(500).send(err);res.end();}})
+                                            fs.writeFile('assets/portal/assets/AC/' + request_id + '/signature.png', signature.split('data:image/png;base64,').pop(), 'base64', function(err) {
+                                                console.log(err);
+                                            });
+                                        }
+                                    }
+                                )
                             }
-                        );
+                            connection.query(
+                                "UPDATE `db_cash_balance` SET balance = balance + ?, last_updated = ? WHERE emp_id = ?;" + 
+                                "UPDATE db_cash_receipts SET receival_date = ?, receival_time = ?, status = ?, other = ?, received_person_name = ?, received_person_contact = ?, received_person_cnic = ?, cnic_front = ?, cnic_back = ?, signature = ?, emp_finger_print = ?, cashier = ? WHERE id = ? AND status = 'approved';",
+                                [ parseFloat(amount), d, employee, d, d.toTimeString(), 'issued', other_person, receiving_person == 'null' ? null : receiving_person, receiving_person_contact == 'null' ? null : receiving_person_contact, receiving_person_cnic == 'null' ? null : receiving_person_cnic, 'front.png', 'back.png', 'signature.png', fingerprint2Name, emp_id, request_id ],
+                                ( err, rslt ) => {
+                                    if( err )
+                                    {
+                                        connection.rollback(() => {console.log(err);connection.release();});
+                                        res.send('err');
+                                        res.end();
+                                    }else 
+                                    {
+                                        connection.commit((err) => {
+                                            if ( err ) {
+                                                connection.rollback(() => {console.log(err);connection.release();});
+                                                res.send('err');
+                                                res.end();
+                                            }else
+                                            {
+                                                const link = '/cash/request/' + request_id.toString();
+                                                sendNote(link, owner);
+                                                connection.release();
+                                                res.send({ message: 'success', link: link, owner: owner, date: new Date().toDateString(), time: moment(new Date().toTimeString(),'h:mm:ss a').format('hh:mm A') });
+                                                res.end();
+                                            }
+                                        });
+                                    }
+                                    
+                                }
+                            );
+                        }
                     }
                 }
             )

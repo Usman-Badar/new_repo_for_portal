@@ -1,5 +1,6 @@
-.advance_cash_details .advance_cash_details_container {
-    font-family: Poppins;
+.advance_cash_details .advance_cash_details_container,
+.advance_cash_details .advance_cash_details_container button {
+    font-family: Roboto-Light;
 }
 
 .advance_cash_details .advance_cash_details_container .finger-prints {
@@ -45,7 +46,10 @@
     text-align: center;
     margin-bottom: 20px;
     padding: 20px;    
-    box-shadow: rgb(211 211 211) 0px 0px 24px 5px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-color: #F8F9FA;
+    /* box-shadow: rgb(211 211 211) 0px 0px 24px 5px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
 }
 .advance_cash_details .advance_cash_details_container .amountdiv2{
     width: 60%;
@@ -53,7 +57,10 @@
     text-align: center;
     margin-bottom: 20px;
     padding: 20px;    
-    box-shadow: rgb(211 211 211) 0px 0px 24px 5px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-color: #F8F9FA;
+    /* box-shadow: rgb(211 211 211) 0px 0px 24px 5px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
 }
 
 .advance_cash_details .advance_cash_details_container .table_container-grid {

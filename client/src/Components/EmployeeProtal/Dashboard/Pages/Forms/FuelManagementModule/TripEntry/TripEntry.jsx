@@ -106,7 +106,19 @@ function TripEntry() {
                 fuel: fuelRef.current.value,
                 emp_id: localStorage.getItem('EmpID')
             }
-        ).then(() => {
+        ).then((res) => {
+            if (res.data === 'err') {
+                fieldsetRef.current.disabled = false;
+                btnRef.current.innerHTML = 'Retry';
+                JSAlert.alert('Something Went Wrong!!', 'Warning', JSAlert.Icons.Warning).dismissIn(2000);
+                return;
+            }
+            if (res.data === 'limit exceed') {
+                fieldsetRef.current.disabled = false;
+                btnRef.current.innerHTML = 'Retry';
+                JSAlert.alert('Insufficient quantity at fuleing station!!', 'Warning', JSAlert.Icons.Warning).dismissIn(2000);
+                return;
+            }
             loadRequests(true);
             fieldsetRef.current.disabled = false;
             btnRef.current.innerHTML = 'Submit';

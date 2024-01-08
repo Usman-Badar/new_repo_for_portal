@@ -75,64 +75,86 @@ router.post('/fuel-managent/fuel-issue-for-trip/new', ( req, res ) => {
     const dt = date === '' || date === null || date === 'null' || date === undefined ? new Date() : date;
 
     if (type === '' || isNaN(parseInt(type))) {
-        res.status(500).send(err);
+        res.send('err');
         res.end();
         return false;
     }else if (number === '' || isNaN(parseInt(number))) {
-        res.status(500).send(err);
+        res.send('err');
         res.end();
         return false;
     }else if (fuel === '' || isNaN(parseInt(fuel)) || parseInt(fuel) <= 0) {
-        res.status(500).send(err);
+        res.send('err');
         res.end();
         return false;
     }else if (from === '') {
-        res.status(500).send(err);
+        res.send('err');
         res.end();
         return false;
     }else if (to === '') {
-        res.status(500).send(err);
+        res.send('err');
         res.end();
         return false;
     }
     // else if (date === '') {
-    //     res.status(500).send(err);
+    //     res.send('err');
     //     res.end();
     //     return false;
     // }
     else if (emp_id == null || emp_id === '' || isNaN(parseInt(emp_id))) {
-        res.status(500).send(err);
+        res.send('err');
         res.end();
         return false;
     }
 
     db.query(
-        "INSERT INTO `tbl_fuel_issue_for_trailers`(`fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `trip_from`, `trip_to`, `created_by`) VALUES (?,?,?,?,?,?,?);",
-        [fuel, dt, type, number, from, to, emp_id],
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
         ( err, rslt ) => {
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
                 res.end();
             }else {
-                db.query(
-                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);' +
-                    'INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);',
-                    [ rslt.insertId, fuel, dt, 'OUT', 1, rslt.insertId, fuel, 1, number ],
-                    ( err ) => {
-                        if( err ) {
-                            console.log(err)
-                            res.status(500).send(err);
-                            res.end();
-                        }else {
-                            res.send('success');
-                            res.end();
+                const IN = rslt[0][0].q;
+                const OUT = rslt[1][0].q;
+                const TOTAL = IN - OUT;
+
+                if (parseFloat(fuel) > parseFloat(TOTAL)) {
+                    res.send('limit exceed');
+                    res.end();
+                }else {
+                    db.query(
+                        "INSERT INTO `tbl_fuel_issue_for_trailers`(`fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `trip_from`, `trip_to`, `created_by`) VALUES (?,?,?,?,?,?,?);",
+                        [fuel, dt, type, number, from, to, emp_id],
+                        ( err, rslt ) => {
+                            if( err ) {
+                                console.log(err)
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                db.query(
+                                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);' +
+                                    'INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);',
+                                    [ rslt.insertId, fuel, dt, 'OUT', 1, rslt.insertId, fuel, 1, number ],
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log(err)
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else {
+                                            res.send('success');
+                                            res.end();
+                                        }
+                                    }
+                                );
+                            }
                         }
-                    }
-                );
+                    );
+                }
             }
         }
     );
+
 } );
 
 router.get('/fuel-managent/equipment-types', ( req, res ) => {
@@ -686,41 +708,63 @@ router.post('/fuel-managent/fuel-request-for-station/approve', ( req, res ) => {
     const { id, quantity, emp_id, approved_by, requested_at } = req.body;
 
     db.query(
-        "UPDATE `tbl_fuel_request_for_station` SET approved_by = ?, approved_at = ?, status = ? WHERE id = ?;",
-        [approved_by, new Date(), 'Approved', id],
-        ( err ) => {
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_workshop` WHERE in_out = 'IN') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_workshop` WHERE in_out = 'OUT') ,0) AS q;",
+        ( err, rslt ) => {
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
                 res.end();
             }else {
-                db.query(
-                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`) VALUES (?,?,?);' +
-                    'INSERT INTO `tbl_fuel_stock_at_workshop`(`request_id`, `quantity_in_ltr`, `fuel_received_at`, `in_out`) VALUES (?,?,?,?);',
-                    [ id, quantity, requested_at, id, quantity, requested_at, 'OUT' ],
-                    ( err ) => {
-                        if( err ) {
-                            console.log(err)
-                            res.status(500).send(err);
-                            res.end();
-                        }else {
-                            db.query(
-                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
-                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
-                                [ emp_id, approved_by ],
-                                ( err, result ) => {
-                                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your fuel request has been approved by " + result[1][0].name + ".", result[0][0].cell );
-                                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "You have approved a fuel request on the portal.", result[1][0].cell );
-                                    res.send('success');
-                                    res.end();
-                                }
-                            );
+                const IN = rslt[0][0].q;
+                const OUT = rslt[1][0].q;
+                const TOTAL = IN - OUT;
+
+                if (parseFloat(quantity) > parseFloat(TOTAL)) {
+                    res.send('limit exceed');
+                    res.end();
+                }else {
+                    db.query(
+                        "UPDATE `tbl_fuel_request_for_station` SET approved_by = ?, approved_at = ?, status = ? WHERE id = ?;",
+                        [approved_by, new Date(), 'Approved', id],
+                        ( err ) => {
+                            if( err ) {
+                                console.log(err)
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                db.query(
+                                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`) VALUES (?,?,?);' +
+                                    'INSERT INTO `tbl_fuel_stock_at_workshop`(`request_id`, `quantity_in_ltr`, `fuel_received_at`, `in_out`) VALUES (?,?,?,?);',
+                                    [ id, quantity, requested_at, id, quantity, requested_at, 'OUT' ],
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log(err)
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else {
+                                            db.query(
+                                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                                [ emp_id, approved_by ],
+                                                ( err, result ) => {
+                                                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your fuel request has been approved by " + result[1][0].name + ".", result[0][0].cell );
+                                                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "You have approved a fuel request on the portal.", result[1][0].cell );
+                                                    res.send('success');
+                                                    res.end();
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
                         }
-                    }
-                );
+                    );
+                }
             }
         }
     );
+
 } );
 
 router.get('/fuel-managent/fuel-request-for-station/transactions', ( req, res ) => {
@@ -776,38 +820,59 @@ router.post('/fuel-managent/fuel-issue-for-equipemnt/approve', ( req, res ) => {
     const { id, fuel_issued, emp_id, verifier, issued_date, equipment_number } = req.body;
 
     db.query(
-        "UPDATE `tbl_fuel_issue_for_equipments` SET verified_by = ?, verified_at = ?, status = ? WHERE id = ?;",
-        [verifier, new Date(), 'Verified', id],
-        ( err ) => {
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
+        ( err, rslt ) => {
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
                 res.end();
             }else {
-                db.query(
-                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `other_than_trip`) VALUES (?,?,?,?,?);' +
-                    'INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `other_than_trip`, `equipment_id`) VALUES (?,?,?,?);',
-                    [ id, fuel_issued, issued_date, 'OUT', 1, id, fuel_issued, 1, equipment_number ],
-                    ( err ) => {
-                        if( err ) {
-                            console.log(err)
-                            res.status(500).send(err);
-                            res.end();
-                        }else {
-                            db.query(
-                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
-                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
-                                [ emp_id, verifier ],
-                                ( err, result ) => {
-                                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your fuel receival request has been verified by " + result[1][0].name + ".", result[0][0].cell );
-                                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "You have verified a fuel receival request on the portal.", result[1][0].cell );
-                                    res.send('success');
-                                    res.end();
-                                }
-                            );
+                const IN = rslt[0][0].q;
+                const OUT = rslt[1][0].q;
+                const TOTAL = IN - OUT;
+
+                if (parseFloat(fuel_issued) > parseFloat(TOTAL)) {
+                    res.send('limit exceed');
+                    res.end();
+                }else {
+                    db.query(
+                        "UPDATE `tbl_fuel_issue_for_equipments` SET verified_by = ?, verified_at = ?, status = ? WHERE id = ?;",
+                        [verifier, new Date(), 'Verified', id],
+                        ( err ) => {
+                            if( err ) {
+                                console.log(err)
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                db.query(
+                                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `other_than_trip`) VALUES (?,?,?,?,?);' +
+                                    'INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `other_than_trip`, `equipment_id`) VALUES (?,?,?,?);',
+                                    [ id, fuel_issued, issued_date, 'OUT', 1, id, fuel_issued, 1, equipment_number ],
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log(err)
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else {
+                                            db.query(
+                                                "SELECT name, cell FROM employees WHERE emp_id = ?;" + 
+                                                "SELECT name, cell FROM employees WHERE emp_id = ?;",
+                                                [ emp_id, verifier ],
+                                                ( err, result ) => {
+                                                    SendWhatsappNotification( null, null, "Hi " + result[0][0].name, "Your fuel receival request has been verified by " + result[1][0].name + ".", result[0][0].cell );
+                                                    SendWhatsappNotification( null, null, "Hi " + result[1][0].name, "You have verified a fuel receival request on the portal.", result[1][0].cell );
+                                                    res.send('success');
+                                                    res.end();
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
                         }
-                    }
-                );
+                    );
+                }
             }
         }
     );

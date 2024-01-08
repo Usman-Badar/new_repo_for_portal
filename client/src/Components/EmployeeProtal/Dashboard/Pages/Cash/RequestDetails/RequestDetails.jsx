@@ -78,7 +78,7 @@ function RequestDetails() {
                 onAttachCNICFront={ ( e ) => onAttachCNICFront( e, setCNICFront ) }
                 onAttachCNICBack={ ( e ) => onAttachCNICBack( e, setCNICBack ) }
                 setOther={ setOther }
-                clearRequest={ (e) => clearRequest( e, Details.requested_emp_name, Details.recorded_by, Details.emp_id, Details.amount, history ) }
+                clearRequest={ (e) => clearRequest( e, Details.requested_emp_name, Details.recorded_by, Details.emp_id, Details.amount, history, AccessControls ) }
                 validateEmployee={ (e, signature, Template1, Template2) => validateEmployee( e, Details.requested_emp_name, Other, CNICFront, CNICBack, signature, Template1, Template2, Details.emp_id, Details.amount, history ) }
                 loadThumbs={ () => loadThumbs( Details.cashier, setCashierThumbs ) }
                 setMoney={ setMoney }

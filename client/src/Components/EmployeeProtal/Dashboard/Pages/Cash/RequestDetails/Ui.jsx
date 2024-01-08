@@ -8,6 +8,11 @@ import './Style.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+import $ from 'jquery';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import socket from '../../../../../../io';
 import parse from 'html-react-parser';
 import { useReactToPrint } from 'react-to-print';
 import JSAlert from 'js-alert';
@@ -18,6 +23,7 @@ import { useSelector } from 'react-redux';
 import SignatureCanvas from 'react-signature-canvas';
 import BreadCrumb from '../../../Components/BreadCrumb';
 import { Link } from 'react-router-dom';
+import Blur from 'react-css-blur';
 
 function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loadPRDetails, Comments, CNICBack, VApprove, VReject, Cancel, CNICFront, Other, ClearMoney, history, AccessControls, CashierThumbs, Money, Reject, Cashiers, Approve, Details, newComment, loadComments, clearRequest, setCancel, rejectVRequest, verifyRequest, cancelRequest, setVApprove, setVReject, setClearMoney, validateEmployee, onAttachCNICFront, onAttachCNICBack, approveRequest, setOther, rejectRequest, setMoney, loadThumbs, loadCashiers, setReject, setApprove }) {
 
@@ -135,6 +141,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
 
     return (
         <>
+            <ToastContainer />
             <div className="advance_cash_details page">
                 {Details ? <BreadCrumb links={[{ label: 'Cash Requests', href: '/cash/requests' }]} currentLabel={shipping + (Details.company_code_name + '-' + Details.series_year + '-' + Details.serial_no)} /> : null}
                 <div className='page-content'>
@@ -201,7 +208,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                 <h1 className='mb-0'>
                                                     <small className='text-success' style={{ fontSize: 16 }}>Rs</small><span className='font-weight-bold'>{Details.amount.toLocaleString('en')}</span>/-
                                                 </h1>
-                                                <h6 className='text-capitalize mb-0'>{Details.amount_in_words} Rupees Only</h6>
+                                                <h6 className='text-capitalize mb-0'>{Details.amount_in_words}</h6>
 
                                             </div>
 
@@ -303,7 +310,15 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                     <h6 className='font-weight-bold'>Reason</h6>
                                                                 </td>
                                                                 <td>
-                                                                    <pre style={{ fontFamily: 'Poppins', fontSize: '13px', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.reason}</pre>
+                                                                    {
+                                                                        JSON.parse(AccessControls.access).includes(105)
+                                                                        ?
+                                                                        <Blur radius={'4px'} transition="400ms">
+                                                                            <pre style={{ fontFamily: 'Poppins', fontSize: '13px', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.reason?.split('')?.reverse()?.join('')}</pre>
+                                                                        </Blur>
+                                                                        :
+                                                                        <pre style={{ fontFamily: 'Poppins', fontSize: '13px', width: '100%', whiteSpace: 'pre-wrap' }}>{Details.reason}</pre>
+                                                                    }
                                                                 </td>
                                                             </tr>
 
@@ -611,7 +626,9 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
 
                                                                         <tr>
                                                                             <td>
-                                                                                <b>Clearance Date & Time</b><br />
+                                                                                <h6 className='font-weight-bold mb-0'>
+                                                                                    Clearance Date & Time
+                                                                                </h6>
                                                                             </td>
                                                                             <td>
                                                                                 {Details.clearance_date ? <>{new Date(Details.clearance_date).toDateString()} at {moment(Details.clearance_time, 'h:mm:ss a').format('hh:mm A')}</> : null}
@@ -709,13 +726,13 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                                                     : null
                                                             }
                                                             {
-                                                                Details.status === 'approved' && AccessControls.location_code === Details.location && (AccessControls.designation_code === 66 || AccessControls.designation_code === 97)
-                                                                    ? <button className='btn submit' onClick={() => setMoney(true)}>Release Amount (PKR {Details.amount.toLocaleString('en')})</button>
+                                                                JSON.parse(AccessControls.access).includes(102) && Details.status === 'approved' && AccessControls.location_code === Details.location && (AccessControls.designation_code === 66 || AccessControls.designation_code === 97)
+                                                                    ? <button className='btn submit mt-3' onClick={() => setMoney(true)}>Release Amount (PKR {Details.amount.toLocaleString('en')})</button>
                                                                     : null
                                                             }
                                                             {
-                                                                Details.status === 'issued' && Details.cashier == localStorage.getItem('EmpID')
-                                                                    ? <button className='btn submit' onClick={() => setClearMoney(true)}>Clear Amount (PKR {Details.amount.toLocaleString('en')})</button>
+                                                                JSON.parse(AccessControls.access).includes(102) && Details.status === 'issued' && Details.cashier == localStorage.getItem('EmpID')
+                                                                    ? <button className='btn submit mt-3' onClick={() => setClearMoney(true)}>Clear Amount (PKR {Details.amount.toLocaleString('en')})</button>
                                                                     : null
                                                             }
                                                         </div>
@@ -1090,7 +1107,7 @@ function UI({ SlipDetails, loadSlipDetails, PRequestDetails, Specifications, loa
                                 <tr>
                                     <td colSpan={4}>
                                         <b>Amount In Words: </b><br />
-                                        <span>{Details.amount_in_words} Rupees Only</span>
+                                        <span>{Details.amount_in_words}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1933,7 +1950,10 @@ const ConfirmVApproval = ({ Details, Relations, verifyRequest }) => {
                                         let option;
                                         if (val.category === 'all') {
                                             if (val.companies.includes(parseInt(Details.company))) {
-                                                option = <option value={val.sr} key={index}> {val.name} </option>
+                                                if ( val.pr_approval_limit && val.pr_approval_limit >= parseFloat(Details.amount) )
+                                                {
+                                                    option = <option value={val.sr} key={index}>{val.name}</option>
+                                                }
                                             }
                                         }
 
@@ -2019,6 +2039,7 @@ const ConfirmCancellation = ({ cancelRequest }) => {
 const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierThumbs, Details, validateEmployee, loadThumbs, onAttachCNICFront, onAttachCNICBack, setOther }) => {
 
     const [CashierPassCode, setCashierPassCode] = useState();
+    const [Data, setData] = useState();
     const [Template1, setTemplate1] = useState();
     const [Template2, setTemplate2] = useState();
     const [signature, setSignature] = useState(null);
@@ -2027,6 +2048,7 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
     const encryptor = require('simple-encryptor')(key);
     const sigRef = useRef();
     const secugen_lic = "";
+    const img = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Fingerprint_picture.svg/1413px-Fingerprint_picture.svg.png";
     const uri = "https://localhost:8443/SGIFPCapture";
     const xmlhttp = new XMLHttpRequest();
     let fpobject;
@@ -2037,6 +2059,48 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
                 setValidCashier(true);
             }
         }, [CashierPassCode]
+    );
+
+    useEffect(
+        () => {
+            socket.on('biometric_verification_result', (message) => {
+                toast.dark(message, {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
+                if (message.includes("Matched")) {
+                    validateEmployee(Data, signature, Template1, document.getElementById('FPImage2').src.split("data:image/bmp;base64,").pop());
+                    document.getElementById('FPImage2').src = img;
+                }else {
+                    $('fieldset').prop('disabled', false);
+                }
+            })
+            socket.on('biometric_verification_match_ac', (data) => {
+                if (data.id === socket.id) {
+                    toast.dark("Please wait...", {
+                        position: 'top-right',
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            })
+            return () => {
+                // before the component is destroyed
+                // unbind all event handlers used in this component
+                socket.off("biometric_verification_match_ac");
+                socket.off("biometric_verification_result");
+              };
+        }, []
     );
 
     function CallSGIFPGetData(successCall, failCall) {
@@ -2086,6 +2150,13 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
     }
     const verifyEmployee = (e) => {
         e.preventDefault();
+
+        if (!JSON.parse(AccessControls.access).includes(102)) {
+            JSAlert.alert("You don't have access to release the cash!!!").dismissIn(1500 * 1);
+            return false;
+        }
+
+        const passcode = e.target['passcode']?.value;
         if (Other) {
             if (signature) {
                 validateEmployee(e, signature);
@@ -2093,11 +2164,32 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
                 JSAlert.alert("Signature is required!!!").dismissIn(1500 * 1);
             }
         } else {
-            if (Template2) {
-                validateEmployee(e, signature, Template1, Template2);
-            } else {
-                JSAlert.alert("Fingerprint is required!!!").dismissIn(1500 * 1);
+            if (JSON.parse(AccessControls.access).includes(104)) {
+                if (!Template2 || Template2 === '' || Template2 === null) {
+                    JSAlert.alert("Employee fingerprint is required!!!").dismissIn(1500 * 1);
+                    return false;
+                }
             }
+            if (JSON.parse(AccessControls.access).includes(103)) {
+                if (!passcode || passcode === '' || passcode === null) {
+                    JSAlert.alert("Employee Password is required!!!").dismissIn(1500 * 1);
+                    return false;
+                }
+            }
+
+            setData({
+                passcode: !Other ? e.target['passcode']?.value : null,
+                passcode_required: e.target['passcode_required'] ? 1 : 0,
+                receiving_person: Other ? e.target['receiving_person']?.value : null,
+                receiving_person_contact: Other ? e.target['receiving_person_contact']?.value : null,
+                receiving_person_cnic: Other ? e.target['receiving_person_cnic']?.value : null,
+            });
+
+            $('fieldset').prop('disabled', true);
+            socket.emit('biometric_verification_match_ac', {
+                template: Template2,
+                emp_id: Details.emp_id
+            });
         }
     }
     const handleSignatureEnd = () => {
@@ -2122,11 +2214,31 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
                                     !Other
                                         ?
                                         <>
-                                            <div className='text-center mb-3'>
-                                                <img onClick={() => CallSGIFPGetData(SuccessFunc2, ErrorFunc)} id="FPImage2" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Fingerprint_picture.svg/1413px-Fingerprint_picture.svg.png"} alt="fingerprints" />
-                                            </div>
-                                            {/* <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
-                                            <input type='password' name="passcode" className='form-control' required /> */}
+                                            {
+                                                JSON.parse(AccessControls.access).includes(104) && (
+                                                    <div className='text-center mb-3'>
+                                                        <img onClick={() => CallSGIFPGetData(SuccessFunc2, ErrorFunc)} id="FPImage2" src={img} alt="fingerprints" />
+                                                    </div>
+                                                )
+                                            }
+                                            {
+                                                JSON.parse(AccessControls.access).includes(103) && (
+                                                    <>
+                                                        <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
+                                                        <input type='password' name="passcode" className='form-control' required />
+                                                        <input type='password' name="passcode_required" className='form-control d-none' disabled value={1} required />
+                                                    </>
+                                                )
+                                            }
+                                            {
+                                                !JSON.parse(AccessControls.access).includes(104) && !JSON.parse(AccessControls.access).includes(103) && (
+                                                    <>
+                                                        <label className='mb-0'>{Details.requested_emp_name}'s Password</label>
+                                                        <input type='password' name="passcode" className='form-control' required />
+                                                        <input type='password' name="passcode_required" className='form-control d-none' disabled value={1} required />
+                                                    </>
+                                                )
+                                            }
                                         </>
                                         :
                                         <>
@@ -2161,7 +2273,7 @@ const ModalFingerPrint = ({ CNICBack, CNICFront, Other, AccessControls, CashierT
                         <>
                             {/* <div className='text-center mb-3'>
                             <img onClick={ () => CallSGIFPGetData(SuccessFunc1, ErrorFunc) } id="FPImage1" src={ "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Fingerprint_picture.svg/1413px-Fingerprint_picture.svg.png" } alt="fingerprints" />
-                        </div> */}
+                            </div> */}
                             <label className='mb-0 font-weight-bold'>Cashier's Password</label>
                             <input type='password' className='form-control' onChange={(e) => setCashierPassCode(e.target.value)} />
                         </>
@@ -2181,7 +2293,6 @@ const ModalMoneyClearance = ({ AccessControls, Details, clearRequest }) => {
     useEffect(
         () => {
             if (CashierPassCode === encryptor.decrypt(AccessControls.emp_password)) {
-                JSAlert.alert("Cashier Validated").dismissIn(1500 * 1);
                 setValidCashier(true);
             }
         }, [CashierPassCode]
@@ -2196,16 +2307,16 @@ const ModalMoneyClearance = ({ AccessControls, Details, clearRequest }) => {
                         <h5>Clear Amount Issued</h5>
                         <hr />
                         <fieldset>
-                            <label className="mb-0"><b>Money Consumed</b></label>
+                            <label className="mb-0"><b>Amount Consumed</b></label>
                             <input type='number' className="form-control" name="after_amount" min={0} required />
-                            <button className='btn submit d-block mx-auto mt-3'>Clear Amount</button>
+                            <button className='btn submit d-block mx-auto mt-3'>Clear Balance (Rs {Details.amount}/-)</button>
                         </fieldset>
                     </form>
                     :
                     <>
                         <h5>Validation Required</h5>
                         <hr />
-                        <label className='mb-0'>{Details.cashier_emp_name} Pass Code</label>
+                        <label className='mb-0'>{Details.cashier_emp_name} Password</label>
                         <input type='password' className='form-control mb-3' onChange={(e) => setCashierPassCode(e.target.value)} />
                     </>
             }

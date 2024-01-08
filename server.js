@@ -51,6 +51,7 @@ app.use("/client", express.static(__dirname + "/client"));
 app.use("/assets", express.static(__dirname + "/assets"));
 app.use( express.static( path.join( __dirname, 'client' ) ) );
 
+app.set('socketio', io);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine','ejs');
 app.engine('html', require('ejs').renderFile);

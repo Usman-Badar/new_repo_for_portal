@@ -124,6 +124,7 @@ app.use( require('./Management/attendance') );
 
 app.use( require('./Routes/AI/reminders').router );
 app.use( require('./Routes/AI/signature') );
+app.use( require('./Routes/AI/biometric') );
 
 
 

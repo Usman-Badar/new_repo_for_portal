@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import './FuelRequest.css';
 
@@ -240,7 +241,12 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
     }
     const approveRequest = () => {
         $('#confirm').prop('disabled', true);
-        axios.post('/fuel-managent/fuel-request-for-station/approve', {id: Details?.id, quantity: Details?.fuel_required, emp_id: Details?.requested_by, approved_by: localStorage.getItem('EmpID'), requested_at: Details?.requested_at}).then(() => {
+        axios.post('/fuel-managent/fuel-request-for-station/approve', {id: Details?.id, quantity: Details?.fuel_required, emp_id: Details?.requested_by, approved_by: localStorage.getItem('EmpID'), requested_at: Details?.requested_at}).then((res) => {
+            if (res.data === 'limit exceed') {
+                $('#confirm').prop('disabled', false);
+                JSAlert.alert('Insufficient quantity at workshop!', 'Warning', JSAlert.Icons.Warning).dismissIn(4000);
+                return;
+            }
             setDetails();
             loadRequests(true);
             JSAlert.alert('Request has been aprroved!', 'Success', JSAlert.Icons.Success).dismissIn(4000);

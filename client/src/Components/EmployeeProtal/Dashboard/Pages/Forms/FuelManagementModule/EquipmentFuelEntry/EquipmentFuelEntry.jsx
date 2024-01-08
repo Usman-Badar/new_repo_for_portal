@@ -380,7 +380,11 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
     const approveRequest = () => {
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-issue-for-equipemnt/approve', {id: Details?.id, fuel_issued: Details.fuel_issued, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID'), issued_date: Details.issued_date, equipment_number: Details.equipment_number}).then((res) => {
-            console.log(res)
+            if (res.data === 'limit exceed') {
+                $('#confirm').prop('disabled', false);
+                JSAlert.alert('Insufficient quantity at the station!', 'Warning', JSAlert.Icons.Warning).dismissIn(4000);
+                return;
+            }
             setDetails();
             loadRequests(true);
             JSAlert.alert('Request has been verified!', 'Success', JSAlert.Icons.Success).dismissIn(4000);

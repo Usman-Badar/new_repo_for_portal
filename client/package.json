@@ -65,6 +65,7 @@
         "react-chartjs-2": "^3.0.4",
         "react-chatbox-component": "0.0.5",
         "react-copy-to-clipboard": "^5.0.4",
+        "react-css-blur": "^1.1.1",
         "react-digital-clock": "^0.1.2",
         "react-dom": "^17.0.2",
         "react-html-table-to-excel": "^2.0.0",

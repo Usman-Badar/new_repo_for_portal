@@ -353,16 +353,17 @@ export const loadThumbs = ( cashier, setCashierThumbs ) => {
 
 export const validateEmployee = ( e, requested_emp_name, Other, CNICFront, CNICBack, signature, Template1, Template2, emp_id, amount, history ) => {
 
-    e.preventDefault();
+    // e.preventDefault();
 
     const Data = new FormData();
     const id = emp_id;
 
     Data.append('request_id', window.location.href.split('/').pop());
-    // Data.append('passcode', !Other ? e.target['passcode'].value : null);
-    Data.append('receiving_person', Other ? e.target['receiving_person'].value : null);
-    Data.append('receiving_person_contact', Other ? e.target['receiving_person_contact'].value : null);
-    Data.append('receiving_person_cnic', Other ? e.target['receiving_person_cnic'].value : null);
+    Data.append('passcode', !Other ? e?.passcode : null);
+    Data.append('passcode_required', e?.passcode_required);
+    Data.append('receiving_person', Other ? e?.receiving_person : null);
+    Data.append('receiving_person_contact', Other ? e?.receiving_person_contact : null);
+    Data.append('receiving_person_cnic', Other ? e?.receiving_person_cnic : null);
     Data.append('employee', id);
     Data.append('signature', signature);
     Data.append('amount', amount);
@@ -389,7 +390,7 @@ export const validateEmployee = ( e, requested_emp_name, Other, CNICFront, CNICB
             $('fieldset').prop('disabled', false);
             if ( res.data === 'not matched' )
             {
-                JSAlert.alert("Password Not Matched!!!").dismissIn(1000 * 2);
+                JSAlert.alert("Employee password not matched!!!").dismissIn(1000 * 2);
             }else
             if ( res.data === 'err' )
             {
@@ -419,11 +420,20 @@ export const validateEmployee = ( e, requested_emp_name, Other, CNICFront, CNICB
     );
 }
 
-export const clearRequest = ( e, requested_emp_name, recorded_by, emp_id, amount, history ) => {
+export const clearRequest = ( e, requested_emp_name, recorded_by, emp_id, amount, history, AccessControls ) => {
 
     e.preventDefault();
 
+    if (!JSON.parse(AccessControls.access).includes(102)) {
+        JSAlert.alert("You don't have access to clear the balance!!!!").dismissIn(1000 * 2);
+        return;
+    }
+
     const after_amount = e.target['after_amount'].value;
+    if (parseFloat(after_amount) <= 0) {
+        JSAlert.alert("Amount should be greater than 0!!!!").dismissIn(1000 * 2);
+        return false;
+    }
     $('fieldset').prop('disabled', true);
     axios.post(
         '/cash/request/clearance',
