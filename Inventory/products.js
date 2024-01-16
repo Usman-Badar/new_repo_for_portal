@@ -188,7 +188,7 @@ router.post('/inventory/inwards/outwards/created', ( req, res ) => {
 
 router.post('/inventory/get_products', ( req, res ) => {
 
-    const { type } = req.body;
+    const { type, company, location, sub_location } = req.body;
 
     let q = "SELECT tbl_inventory_products.*,  \
     tbl_inventory_sub_categories.id as sub_category_id, \
@@ -202,29 +202,50 @@ router.post('/inventory/get_products', ( req, res ) => {
     LEFT OUTER JOIN tbl_inventory_sub_categories ON tbl_inventory_products.sub_category_id = tbl_inventory_sub_categories.id  \
     LEFT OUTER JOIN tbl_inventory_categories ON tbl_inventory_products.category_id = tbl_inventory_categories.category_id  \
     WHERE tbl_inventory_products.status = 'in_stock' AND tbl_inventory_categories.type = ? \
-    GROUP BY tbl_inventory_products.sub_category_id";
+    GROUP BY tbl_inventory_products.sub_category_id;";
     let params = [ type ];
 
     db.query(
         q,
         params,
         ( err, rslt ) => {
+            const products = rslt;
+            const limit = products.length;
+            const count = [];
+            const arr = [];
+            function checkStoredQuantity() {
+                const i = count.length;
+                const product = products[i];
+                db.query(
+                    "SELECT SUM(tbl_inventory_product_transactions.stored_quantity) AS stored_quantity FROM `tbl_inventory_product_transactions` \
+                    WHERE entry = 'inward' AND company_code = ? AND product_id = ?" + (location ? " AND location_code = ?" : "") + (sub_location ? " AND sub_location_code = ?" : ""),
+                    [ company, product.product_id, location, sub_location ],
+                    ( err, result ) => {
+                        let stored_quantity = result[0]?.stored_quantity;
+                        if (!stored_quantity || stored_quantity === null) {
+                            stored_quantity = 0;
+                        }
 
-            if( err )
-            {
+                        product.product_physical_quantity = parseInt(stored_quantity);
+                        arr.push(product);
 
-                console.log( err );
-                res.send(err);
-                res.end();
+                        if ((i+1) === limit) {
+                            res.send( arr );
+                            res.end();
+                        }else {
+                            count.push(1);
+                            checkStoredQuantity();
+                        }
+                    }
+                )
+            }
 
-            }else 
-            {
-                
+            if (company && company.length > 0) {
+                checkStoredQuantity();
+            }else {
                 res.send( rslt );
                 res.end();
-                
             }
-            
         }
     )
 

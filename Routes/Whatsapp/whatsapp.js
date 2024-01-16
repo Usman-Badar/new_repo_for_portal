@@ -8,7 +8,7 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const moment = require('moment');
 const { removeDuplicateAttendance } = require('../Services/markEmpAbsent');
 const { settings } = require('../../include');
-const UpdateAtt = require('../Services/markEmpLateWhenNoTimeOut').UpdateAtt;
+const { UpdateAtt, Update_Emp_Att_Status } = require('../Services/markEmpLateWhenNoTimeOut');
 
 const client = new Client({authStrategy: new LocalAuth({clientId: "portal"})})
 client.on('authenticated', (session) => {
@@ -38,7 +38,16 @@ const checkConditions = (body, client, message) => {
         }else {
             message.reply('Welcome Malahim!');
         }
-        client.sendMessage(message.from, `*Commands List*\n\n1. remove duplicate records: [date] like 2023-09-09..\n2. fix all attendance:[month]/[year] like 9/2023...\n3. send notification: [notification_body] --[location_code] --[company_code]\n4. fix my attendance: [month]/[year] like 9/2023\n5. get my credentials\n6. get my monthly attendance: [month]/[year] like 9/2023\n7. refresh indexes`);
+        client.sendMessage(message.from, `*Commands List*\n\n
+        1. remove duplicate records: [date] like 2023-09-09..\n
+        2. fix all attendance:[month]/[year] like 9/2023...\n
+        3. send notification: [notification_body] --[location_code] --[company_code]\n
+        4. fix my attendance: [month]/[year] like 9/2023\n
+        5. get my credentials\n
+        6. get my monthly attendance: [month]/[year] like 9/2023\n
+        7. refresh indexes\n
+        8. fix employee attendance:[emp_id],[M or D],[date] like 5000,D,2024-01-10`
+        );
     }else
     if(checkIfIncludes(body, ['this is'])) {
         message.reply('Hello!');
@@ -56,6 +65,17 @@ const checkConditions = (body, client, message) => {
         message.reply('Fixing...');
         const monthYear = body.split(':').pop();
         UpdateAtt(monthYear.split('/').shift(), monthYear.split('/').pop());
+        setTimeout(() => {
+            client.sendMessage(message.from, 'Attendance has been fixed');
+        }, 2000);
+    }else
+    if (checkIfIncludes(body, ['fix', 'employee', 'attendance', ':'])) {
+        message.reply('Fixing...');
+        const parameters = body.split(':').pop();
+        const emp_id = parameters.split(',')[0];
+        const m_d = parameters.split(',')[1];
+        const date = parameters.split(',')[2];
+        Update_Emp_Att_Status(emp_id, m_d, date);
         setTimeout(() => {
             client.sendMessage(message.from, 'Attendance has been fixed');
         }, 2000);

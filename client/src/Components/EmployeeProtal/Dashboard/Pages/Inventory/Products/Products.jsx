@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 
-import { getAllProducts, getCategories, getSubCategories, search } from './Functions';
+import { getAllProducts, getCategories, GetLocations, getSubCategories, GetSubLocations, search } from './Functions';
 const UI = lazy( () => import('./UI') );
 
 const Products = () => {
@@ -14,13 +14,29 @@ const Products = () => {
     const [ SubCategory, setSubCategory ] = useState();
     const [ Categories, setCategories ] = useState();
     const [ SubCategories, setSubCategories ] = useState();
+    const [ Companies, setCompanies ] = useState();
+    const [ CompanyCode, setCompanyCode ] = useState();
+    const [ Locations, setLocations ] = useState([]);
+    const [ LocationCode, setLocationCode ] = useState();
+    const [ SubLocations, setSubLocations ] = useState([]);
+    const [ SubLocationCode, setSubLocationCode ] = useState();
 
     useEffect(
         () => {
             setProductsList([]);
             setSearchedProductsList();
-            getAllProducts( CatType, setProductsList );
-        }, [ CatType ]
+            getAllProducts( SubLocationCode, LocationCode, CompanyCode, CatType, setProductsList, setCompanies );
+        }, [ CatType, CompanyCode, LocationCode, SubLocationCode ]
+    )
+    useEffect(
+        () => {
+            if (CompanyCode) GetLocations(CompanyCode, setLocations);
+        }, [CompanyCode]
+    )
+    useEffect(
+        () => {
+            if (LocationCode) GetSubLocations(LocationCode, setSubLocations);
+        }, [LocationCode]
     )
 
     useEffect(
@@ -39,7 +55,7 @@ const Products = () => {
             setSubCategories();
             getSubCategories( Category, setSubCategories );
 
-            if ( Category )
+            if ( Category && Category.length > 0 )
             {
                 const data = ProductsList;
                 const arr = data.filter(
@@ -49,6 +65,8 @@ const Products = () => {
                 );
 
                 setSearchedProductsList(arr);
+            }else {
+                setSearchedProductsList();
             }
         }, [ Category ]
     )
@@ -56,7 +74,7 @@ const Products = () => {
     useEffect(
         () => {
 
-            if ( SubCategory )
+            if ( SubCategory && SubCategory.length > 0 )
             {
                 const data = ProductsList;
                 const arr = data.filter(
@@ -66,6 +84,18 @@ const Products = () => {
                 );
 
                 setSearchedProductsList(arr);
+            }else
+            if (Category && Category.length > 0) {
+                const data = ProductsList;
+                const arr = data.filter(
+                    val => {
+                        return val.category_id === parseInt(Category)
+                    }
+                );
+
+                setSearchedProductsList(arr);
+            }else {
+                setSearchedProductsList();
             }
 
         }, [ SubCategory ]
@@ -100,7 +130,13 @@ const Products = () => {
                     SubCategory={ SubCategory }
                     Categories={ Categories }
                     SubCategories={ SubCategories }
+                    Companies={ Companies }
+                    Locations={ Locations }
+                    SubLocations={ SubLocations }
 
+                    setSubLocationCode={ setSubLocationCode }
+                    setLocationCode={ setLocationCode }
+                    setCompanyCode={ setCompanyCode }
                     search={ (e) => search( e, Category, SubCategory, ProductsList, setSearchedProductsList ) }
                     setCatType={ (val) => { setCatType(val); sessionStorage.setItem('CatType', val) } }
                     setCategory={ (val) => { setCategory(val); sessionStorage.setItem('Category', val) } }

@@ -1,16 +1,66 @@
 import axios from '../../../../../../axios';
 
-export const getAllProducts = (CatType, setProductsList) => {
+export const GetCompanies = ( setCompanies ) => {
+
+    axios.get('/getallcompanies')
+    .then(
+        res => 
+        {
+                
+            setCompanies(res.data);
+
+        }
+    ).catch(
+        err => {
+
+            console.log(err);
+
+        }
+    );
+
+}
+
+export const GetLocations = (value, setLocations) => {
+    setLocations([]);
+    axios.post('/getcompanylocations', {company_code: value}).then(
+        res => {
+            setLocations(res.data);
+        }
+    ).catch(
+        err => {
+            console.log(err);
+        }
+    )
+}
+
+export const GetSubLocations = (value, setSubLocations) => {
+    setSubLocations([]);
+    axios.post('/getallsublocations', {location_code: value}).then(
+        res => {
+            setSubLocations(res.data);
+        }
+    ).catch(
+        err => {
+            console.log(err);
+        }
+    )
+}
+
+export const getAllProducts = (SubLocationCode, LocationCode, CompanyCode, CatType, setProductsList, setCompanies) => {
 
     axios.post(
         '/inventory/get_products',
         {
-            type: CatType
+            type: CatType,
+            company: CompanyCode,
+            location: LocationCode,
+            sub_location: SubLocationCode
         }
     ).then(
         res => {
 
             setProductsList(res.data);
+            GetCompanies(setCompanies);
 
         }
     ).catch(

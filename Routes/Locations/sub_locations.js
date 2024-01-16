@@ -51,23 +51,11 @@ router.post('/getallsublocations', ( req, res ) => {
 
     const { location_code } = req.body;
 
-    connection.query(
-        "SELECT * FROM invtry_sub_locations WHERE invtry_sub_locations.location_code = " + location_code,
+    db.query(
+        "SELECT * FROM tbl_inventory_sub_locations WHERE tbl_inventory_sub_locations.location_code = " + location_code,
         ( err, rslt ) => {
-
-            if( err )
-            {
-                res.status(500).send(err);
-                res.end();
-
-            }else 
-            {
-
-                res.send(rslt);
-                res.end();
-
-            }
-
+            res.send(rslt);
+            res.end();
         }
     )
 

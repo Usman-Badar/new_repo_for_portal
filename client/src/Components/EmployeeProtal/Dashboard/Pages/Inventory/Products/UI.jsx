@@ -3,7 +3,7 @@ import './Style.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import $ from 'jquery';
 
-const UI = ( { SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setCategory, search, setCatType, setSubCategory } ) => {
+const UI = ( { SubLocations, Locations, Companies, SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setSubLocationCode, setLocationCode, setCompanyCode, setCategory, search, setCatType, setSubCategory } ) => {
     
     const history = useHistory();
 
@@ -23,12 +23,18 @@ const UI = ( { SearchedProductsList, ProductsList, Open, CatType, Category, SubC
                                         Categories={ Categories }
                                         CatType={ CatType }
                                         Category={ Category }
+                                        Companies={ Companies }
+                                        Locations={ Locations }
                                         SearchedProductsList={ SearchedProductsList }
-
+                                        SubLocations={ SubLocations }
+                    
+                                        setSubLocationCode={ setSubLocationCode }
+                                        setLocationCode={ setLocationCode }
                                         search={ search }
                                         setSubCategory={ setSubCategory }
                                         setCategory={ setCategory }
                                         setCatType={ setCatType }
+                                        setCompanyCode={ setCompanyCode }
                                     />
                                 )
                             } 
@@ -44,7 +50,7 @@ const UI = ( { SearchedProductsList, ProductsList, Open, CatType, Category, SubC
 
 export default UI;
 
-const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setCatType, search, setSubCategory, setCategory } ) => {
+const ListView = ( { SubLocations, Locations, Companies, SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setLocationCode, setSubLocationCode, setCatType, search, setSubCategory, setCategory, setCompanyCode } ) => {
 
     const Arr = SearchedProductsList ? SearchedProductsList : ProductsList;
 
@@ -83,7 +89,7 @@ const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCa
                                 <>
                                     <label className="font-weight-bold mb-0">Category</label>
                                     <select value={ Category } className='form-control form-control-sm mb-2' onChange={ (e) => setCategory(e.target.value) }>
-                                        <option value={undefined}>Select Option</option>
+                                        <option value=''>All</option>
                                         {
                                             Categories.map(
                                                 ( val, index ) => {
@@ -108,7 +114,7 @@ const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCa
                                 <>
                                     <label className="font-weight-bold mb-0">Sub-Category</label>
                                     <select value={SubCategory} className='form-control form-control-sm mb-2' onChange={ (e) => setSubCategory(e.target.value) }>
-                                        <option value={undefined}>Select Option</option>
+                                        <option value=''>All</option>
                                         {
                                             SubCategories.map(
                                                 ( val, index ) => {
@@ -121,6 +127,39 @@ const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCa
                                     </select>
                                 </>
                                 :null
+                            }
+                            {
+                                Companies && (
+                                    <>
+                                        <label className="font-weight-bold mb-0">Company</label>
+                                        <select onChange={(e) => setCompanyCode(e.target.value)} className='form-control form-control-sm mb-2'>
+                                            <option value=''>All</option>
+                                            {Companies.map(( val, index ) => <option key={ index } value={ val.company_code }>{ val.company_name }</option>)}
+                                        </select>
+                                    </>
+                                )
+                            }
+                            {
+                                Locations && Locations.length > 0 && (
+                                    <>
+                                        <label className="font-weight-bold mb-0">Location</label>
+                                        <select onChange={(e) => setLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
+                                            <option value=''>All</option>
+                                            {Locations.map(( val, index ) => <option key={ index } value={ val.location_code }>{ val.location_name }</option>)}
+                                        </select>
+                                    </>
+                                )
+                            }
+                            {
+                                SubLocations && SubLocations.length > 0 && (
+                                    <>
+                                        <label className="font-weight-bold mb-0">Sub Location</label>
+                                        <select onChange={(e) => setSubLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
+                                            <option value=''>All</option>
+                                            {SubLocations.map(( val, index ) => <option key={ index } value={ val.sub_location_code }>{ val.sub_location_name }</option>)}
+                                        </select>
+                                    </>
+                                )
                             }
                         </div>
                     </button>
@@ -139,8 +178,8 @@ const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCa
                 <table className="table table-sm">
                     <thead>
                         <tr>
-                            <th>Sr.No</th>
-                            <th colSpan={4}>Product</th>
+                            <th className='border-top-0'>Sr.No</th>
+                            <th className='border-top-0' colSpan={4}>Product</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -206,7 +245,7 @@ const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCa
                                             </td>
                                             <td>
                                                 <b>{ val.sub_category_name }</b> <br />
-                                                <b>{ val.product_physical_quantity }<sub>Qty</sub> </b> { parseInt(val.product_physical_quantity) === 1 ? " is " : " are " } available 
+                                                <b className={parseInt(val.product_physical_quantity) <= 0 ? 'text-danger' : 'text-success'}>{ val.product_physical_quantity }<sub>Qty</sub> </b> { parseInt(val.product_physical_quantity) === 1 ? " is " : " are " } available 
                                             </td>
                                             <td>
                                                 <b>Category</b> <br />
@@ -214,7 +253,7 @@ const ListView = ( { SearchedProductsList, SubCategory, Category, CatType, SubCa
                                             </td>
                                             <td>
                                                 <div className="d-flex">
-                                                    <span title="View Details" className='iconic' onDoubleClick={ () => history.push('/inventory/products/details/' + val.product_id) }><i className="las la-eye"></i></span>
+                                                    <span title="View Details" className='iconic' onClick={ () => history.push('/inventory/products/details/' + val.product_id) }><i className="las la-eye"></i></span>
                                                     {/* <span title="Edit Product" className='iconic'><i className="las la-edit"></i></span>
                                                     <span title="Delete Product" className='iconic'><i className="las la-trash"></i></span> */}
                                                 </div>
