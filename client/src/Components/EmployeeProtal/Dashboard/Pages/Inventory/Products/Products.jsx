@@ -10,6 +10,7 @@ const Products = () => {
     const [ ProductsList, setProductsList ] = useState([]);
     const [ Open, setOpen ] = useState(false);
     const [ CatType, setCatType ] = useState('consumable');
+    const [ ShowZeroValues, setShowZeroValues ] = useState(false);
     const [ Category, setCategory ] = useState();
     const [ SubCategory, setSubCategory ] = useState();
     const [ Categories, setCategories ] = useState();
@@ -133,7 +134,9 @@ const Products = () => {
                     Companies={ Companies }
                     Locations={ Locations }
                     SubLocations={ SubLocations }
+                    ShowZeroValues={ ShowZeroValues }
 
+                    setShowZeroValues={ setShowZeroValues }
                     setSubLocationCode={ setSubLocationCode }
                     setLocationCode={ setLocationCode }
                     setCompanyCode={ setCompanyCode }

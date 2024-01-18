@@ -1117,8 +1117,9 @@ router.post('/get/employees/all', ( req, res ) => {
     }
 
     db.query(
-        "SELECT employees.emp_id, employees.name, designations.designation_name, emp_app_profile.emp_image, companies.company_name FROM employees  \
+        "SELECT employees.emp_id, employees.name, designations.designation_name, emp_app_profile.emp_image, companies.company_name, companies.code, departments.department_name FROM employees  \
         LEFT OUTER JOIN designations ON employees.designation_code = designations.designation_code  \
+        LEFT OUTER JOIN departments ON employees.department_code = designations.department_code  \
         LEFT OUTER JOIN tbl_er ON employees.emp_id = tbl_er.jr  \
         LEFT OUTER JOIN emp_app_profile ON employees.emp_id = emp_app_profile.emp_id  \
         LEFT OUTER JOIN companies ON employees.company_code = companies.company_code WHERE  \

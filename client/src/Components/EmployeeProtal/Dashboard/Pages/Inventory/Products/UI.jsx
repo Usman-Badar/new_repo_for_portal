@@ -3,7 +3,7 @@ import './Style.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import $ from 'jquery';
 
-const UI = ( { SubLocations, Locations, Companies, SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setSubLocationCode, setLocationCode, setCompanyCode, setCategory, search, setCatType, setSubCategory } ) => {
+const UI = ( { ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setShowZeroValues, setSubLocationCode, setLocationCode, setCompanyCode, setCategory, search, setCatType, setSubCategory } ) => {
     
     const history = useHistory();
 
@@ -27,7 +27,9 @@ const UI = ( { SubLocations, Locations, Companies, SearchedProductsList, Product
                                         Locations={ Locations }
                                         SearchedProductsList={ SearchedProductsList }
                                         SubLocations={ SubLocations }
+                                        ShowZeroValues={ ShowZeroValues }
                     
+                                        setShowZeroValues={ setShowZeroValues }
                                         setSubLocationCode={ setSubLocationCode }
                                         setLocationCode={ setLocationCode }
                                         search={ search }
@@ -50,7 +52,7 @@ const UI = ( { SubLocations, Locations, Companies, SearchedProductsList, Product
 
 export default UI;
 
-const ListView = ( { SubLocations, Locations, Companies, SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setLocationCode, setSubLocationCode, setCatType, search, setSubCategory, setCategory, setCompanyCode } ) => {
+const ListView = ( { ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setShowZeroValues, setLocationCode, setSubLocationCode, setCatType, search, setSubCategory, setCategory, setCompanyCode } ) => {
 
     const Arr = SearchedProductsList ? SearchedProductsList : ProductsList;
 
@@ -65,23 +67,45 @@ const ListView = ( { SubLocations, Locations, Companies, SearchedProductsList, S
                     <button className="btn submit px-2 filter-emit" type='button'>
                         <i className="las la-filter"></i> Filters
                         <div className="filter-container">
-                            <h6 className='mb-0' style={{ fontFamily: 'Oxygen' }}>Filter Options</h6>
+                            <div className="d-flex align-items-center justify-content-between">
+                                <h6 className='mb-0' style={{ fontFamily: 'Oxygen' }}>Filter Options</h6>
+                                {/* <small>Clear All</small> */}
+                            </div>
                             <hr className='my-1 bg-dark' />
 
-                            <label className="font-weight-bold mb-0">Search Products</label>
-                            <input placeholder='Search Keywords...' type="search" onChange={ search } className='form-control form-control-sm mb-2' />
-                            
-                            <label className="font-weight-bold my-2">Product Type</label>
-                            <div className='d-flex align-items-center mb-2'>
-                                <input type="radio" checked={ CatType === 'consumable' ? true : false } name='product_type' onChange={ () => setCatType('consumable') } className='form-control form-control-sm mr-2' />
-                                <span>Consumable</span>
-                            </div>
-                            <div className='d-flex align-items-center mb-1'>
-                                <input type="radio" checked={ CatType === 'non-consumable' ? true : false } name='product_type' onChange={ () => setCatType('non-consumable') } className='form-control form-control-sm mr-2' />
-                                <span>Non-Consumable</span>
-                            </div>
-
-                            <br />
+                            {
+                                Companies && (
+                                    <>
+                                        <label className="font-weight-bold mb-0">Company</label>
+                                        <select onChange={(e) => setCompanyCode(e.target.value)} className='form-control form-control-sm mb-2'>
+                                            <option value=''>All</option>
+                                            {Companies.map(( val, index ) => <option key={ index } value={ val.company_code }>{ val.company_name }</option>)}
+                                        </select>
+                                    </>
+                                )
+                            }
+                            {
+                                Locations && Locations.length > 0 && (
+                                    <>
+                                        <label className="font-weight-bold mb-0">Location</label>
+                                        <select onChange={(e) => setLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
+                                            <option value=''>All</option>
+                                            {Locations.map(( val, index ) => <option key={ index } value={ val.location_code }>{ val.location_name }</option>)}
+                                        </select>
+                                    </>
+                                )
+                            }
+                            {
+                                SubLocations && SubLocations.length > 0 && (
+                                    <>
+                                        <label className="font-weight-bold mb-0">Sub Location</label>
+                                        <select onChange={(e) => setSubLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
+                                            <option value=''>All</option>
+                                            {SubLocations.map(( val, index ) => <option key={ index } value={ val.sub_location_code }>{ val.sub_location_name }</option>)}
+                                        </select>
+                                    </>
+                                )
+                            }
                             
                             {
                                 Categories
@@ -128,39 +152,31 @@ const ListView = ( { SubLocations, Locations, Companies, SearchedProductsList, S
                                 </>
                                 :null
                             }
-                            {
-                                Companies && (
-                                    <>
-                                        <label className="font-weight-bold mb-0">Company</label>
-                                        <select onChange={(e) => setCompanyCode(e.target.value)} className='form-control form-control-sm mb-2'>
-                                            <option value=''>All</option>
-                                            {Companies.map(( val, index ) => <option key={ index } value={ val.company_code }>{ val.company_name }</option>)}
-                                        </select>
-                                    </>
-                                )
-                            }
-                            {
-                                Locations && Locations.length > 0 && (
-                                    <>
-                                        <label className="font-weight-bold mb-0">Location</label>
-                                        <select onChange={(e) => setLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
-                                            <option value=''>All</option>
-                                            {Locations.map(( val, index ) => <option key={ index } value={ val.location_code }>{ val.location_name }</option>)}
-                                        </select>
-                                    </>
-                                )
-                            }
-                            {
-                                SubLocations && SubLocations.length > 0 && (
-                                    <>
-                                        <label className="font-weight-bold mb-0">Sub Location</label>
-                                        <select onChange={(e) => setSubLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
-                                            <option value=''>All</option>
-                                            {SubLocations.map(( val, index ) => <option key={ index } value={ val.sub_location_code }>{ val.sub_location_name }</option>)}
-                                        </select>
-                                    </>
-                                )
-                            }
+
+                            <label className="font-weight-bold mb-0">Search Products</label>
+                            <input placeholder='Search Keywords...' type="search" onChange={ search } className='form-control form-control-sm mb-2' />
+                            
+                            <label className="font-weight-bold my-2">Product Type</label>
+                            <div className='d-flex align-items-center mb-2'>
+                                <input type="radio" checked={ CatType === 'consumable' ? true : false } name='product_type' onChange={ () => setCatType('consumable') } className='form-control form-control-sm mr-2' />
+                                <span>Consumable</span>
+                            </div>
+                            <div className='d-flex align-items-center mb-1'>
+                                <input type="radio" checked={ CatType === 'non-consumable' ? true : false } name='product_type' onChange={ () => setCatType('non-consumable') } className='form-control form-control-sm mr-2' />
+                                <span>Non-Consumable</span>
+                            </div>
+
+                            <label className="font-weight-bold my-2">Include Zero Values</label>
+                            <div className='d-flex align-items-center mb-2'>
+                                <input type="radio" checked={ ShowZeroValues } name='zero_values' onChange={ () => setShowZeroValues(true) } className='form-control form-control-sm mr-2' />
+                                <span>Include</span>
+                            </div>
+                            <div className='d-flex align-items-center mb-1'>
+                                <input type="radio" checked={ !ShowZeroValues } name='zero_values' onChange={ () => setShowZeroValues(false) } className='form-control form-control-sm mr-2' />
+                                <span>Exclude</span>
+                            </div>
+
+                            <br />
                         </div>
                     </button>
                     <button className='btn light ml-2' onClick={ () => history.push('/inventory/products/create') }>Create New</button>
@@ -184,7 +200,12 @@ const ListView = ( { SubLocations, Locations, Companies, SearchedProductsList, S
                     </thead>
                     <tbody>
                         {
-                            Arr.map(
+                            Arr.filter(val => {
+                                if (!ShowZeroValues) {
+                                    return parseInt(val.product_physical_quantity) > 0
+                                }
+                                return true;
+                            }).map(
                                 ( val, index ) => {
                                     const Colors = [ 
                                         {

@@ -300,7 +300,7 @@ export default FuelRecievedFrom;
 
 const Status = ({ status }) => {
     return (
-        <div className='d-flex align-items-center'>
+        <h6 className='d-flex align-items-center'>
             <div
                 className={
                     "dot mr-1 "
@@ -322,9 +322,9 @@ const Status = ({ status }) => {
                     )
                 }
             ></div>
-            <div
+            <h6
                 className={
-                    "text-capitalize "
+                    "text-capitalize mb-0 "
                     +
                     (
                         status === 'Verified'
@@ -345,8 +345,8 @@ const Status = ({ status }) => {
                 style={{ fontSize: 12 }}
             >
                 {status.split('_').join(' ')}
-            </div>
-        </div>
+            </h6>
+        </h6>
     )
 }
 
@@ -421,72 +421,75 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                         </div>
                     </div>
                     <hr />
-                    <table className="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <b>Company</b><br />
-                                    <span>{Details.company_name}</span>
-                                </td>
-                                <td>
-                                    <b>Location</b><br />
-                                    <span>{Details.location_name}</span>
-                                </td>
-                                <td>
-                                    <b>Supplier</b><br />
-                                    <span>{Details.supplier}</span>
-                                </td>
-                                <td>
-                                    <b>Fuel Received (Ltr.)</b><br />
-                                    <span>{Details.fuel_received}</span>
-                                </td>
-                                <td>
-                                    <b>Received At</b><br />
-                                    <span>{new Date(Details.receival_date).toDateString()}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Entered By</b><br />
-                                    <span>{Details.submit_person}</span>
-                                </td>
-                                <td>
-                                    <b>Entered At</b><br />
-                                    <span>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</span>
-                                </td>
+                    <div className="w-50 mx-auto" style={{fontFamily: "Roboto-Light"}}>
+                        <div className='main-banner'>
+                            <h1 className='mb-0' style={{fontSize: 35}}>
+                                <span className='font-weight-bold'>{parseFloat(Details?.stock_at_workshop ? Details?.stock_at_workshop : Details?.total_stock).toFixed(2)}<small className='text-success' style={{ fontSize: 16 }}>Ltr</small></span>
+                            </h1>
+                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the Workshop {Details?.stock_at_workshop ? `(dated: ${new Date(Details?.verified_at).toDateString()})` : '(Current)' }</h6>
+                        </div>
+                        <table className="table">
+                            <tbody>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Status</h6></td>
+                                    <td><Status status={Details.status} /></td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Company</h6></td>
+                                    <td>{Details.company_name}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Location</h6></td>
+                                    <td>{Details.location_name}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Supplier</h6></td>
+                                    <td>{Details.supplier}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Fuel Received (Ltr.)</h6></td>
+                                    <td>{Details.fuel_received}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Received At</h6></td>
+                                    <td>{new Date(Details.receival_date).toDateString()}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Entered By</h6></td>
+                                    <td>{Details.submit_person}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Entered At</h6></td>
+                                    <td>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</td>
+                                </tr>
                                 {
                                     Details.status === 'Rejected'
                                     ?
                                     <>
-                                        <td>
-                                            <b>Rejected By</b><br />
-                                            <span>{Details.verifier_person && Details.verifier_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Rejected At</b><br />
-                                            <span>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                        </td>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Rejected By</h6></td>
+                                            <td>{Details.verifier_person && Details.verifier_person}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Rejected At</h6></td>
+                                            <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                        </tr>
                                     </>
                                     :
                                     <>
-                                        <td>
-                                            <b>{Details.verified_at ? 'Verified By' : 'Submitted To'}</b><br />
-                                            <span>{Details.verifier_person && Details.verifier_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Verified At</b><br />
-                                            <span>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                        </td>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>{Details.verified_at ? 'Verified By' : 'Submitted To'}</h6></td>
+                                            <td>{Details.verifier_person && Details.verifier_person}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Verified At</h6></td>
+                                            <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                        </tr>
                                     </>
                                 }
-                                <td>
-                                    <b>Status</b><br />
-                                    <Status status={Details.status} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    {/* {JSON.stringify(Details)} */}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </>

@@ -282,55 +282,59 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                         </div>
                     </div>
                     <hr />
-                    <table className="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <b>Fuel Required (Ltr.)</b><br />
-                                    <span>{Details.fuel_required}</span>
-                                </td>
-                                <td>
-                                    <b>Requested By</b><br />
-                                    <span>{Details.submit_person}</span>
-                                </td>
-                                <td>
-                                    <b>Requested At</b><br />
-                                    <span>{new Date(Details.requested_at).toDateString()} at {new Date(Details.requested_at).toLocaleTimeString().substring(0,8)}</span>
-                                </td>
-                            </tr>
-                            <tr>
+                    <div className="w-50 mx-auto" style={{fontFamily: "Roboto-Light"}}>
+                        <div className='main-banner'>
+                            <h1 className='mb-0' style={{fontSize: 35}}>
+                                <span className='font-weight-bold'>{parseFloat(Details.stock_at_workshop ? Details.stock_at_workshop : Details.total_stock).toFixed(2)}<small className='text-success' style={{ fontSize: 16 }}>Ltr</small></span>
+                            </h1>
+                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the Workshop {Details.stock_at_workshop ? `(dated: ${new Date(Details?.approved_at).toDateString()})` : '(Current)' }</h6>
+                        </div>
+                        <table className="table">
+                            <tbody>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Status</h6></td>
+                                    <td><Status status={Details.status} /></td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Fuel Required (Ltr.)</h6></td>
+                                    <td>{Details.fuel_required}ltr</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Requested By</h6></td>
+                                    <td>{Details.submit_person}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Requested At</h6></td>
+                                    <td>{new Date(Details.requested_at).toDateString()} at {new Date(Details.requested_at).toLocaleTimeString().substring(0,8)}</td>
+                                </tr>
                                 {
                                     Details.status === 'Rejected'
                                     ?
                                     <>
-                                        <td>
-                                            <b>Rejected By</b><br />
-                                            <span>{Details.approval_person && Details.approval_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Rejected At</b><br />
-                                            <span>{Details.approved_at ? (new Date(Details.approved_at).toDateString() + ' at ' + new Date(Details.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                        </td>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Rejected By</h6></td>
+                                            <td>{Details.approval_person && Details.approval_person}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Rejected At</h6></td>
+                                            <td>{Details.approved_at ? (new Date(Details.approved_at).toDateString() + ' at ' + new Date(Details.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                        </tr>
                                     </>
                                     :
                                     <>
-                                        <td>
-                                            <b>{Details.approved_at ? 'Approved By' : 'Submitted To'}</b><br />
-                                            <span>{Details.approval_person && Details.approval_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Approved At</b><br />
-                                            <span>{Details.approved_at ? (new Date(Details.approved_at).toDateString() + ' at ' + new Date(Details.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                        </td>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>{Details.approved_at ? 'Approved By' : 'Submitted To'}</h6></td>
+                                            <td>{Details.approval_person && Details.approval_person}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Approved At</h6></td>
+                                            <td>{Details.approved_at ? (new Date(Details.approved_at).toDateString() + ' at ' + new Date(Details.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                        </tr>
                                     </>
                                 }
-                                <td>
-                                    <b>Status</b><br />
-                                    <Status status={Details.status} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </>

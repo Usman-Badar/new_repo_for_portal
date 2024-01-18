@@ -39,9 +39,9 @@ const StockAtWorkshop = () => {
                 const Details = res.data[0];
                 setModal(
                     <>
-                        <h5>Fuel Receival Details</h5>
+                        <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Receival Details</h5>
                         <hr />
-                        <table className="table table-borderless">
+                        <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
                             <tbody>
                                 <tr>
                                     <td>
@@ -114,9 +114,9 @@ const StockAtWorkshop = () => {
                 const Details = res.data[0];
                 setModal(
                     <>
-                        <h5>Fuel Request Details</h5>
+                        <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Request Details</h5>
                         <hr />
-                        <table className="table table-borderless">
+                        <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
                         <tbody>
                             <tr>
                                 <td>
@@ -190,14 +190,16 @@ const StockAtWorkshop = () => {
                         <sub>Total Fuel Received in Ltr.</sub>
                     </h3>
                     <hr />
-                    <div className="container-fluid">
+                    <div className="container-fluid" style={{fontFamily: "Roboto-Light"}}>
                         <div className="row">
                             <div className="col-4">
                                 <div className="border p-3 rounded">
                                     <div className='d-flex justify-content-center align-items-end mb-2'>
-                                        <h1 className='text-center mb-0 mr-1' style={{fontFamily: "Maersk", fontSize: '40px'}}>
-                                            <b>{Total.toFixed(2)}</b>
-                                        </h1>
+                                        <b>
+                                            <h1 className='text-center mb-0 mr-1 font-weight-bold' style={{fontSize: '40px', fontFamily: "Roboto-Light"}}>
+                                                {Total.toFixed(2)}
+                                            </h1>
+                                        </b>
                                         <p className='mb-0 font-weight-bold text-secondary'>Ltr.</p>
                                     </div>
                                     <h6 className='text-center mb-0'>Total Stock at Workshop</h6>
@@ -205,7 +207,7 @@ const StockAtWorkshop = () => {
                             </div>
                             <div className="col-8" style={{maxHeight: '75vh', overflow: 'auto'}}>
                                 <div className='d-flex justify-content-between align-items-center mb-3'>
-                                    <h5 className='mb-0'>
+                                    <h5 className='mb-0' style={{fontFamily: "Roboto-Light"}}>
                                         <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
                                     </h5>
                                     <div>
@@ -213,11 +215,11 @@ const StockAtWorkshop = () => {
                                         <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
                                     </div>
                                 </div>
-                                <table className="table">
+                                <table className="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Ref #</th>
+                                            {/* <th>Ref #</th> */}
                                             <th>Fuel (ltr.)</th>
                                             <th>Fuel Dates</th>
                                             <th>Date & Time</th>
@@ -229,11 +231,11 @@ const StockAtWorkshop = () => {
                                                 const { in_out, request_id, quantity_in_ltr, inserted_at, fuel_received_at } = val;
                                                 const d = new Date(inserted_at);
                                                 return (
-                                                    <tr key={i}>
+                                                    <tr className='pointer' key={i} onClick={() => loadTransactionDetails(request_id, in_out)}>
                                                         <td>{i+1}</td>
-                                                        <td onClick={() => loadTransactionDetails(request_id, in_out)}>
+                                                        {/* <td onClick={() => loadTransactionDetails(request_id, in_out)}>
                                                             <span className='pointer pointer-underline'>{request_id}</span>
-                                                        </td>
+                                                        </td> */}
                                                         {
                                                             in_out === 'IN'
                                                             ?

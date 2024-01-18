@@ -39,9 +39,9 @@ const StockAtFuelingStation = () => {
                 const Details = res.data[0];
                 setModal(
                     <>
-                        <h5>Fuel Request Details</h5>
+                        <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Request Details</h5>
                         <hr />
-                        <table className="table table-borderless">
+                        <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
                         <tbody>
                             <tr>
                                 <td>
@@ -99,9 +99,9 @@ const StockAtFuelingStation = () => {
                     const Details = res.data[0];
                     setModal(
                         <>
-                            <h5>Fuel Issued To Equipments</h5>
+                            <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Issued To Equipments</h5>
                             <hr />
-                            <table className="table table-borderless">
+                            <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
                                 <tbody>
                                     <tr>
                                         <td>
@@ -175,9 +175,9 @@ const StockAtFuelingStation = () => {
                     const Details = res.data[0];
                     setModal(
                         <>
-                            <h5>Fuel Issued To Trailer</h5>
+                            <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Issued To Trailer</h5>
                             <hr />
-                            <table className="table table-borderless">
+                            <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
                                 <tbody>
                                     <tr>
                                         <td>
@@ -243,12 +243,12 @@ const StockAtFuelingStation = () => {
                         <sub>Total Fuel Received in Ltr.</sub>
                     </h3>
                     <hr />
-                    <div className="container-fluid">
+                    <div className="container-fluid" style={{fontFamily: "Roboto-Light"}}>
                         <div className="row">
                             <div className="col-4">
                                 <div className="border p-3 rounded">
                                     <div className='d-flex justify-content-center align-items-end mb-2'>
-                                        <h1 className='text-center mb-0 mr-1' style={{fontFamily: "Maersk", fontSize: '40px'}}>
+                                        <h1 className='text-center mb-0 mr-1' style={{fontFamily: "Roboto-Light", fontSize: '40px'}}>
                                             <b>{Total.toFixed(2)}</b>
                                         </h1>
                                         <p className='mb-0 font-weight-bold text-secondary'>Ltr.</p>
@@ -258,7 +258,7 @@ const StockAtFuelingStation = () => {
                             </div>
                             <div className="col-8" style={{maxHeight: '75vh', overflow: 'auto'}}>
                                 <div className='d-flex justify-content-between align-items-center mb-3'>
-                                    <h5 className='mb-0'>
+                                    <h5 className='mb-0' style={{fontFamily: "Roboto-Light"}}>
                                         <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
                                     </h5>
                                     <div>
@@ -266,11 +266,11 @@ const StockAtFuelingStation = () => {
                                         <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
                                     </div>
                                 </div>
-                                <table className="table">
+                                <table className="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Ref #</th>
+                                            {/* <th>Ref #</th> */}
                                             <th>Fuel (ltr.)</th>
                                             <th>Dates</th>
                                             <th>Date & Time</th>
@@ -285,11 +285,11 @@ const StockAtFuelingStation = () => {
                                                     other_than_trip === 1 ? 'Issued To Equipement' :
                                                     trip_based === 1 ? 'Trip Date' : null;
                                                 return (
-                                                    <tr key={i}>
+                                                    <tr className='pointer' key={i} onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
                                                         <td>{i+1}</td>
-                                                        <td onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
+                                                        {/* <td onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
                                                             <span className='pointer pointer-underline'>{request_id}</span>
-                                                        </td>
+                                                        </td> */}
                                                         {
                                                             in_out === 'IN'
                                                             ?

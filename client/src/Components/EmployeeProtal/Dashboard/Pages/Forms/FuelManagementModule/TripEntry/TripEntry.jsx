@@ -384,47 +384,50 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                         </div>
                     </div>
                     <hr />
-                    <table className="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <b>Equipment Type</b><br />
-                                    <span>{Details.equipment_type_name}</span>
-                                </td>
-                                <td>
-                                    <b>Equipment Number</b><br />
-                                    <span>{Details.equipment_no}</span>
-                                </td>
-                                <td>
-                                    <b>Trip</b><br />
-                                    <span>{Details.trip_from} to {Details.trip_to}</span>
-                                </td>
-                                <td>
-                                    <b>Fuel Issued (Ltr.)</b><br />
-                                    <span>{Details.fuel_to_issue}</span>
-                                </td>
-                                <td>
-                                    <b>Trip Date</b><br />
-                                    <span>{new Date(Details.trip_date).toDateString()}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Issued By</b><br />
-                                    <span>{Details.submit_person}</span>
-                                </td>
-                                <td>
-                                    <b>Issued At</b><br />
-                                    <span>{new Date(Details.created_at).toDateString()} at {new Date(Details.created_at).toLocaleTimeString().substring(0,8)}</span>
-                                </td>
-                                <td>
-                                    <b>Status</b><br />
-                                    <Status status={Details.status} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    {/* {JSON.stringify(Details)} */}
+                    <div className='w-50 mx-auto' style={{fontFamily: "Roboto-Light"}}>
+                        <div className='main-banner'>
+                            <h1 className='mb-0' style={{fontSize: 35}}>
+                                <span className='font-weight-bold'>{parseFloat(Details.stock_at_station ? Details.stock_at_station : Details.total_stock).toFixed(2)}<small className='text-success' style={{ fontSize: 16 }}>Ltr</small></span>
+                            </h1>
+                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the fueling station {Details.stock_at_station ? `(dated: ${new Date(Details?.created_at).toDateString()})` : '(Current)' }</h6>
+                        </div>
+                        <table className="table">
+                            <tbody>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Status</h6></td>
+                                    <td><Status status={Details.status} /></td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Equipment Type</h6></td>
+                                    <td>{Details.equipment_type_name}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Equipment Number</h6></td>
+                                    <td>{Details.equipment_no}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Trip</h6></td>
+                                    <td>{Details.trip_from} to {Details.trip_to}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>
+                                    <td>{Details.fuel_to_issue}ltr</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Trip Date</h6></td>
+                                    <td>{new Date(Details.trip_date).toDateString()}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Issued By</h6></td>
+                                    <td>{Details.submit_person}</td>
+                                </tr>
+                                <tr>
+                                    <td><h6 className='font-weight-bold'>Issued At</h6></td>
+                                    <td>{new Date(Details.created_at).toDateString()} at {new Date(Details.created_at).toLocaleTimeString().substring(0,8)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </>
