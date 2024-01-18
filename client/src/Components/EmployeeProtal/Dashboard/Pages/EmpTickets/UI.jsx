@@ -2023,7 +2023,9 @@ const IssueToSubordinates = ({ history, issueTicket, Selected, Keyword, Employee
                                                                             <img src={process.env.REACT_APP_SERVER + '/images/employees/' + val.emp_image} className="rounded-circle" alt="emp" width={35} height={35} />
                                                                             <div className="ml-2">
                                                                                 <b>{val.name}</b>
-                                                                                <p className="mb-0">{val.designation_name}</p>
+                                                                                <p className="mb-0">
+                                                                                    <small>{val.designation_name}, {val.department_name}, {val.code}</small>
+                                                                                </p>
                                                                             </div>
                                                                         </div>
                                                                     )
