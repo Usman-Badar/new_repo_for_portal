@@ -2022,7 +2022,7 @@ const IssueToSubordinates = ({ history, issueTicket, Selected, Keyword, Employee
                                                                         <div className="employee" key={index} onClick={() => setEmployee({ emp_id: val.emp_id, name: val.name })}>
                                                                             <img src={process.env.REACT_APP_SERVER + '/images/employees/' + val.emp_image} className="rounded-circle" alt="emp" width={35} height={35} />
                                                                             <div className="ml-2">
-                                                                                <b>{val.name}</b>
+                                                                                <b>{val.name} <small className="text-secondary font-weight-bold">#{val.emp_id}</small></b>
                                                                                 <p className="mb-0">
                                                                                     <small>{val.designation_name}, {val.department_name}, {val.code}</small>
                                                                                 </p>
@@ -3000,14 +3000,15 @@ const SelectOption = ({ enterReply, AllTickets, loadAllTickets, loadPeers, SelfS
                                                                             return (
                                                                                 <tr key={index}>
                                                                                     <td>{index + 1}</td>
-                                                                                    <td>
+                                                                                    <td>{console.log(val)}
                                                                                         <div className="d-flex align-items-center">
                                                                                             <div className={(val.ticket === 'red' ? 'bg-danger' : val.ticket === 'green' ? 'bg-success' : 'bg-warning') + ' rounded-circle mr-1'} style={{ width: '10px', height: '10px' }}></div>
                                                                                             <span className={(val.ticket === 'red' ? 'text-danger' : val.ticket === 'green' ? 'text-success' : 'text-warning') + ' text-capitalize'}>{val.ticket}</span>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
-                                                                                        <b className="text-capitalize">{val.issued_to_emp}</b><br />
+                                                                                        <b className="text-capitalize">{val.issued_to_emp} <small className="text-secondary font-weight-bold">#{val.emp_id}</small></b><br />
+                                                                                        <small className="text-secondary font-weight-bold">{val.designation_name}, {val.department_name}, {val.company_name}</small><br />
                                                                                         <span>{val.remarks}</span>
                                                                                     </td>
                                                                                     <td>{new Date(val.generated_date).toDateString()}</td>

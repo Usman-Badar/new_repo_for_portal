@@ -2687,12 +2687,16 @@ router.post('/employees/tickets/fetch/issued', ( req, res ) => {
         issued_to_emp.emp_id AS issued_to_emp_id,  \
         issued_emp.name AS issued_emp,  \
         issued_to_emp.name AS issued_to_emp,  \
-        designations.designation_name  \
+        designations.designation_name,  \
+        departments.department_name,  \
+        companies.company_name  \
         FROM `emp_tickets`  \
         LEFT OUTER JOIN employees issued_emp ON issued_emp.emp_id = emp_tickets.generated_by \
         LEFT OUTER JOIN employees issued_to_emp ON issued_to_emp.emp_id = emp_tickets.emp_id \
         LEFT OUTER JOIN employees ON employees.emp_id = emp_tickets.emp_id  \
         LEFT OUTER JOIN designations ON employees.designation_code = designations.designation_code  \
+        LEFT OUTER JOIN departments ON employees.department_code = departments.department_code  \
+        LEFT OUTER JOIN companies ON employees.company_code = companies.company_code  \
         WHERE emp_tickets.generated_by = ? OR emp_tickets.emp_id = ?  \
         ORDER BY ticket_id DESC;",
         [ emp_id, emp_id ],
