@@ -34,7 +34,7 @@ const Attandence_Request = () => {
         date: new Date().toString(),
         reason: '',
         submit_to: '',
-        request_type: '',
+        request_type: 'update',
         request_for: '',
         // current_time: '',
         // new_time: '',
@@ -711,7 +711,7 @@ const Attandence_Request = () => {
         const content = 
         <form className="w-100 text-right" onSubmit={ ( e ) => TakeAction( e, id, request_id ) }>
             <textarea name="remarks" className="form-control" placeholder='remarks' required minLength='10'></textarea>
-            <button className="btn btn-outline-dark btn-sm mt-2">
+            <button className="btn btn-outline-dark btn-sm mt-2" id="submitBtn">
                 submit
             </button>
         </form>
@@ -725,6 +725,7 @@ const Attandence_Request = () => {
 
         e.preventDefault();
         let status = document.getElementById('record_status');
+        $('#submitBtn').prop('disabled', true)
 
         axios.post(
             '/performactionforattrequest',
@@ -815,6 +816,7 @@ const Attandence_Request = () => {
         ).catch(
             err => {
 
+                $('#submitBtn').prop('disabled', false)
                 console.log(err)
 
             }
@@ -885,458 +887,227 @@ const Attandence_Request = () => {
 
     return (
         <>
-            <div className="page">
+            <Mail
+                data={ MailData }
+            />
+            <Modal show={ ShowModal } Hide={ onCLose } content={ Content } />
+            <div className="Attandence_Request">
+                <div className="Attandence_Request_Top" >
+                    <div className="Attandence_Request_Top_left">
+
+                        <div className="dropdown_filter">
+                            <p className="font-weight-bold">Attandence Requests</p>
+                        </div>
+
+                    </div>
+                    <div className="Attandence_Request_Top_right">
+                        
+                        {
+                            RequestDetails.emp_info.name
+                            ?
+                            RequestList.map(
+                                ( val ) => {
+
+                                    if ( parseInt( window.location.href.split('/').pop().split('_').pop() ) === val.id )
+                                    {
+                                        let options = [];
+                                        if ( parseInt( val.request_by ) === parseInt( localStorage.getItem('EmpID') ) )
+                                        {
+                                            if ( CheckCancellation() )
+                                            {
+                                                options.push(<option value="cancel">Cancel</option>);
+                                                Marking( options );
+                                            }
+                                        }else
+                                        {
+                                            if ( val.request_status === 'sent' )
+                                            {
+                                                Marking( options );
+                                                
+                                                
+                                                {/* options.push(<option value="approve">Approve</option>);
+                                                options.push(<option value="approve_&_forward">Approve & Forward</option>); */}
+                                                options.push(<option value="reject">Reject</option>);
+                                                {/* options.push(<option value="reject_&_forward">Reject & Forward</option>); */}
+                                            }else
+                                            if ( val.request_status === 'approve & forward' )
+                                            {
+                                                Marking( options );
+                                            }else
+                                            if ( val.request_status === 'approve' )
+                                            {
+                                                Marking( options );
+                                                // eslint-disable-next-line no-lone-blocks
+                                                {/* options.push(<option value="approve_&_forward">Approve & Forward</option>); */}
+                                            }else
+                                            if ( val.request_status === 'reject' )
+                                            {
+                                                {/* options.push(<option value="reject_&_forward">Reject & Forward</option>); */}
+                                            }
+
+                                        }
+
+                                        function Marking( options )
+                                        {
+
+                                            if ( AccessControls.access && CheckCancellation() )
+                                            {
+                                                if ( JSON.parse(AccessControls.access).includes(19) || JSON.parse(AccessControls.access).includes(0) )
+                                                {
+                                                    options.push(<option value="mark">Mark</option>);
+                                                    {/* options.push(<option value="mark_&_forward">Mark & Forward</option>); */}
+                                                }
+                                            }
+                                            return options;
+
+                                        }
+
+                                        function CheckCancellation()
+                                        {
+                                            let val = true;
+                                            for ( let x = 0; x < RequestDetails.reviews.length; x++ )
+                                            {
+
+                                                if ( RequestDetails.reviews[x].request_status === 'cancel' || RequestDetails.reviews[x].request_status === 'mark' || RequestDetails.reviews[x].request_status === 'mark_&_forward' )
+                                                {
+                                                    val = false;
+                                                }
+
+                                            }
+                                            return val;
+                                        }
+
+                                        return (
+                                            <>
+                                                {
+                                                    val.request_status === 'mark_&_forward'
+                                                    ?
+                                                    null
+                                                    :
+                                                    <select name="request_action" id="" className='form-control col-sm-3 mr-2 form-control-sm request_action' onChange={OnChangeSelect}>
+                                                        <option value="">select</option>
+                                                        { options }
+                                                    </select>
+                                                }
+
+                                                {
+                                                    RequestAction.request_action === "approve_&_forward" || RequestAction.request_action === "reject_&_forward" || RequestAction.request_action === "mark_&_forward"
+                                                    ?
+                                                    <select name="request_send_to" id="" className='form-control col-sm-3 mr-2 form-control-sm request_send_to' onChange={OnChangeSelect}>
+                                                        <option value="">select</option>
+                                                        {
+                                                            Relations.map(
+                                                                (val, index) => {
+
+                                                                    let option;
+                                                                    if ( val.category === 'all' || val.category.includes('attendance_request') )
+                                                                    {
+                                                                        option = <option value={val.sr} key={index}> {val.name} </option>;
+                                                                    }
+
+                                                                    return option;
+                                                                }
+                                                            )
+                                                        }
+                                                    </select>
+                                                    :
+                                                    null
+                                                }
+                                                {
+                                                    RequestAction.request_action === ''
+                                                    ?
+                                                    null
+                                                    :
+                                                    RequestAction.request_send_to === 0 && ( RequestAction.request_action === "approve_&_forward" || RequestAction.request_action === "reject_&_forward" )
+                                                    ?
+                                                    null
+                                                    :
+                                                    <div onClick={ () => OpenRemarks( val.id, val.request_id ) } className="btn light mx-2">Update</div>
+                                                }
+
+                                            </>
+                                        )
+                                    }else
+                                    {
+                                        return false;
+                                    }
+
+                                }
+                            )
+                            :
+                            null
+                        }
+                        <NavLink to='/attendance_request/new' className="btn submit">New</NavLink>
+
+                    </div>
+                </div>
+
                 {
-                    DetailsView
-                    ?
-                    <RequestDetailsView RequestDetails={RequestDetails} RequestList={RequestList} history={history} />
-                    :
-                    <RequestsView RequestList={RequestList} history={history} />
+                    OpenForm
+
+                        ?
+
+                        <AttRequestForm
+                            OnChangeHandler={OnChangeHandler}
+                            OnTimeChange={OnTimeChange}
+                            onChangeCheck={onChangeCheck}
+                            onUploadSnap={onImageUpload}
+                            onMarkChange={ onMarkChange }
+                            closebutton={closebutton}
+                            Submit={Submit}
+                            
+                            Dates={ Dates }
+                            Form={Form}
+                            date={d}
+                            Attendance={Attendance}
+                            SnapShot={SnapShot}
+                            Relations={Relations}
+                            Marking={ Marking }
+                            NewAttendance={ NewAttendance }
+                        />
+
+                        :
+
+                        <>
+
+                            <div className="Attandence_Request_breadcrums">
+                                <div className='d-flex'>
+                                    <p>
+                                        Total Requests :
+                                    </p>
+                                    <p className='ml-2' style={{color: 'gray'}} >{RequestList.length}</p>
+                                </div>
+                            </div>
+
+                            {
+                                DetailsView
+                                    ?
+                                    <View2
+                                        RequestList={RequestList}
+                                        RequestDetails={RequestDetails}
+                                        NewAttendance={ NewAttendance }
+                                        AccessControls={ AccessControls }
+
+                                        buttonslideSnapeshot={buttonslideSnapeshot}
+                                        OnTimeChange={ OnTimeChange }
+                                    />
+                                    :
+                                    <View
+                                        View={View}
+                                        RequestList={RequestList}
+                                    />
+
+                            }
+
+
+                        </>
                 }
+
             </div>
         </>
     )
 }
 export default Attandence_Request;
-
-const RequestsView = ({ RequestList, history }) => {
-
-    const Status = ({ status }) => {
-        return (
-            <div className='d-flex align-items-center'>
-                <div
-                    className={
-                        "dot mr-1 "
-                        +
-                        (
-                            status === 'mark' || status === 'Closed'
-                                ?
-                                "bg-success"
-                                :
-                                status === 'cancel'
-                                    ?
-                                    "bg-primary"
-                                    :
-                                    status === 'Pending'
-                                        ?
-                                        "bg-warning"
-                                        :
-                                        status === 'sent'
-                                            ?
-                                            "bg-dark"
-                                            :
-                                            status === 'Medium'
-                                                ?
-                                                "bg-info"
-                                                :
-                                                "bg-danger"
-                        )
-                    }
-                ></div>
-                <div
-                    className={
-                        "text-capitalize "
-                        +
-                        (
-                            status === 'mark' || status === 'Closed'
-                                ?
-                                "text-success"
-                                :
-                                status === 'cancel'
-                                    ?
-                                    "text-primary"
-                                    :
-                                    status === 'Pending'
-                                        ?
-                                        "text-warning"
-                                        :
-                                        status === 'sent'
-                                            ?
-                                            "text-dark"
-                                            :
-                                            status === 'Medium'
-                                                ?
-                                                "text-info"
-                                                :
-                                                "text-danger"
-                        )
-                    }
-                    style={{ fontSize: 12 }}
-                >
-                    {status.split('_').join(' ')}
-                </div>
-            </div>
-        )
-    }
-
-    return (
-        <>
-            <div className="page-content">
-                <div className="d-flex align-items-center justify-content-between">
-                    <h3 className="heading">
-                        Attendance Correction
-                        <sub>Request to modify your attendance</sub>
-                    </h3>
-                    <button className="btn submit" type='button' onClick={() => history.goBack()}>
-                        New
-                    </button>
-                </div>
-                <hr />
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th className='border-top-0'>Sr.No</th>
-                            <th className='border-top-0'>Requested By</th>
-                            <th className='border-top-0'>Requested At</th>
-                            <th className='border-top-0'>Marked At</th>
-                            <th className='border-top-0'>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            RequestList.map(
-                                (val, i) => {
-                                    const d = new Date(val.request_date);
-                                    const u_d = new Date(val.update_date);
-                                    return (
-                                        <tr onClick={() => history.push('/attendance_request/' + val.request_id + '_' + val.id)} key={i} className='pointer pointer-hover'>
-                                            <td>{i + 1}</td>
-                                            <td>
-                                                <div className="d-flex align-items-center justify-content-start">
-                                                    <img className="d-block rounded-circle" width={40} height={40} src={process.env.REACT_APP_SERVER + '/images/employees/' + val.emp_image} alt="" />
-                                                    <div className='pl-2'>
-                                                        <p className="mb-0 font-weight-bold">{val.sender_name}</p>
-                                                        <p className="mb-0 text-secondary">{val.designation_name}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {d.toDateString()}<br />
-                                                {moment(val.request_time, 'HH:mm:ss').format('hh:mm A')}
-                                            </td>
-                                            {
-                                                val.update_date
-                                                    ?
-                                                    <td>
-                                                        {u_d.toDateString()}<br />
-                                                        {moment(val.update_time, 'HH:mm:ss').format('hh:mm A')}
-                                                    </td>
-                                                    :
-                                                    <td className='text-danger'>---</td>
-                                            }
-                                            <td>
-                                                <Status status={val.request_status} />
-                                            </td>
-                                        </tr>
-                                    )
-                                }
-                            )
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </>
-    )
-}
-
-const RequestDetailsView = ({ RequestDetails, RequestList, history }) => {
-    const [showModal, setShowModal] = useState(false);
-    const [Content, setContent] = useState(<></>);
-    const Status = ({ status }) => {
-        return (
-            <div className='d-flex align-items-center'>
-                <div
-                    className={
-                        "dot mr-1 "
-                        +
-                        (
-                            status === 'mark' || status === 'Closed'
-                                ?
-                                "bg-success"
-                                :
-                                status === 'cancel'
-                                    ?
-                                    "bg-primary"
-                                    :
-                                    status === 'Pending'
-                                        ?
-                                        "bg-warning"
-                                        :
-                                        status === 'sent'
-                                            ?
-                                            "bg-dark"
-                                            :
-                                            status === 'Medium'
-                                                ?
-                                                "bg-info"
-                                                :
-                                                "bg-danger"
-                        )
-                    }
-                ></div>
-                <div
-                    className={
-                        "text-capitalize "
-                        +
-                        (
-                            status === 'mark' || status === 'Closed'
-                                ?
-                                "text-success"
-                                :
-                                status === 'cancel'
-                                    ?
-                                    "text-primary"
-                                    :
-                                    status === 'Pending'
-                                        ?
-                                        "text-warning"
-                                        :
-                                        status === 'sent'
-                                            ?
-                                            "text-dark"
-                                            :
-                                            status === 'Medium'
-                                                ?
-                                                "text-info"
-                                                :
-                                                "text-danger"
-                        )
-                    }
-                    style={{ fontSize: 12 }}
-                >
-                    {status.split('_').join(' ')}
-                </div>
-            </div>
-        )
-    }
-    return (
-        <>
-            <Modal show={showModal} Hide={() => setShowModal(false)} content={Content} />
-            <div className="grid-view">
-                <div className='page-content'>
-                    <div className="d-flex align-items-center justify-content-between">
-                        <h3 className="heading">
-                            Requests
-                        </h3>
-                        <button className="btn submit">New</button>
-                    </div>
-                    <hr />
-                    <table className='table table-sm' style={{fontSize: 12}}>
-                        <thead>
-                            <tr>
-                                <th className='border-top-0'>Sr.No</th>
-                                <th className='border-top-0'>Requested By</th>
-                                <th className='border-top-0'>Requested At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                RequestList.map(
-                                    (val, i) => {
-                                        const d = new Date(val.request_date);
-                                        return (
-                                            <tr onClick={() => history.push('/attendance_request/' + val.request_id + '_' + val.id)} key={i} className='pointer pointer-hover'>
-                                                <td>{i + 1}</td>
-                                                <td>
-                                                    <p className="mb-0 font-weight-bold">{val.sender_name}</p>
-                                                    <p className="mb-0 text-secondary">{val.designation_name}</p>
-                                                </td>
-                                                <td>
-                                                    {d.toDateString()}<br />
-                                                    {moment(val.request_time, 'HH:mm:ss').format('hh:mm A')}
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                )
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <div className='page-content mb-3'>
-                        <div className="d-flex align-items-center justify-content-between">
-                            <h3 className="heading">
-                                Request Details
-                            </h3>
-                            <div>
-                                <button className="btn light">Back</button>
-                                <button className="btn cancle ml-2">Reject</button>
-                                <button className="btn submit ml-2">Approve</button>
-                            </div>
-                        </div>
-                        <hr />
-                        <table className='table mb-0'>
-                            <colgroup>
-                                <col style={{width: '30%'}} />
-                                <col style={{width: '70%'}} />
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <th className='border-top-0'>Requested By</th>
-                                    <td className='border-top-0'>
-                                        <div className="d-flex align-items-center">
-                                            <img className="d-block rounded-circle" width={40} height={40} src={process.env.REACT_APP_SERVER + '/images/employees/' + RequestDetails.emp_info.emp_image} alt="" />
-                                            <div className='pl-2'>
-                                                <b>{RequestDetails.emp_info.name}</b><br />
-                                                {RequestDetails.emp_info.designation_name}, {RequestDetails.emp_info.department_name}, {RequestDetails.emp_info.company_name}
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Reason</th>
-                                    <td>{RequestDetails.request_info.reason}</td>
-                                </tr>
-                                <tr>
-                                    <th>Date to Correct</th>
-                                    <td>{new Date(RequestDetails?.request_info?.date).toDateString()}</td>
-                                </tr>
-                                <tr>
-                                    <th>Screenshot</th>
-                                    {
-                                        RequestDetails.request_info.snapshot
-                                        ?
-                                        <td>
-                                            <b className='text-primary pointer' onClick={() => {
-                                                setShowModal(true);
-                                                setContent(
-                                                    <>
-                                                        <h5 style={{fontFamily: 'Roboto-Light'}}><b>Screenshot</b></h5>
-                                                        <hr />
-                                                        <img src={RequestDetails.request_info.snapshot} alt="screenshot" width='100%' />
-                                                    </>
-                                                )
-                                            }}>Click To View</b>
-                                        </td>
-                                        :
-                                        <td className='text-info'>No Screenshot Attached</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <th>Timings</th>
-                                    <td>
-                                        {
-                                            RequestDetails.reviews.map(
-                                                (val, index) => {
-                                                    let sender = [];
-                                                    sender = val.sender_name.split(' ');
-                                                    if (sender.length > 2) {
-                                                        sender.pop();
-                                                    }
-                                                    if (index < RequestDetails.reviews.length) {
-                                                        return (
-                                                            <div key={index}>
-                                                                <b>{ sender.join(' ') } timings:</b>
-                                                                <table className='table table-sm' style={{fontSize: 12}}>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Time IN</th>
-                                                                            <th>Time OUT</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>{val.time_in && moment(val.time_in, 'HH:mm:ss').format('hh:mm A')}</td>
-                                                                            <td>{val.time_out && moment(val.time_out, 'HH:mm:ss').format('hh:mm A')}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        )
-                                                    }else {
-                                                        return <></>
-                                                    }
-                                                }
-                                            )
-                                        }
-                                    </td>
-                                </tr>
-                                {
-                                    RequestDetails.request_info.marked_time_in !== null &&
-                                    RequestDetails.request_info.marked_time_out !== null &&
-                                    RequestDetails.request_info.marked_break_in !== null &&
-                                    RequestDetails.request_info.marked_break_out !== null
-                                    ?
-                                    <tr>
-                                        <th>Marked timings</th>
-                                        <td>
-                                                <table className='table table-sm' style={{ fontSize: 12 }}>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Time IN</th>
-                                                            <th>Time OUT</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>{RequestDetails?.request_info?.marked_time_in && moment(RequestDetails?.request_info?.marked_time_in, 'HH:mm:ss').format('hh:mm A')}</td>
-                                                            <td>{RequestDetails?.request_info?.marked_time_out && moment(RequestDetails?.request_info?.marked_time_out, 'HH:mm:ss').format('hh:mm A')}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                        </td>
-                                    </tr>
-                                    :<></>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className='page-content mb-3'>
-                        <h3 className="heading">
-                            Review / Comments
-                        </h3>
-                        <hr />
-                        {
-                            RequestDetails.reviews.map(
-                                (val, index) => {
-                                    let receiver = [];
-                                    if (val.receiver_name !== null) {
-                                        receiver = val.receiver_name.split(' ');
-                                        if (receiver.length > 1) {
-                                            receiver.pop();
-                                        }
-                                    } else {
-                                        receiver = [val.sender_name];
-                                        if (receiver.length > 1) {
-                                            receiver.pop();
-                                        }
-                                    }
-                                    return (
-                                        <table key={index} className='table mb-0'>
-                                            <colgroup>
-                                                <col style={{width: '30%'}} />
-                                                <col style={{width: '70%'}} />
-                                            </colgroup>
-                                            <tbody>
-                                                <tr>
-                                                    <th className='border-top-0'>From</th>
-                                                    <td className='border-top-0'>{val.sender_name}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>To</th>
-                                                    <td>{val.receiver_name}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Remarks</th>
-                                                    <td>
-                                                        {val.remarks === null ? 'No remrks yet' : val.remarks}<br />
-                                                        <small className="text-secondary">{new Date(val.request_date).toDateString()}</small><br />
-                                                        <Status status={val.request_status} />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    )
-                                }
-                            )
-                        }
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
 
 const View = ({ RequestList }) => {
 
@@ -1459,10 +1230,10 @@ const AttRequestForm = (props) => {
 
                 <div>
                     <p>Request type</p>
-                    <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='request_type' required >
+                    <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='request_type' required disabled>
                         <option value="">select</option>
-                        <option value='update'>Update</option>
-                        <option value='insert'>Insert</option>
+                        <option selected={props.Form.request_type === 'update'} value='update'>Update</option>
+                        <option selected={props.Form.request_type === 'insert'} value='insert'>Insert</option>
                     </select>
                 </div>
 
@@ -1491,24 +1262,24 @@ const AttRequestForm = (props) => {
                     :
                     <>
                         <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_time_in' onChange={props.onMarkChange} /> <span className="pl-2">Mark time in</span>
+                            <input type="checkbox" name='mark_time_in' onChange={props.onMarkChange} /> <small className="pl-2">Update time IN</small>
                         </div>
                         <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_time_out' onChange={props.onMarkChange} /> <span className="pl-2">Mark time out</span>
+                            <input type="checkbox" name='mark_time_out' onChange={props.onMarkChange} /> <small className="pl-2">Update time OUT</small>
                         </div>
-                        <div className="d-flex align-items-center">
+                        {/* <div className="d-flex align-items-center">
                             <input type="checkbox" name='mark_break_in' onChange={props.onMarkChange} /> <span className="pl-2">Mark break in</span>
                         </div>
                         <div className="d-flex align-items-center">
                             <input type="checkbox" name='mark_break_out' onChange={props.onMarkChange} /> <span className="pl-2">Mark break out</span>
-                        </div>
+                        </div> */}
                     </>
                 }
 
                 {
                     props.Marking.mark_time_in
                     ?
-                    <div>
+                    <div className='my-2'>
                         <div className='d-flex'>
                             <div className='w-100 mr-1'>
                                 <p>Time In</p>
@@ -1516,13 +1287,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Time In</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_in} name="time_in" id="time_in" />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_in === '00:00:00' ? null : props.NewAttendance.time_in} name="time_in" id="time_in" required />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='time_in' onChange={props.onChangeCheck} />
                             <label for="time_in"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1539,13 +1310,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Time Out</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_out} name="time_out" id="time_out" />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_out === '00:00:00' ? null : props.NewAttendance.time_out} name="time_out" id="time_out" required />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='time_out' onChange={props.onChangeCheck} />
                             <label for="time_out"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1562,13 +1333,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Break In</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_in} name="break_in" id='break_in' />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_in === '00:00:00' ? null : props.NewAttendance.break_in} name="break_in" id='break_in' />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='break_in' onChange={props.onChangeCheck} />
                             <label for="break_in"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1585,13 +1356,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Break Out</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_out} name="break_out" id='break_out' />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_out === '00:00:00' ? null : props.NewAttendance.break_out} name="break_out" id='break_out' />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='break_out' onChange={props.onChangeCheck} />
                             <label for="break_out"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1869,7 +1640,7 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                             ?
                             JSON.parse(AccessControls.access).includes(19) || JSON.parse(AccessControls.access).includes(0)
                             ?
-                            <div className='details'>
+                            <div className='details d-block'>
                                 <p>Your timings : </p>
                                 <div>
                                     <table className="table table-sm">
@@ -1878,30 +1649,35 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                                             <tr>
 
                                                 <td className="text-left">
-                                                    <input type='time' name="time_in" id="time_in_check" value={ NewAttendance.time_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Time IN</label><br />
+                                                    <input type='time' name="time_in" id="time_in_check" value={ !NewAttendance.time_in || NewAttendance.time_in === '00:00:00' ? null : NewAttendance.time_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="time_in_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="time_in_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
-                                                    <input type='time' name="time_out" id="time_out_check" value={ NewAttendance.time_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Time OUT</label><br />
+                                                    <input type='time' name="time_out" id="time_out_check" value={ !NewAttendance.time_out || NewAttendance.time_out === '00:00:00' ? null : NewAttendance.time_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="time_out_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="time_out_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
-                                                    <input type='time' name="break_in" id="break_in_check" value={ NewAttendance.break_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Break IN</label><br />
+                                                    <input type='time' name="break_in" id="break_in_check" value={ !NewAttendance.break_in || NewAttendance.break_in === '00:00:00' ? null : NewAttendance.break_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="break_in_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="break_in_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
-                                                    <input type='time' name="break_out" id="break_out_check" value={ NewAttendance.break_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Break OUT</label><br />
+                                                    <input type='time' name="break_out" id="break_out_check" value={ !NewAttendance.break_out || NewAttendance.break_out === '00:00:00' ? null : NewAttendance.break_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="break_out_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="break_out_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
+                                                    <label className="mb-0">Status</label><br />
                                                     <select name="" id="record_status" defaultValue='Present'>
                                                         <option value="Present">Present</option>
                                                         <option value="Late">Late</option>

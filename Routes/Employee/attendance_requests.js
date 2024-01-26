@@ -549,30 +549,30 @@ router.post('/performactionforattrequest', ( req, res ) => {
                 {
                     if ( status === 'mark' || status === 'mark_&_forward' )
                     {
-                        let time1 = rslt[1][0].time_in.substring(3, 5);
-                        let time2 = timeIn;
-                        time1 = parseInt(time1) + parseInt(rslt[1][0].grace_in_minutes);
-                        time1 = rslt[1][0].time_in.substring(0, 3) + (time1.toString().length === 1 ? ( '0' + time1.toString() ) : time1.toString()) + ':00';
+                        let time1 = moment(rslt[1][0].time_in, ["h:mm A"]).add('minutes', parseInt(rslt[1][0].grace_in_minutes)).format("HH:mm:ss");
+                        // let time1 = rslt[1][0].time_in.substring(3, 5);
+                        let time2 = moment(timeIn, 'HH:mm:ss').format("HH:mm:ss");
+                        // time1 = parseInt(time1) + parseInt(rslt[1][0].grace_in_minutes);
+                        // time1 = rslt[1][0].time_in.substring(0, 3) + (time1.toString().length === 1 ? ( '0' + time1.toString() ) : time1.toString()) + ':00';
                         let q = "";
                         let parameters = [];
                         let status = 'Present';
                         
-                        console.log(status)
                         if ( time2 > time1 )
                         {
                             status = 'Late';
                         }
-                        console.log(status)
                         if ( request_type === 'insert' )
                         {
-                            q = "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_in`, `time_out`, `break_in`, `break_out`, `emp_date`) VALUES (?,?,?,?,?,?,?);";
-                            parameters = [ request_by, status, timeIn, timeOut, breakIn, breakOut, new Date(record_date) ];
+                            q = "INSERT INTO `emp_attendance`(`emp_id`, `status`, `time_in`, `time_out`, `break_in`, `break_out`, `emp_date`, `edit_by`, `edit_date`, `edit_time`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+                            parameters = [ request_by, status, timeIn, timeOut, breakIn, breakOut, new Date(record_date), emp_id, new Date(), new Date().toTimeString() ];
                         }else
                         if ( request_type === 'update' )
                         {
-                            q = "UPDATE `emp_attendance` SET `time_in` = ?, `time_out` = ?, `break_in` = ?, `break_out` = ? WHERE emp_id = ? AND emp_date = ?;";
-                            parameters = [ timeIn, timeOut, breakIn, breakOut, request_by, new Date(record_date).toISOString().slice(0, 10).replace('T', ' ') ];
+                            q = "UPDATE `emp_attendance` SET `status` = ?, `time_in` = ?, `time_out` = ?, `break_in` = ?, `break_out` = ?, `edit_by` = ?, `edit_date` = ?, `edit_time` = ? WHERE emp_id = ? AND emp_date = ?;";
+                            parameters = [ status, timeIn, timeOut, breakIn, breakOut, emp_id, new Date(), new Date().toTimeString(), request_by, new Date(record_date).toISOString().slice(0, 10).replace('T', ' ') ];
                         }
+                        console.log(q);
 
                         q = q.concat("UPDATE tbl_attendance_requests SET marked_time_in = ?, marked_time_out = ?, marked_break_in = ?, marked_break_out = ? WHERE id = ?");
                         parameters.push( timeIn );
