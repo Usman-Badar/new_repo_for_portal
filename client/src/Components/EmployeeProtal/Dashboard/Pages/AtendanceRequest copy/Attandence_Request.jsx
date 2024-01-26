@@ -34,7 +34,7 @@ const Attandence_Request = () => {
         date: new Date().toString(),
         reason: '',
         submit_to: '',
-        request_type: '',
+        request_type: 'update',
         request_for: '',
         // current_time: '',
         // new_time: '',
@@ -711,7 +711,7 @@ const Attandence_Request = () => {
         const content = 
         <form className="w-100 text-right" onSubmit={ ( e ) => TakeAction( e, id, request_id ) }>
             <textarea name="remarks" className="form-control" placeholder='remarks' required minLength='10'></textarea>
-            <button className="btn btn-outline-dark btn-sm mt-2">
+            <button className="btn btn-outline-dark btn-sm mt-2" id="submitBtn">
                 submit
             </button>
         </form>
@@ -725,6 +725,7 @@ const Attandence_Request = () => {
 
         e.preventDefault();
         let status = document.getElementById('record_status');
+        $('#submitBtn').prop('disabled', true)
 
         axios.post(
             '/performactionforattrequest',
@@ -815,6 +816,7 @@ const Attandence_Request = () => {
         ).catch(
             err => {
 
+                $('#submitBtn').prop('disabled', false)
                 console.log(err)
 
             }
@@ -1020,7 +1022,7 @@ const Attandence_Request = () => {
                                                     ?
                                                     null
                                                     :
-                                                    <div onClick={ () => OpenRemarks( val.id, val.request_id ) } className="btn sendbutton">Send</div>
+                                                    <div onClick={ () => OpenRemarks( val.id, val.request_id ) } className="btn light mx-2">Update</div>
                                                 }
 
                                             </>
@@ -1035,11 +1037,7 @@ const Attandence_Request = () => {
                             :
                             null
                         }
-
-
-
-
-                        <NavLink to='/attendance_request/new' className="btn New_button"> <i class="las la-plus"></i> <p>New</p></NavLink>
+                        <NavLink to='/attendance_request/new' className="btn submit">New</NavLink>
 
                     </div>
                 </div>
@@ -1232,10 +1230,10 @@ const AttRequestForm = (props) => {
 
                 <div>
                     <p>Request type</p>
-                    <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='request_type' required >
+                    <select id="" className="form-control form-control-sm" onChange={props.OnChangeHandler} name='request_type' required disabled>
                         <option value="">select</option>
-                        <option value='update'>Update</option>
-                        <option value='insert'>Insert</option>
+                        <option selected={props.Form.request_type === 'update'} value='update'>Update</option>
+                        <option selected={props.Form.request_type === 'insert'} value='insert'>Insert</option>
                     </select>
                 </div>
 
@@ -1264,24 +1262,24 @@ const AttRequestForm = (props) => {
                     :
                     <>
                         <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_time_in' onChange={props.onMarkChange} /> <span className="pl-2">Mark time in</span>
+                            <input type="checkbox" name='mark_time_in' onChange={props.onMarkChange} /> <small className="pl-2">Update time IN</small>
                         </div>
                         <div className="d-flex align-items-center">
-                            <input type="checkbox" name='mark_time_out' onChange={props.onMarkChange} /> <span className="pl-2">Mark time out</span>
+                            <input type="checkbox" name='mark_time_out' onChange={props.onMarkChange} /> <small className="pl-2">Update time OUT</small>
                         </div>
-                        <div className="d-flex align-items-center">
+                        {/* <div className="d-flex align-items-center">
                             <input type="checkbox" name='mark_break_in' onChange={props.onMarkChange} /> <span className="pl-2">Mark break in</span>
                         </div>
                         <div className="d-flex align-items-center">
                             <input type="checkbox" name='mark_break_out' onChange={props.onMarkChange} /> <span className="pl-2">Mark break out</span>
-                        </div>
+                        </div> */}
                     </>
                 }
 
                 {
                     props.Marking.mark_time_in
                     ?
-                    <div>
+                    <div className='my-2'>
                         <div className='d-flex'>
                             <div className='w-100 mr-1'>
                                 <p>Time In</p>
@@ -1289,13 +1287,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Time In</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_in} name="time_in" id="time_in" />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_in === '00:00:00' ? null : props.NewAttendance.time_in} name="time_in" id="time_in" required />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='time_in' onChange={props.onChangeCheck} />
                             <label for="time_in"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1312,13 +1310,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Time Out</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_out} name="time_out" id="time_out" />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.time_out === '00:00:00' ? null : props.NewAttendance.time_out} name="time_out" id="time_out" required />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='time_out' onChange={props.onChangeCheck} />
                             <label for="time_out"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1335,13 +1333,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Break In</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_in} name="break_in" id='break_in' />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_in === '00:00:00' ? null : props.NewAttendance.break_in} name="break_in" id='break_in' />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='break_in' onChange={props.onChangeCheck} />
                             <label for="break_in"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1358,13 +1356,13 @@ const AttRequestForm = (props) => {
                             </div>
                             <div className='w-100 ml-1'>
                                 <p>New Break Out</p>
-                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_out} name="break_out" id='break_out' />
+                                <input type="time" className="form-control form-control-sm" onChange={props.OnTimeChange} value={props.NewAttendance.break_out === '00:00:00' ? null : props.NewAttendance.break_out} name="break_out" id='break_out' />
                             </div>
                         </div>
-                        <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
+                        {/* <div className='d-flex justify-content-end align-items-center mt-1' style={{ marginRight: '212px' }}>
                             <input type="checkbox" name='break_out' onChange={props.onChangeCheck} />
                             <label for="break_out"> Set to Null </label>
-                        </div>
+                        </div> */}
                     </div>
                     :
                     null
@@ -1642,7 +1640,7 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                             ?
                             JSON.parse(AccessControls.access).includes(19) || JSON.parse(AccessControls.access).includes(0)
                             ?
-                            <div className='details'>
+                            <div className='details d-block'>
                                 <p>Your timings : </p>
                                 <div>
                                     <table className="table table-sm">
@@ -1651,30 +1649,35 @@ const View2 = ({ RequestList, RequestDetails, buttonslideSnapeshot, OnTimeChange
                                             <tr>
 
                                                 <td className="text-left">
-                                                    <input type='time' name="time_in" id="time_in_check" value={ NewAttendance.time_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Time IN</label><br />
+                                                    <input type='time' name="time_in" id="time_in_check" value={ !NewAttendance.time_in || NewAttendance.time_in === '00:00:00' ? null : NewAttendance.time_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="time_in_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="time_in_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
-                                                    <input type='time' name="time_out" id="time_out_check" value={ NewAttendance.time_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Time OUT</label><br />
+                                                    <input type='time' name="time_out" id="time_out_check" value={ !NewAttendance.time_out || NewAttendance.time_out === '00:00:00' ? null : NewAttendance.time_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="time_out_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="time_out_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
-                                                    <input type='time' name="break_in" id="break_in_check" value={ NewAttendance.break_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Break IN</label><br />
+                                                    <input type='time' name="break_in" id="break_in_check" value={ !NewAttendance.break_in || NewAttendance.break_in === '00:00:00' ? null : NewAttendance.break_in } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="break_in_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="break_in_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
-                                                    <input type='time' name="break_out" id="break_out_check" value={ NewAttendance.break_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
+                                                    <label className="mb-0">Break OUT</label><br />
+                                                    <input type='time' name="break_out" id="break_out_check" value={ !NewAttendance.break_out || NewAttendance.break_out === '00:00:00' ? null : NewAttendance.break_out } style={ { width: '100% !important' } } onChange={ OnTimeChange } /> 
                                                     <div className='w-100 text-left d-flex align-items-center'>
-                                                        <input onChange={ OnTimeChange } type='checkbox' name="break_out_check" /> <span> Set to null </span>
+                                                        {/* <input onChange={ OnTimeChange } type='checkbox' name="break_out_check" /> <span> Set to null </span> */}
                                                     </div>
                                                 </td>
                                                 <td className="text-left">
+                                                    <label className="mb-0">Status</label><br />
                                                     <select name="" id="record_status" defaultValue='Present'>
                                                         <option value="Present">Present</option>
                                                         <option value="Late">Late</option>
