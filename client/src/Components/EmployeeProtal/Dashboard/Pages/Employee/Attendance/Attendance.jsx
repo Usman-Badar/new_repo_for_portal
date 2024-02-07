@@ -623,6 +623,7 @@ const Attendance = () => {
                 data: JSON.stringify(DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase()))),
                 logs: JSON.stringify(Logs),
                 punch: JSON.stringify(Thumbs),
+                access: JSON.parse(AccessControls.access).includes(106) ? 1 : 0
             }
         ).then(() => {
             setModalContent(
@@ -836,9 +837,21 @@ const Attendance = () => {
                                         <th className='border-top-0'></th>
                                         <th className='border-top-0'>Employee Code</th>
                                         <th className='border-top-0'>Name</th>
-                                        <th className='border-top-0'>Date</th>
+                                        {
+                                            !temporaryStaff && JSON.parse(AccessControls.access).includes(106)
+                                            ?
+                                            <th className='border-top-0'>IN Date</th>
+                                            :
+                                            <th className='border-top-0'>Date</th>
+                                        }
                                         <th className="d-none">Day</th>
                                         <th className='border-top-0'>Time IN</th>
+                                        {
+                                            !temporaryStaff && JSON.parse(AccessControls.access).includes(106)
+                                            ?
+                                            <th className='border-top-0'>OUT Date</th>
+                                            :null
+                                        }
                                         <th className='border-top-0'>Time OUT</th>
                                         {
                                             !temporaryStaff
@@ -955,6 +968,7 @@ const Attendance = () => {
                                                             ?
                                                             <>
                                                                 <td></td>
+                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td></td>}
                                                                 <td></td>
                                                                 {
                                                                     !temporaryStaff
@@ -971,6 +985,7 @@ const Attendance = () => {
                                                             ?
                                                             <>
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_in === null ? <span></span> : val.time_in} </td>
+                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td onClick={() => makeViewForRecordUpdate(val)}> {val.out_date && moment(val.out_date).format('YYYY-MM-DD')} </td>}
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_out === null ? <span></span> : val.time_out} </td>
                                                                 {
                                                                     !temporaryStaff
@@ -985,6 +1000,7 @@ const Attendance = () => {
                                                             :
                                                             <>
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_in === null ? <span></span> : val.time_in} </td>
+                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td onClick={() => makeViewForRecordUpdate(val)}> {val.out_date && moment(val.out_date).format('YYYY-MM-DD')} </td>}
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_out === null ? <span></span> : val.time_out} </td>
                                                                 {
                                                                     !temporaryStaff
