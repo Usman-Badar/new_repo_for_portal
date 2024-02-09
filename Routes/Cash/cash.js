@@ -179,8 +179,18 @@ router.post('/cash/advance/create', ( req, res ) => {
 router.post('/cash/load/requests', ( req, res ) => {
 
     // const { shipViewer, cashViewer, emp_id, cashier, location_code, accessKey } = req.body;
-    const { shp_line_adv_cash_viewer, cashViewer, emp_id, cashier, location_code, accessKey } = req.body;
+    const { companies, companyViewer, shp_line_adv_cash_viewer, cashViewer, emp_id, cashier, location_code, accessKey } = req.body;
     let query = "";
+    let content = "";
+    if (companyViewer === 1) {
+        companies?.forEach((company, i) => {
+            if (i !== 0) {
+                content = content + " OR ";
+            }
+            content = content + (" db_cash_receipts.company = " + company)
+            return content;
+        })
+    }
     if (shp_line_adv_cash_viewer === 1) {
         query = "SELECT  \
         db_cash_receipts.*, \
@@ -223,6 +233,10 @@ router.post('/cash/load/requests', ( req, res ) => {
                 "WHERE db_cash_receipts.location = " + location_code + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued' OR db_cash_receipts.status = 'cleared')"
                 )    
                 :   
+                companyViewer === 1
+                ?
+                "WHERE " + content + " AND (db_cash_receipts.status = 'approved' OR db_cash_receipts.status = 'issued' OR db_cash_receipts.status = 'cleared')"
+                :
                 "WHERE approved_by = ? OR verified_by = ? OR cashier = ? OR db_cash_receipts.emp_id = ?" 
                 ) + " ORDER BY `id` DESC;";
     }
