@@ -1,6 +1,6 @@
 import axios from '../../../../../../axios';
 
-export const loadAllRequests = ( ShipViewer, CashViewer, Admin, Cashier, location_code, setRequests ) => {
+export const loadAllRequests = ( ShipViewer, CashViewer, Admin, Cashier, companyViewer, companies, location_code, setRequests ) => {
     axios.post(
         '/cash/load/requests',
         {
@@ -10,6 +10,8 @@ export const loadAllRequests = ( ShipViewer, CashViewer, Admin, Cashier, locatio
             cashViewer: CashViewer ? 1 : 0,
             accessKey: Admin ? 1 : 0,
             cashier: Cashier ? 1 : 0,
+            companies: companies, 
+            companyViewer: companyViewer ? 1 : 0,
             location_code: location_code
         }
     )

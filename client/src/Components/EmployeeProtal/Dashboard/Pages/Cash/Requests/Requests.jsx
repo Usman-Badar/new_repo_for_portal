@@ -14,6 +14,7 @@ function RequestsComponent() {
     const [ CashViewer, setCashViewer ] = useState(false);
     const [ ShipViewer, setShipViewer ] = useState(false);
     const [ Cashier, setCashier ] = useState(false);
+    const [ CompanyViewer, setCompanyViewer ] = useState(false);
     const [ AccessDefined, setAccessDefined ] = useState(false);
     const [ Keyword, setKeyword ] = useState('');
     const [ Company, setCompany ] = useState('');
@@ -31,6 +32,7 @@ function RequestsComponent() {
             let shpViewer = false;
             let accessKey = false;
             let cashier = false;
+            let companyViewer = false;
             if ( AccessControls )
             {
                 for ( let y = 0; y < JSON.parse(AccessControls.access).length; y++ )
@@ -49,12 +51,17 @@ function RequestsComponent() {
                     {
                         cashier = true;
                     }
+                    if ( parseInt(JSON.parse(AccessControls.access)[y]) === 107 )
+                    {
+                        companyViewer = true;
+                    }
                 }
             }
             setShipViewer(shpViewer);
             setCashViewer(cashViewer);
             setAdmin(accessKey);
             setCashier(cashier);
+            setCompanyViewer(companyViewer);
             setAccessDefined(true);
         }, [AccessControls]
     )
@@ -63,7 +70,7 @@ function RequestsComponent() {
         () => {
             if ( AccessControls && AccessDefined )
             {
-                loadAllRequests( ShipViewer, CashViewer, Admin, Cashier, AccessControls.location_code, setRequests );
+                loadAllRequests( ShipViewer, CashViewer, Admin, Cashier, CompanyViewer, AccessControls.companies, AccessControls.location_code, setRequests );
             }
         }, [ AccessControls, AccessDefined ]
     );
