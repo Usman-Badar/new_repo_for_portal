@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 
 function TripEntry() {
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
-    const typeRef = useRef();
-    const numberRef = useRef();
+    // const typeRef = useRef();
+    // const numberRef = useRef();
     const fromRef = useRef();
     const toRef = useRef();
     const dateRef = useRef();
@@ -19,21 +19,21 @@ function TripEntry() {
     const btnRef = useRef();
     const formRef = useRef();
     const fieldsetRef = useRef();
-    const [Equipments, setEquipments] = useState([]);
-    const [EquipmentNumbers, setEquipmentNumbers] = useState([]);
+    // const [Equipments, setEquipments] = useState([]);
+    // const [EquipmentNumbers, setEquipmentNumbers] = useState([]);
     const [Requests, setRequests] = useState();
     const [New, setNew] = useState(false);
     const [Details, setDetails] = useState();
 
-    useEffect(
-        () => {
-            let isActive = true;
-            GetEquipments(isActive);
-            return () => {
-                isActive = false;
-            }
-        }, []
-    );
+    // useEffect(
+    //     () => {
+    //         let isActive = true;
+    //         GetEquipments(isActive);
+    //         return () => {
+    //             isActive = false;
+    //         }
+    //     }, []
+    // );
     useEffect(
         () => {
             let isActive = true;
@@ -43,34 +43,35 @@ function TripEntry() {
             }
         }, []
     );
-    const GetEquipments = (isActive) => {
-        axios.get('/fuel-managent/equipment-types')
-        .then(res => {
-            if (!isActive) return;
-            setEquipments(res.data);
-        }).catch(err => console.log(err));
-    }
-    const GetEquipmentNumbers = (value) => {
-        setEquipmentNumbers([]);
-        axios.post('/fuel-managent/equipment-numbers', {type_id: value}).then(
-            res => {
-                setEquipmentNumbers(res.data);
-            }
-        ).catch(
-            err => {
-                console.log(err);
-            }
-        )
-    }
+    // const GetEquipments = (isActive) => {
+    //     axios.get('/fuel-managent/equipment-types')
+    //     .then(res => {
+    //         if (!isActive) return;
+    //         setEquipments(res.data);
+    //     }).catch(err => console.log(err));
+    // }
+    // const GetEquipmentNumbers = (value) => {
+    //     setEquipmentNumbers([]);
+    //     axios.post('/fuel-managent/equipment-numbers', {type_id: value}).then(
+    //         res => {
+    //             setEquipmentNumbers(res.data);
+    //         }
+    //     ).catch(
+    //         err => {
+    //             console.log(err);
+    //         }
+    //     )
+    // }
     const onSubmit = (e) => {
         e.preventDefault();
-        if (typeRef.current.value.trim().length === 0) {
-            JSAlert.alert('Equipment is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-            return false;
-        }else if (numberRef.current.value.trim().length === 0) {
-            JSAlert.alert('Equipment Number is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-            return false;
-        }else if (fromRef.current.value.trim().length === 0) {
+        // if (typeRef.current.value.trim().length === 0) {
+        //     JSAlert.alert('Equipment is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+        //     return false;
+        // }else if (numberRef.current.value.trim().length === 0) {
+        //     JSAlert.alert('Equipment Number is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+        //     return false;
+        // }else 
+        if (fromRef.current.value.trim().length === 0) {
             JSAlert.alert('Trip from location is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
         }else if (toRef.current.value.trim().length === 0) {
@@ -98,8 +99,8 @@ function TripEntry() {
         axios.post(
             '/fuel-managent/fuel-issue-for-trip/new',
             {
-                type: typeRef.current.value,
-                number: numberRef.current.value,
+                // type: typeRef.current.value,
+                // number: numberRef.current.value,
                 from: fromRef.current.value,
                 to: toRef.current.value,
                 date: dateRef.current.disabled ? '' : dateRef.current.value,
@@ -168,7 +169,7 @@ function TripEntry() {
                         </h3>
                         <hr />
                         <fieldset ref={fieldsetRef}>
-                            <div className="d-flex mb-2" style={{gap: '20px'}}>
+                            {/* <div className="d-flex mb-2" style={{gap: '20px'}}>
                                 <div className='w-50'>
                                     <label className='mb-0'>
                                         <b>Equipment Type</b>
@@ -207,7 +208,7 @@ function TripEntry() {
                                         }
                                     </select>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="d-flex mb-2" style={{gap: '20px'}}>
                                 <div className='w-50'>
                                     <label className='mb-0'>

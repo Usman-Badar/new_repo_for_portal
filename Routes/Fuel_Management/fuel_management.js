@@ -71,18 +71,20 @@ router.post('/fuel-managent/fuel-issue-for-equipemnt/new', ( req, res ) => {
 } );
 
 router.post('/fuel-managent/fuel-issue-for-trip/new', ( req, res ) => {
-    const { type, number, from, to, date, fuel, emp_id } = req.body;
+    // const { type, number, from, to, date, fuel, emp_id } = req.body;
+    const { from, to, date, fuel, emp_id } = req.body;
     const dt = date === '' || date === null || date === 'null' || date === undefined ? new Date() : date;
 
-    if (type === '' || isNaN(parseInt(type))) {
-        res.send('err');
-        res.end();
-        return false;
-    }else if (number === '' || isNaN(parseInt(number))) {
-        res.send('err');
-        res.end();
-        return false;
-    }else if (fuel === '' || isNaN(parseInt(fuel)) || parseInt(fuel) <= 0) {
+    // if (type === '' || isNaN(parseInt(type))) {
+    //     res.send('err');
+    //     res.end();
+    //     return false;
+    // }else if (number === '' || isNaN(parseInt(number))) {
+    //     res.send('err');
+    //     res.end();
+    //     return false;
+    // }else 
+    if (fuel === '' || isNaN(parseInt(fuel)) || parseInt(fuel) <= 0) {
         res.send('err');
         res.end();
         return false;
@@ -107,50 +109,16 @@ router.post('/fuel-managent/fuel-issue-for-trip/new', ( req, res ) => {
     }
 
     db.query(
-        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
-        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
+        "INSERT INTO `tbl_fuel_issue_for_trailers`(`fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `trip_from`, `trip_to`, `created_by`, `stock_at_station`) VALUES (?,?,?,?,?,?,?,?);",
+        [fuel, dt, type, number, from, to, emp_id, TOTAL],
         ( err, rslt ) => {
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
                 res.end();
             }else {
-                const IN = rslt[0][0].q;
-                const OUT = rslt[1][0].q;
-                const TOTAL = IN - OUT;
-
-                if (parseFloat(fuel) > parseFloat(TOTAL)) {
-                    res.send('limit exceed');
-                    res.end();
-                }else {
-                    db.query(
-                        "INSERT INTO `tbl_fuel_issue_for_trailers`(`fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `trip_from`, `trip_to`, `created_by`, `stock_at_station`) VALUES (?,?,?,?,?,?,?,?);",
-                        [fuel, dt, type, number, from, to, emp_id, TOTAL],
-                        ( err, rslt ) => {
-                            if( err ) {
-                                console.log(err)
-                                res.status(500).send(err);
-                                res.end();
-                            }else {
-                                db.query(
-                                    'INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);' +
-                                    'INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);',
-                                    [ rslt.insertId, fuel, dt, 'OUT', 1, rslt.insertId, fuel, 1, number ],
-                                    ( err ) => {
-                                        if( err ) {
-                                            console.log(err)
-                                            res.status(500).send(err);
-                                            res.end();
-                                        }else {
-                                            res.send('success');
-                                            res.end();
-                                        }
-                                    }
-                                );
-                            }
-                        }
-                    );
-                }
+                res.send('success');
+                res.end();
             }
         }
     );
