@@ -840,25 +840,25 @@ const Attendance = () => {
                                         {
                                             !temporaryStaff && JSON.parse(AccessControls.access).includes(106)
                                             ?
-                                            <th className='border-top-0'>IN Date</th>
+                                            <th className='border-top-0'>In Date</th>
                                             :
                                             <th className='border-top-0'>Date</th>
                                         }
                                         <th className="d-none">Day</th>
-                                        <th className='border-top-0'>Time IN</th>
+                                        <th className='border-top-0'>Time In</th>
                                         {
                                             !temporaryStaff && JSON.parse(AccessControls.access).includes(106)
                                             ?
-                                            <th className='border-top-0'>OUT Date</th>
+                                            <th className='border-top-0'>Out Date</th>
                                             :null
                                         }
-                                        <th className='border-top-0'>Time OUT</th>
+                                        <th className='border-top-0'>Time Out</th>
                                         {
                                             !temporaryStaff
                                             ?
                                             <>
-                                                <th className='border-top-0'>Break IN</th>
-                                                <th className='border-top-0'>Break OUT</th>
+                                                <th className='border-top-0'>Break In</th>
+                                                <th className='border-top-0'>Break Out</th>
                                             </>
                                             :null
                                         }
@@ -873,9 +873,15 @@ const Attendance = () => {
                                             (val, index) => {
                                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                 const d = new Date(val.emp_date.toString().substring(0, 10));
+                                                const dEnd = val.out_date && val.out_date !== null ? new Date(val.out_date.toString().substring(0, 10)) : new Date(val.emp_date.toString().substring(0, 10));
                                                 const dayName = days[d.getDay()];
-                                                const startTime = moment(val.time_in, 'HH:mm:ss a');
-                                                const endTime = moment(val.time_out, 'HH:mm:ss a');
+
+                                                // BEFORE 2024-02-16
+                                                // const startTime = moment(val.time_in, 'HH:mm:ss a');
+                                                // const endTime = moment(val.time_out, 'HH:mm:ss a');
+                                                
+                                                const startTime = moment(d.toDateString() + ' ' + val.time_in);
+                                                const endTime = moment(dEnd.toDateString() + ' ' + val.time_out);
                                                 const duration = moment.duration(endTime.diff(startTime));
                                                 const hours = parseInt(duration.asHours());
                                                 const minutes = parseInt(duration.asMinutes()) % 60;
@@ -985,7 +991,7 @@ const Attendance = () => {
                                                             ?
                                                             <>
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_in === null ? <span></span> : val.time_in} </td>
-                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td onClick={() => makeViewForRecordUpdate(val)}> {val.out_date && moment(val.out_date).format('YYYY-MM-DD')} </td>}
+                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td onClick={() => makeViewForRecordUpdate(val)}> {val.out_date && val.out_date !== null && moment(val.out_date).format('YYYY-MM-DD')} </td>}
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_out === null ? <span></span> : val.time_out} </td>
                                                                 {
                                                                     !temporaryStaff
@@ -1000,7 +1006,7 @@ const Attendance = () => {
                                                             :
                                                             <>
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_in === null ? <span></span> : val.time_in} </td>
-                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td onClick={() => makeViewForRecordUpdate(val)}> {val.out_date && moment(val.out_date).format('YYYY-MM-DD')} </td>}
+                                                                {!temporaryStaff && JSON.parse(AccessControls.access).includes(106) && <td onClick={() => makeViewForRecordUpdate(val)}> {val.out_date && val.out_date !== null && moment(val.out_date).format('YYYY-MM-DD')} </td>}
                                                                 <td onClick={() => makeViewForRecordUpdate(val)}> {val.time_out === null ? <span></span> : val.time_out} </td>
                                                                 {
                                                                     !temporaryStaff
