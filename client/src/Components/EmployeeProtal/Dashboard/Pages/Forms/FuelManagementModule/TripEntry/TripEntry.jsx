@@ -3,15 +3,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './TripEntry.css';
 import JSAlert from 'js-alert';
-import $ from 'jquery';
 import axios from '../../../../../../../axios';
 import Modal from '../../../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
 
 function TripEntry() {
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
-    // const typeRef = useRef();
-    // const numberRef = useRef();
+    const typeRef = useRef();
+    const numberRef = useRef();
     const fromRef = useRef();
     const toRef = useRef();
     const dateRef = useRef();
@@ -19,21 +18,21 @@ function TripEntry() {
     const btnRef = useRef();
     const formRef = useRef();
     const fieldsetRef = useRef();
-    // const [Equipments, setEquipments] = useState([]);
-    // const [EquipmentNumbers, setEquipmentNumbers] = useState([]);
+    const [Equipments, setEquipments] = useState([]);
+    const [EquipmentNumbers, setEquipmentNumbers] = useState([]);
     const [Requests, setRequests] = useState();
     const [New, setNew] = useState(false);
     const [Details, setDetails] = useState();
 
-    // useEffect(
-    //     () => {
-    //         let isActive = true;
-    //         GetEquipments(isActive);
-    //         return () => {
-    //             isActive = false;
-    //         }
-    //     }, []
-    // );
+    useEffect(
+        () => {
+            let isActive = true;
+            GetEquipments(isActive);
+            return () => {
+                isActive = false;
+            }
+        }, []
+    );
     useEffect(
         () => {
             let isActive = true;
@@ -43,35 +42,34 @@ function TripEntry() {
             }
         }, []
     );
-    // const GetEquipments = (isActive) => {
-    //     axios.get('/fuel-managent/equipment-types')
-    //     .then(res => {
-    //         if (!isActive) return;
-    //         setEquipments(res.data);
-    //     }).catch(err => console.log(err));
-    // }
-    // const GetEquipmentNumbers = (value) => {
-    //     setEquipmentNumbers([]);
-    //     axios.post('/fuel-managent/equipment-numbers', {type_id: value}).then(
-    //         res => {
-    //             setEquipmentNumbers(res.data);
-    //         }
-    //     ).catch(
-    //         err => {
-    //             console.log(err);
-    //         }
-    //     )
-    // }
+    const GetEquipments = (isActive) => {
+        axios.get('/fuel-managent/equipment-types')
+        .then(res => {
+            if (!isActive) return;
+            setEquipments(res.data);
+        }).catch(err => console.log(err));
+    }
+    const GetEquipmentNumbers = (value) => {
+        setEquipmentNumbers([]);
+        axios.post('/fuel-managent/equipment-numbers', {type_id: value}).then(
+            res => {
+                setEquipmentNumbers(res.data);
+            }
+        ).catch(
+            err => {
+                console.log(err);
+            }
+        )
+    }
     const onSubmit = (e) => {
         e.preventDefault();
-        // if (typeRef.current.value.trim().length === 0) {
-        //     JSAlert.alert('Equipment is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-        //     return false;
-        // }else if (numberRef.current.value.trim().length === 0) {
-        //     JSAlert.alert('Equipment Number is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-        //     return false;
-        // }else 
-        if (fromRef.current.value.trim().length === 0) {
+        if (typeRef.current.value.trim().length === 0) {
+            JSAlert.alert('Equipment is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }else if (numberRef.current.value.trim().length === 0) {
+            JSAlert.alert('Equipment Number is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }else if (fromRef.current.value.trim().length === 0) {
             JSAlert.alert('Trip from location is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
         }else if (toRef.current.value.trim().length === 0) {
@@ -99,8 +97,8 @@ function TripEntry() {
         axios.post(
             '/fuel-managent/fuel-issue-for-trip/new',
             {
-                // type: typeRef.current.value,
-                // number: numberRef.current.value,
+                type: typeRef.current.value,
+                number: numberRef.current.value,
                 from: fromRef.current.value,
                 to: toRef.current.value,
                 date: dateRef.current.disabled ? '' : dateRef.current.value,
@@ -144,16 +142,6 @@ function TripEntry() {
         const obj = Requests[i];
         setDetails(obj);
     }
-    function isValidDate(d) {
-        // const date1 = moment(d, 'DD-MM-YYYY').valueOf();
-        // const date2 = moment(new Date(), 'DD-MM-YYYY').valueOf();
-        
-        // if (date1 > date2) {
-        //     return false;
-        // }
-        return true;
-    }
-
     if (!AccessControls) {
         return <></>
     }
@@ -169,7 +157,7 @@ function TripEntry() {
                         </h3>
                         <hr />
                         <fieldset ref={fieldsetRef}>
-                            {/* <div className="d-flex mb-2" style={{gap: '20px'}}>
+                            <div className="d-flex mb-2" style={{gap: '20px'}}>
                                 <div className='w-50'>
                                     <label className='mb-0'>
                                         <b>Equipment Type</b>
@@ -208,7 +196,7 @@ function TripEntry() {
                                         }
                                     </select>
                                 </div>
-                            </div> */}
+                            </div>
                             <div className="d-flex mb-2" style={{gap: '20px'}}>
                                 <div className='w-50'>
                                     <label className='mb-0'>
@@ -220,7 +208,8 @@ function TripEntry() {
                                     <label className='mb-0'>
                                         <b>Date</b>
                                     </label>
-                                    <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled={AccessControls.access && JSON.parse(AccessControls.access).includes(95) ? false : true} />
+                                    {/* <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled={AccessControls.access && JSON.parse(AccessControls.access).includes(95) ? false : true} /> */}
+                                    <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled />
                                 </div>
                             </div>
                             <hr />
@@ -324,7 +313,7 @@ const Status = ({ status }) => {
                     "dot mr-1 "
                     +
                     (
-                        status === 'Verified' || status === 'Issued'
+                        status === 'Active' || status === 'Issued'
                             ?
                             "bg-success"
                             :
@@ -345,7 +334,7 @@ const Status = ({ status }) => {
                     "text-capitalize "
                     +
                     (
-                        status === 'Verified' || status === 'Issued'
+                        status === 'Active' || status === 'Issued'
                             ?
                             "text-success"
                             :
@@ -388,9 +377,9 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                     <div className='w-50 mx-auto' style={{fontFamily: "Roboto-Light"}}>
                         <div className='main-banner'>
                             <h1 className='mb-0' style={{fontSize: 35}}>
-                                <span className='font-weight-bold'>{parseFloat(Details.stock_at_station ? Details.stock_at_station : Details.total_stock).toFixed(2)}<small className='text-success' style={{ fontSize: 16 }}>Ltr</small></span>
+                                <span className='font-weight-bold'>{Details.trip_from}<small className='text-dark font-weight-bold' style={{ fontSize: 16 }}> to </small>{Details.trip_to}</span>
                             </h1>
-                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the fueling station {Details.stock_at_station ? `(dated: ${new Date(Details?.created_at).toDateString()})` : '(Current)' }</h6>
+                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Trailer Trip</h6>
                         </div>
                         <table className="table">
                             <tbody>
@@ -407,10 +396,6 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                     <td>{Details.equipment_no}</td>
                                 </tr>
                                 <tr>
-                                    <td><h6 className='font-weight-bold'>Trip</h6></td>
-                                    <td>{Details.trip_from} to {Details.trip_to}</td>
-                                </tr>
-                                <tr>
                                     <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>
                                     <td>{Details.fuel_to_issue}ltr</td>
                                 </tr>
@@ -419,11 +404,11 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                     <td>{new Date(Details.trip_date).toDateString()}</td>
                                 </tr>
                                 <tr>
-                                    <td><h6 className='font-weight-bold'>Issued By</h6></td>
+                                    <td><h6 className='font-weight-bold'>Created By</h6></td>
                                     <td>{Details.submit_person}</td>
                                 </tr>
                                 <tr>
-                                    <td><h6 className='font-weight-bold'>Issued At</h6></td>
+                                    <td><h6 className='font-weight-bold'>Created At</h6></td>
                                     <td>{new Date(Details.created_at).toDateString()} at {new Date(Details.created_at).toLocaleTimeString().substring(0,8)}</td>
                                 </tr>
                             </tbody>

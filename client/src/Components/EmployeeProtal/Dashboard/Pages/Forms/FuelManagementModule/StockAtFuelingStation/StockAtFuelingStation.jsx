@@ -190,11 +190,11 @@ const StockAtFuelingStation = () => {
                                         </td>
                                         <td>
                                             <b>Trip</b><br />
-                                            <span>{Details.trip_from} to {Details.trip_to}</span>
+                                            <pre style={{fontFamily: "Roboto-Light"}}>{Details.route}</pre>
                                         </td>
                                         <td>
                                             <b>Fuel Issued (Ltr.)</b><br />
-                                            <span>{Details.fuel_to_issue}</span>
+                                            <span>{Details.total_fuel_to_issue}</span>
                                         </td>
                                         <td>
                                             <b>Trip Date</b><br />
@@ -328,7 +328,7 @@ const Status = ({ status }) => {
                     "dot mr-1 "
                     +
                     (
-                        status === 'Verified' || status === 'Approved' || status === 'Issued'
+                        status === 'Verified' || status === 'Approved' || status === 'Issued' || status === 'issued'
                             ?
                             "bg-success"
                             :
@@ -349,7 +349,7 @@ const Status = ({ status }) => {
                     "text-capitalize "
                     +
                     (
-                        status === 'Verified' || status === 'Approved' || status === 'Issued'
+                        status === 'Verified' || status === 'Approved' || status === 'Issued' || status === 'issued'
                             ?
                             "text-success"
                             :

@@ -5,6 +5,59 @@ const { SendWhatsappNotification } = require('../Whatsapp/whatsapp');
 // const supplier_verifier = 10106;
 // const supplier_approval = 10119;
 
+router.post('/fuel-managent/fuel-issue-for-selected-trips-list', ( req, res ) => {
+    const { trip_date, number, allIssued, id, routes, emp_id } = req.body;
+    const selectedRoutes = JSON.parse(routes);
+    db.query(
+        "UPDATE tbl_fuel_entry_for_trip SET status = ?, last_issued_by = ?, last_issued_at = ? WHERE id = ?;",
+        [allIssued === 1 ? 'issued' : 'partial issued', emp_id, new Date(), id],
+        ( err ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                let q = '';
+                let para = [];
+                for (let x = 0; x < selectedRoutes.length; x++) {
+                    q = q.concat("UPDATE tbl_fuel_entry_trips_list SET status = ?, issued_by = ?, issued_at = ? WHERE id = ?;");
+                    para.push('issued')
+                    para.push(emp_id)
+                    para.push(new Date())
+                    para.push(selectedRoutes[x].id)
+
+                    q = q.concat('INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);');
+                    para.push(id)
+                    para.push(selectedRoutes[x].fuel)
+                    para.push(trip_date)
+                    para.push('OUT')
+                    para.push(1)
+
+                    q = q.concat('INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);');
+                    para.push(id)
+                    para.push(selectedRoutes[x].fuel)
+                    para.push(1)
+                    para.push(number)
+                }
+                db.query(
+                    q,
+                    para,
+                    ( err ) => {
+                        if( err ) {
+                            console.log(err)
+                            res.status(500).send(err);
+                            res.end();
+                        }else {
+                            res.send('success');
+                            res.end();
+                        }
+                    }
+                );
+            }
+        }
+    );
+} );
+
 router.post('/fuel-managent/equipment-numbers', ( req, res ) => {
     const { type_id } = req.body;
     db.query(
@@ -71,20 +124,18 @@ router.post('/fuel-managent/fuel-issue-for-equipemnt/new', ( req, res ) => {
 } );
 
 router.post('/fuel-managent/fuel-issue-for-trip/new', ( req, res ) => {
-    // const { type, number, from, to, date, fuel, emp_id } = req.body;
-    const { from, to, date, fuel, emp_id } = req.body;
+    const { type, number, from, to, date, fuel, emp_id } = req.body;
     const dt = date === '' || date === null || date === 'null' || date === undefined ? new Date() : date;
 
-    // if (type === '' || isNaN(parseInt(type))) {
-    //     res.send('err');
-    //     res.end();
-    //     return false;
-    // }else if (number === '' || isNaN(parseInt(number))) {
-    //     res.send('err');
-    //     res.end();
-    //     return false;
-    // }else 
-    if (fuel === '' || isNaN(parseInt(fuel)) || parseInt(fuel) <= 0) {
+    if (type === '' || isNaN(parseInt(type))) {
+        res.send('err');
+        res.end();
+        return false;
+    }else if (number === '' || isNaN(parseInt(number))) {
+        res.send('err');
+        res.end();
+        return false;
+    }else if (fuel === '' || isNaN(parseInt(fuel)) || parseInt(fuel) <= 0) {
         res.send('err');
         res.end();
         return false;
@@ -109,9 +160,9 @@ router.post('/fuel-managent/fuel-issue-for-trip/new', ( req, res ) => {
     }
 
     db.query(
-        "INSERT INTO `tbl_fuel_issue_for_trailers`(`fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `trip_from`, `trip_to`, `created_by`, `stock_at_station`) VALUES (?,?,?,?,?,?,?,?);",
-        [fuel, dt, type, number, from, to, emp_id, TOTAL],
-        ( err, rslt ) => {
+        "INSERT INTO `tbl_fuel_issue_for_trailers`(`fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `trip_from`, `trip_to`, `created_by`) VALUES (?,?,?,?,?,?,?);",
+        [fuel, dt, type, number, from, to, emp_id],
+        ( err ) => {
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
@@ -119,6 +170,60 @@ router.post('/fuel-managent/fuel-issue-for-trip/new', ( req, res ) => {
             }else {
                 res.send('success');
                 res.end();
+            }
+        }
+    );
+
+} );
+
+router.post('/fuel-managent/issue-fuel-for-trips', ( req, res ) => {
+    const { total_fuel, type, number, trips, additionalFuel, date, emp_id } = req.body;
+    const dt = date === '' || date === null || date === 'null' || date === undefined ? new Date() : date;
+    const tripEntries = JSON.parse(trips);
+
+    if (type === '' || isNaN(parseInt(type))) {
+        res.send('err');
+        res.end();
+        return false;
+    }else if (number === '' || isNaN(parseInt(number))) {
+        res.send('err');
+        res.end();
+        return false;
+    }else if (tripEntries.length === 0) {
+        res.send('err');
+        res.end();
+        return false;
+    }else if (parseInt(additionalFuel) < 0) {
+        res.send('err');
+        res.end();
+        return false;
+    }
+    else if (emp_id == null || emp_id === '' || isNaN(parseInt(emp_id))) {
+        res.send('err');
+        res.end();
+        return false;
+    }
+
+    db.query(
+        "INSERT INTO `tbl_fuel_entry_for_trip`(`total_fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `additional_fuel`, `created_by`) VALUES (?,?,?,?,?,?);",
+        [total_fuel, dt, type, number, additionalFuel, emp_id],
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                let q = "";
+                for (let x = 0; x < tripEntries.length; x++) {
+                    q = q.concat(`INSERT INTO tbl_fuel_entry_trips_list(entry_code, trip_id, route, fuel) VALUES (${rslt.insertId}, ${tripEntries[x].id}, '${tripEntries[x].trip_from} to ${tripEntries[x].trip_to}', ${tripEntries[x].fuel_to_issue});`);
+                }
+                db.query(
+                    q,
+                    () => {
+                        res.send('success');
+                        res.end();
+                    }
+                );
             }
         }
     );
@@ -142,7 +247,7 @@ router.get('/fuel-managent/equipment-types', ( req, res ) => {
 
 router.get('/fuel-managent/equipments', ( req, res ) => {
     db.query(
-        "SELECT tbl_fuel_equipment_company_setup.*, tbl_fuel_equipment_setup.equipment_type AS equipment_type_name FROM `tbl_fuel_equipment_company_setup` LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_equipment_company_setup.equipment_type = tbl_fuel_equipment_setup.id ORDER BY tbl_fuel_equipment_company_setup.id DESC;",
+        "SELECT tbl_fuel_equipment_company_setup.*, companies.company_name, locations.location_name, tbl_fuel_equipment_setup.equipment_type AS equipment_type_name FROM `tbl_fuel_equipment_company_setup` LEFT OUTER JOIN companies ON tbl_fuel_equipment_company_setup.company_code = companies.company_code LEFT OUTER JOIN locations ON tbl_fuel_equipment_company_setup.location_code = locations.location_code LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_equipment_company_setup.equipment_type = tbl_fuel_equipment_setup.id ORDER BY tbl_fuel_equipment_company_setup.id DESC;",
         ( err, rslt ) => {
             if( err ) {
                 res.status(500).send(err);
@@ -158,12 +263,13 @@ router.get('/fuel-managent/equipments', ( req, res ) => {
 router.post('/fuel-managent/equipments/details', ( req, res ) => {
     const { id } = req.body;
     db.query(
-        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'IN') ,0) AS q;" +
-        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'OUT') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'IN' AND equipment_id = ?) ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'OUT' AND equipment_id = ?) ,0) AS q;" +
         "SELECT * FROM `tbl_fuel_issued_to_equipments` WHERE equipment_id = ?;",
-        [id],
+        [id, id, id],
         ( err, rslt ) => {
             if( err ) {
+                console.log(err);
                 res.status(500).send(err);
                 res.end();
             }else {
@@ -434,6 +540,37 @@ router.post('/fuel-managent/fuel-issue-for-equipemnt/requests', ( req, res ) => 
     );
 } );
 
+router.post('/fuel-managent/trip-entries/equipment-numbers', ( req, res ) => {
+    const { number } = req.body;
+
+    db.query(
+        "SELECT tbl_fuel_issue_for_trailers.*, \
+        locations.location_name, \
+        companies.company_name, \
+        submit.name AS submit_person, \
+        tbl_fuel_equipment_setup.equipment_type AS equipment_type_name, \
+        tbl_fuel_equipment_company_setup.equipment_number AS equipment_no \
+        FROM tbl_fuel_issue_for_trailers  \
+        LEFT OUTER JOIN locations ON tbl_fuel_issue_for_trailers.location_code = locations.location_code \
+        LEFT OUTER JOIN companies ON tbl_fuel_issue_for_trailers.company_code = companies.company_code \
+        LEFT OUTER JOIN employees submit ON tbl_fuel_issue_for_trailers.created_by = submit.emp_id \
+        LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_issue_for_trailers.equipment_type = tbl_fuel_equipment_setup.id \
+        LEFT OUTER JOIN tbl_fuel_equipment_company_setup ON tbl_fuel_issue_for_trailers.equipment_number = tbl_fuel_equipment_company_setup.id \
+        WHERE tbl_fuel_issue_for_trailers.equipment_number = ? ORDER BY id DESC;",
+        [number],
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
 router.post('/fuel-managent/fuel-issue-for-trip/requests', ( req, res ) => {
     const { emp_id } = req.body;
 
@@ -458,28 +595,59 @@ router.post('/fuel-managent/fuel-issue-for-trip/requests', ( req, res ) => {
                 res.status(500).send(err);
                 res.end();
             }else {
-                db.query(
-                    "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
-                    "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
-                    ( err, result ) => {
-                        if( err ) {
-                            console.log(err)
-                            res.status(500).send(err);
-                            res.end();
-                        }else {
-                            const IN = result[0][0].q;
-                            const OUT = result[1][0].q;
-                            const TOTAL = IN - OUT;
-                            const arr = [];
-                            for (let x = 0; x < rslt.length; x++) {
-                                rslt[x].total_stock = TOTAL;
-                                arr.push(rslt[x]);
-                            }
-                            res.send( arr );
-                            res.end();
-                        }
-                    }
-                );
+                res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
+router.get('/fuel-managent/fuel-issue-for-trips-list/requests', ( req, res ) => {
+    db.query(
+        "SELECT tbl_fuel_entry_for_trip.*, \
+        locations.location_name, \
+        companies.company_name, \
+        submit.name AS submit_person, \
+        tbl_fuel_equipment_setup.equipment_type AS equipment_type_name, \
+        tbl_fuel_equipment_company_setup.equipment_number AS equipment_no \
+        FROM tbl_fuel_entry_for_trip  \
+        LEFT OUTER JOIN locations ON tbl_fuel_entry_for_trip.location_code = locations.location_code \
+        LEFT OUTER JOIN companies ON tbl_fuel_entry_for_trip.company_code = companies.company_code \
+        LEFT OUTER JOIN employees submit ON tbl_fuel_entry_for_trip.created_by = submit.emp_id \
+        LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_entry_for_trip.equipment_type = tbl_fuel_equipment_setup.id \
+        LEFT OUTER JOIN tbl_fuel_equipment_company_setup ON tbl_fuel_entry_for_trip.equipment_number = tbl_fuel_equipment_company_setup.id \
+        ORDER BY id DESC;",
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send(rslt);
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/fuel-managent/request/load-trip-lists', ( req, res ) => {
+    const { id } = req.body;
+
+    db.query(
+        "SELECT tbl_fuel_entry_trips_list.*, \
+        submit.name AS submit_person \
+        FROM tbl_fuel_entry_trips_list  \
+        LEFT OUTER JOIN employees submit ON tbl_fuel_entry_trips_list.issued_by = submit.emp_id \
+        WHERE tbl_fuel_entry_trips_list.entry_code = ?;",
+        [id],
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                res.send(rslt);
+                res.end();
             }
         }
     );
@@ -725,15 +893,15 @@ router.post('/fuel-managent/fuel-issue-for-trip/request/details', ( req, res ) =
     const { id } = req.body;
 
     db.query(
-        "SELECT tbl_fuel_issue_for_trailers.*, \
+        "SELECT tbl_fuel_entry_for_trip.*, \
         submit.name AS submit_person, \
         tbl_fuel_equipment_setup.equipment_type AS equipment_type_name, \
         tbl_fuel_equipment_company_setup.equipment_number AS equipment_no \
-        FROM tbl_fuel_issue_for_trailers  \
-        LEFT OUTER JOIN employees submit ON tbl_fuel_issue_for_trailers.created_by = submit.emp_id \
-        LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_issue_for_trailers.equipment_type = tbl_fuel_equipment_setup.id \
-        LEFT OUTER JOIN tbl_fuel_equipment_company_setup ON tbl_fuel_issue_for_trailers.equipment_number = tbl_fuel_equipment_company_setup.id \
-        WHERE tbl_fuel_issue_for_trailers.id = ? ORDER BY id DESC;",
+        FROM tbl_fuel_entry_for_trip  \
+        LEFT OUTER JOIN employees submit ON tbl_fuel_entry_for_trip.created_by = submit.emp_id \
+        LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_entry_for_trip.equipment_type = tbl_fuel_equipment_setup.id \
+        LEFT OUTER JOIN tbl_fuel_equipment_company_setup ON tbl_fuel_entry_for_trip.equipment_number = tbl_fuel_equipment_company_setup.id \
+        WHERE tbl_fuel_entry_for_trip.id = ? ORDER BY id DESC;",
         [id],
         ( err, rslt ) => {
             if( err ) {
@@ -741,8 +909,29 @@ router.post('/fuel-managent/fuel-issue-for-trip/request/details', ( req, res ) =
                 res.status(500).send(err);
                 res.end();
             }else {
-                res.send(rslt);
-                res.end();
+                const data = rslt[0];
+                db.query(
+                    "SELECT tbl_fuel_entry_trips_list.route \
+                    FROM tbl_fuel_entry_trips_list  \
+                    WHERE tbl_fuel_entry_trips_list.entry_code = ? ORDER BY id DESC;",
+                    [id],
+                    ( err, result ) => {
+                        if( err ) {
+                            console.log(err)
+                            res.status(500).send(err);
+                            res.end();
+                        }else {
+                            let route = "";
+                            for (let x = 0; x < result.length; x++) {
+                                route = route.concat(result[x].route + '\n');
+                            }
+
+                            data.route = route;
+                            res.send([data]);
+                            res.end();
+                        }
+                    }
+                );
             }
         }
     );

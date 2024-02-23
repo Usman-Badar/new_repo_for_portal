@@ -300,6 +300,8 @@ function FuelManagement() {
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Company</th>
+                                        <th>Location</th>
                                         <th>Equipment Type</th>
                                         <th>Equipment Number</th>
                                         <th>Created At</th>
@@ -308,11 +310,13 @@ function FuelManagement() {
                                 <tbody>
                                     {
                                         List.map((val, i) => {
-                                            const { equipment_type_name, equipment_number, created_at } = val;
+                                            const { company_name, location_name, equipment_type_name, equipment_number, created_at } = val;
                                             const d = new Date(created_at);
                                             return (
                                                 <tr key={i} className='pointer' onClick={(() => loadDetails(val))}>
                                                     <td>{i+1}</td>
+                                                    <td>{company_name}</td>
+                                                    <td>{location_name}</td>
                                                     <td>{equipment_type_name}</td>
                                                     <td>{equipment_number}</td>
                                                     <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
