@@ -14,6 +14,7 @@ const TripSelection = () => {
     const additionalFuelRef = useRef();
     const btnRef = useRef();
     const btn2Ref = useRef();
+    const btn3Ref = useRef();
     const formRef = useRef();
     const fieldsetRef = useRef();
     const [AdditionalFuel, setAdditionalFuel] = useState(0);
@@ -96,6 +97,9 @@ const TripSelection = () => {
         }else if (AdditionalFuel < 0) {
             JSAlert.alert('Invalid additional fuel quantity!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
+        }else if (SelectedTrips.length === 0) {
+            JSAlert.alert('At least one route should be selected!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
         }
 
         fieldsetRef.current.disabled = true;
@@ -106,7 +110,7 @@ const TripSelection = () => {
                 type: typeRef.current.value,
                 number: numberRef.current.value,
                 trips: JSON.stringify(SelectedTrips),
-                additionalFuel: AdditionalFuel !== 0 ? 0 : AdditionalFuel,
+                additionalFuel: AdditionalFuel === '' || isNaN(AdditionalFuel) ? 0 : AdditionalFuel,
                 date: dateRef.current.disabled ? '' : dateRef.current.value,
                 emp_id: localStorage.getItem('EmpID'),
                 total_fuel: parseFloat(totalFuel) + parseFloat(AdditionalFuel)
@@ -190,6 +194,8 @@ const TripSelection = () => {
             '/fuel-managent/fuel-issue-for-selected-trips-list',
             {
                 id: Details.id,
+                additionalFuel: Details.additional_fuel > 0 ? 1 : 0,
+                additionalFuelIssued: Details.additional_fuel_issued,
                 routes: JSON.stringify(selectedRoutes),
                 allIssued: Trips.filter(val => val.status !== 'issued').length === selectedRoutes.length ? 1 : 0,
                 emp_id: localStorage.getItem('EmpID'),
@@ -204,6 +210,13 @@ const TripSelection = () => {
                 return;
             }
 
+            if (res.data === 'limit increase') {
+                btn2Ref.current.disabled = false;
+                btn2Ref.current.innerHTML = 'Retry';
+                JSAlert.alert('Insufficient quantity at the station!!', 'Warning', JSAlert.Icons.Warning).dismissIn(2000);
+                return;
+            }
+
             btn2Ref.current.innerHTML = 'Issue Fuel';
             loadRequests(true);
             setDetails(false);
@@ -215,6 +228,47 @@ const TripSelection = () => {
             JSAlert.alert('Failed To complete!!', 'Could not create', JSAlert.Icons.Failed).dismissIn(4000);
             btn2Ref.current.innerHTML = 'Issue Fuel';
             btn2Ref.current.disabled = false;
+        });
+    }
+    const issueAdditionalFuel = () => {
+        btn3Ref.current.disabled = true;
+        btn3Ref.current.innerHTML = 'Please Wait...';
+        axios.post(
+            '/fuel-managent/additional-fuel-issue-for-selected-trips-list',
+            {
+                id: Details.id,
+                fuel: Details.additional_fuel,
+                emp_id: localStorage.getItem('EmpID'),
+                trip_date: Details.trip_date,
+                number: Details.equipment_number,
+                allIssued: Trips.filter(val => val.status !== 'issued').length === selectedRoutes.length ? 1 : 0,
+            }
+        ).then(res => {
+            if (res.data === 'err') {
+                btn3Ref.current.disabled = false;
+                btn3Ref.current.innerHTML = 'Retry';
+                JSAlert.alert('Something Went Wrong!!', 'Warning', JSAlert.Icons.Warning).dismissIn(2000);
+                return;
+            }
+
+            if (res.data === 'limit increase') {
+                btn3Ref.current.disabled = false;
+                btn3Ref.current.innerHTML = 'Retry';
+                JSAlert.alert('Insufficient quantity at the station!!', 'Warning', JSAlert.Icons.Warning).dismissIn(2000);
+                return;
+            }
+
+            btn3Ref.current.innerHTML = 'Issue Fuel';
+            loadRequests(true);
+            setDetails(false);
+            setTrips([]);
+            setselectedRoutes([]);
+            JSAlert.alert('Fuel issued to the selected routes', 'Success', JSAlert.Icons.Success).dismissIn(2000);
+        }).catch(err => {
+            console.log(err);
+            JSAlert.alert('Failed To complete!!', 'Could not create', JSAlert.Icons.Failed).dismissIn(4000);
+            btn3Ref.current.innerHTML = 'Issue Fuel';
+            btn3Ref.current.disabled = false;
         });
     }
 
@@ -313,7 +367,7 @@ const TripSelection = () => {
                                     <tr>
                                         <td colSpan={2} className='border-top-0'>
                                             <label className='font-weight-bold mb-0'>Net Fuel</label>
-                                            <input type="text" className='form-control' value={parseFloat(totalFuel) + parseFloat(AdditionalFuel) + 'ltr'} disabled />
+                                            <input type="text" className='form-control' value={parseFloat(totalFuel) + (isNaN(parseFloat(AdditionalFuel)) ? 0 : parseFloat(AdditionalFuel)) + 'ltr'} disabled />
                                         </td>
                                     </tr>
                                     <tr>
@@ -375,6 +429,23 @@ const TripSelection = () => {
                                     <tr>
                                         <td><h6 className='font-weight-bold'>Equipment Number</h6></td>
                                         <td>{Details.equipment_no}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{verticalAlign: 'bottom'}}><h6 className='font-weight-bold'>Additional Fuel</h6></td>
+                                        <td>
+                                            <div className={Details.additional_fuel_issued === 1 ? "" : "d-flex align-items-center justify-content-between"}>
+                                                {Details.additional_fuel}ltr
+                                                {
+                                                    Details.additional_fuel_issued === 1 && (
+                                                        <p className='mb-0'>
+                                                            <b>Issued At: </b>
+                                                            {moment(Details.additional_fuel_issued_at).format('YYYY-MM-DD HH:mm A')}
+                                                        </p>
+                                                    )
+                                                }
+                                                {Details.additional_fuel_issued === 0 && Details.additional_fuel > 0 && <button className='btn light' ref={btn3Ref} onClick={issueAdditionalFuel}>Issue</button>}
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><h6 className='font-weight-bold'>Trip Date</h6></td>
