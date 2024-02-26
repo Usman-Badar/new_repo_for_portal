@@ -145,100 +145,102 @@ function TripEntry() {
     if (!AccessControls) {
         return <></>
     }
+    if (New) {
+        return (
+            <div className='page'>
+                <form className='page-content' ref={formRef} onSubmit={onSubmit}>
+                    <h3 className="heading">
+                        New Record
+                        <sub>Trailer Trip Entry</sub>
+                    </h3>
+                    <hr />
+                    <fieldset ref={fieldsetRef}>
+                        <div className="d-flex mb-2" style={{ gap: '20px' }}>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Equipment Type</b>
+                                </label>
+                                <select onChange={(e) => GetEquipmentNumbers(e.target.value)} className="form-control" ref={typeRef} required>
+                                    <option value=''>Select the option</option>
+                                    {
+                                        Equipments.map(
+                                            ({ id, equipment_type }) => {
+                                                return <option value={id}>{equipment_type}</option>
+                                            }
+                                        )
+                                    }
+                                </select>
+                            </div>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Equipment Number</b>
+                                </label>
+                                <select className="form-control" ref={numberRef} required>
+                                    <option value=''>Select the option</option>
+                                    {
+                                        EquipmentNumbers.map(
+                                            val => {
+
+                                                return (
+                                                    <option
+                                                        key={val.id}
+                                                        value={val.id}
+                                                    // selected={details && details.location_code == val.location_code ? true : false}
+                                                    > {val.equipment_number}</option>
+                                                );
+
+                                            }
+                                        )
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div className="d-flex mb-2" style={{ gap: '20px' }}>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Fuel (Ltr.)</b>
+                                </label>
+                                <input type='number' min={1} className="form-control" ref={fuelRef} required />
+                            </div>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Date</b>
+                                </label>
+                                {/* <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled={AccessControls.access && JSON.parse(AccessControls.access).includes(95) ? false : true} /> */}
+                                <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled />
+                            </div>
+                        </div>
+                        <hr />
+                        <h6><b>Trip</b></h6>
+                        <div className="d-flex mb-3" style={{ gap: '20px' }}>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>From</b>
+                                </label>
+                                <input type='text' className="form-control" ref={fromRef} required />
+                            </div>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>To</b>
+                                </label>
+                                <input type='text' className="form-control" ref={toRef} required />
+                            </div>
+                        </div>
+
+                        <div className='d-flex justify-content-end align-items-center'>
+                            <button className="btn light" type="button" onClick={() => setNew(false)}>Cancel</button>
+                            <button className="btn ml-3 submit" type='submit' ref={btnRef}>
+                                Submit
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        )
+    }
 
     return (
         <>
-            {New && (
-                <Modal show={true} Hide={() => setNew(false)} content={
-                    <form ref={formRef} onSubmit={onSubmit}>
-                        <h3 className="heading">
-                            New Record
-                            <sub>Trailer Trip Entry</sub>
-                        </h3>
-                        <hr />
-                        <fieldset ref={fieldsetRef}>
-                            <div className="d-flex mb-2" style={{gap: '20px'}}>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Equipment Type</b>
-                                    </label>
-                                    <select onChange={(e) => GetEquipmentNumbers(e.target.value)} className="form-control" ref={typeRef} required>
-                                        <option value=''>Select the option</option>
-                                        {
-                                            Equipments.map(
-                                                ({ id, equipment_type }) => {
-                                                    return <option value={id}>{equipment_type}</option>
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Equipment Number</b>
-                                    </label>
-                                    <select className="form-control" ref={numberRef} required>
-                                        <option value=''>Select the option</option>
-                                        {
-                                            EquipmentNumbers.map(
-                                                val => {
-
-                                                    return (
-                                                        <option
-                                                            key={val.id}
-                                                            value={val.id}
-                                                        // selected={details && details.location_code == val.location_code ? true : false}
-                                                        > {val.equipment_number}</option>
-                                                    );
-
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="d-flex mb-2" style={{gap: '20px'}}>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Fuel (Ltr.)</b>
-                                    </label>
-                                    <input type='number' min={1} className="form-control" ref={fuelRef} required />
-                                </div>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Date</b>
-                                    </label>
-                                    {/* <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled={AccessControls.access && JSON.parse(AccessControls.access).includes(95) ? false : true} /> */}
-                                    <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled />
-                                </div>
-                            </div>
-                            <hr />
-                            <h6><b>Trip</b></h6>
-                            <div className="d-flex mb-3" style={{gap: '20px'}}>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>From</b>
-                                    </label>
-                                    <input type='text' className="form-control" ref={fromRef} required />
-                                </div>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>To</b>
-                                    </label>
-                                    <input type='text' className="form-control" ref={toRef} required />
-                                </div>
-                            </div>
-
-                            <div className='d-flex justify-content-end align-items-center'>
-                                <button className="btn light" type="button">Cancel</button>
-                                <button className="btn ml-3 submit" type='submit' ref={btnRef}>
-                                    Submit
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
-                } />
-            )}
             {
                 Details
                 ?

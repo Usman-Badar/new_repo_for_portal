@@ -15,7 +15,6 @@ function FuelRequest() {
     const btnRef = useRef();
     
     const [Requests, setRequests] = useState();
-    const [New, setNew] = useState(false);
     const [Details, setDetails] = useState();
 
     useEffect(
@@ -50,7 +49,6 @@ function FuelRequest() {
             fieldsetRef.current.disabled = false;
             btnRef.current.innerHTML = 'Submit';
             formRef.current.reset();
-            setNew(false);
             loadRequests(true);
             JSAlert.alert('Request has been sent', 'Success', JSAlert.Icons.Success).dismissIn(2000);
         }).catch(err => {
@@ -77,11 +75,15 @@ function FuelRequest() {
 
     return (
         <>
-            {New && (
-                <Modal show={true} Hide={() => setNew(false)} content={
-                    <form ref={formRef} onSubmit={onRequest}>
+            {
+                Details
+                ?
+                <ReceivalDetails AccessControls={AccessControls} Details={Details} setDetails={setDetails} loadRequests={loadRequests} />
+                :
+                <div className='FuelRequest page'>
+                    <form className="page-content mb-3" ref={formRef} onSubmit={onRequest}>
                         <fieldset ref={fieldsetRef}>
-                            <h6><b>New Request</b></h6>
+                            <h6><b>New Fuel Request</b></h6>
                             <hr />
                             <label className='mb-0'>
                                 <b>Fuel (in Ltr.)</b>
@@ -95,22 +97,11 @@ function FuelRequest() {
                             </div>
                         </fieldset>
                     </form>
-                } />
-            )}
-            {
-                Details
-                ?
-                <ReceivalDetails AccessControls={AccessControls} Details={Details} setDetails={setDetails} loadRequests={loadRequests} />
-                :
-                <div className='FuelRequest page'>
                     <div className="page-content">
-                        <div className="d-flex align-items-center justify-content-between">
-                            <h3 className="heading">
-                                Fuel Management Module
-                                <sub>Request Fuel for Fueling Station / Point when required</sub>
-                            </h3>
-                            <button className="btn submit" onClick={() => setNew(true)}>New</button>
-                        </div>
+                        <h3 className="heading">
+                            Fuel Management Module
+                            <sub>Request Fuel for Fueling Station / Point when required</sub>
+                        </h3>
                         <hr />
                         {
                             !Requests

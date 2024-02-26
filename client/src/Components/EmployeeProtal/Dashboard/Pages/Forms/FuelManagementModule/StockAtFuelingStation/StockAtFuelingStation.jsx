@@ -243,74 +243,86 @@ const StockAtFuelingStation = () => {
                         <sub>Total Fuel Received in Ltr.</sub>
                     </h3>
                     <hr />
-                    <div className="container-fluid" style={{fontFamily: "Roboto-Light"}}>
-                        <div className="row">
-                            <div className="col-4">
-                                <div className="border p-3 rounded">
-                                    <div className='d-flex justify-content-center align-items-end mb-2'>
-                                        <h1 className='text-center mb-0 mr-1' style={{fontFamily: "Roboto-Light", fontSize: '40px'}}>
-                                            <b>{Total.toFixed(2)}</b>
-                                        </h1>
-                                        <p className='mb-0 font-weight-bold text-secondary'>Ltr.</p>
-                                    </div>
-                                    <h6 className='text-center mb-0'>Total Stock at Station</h6>
-                                </div>
-                            </div>
-                            <div className="col-8" style={{maxHeight: '75vh', overflow: 'auto'}}>
-                                <div className='d-flex justify-content-between align-items-center mb-3'>
-                                    <h5 className='mb-0' style={{fontFamily: "Roboto-Light"}}>
-                                        <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
-                                    </h5>
-                                    <div>
-                                        <label className="mb-0">Date</label>
-                                        <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
-                                    </div>
-                                </div>
-                                <table className="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            {/* <th>Ref #</th> */}
-                                            <th>Fuel (ltr.)</th>
-                                            <th>Dates</th>
-                                            <th>Date & Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            Requests.filter(val => val.inserted_at.includes(DateFilter)).map((val, i) => {
-                                                const { in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
-                                                const d = new Date(inserted_at);
-                                                const label = other_than_trip === 0 && trip_based === 0 ? 'Requested At' :
-                                                    other_than_trip === 1 ? 'Issued To Equipement' :
-                                                    trip_based === 1 ? 'Trip Date' : null;
-                                                return (
-                                                    <tr className='pointer' key={i} onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
-                                                        <td>{i+1}</td>
-                                                        {/* <td onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
-                                                            <span className='pointer pointer-underline'>{request_id}</span>
-                                                        </td> */}
-                                                        {
-                                                            in_out === 'IN'
-                                                            ?
-                                                            <td id={'quantity_' + (i+1)} className='text-success'>+{quantity_in_ltr}</td>
-                                                            :
-                                                            <td id={'quantity_' + (i+1)} className='text-danger'>-{quantity_in_ltr}</td>
-                                                        }
-                                                        <td>
-                                                            <b>{label}</b><br />
-                                                            <span>{fuel_requested_at && fuel_requested_at && moment(new Date(fuel_requested_at)).format('DD-MM-YYYY')}</span>
-                                                        </td>
-                                                        <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
-                                                    </tr>
-                                                )
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div className='main-banner'>
+                        <h1 className='mb-0' style={{ fontSize: 35 }}>
+                            <span className='font-weight-bold'>{Total.toFixed(2)}<small className='text-dark font-weight-bold' style={{ fontSize: 16 }}>Ltr</small></span>
+                        </h1>
+                        <h6 style={{ fontSize: 15 }} className='text-capitalize mb-0'>Total Stock at Station</h6>
+                    </div>
+                    <div className='d-flex justify-content-between align-items-center mb-3'>
+                        <h5 className='mb-0' style={{fontFamily: "Roboto-Light"}}>
+                            <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
+                        </h5>
+                        <div>
+                            <label className="mb-0">Date</label>
+                            <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
                         </div>
                     </div>
+                    <table className="table" style={{fontSize: 12}}>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Com & Loc</th>
+                                <th>Fuel (ltr.)</th>
+                                <th>Requested By</th>
+                                <th>Approved By</th>
+                                <th>Dates</th>
+                                <th>Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                Requests.filter(val => val.inserted_at.includes(DateFilter)).map((val, i) => {
+                                    const { requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
+                                    const d = new Date(inserted_at);
+                                    const label = other_than_trip === 0 && trip_based === 0 ? 'Requested At' :
+                                        other_than_trip === 1 ? 'Issued To Equipement' :
+                                        trip_based === 1 ? 'Trip Date' : null;
+                                    return (
+                                        <tr key={i} onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
+                                            {/*  onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)} */}
+                                            <td>{i+1}</td>
+                                            <td>
+                                                {station_company}<br />
+                                                {station_location}
+                                            </td>
+                                            {
+                                                in_out === 'IN'
+                                                ?
+                                                <td id={'quantity_' + (i+1)} className='text-success'>+{quantity_in_ltr}</td>
+                                                :
+                                                <td id={'quantity_' + (i+1)} className='text-danger'>-{quantity_in_ltr}</td>
+                                            }
+                                            {
+                                                in_out === 'IN'
+                                                ?
+                                                <>
+                                                    <td>
+                                                        {station_submit_person}<br />
+                                                        {moment(requested_at).format('YYYY-MM-DD HH:mm a')}
+                                                    </td>
+                                                    <td>
+                                                        {station_verify_person}<br />
+                                                        {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
+                                                    </td>
+                                                </>
+                                                :
+                                                <>
+                                                    <td></td>
+                                                    <td></td>
+                                                </>
+                                            }
+                                            <td>
+                                                <b>{label}</b><br />
+                                                <span>{fuel_requested_at && fuel_requested_at && moment(new Date(fuel_requested_at)).format('DD-MM-YYYY')}</span>
+                                            </td>
+                                            <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

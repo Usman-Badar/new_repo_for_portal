@@ -141,97 +141,100 @@ function FuelRecievedFrom() {
         return <></>
     }
 
+    if (New) {
+        return (
+            <div className='page'>
+                <form className='page-content' ref={formRef} onSubmit={onSubmit}>
+                    <h3 className="heading">
+                        New Fuel Entry
+                        <sub>For Workshop</sub>
+                    </h3>
+                    <hr />
+                    <fieldset ref={fieldsetRef}>
+                        <div className="d-flex mb-2" style={{ gap: '20px' }}>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Company</b>
+                                </label>
+                                <select className="form-control" ref={companyRef} onChange={(e) => GetLocations(e.target.value)} required>
+                                    <option value=''>Select the option</option>
+                                    {
+                                        Companies.map(
+                                            val => {
+
+                                                return (
+                                                    <option
+                                                        key={val.company_code}
+                                                        value={val.company_code}
+                                                    // selected={details && details.company_code == val.company_code ? true : false}
+                                                    > {val.company_name} </option>
+                                                )
+
+                                            }
+                                        )
+                                    }
+                                </select>
+                            </div>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Location</b>
+                                </label>
+                                <select className="form-control" ref={locationRef} required>
+                                    <option value=''>Select the option</option>
+                                    {
+                                        Locations.map(
+                                            val => {
+
+                                                return (
+                                                    <option
+                                                        key={val.location_code}
+                                                        value={val.location_code}
+                                                    // selected={details && details.location_code == val.location_code ? true : false}
+                                                    > {val.location_name} </option>
+                                                );
+
+                                            }
+                                        )
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div className="d-flex mb-2" style={{ gap: '20px' }}>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Supplier</b>
+                                </label>
+                                <input type="text" className="form-control" ref={supplierRef} required />
+                            </div>
+                            <div className='w-50'>
+                                <label className='mb-0'>
+                                    <b>Date</b>
+                                </label>
+                                <input type="date" max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required />
+                            </div>
+                        </div>
+
+                        <div className="mb-3">
+                            <label className='mb-0'>
+                                <b>Fuel (Ltr.)</b>
+                            </label>
+                            <input type='number' min={1} className="form-control" ref={fuelRef} required />
+                        </div>
+
+                        <div className='d-flex justify-content-end align-items-center'>
+                            <button className="btn light" type="button" onClick={() => setNew(false)}>Cancel</button>
+                            <button className="btn ml-3 submit" type='submit' ref={btnRef}>
+                                Submit
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        )
+    }
+
     return (
         <>
-            {New && (
-                <Modal show={true} Hide={() => setNew(false)} content={
-                    <form ref={formRef} onSubmit={onSubmit}>
-                        <h3 className="heading">
-                            New Record
-                            <sub>FUEL Receival</sub>
-                        </h3>
-                        <hr />
-                        <fieldset ref={fieldsetRef}>
-                            <div className="d-flex mb-2" style={{gap: '20px'}}>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Company</b>
-                                    </label>
-                                    <select className="form-control" ref={companyRef} onChange={(e) => GetLocations(e.target.value)} required>
-                                        <option value=''>Select the option</option>
-                                        {
-                                            Companies.map(
-                                                val => {
-
-                                                    return (
-                                                        <option
-                                                            key={val.company_code}
-                                                            value={val.company_code}
-                                                        // selected={details && details.company_code == val.company_code ? true : false}
-                                                        > {val.company_name} </option>
-                                                    )
-
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Location</b>
-                                    </label>
-                                    <select className="form-control" ref={locationRef} required>
-                                        <option value=''>Select the option</option>
-                                        {
-                                            Locations.map(
-                                                val => {
-
-                                                    return (
-                                                        <option
-                                                            key={val.location_code}
-                                                            value={val.location_code}
-                                                        // selected={details && details.location_code == val.location_code ? true : false}
-                                                        > {val.location_name} </option>
-                                                    );
-
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="d-flex mb-2" style={{gap: '20px'}}>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Supplier</b>
-                                    </label>
-                                    <input type="text" className="form-control" ref={supplierRef} required />
-                                </div>
-                                <div className='w-50'>
-                                    <label className='mb-0'>
-                                        <b>Date</b>
-                                    </label>
-                                    <input type="date" max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required />
-                                </div>
-                            </div>
-
-                            <div className="mb-3">
-                                <label className='mb-0'>
-                                    <b>Fuel (Ltr.)</b>
-                                </label>
-                                <input type='number' min={1} className="form-control" ref={fuelRef} required />
-                            </div>
-
-                            <div className='d-flex justify-content-end align-items-center'>
-                                <button className="btn light" type="button">Cancel</button>
-                                <button className="btn ml-3 submit" type='submit' ref={btnRef}>
-                                    Submit
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
-                } />
-            )}
             {
                 Details
                 ?
