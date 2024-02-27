@@ -35,73 +35,73 @@ const StockAtFuelingStation = () => {
             </>
         );
         if (in_out === 'IN') {
-            axios.post('/fuel-managent/fuel-request-for-station/request/details', {id}).then(res => {
+            axios.post('/fuel-managent/fuel-request-for-station/request/details', { id }).then(res => {
                 const Details = res.data[0];
                 setModal(
                     <>
-                        <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Request Details</h5>
+                        <h5 style={{ fontFamily: "Roboto-Light", fontWeight: 'bold' }}>Fuel Request Details</h5>
                         <hr />
-                        <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <b>Fuel Required (Ltr.)</b><br />
-                                    <span>{Details?.fuel_required}</span>
-                                </td>
-                                <td>
-                                    <b>Requested By</b><br />
-                                    <span>{Details?.submit_person}</span>
-                                </td>
-                                <td>
-                                    <b>Requested At</b><br />
-                                    <span>{moment(new Date(Details?.requested_at)).format('DD-MM-YYYY')} at {new Date(Details?.requested_at).toLocaleTimeString().substring(0,8)}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                {
-                                    Details?.status === 'Rejected'
-                                    ?
-                                    <>
-                                        <td>
-                                            <b>Rejected By</b><br />
-                                            <span>{Details?.approval_person && Details?.approval_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Rejected At</b><br />
-                                            <span>{Details?.approved_at ? (moment(new Date(Details?.approved_at)).format('DD-MM-YYYY') + ' at ' + new Date(Details?.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                        </td>
-                                    </>
-                                    :
-                                    <>
-                                        <td>
-                                            <b>{Details?.approved_at ? 'Approved By' : 'Submitted To'}</b><br />
-                                            <span>{Details?.approval_person && Details?.approval_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Approved At</b><br />
-                                            <span>{Details?.approved_at ? (moment(new Date(Details?.approved_at)).format('DD-MM-YYYY') + ' at ' + new Date(Details?.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                        </td>
-                                    </>
-                                }
-                                <td>
-                                    <b>Status</b><br />
-                                    <Status status={Details?.status} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <table style={{ fontFamily: "Roboto-Light" }} className="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Fuel Required (Ltr.)</b><br />
+                                        <span>{Details?.fuel_required}</span>
+                                    </td>
+                                    <td>
+                                        <b>Requested By</b><br />
+                                        <span>{Details?.submit_person}</span>
+                                    </td>
+                                    <td>
+                                        <b>Requested At</b><br />
+                                        <span>{moment(new Date(Details?.requested_at)).format('DD-MM-YYYY')} at {new Date(Details?.requested_at).toLocaleTimeString().substring(0, 8)}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    {
+                                        Details?.status === 'Rejected'
+                                            ?
+                                            <>
+                                                <td>
+                                                    <b>Rejected By</b><br />
+                                                    <span>{Details?.approval_person && Details?.approval_person}</span>
+                                                </td>
+                                                <td>
+                                                    <b>Rejected At</b><br />
+                                                    <span>{Details?.approved_at ? (moment(new Date(Details?.approved_at)).format('DD-MM-YYYY') + ' at ' + new Date(Details?.approved_at).toLocaleTimeString().substring(0, 8)) : '-'}</span>
+                                                </td>
+                                            </>
+                                            :
+                                            <>
+                                                <td>
+                                                    <b>{Details?.approved_at ? 'Approved By' : 'Submitted To'}</b><br />
+                                                    <span>{Details?.approval_person && Details?.approval_person}</span>
+                                                </td>
+                                                <td>
+                                                    <b>Approved At</b><br />
+                                                    <span>{Details?.approved_at ? (moment(new Date(Details?.approved_at)).format('DD-MM-YYYY') + ' at ' + new Date(Details?.approved_at).toLocaleTimeString().substring(0, 8)) : '-'}</span>
+                                                </td>
+                                            </>
+                                    }
+                                    <td>
+                                        <b>Status</b><br />
+                                        <Status status={Details?.status} />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </>
                 );
             }).catch(err => console.log(err));
-        }else {
-            if ( other_than_trip === 1 ) {
-                axios.post('/fuel-managent/fuel-issue-for-equipemnt/request/details', {id}).then(res => {
+        } else {
+            if (other_than_trip === 1) {
+                axios.post('/fuel-managent/fuel-issue-for-equipemnt/request/details', { id }).then(res => {
                     const Details = res.data[0];
                     setModal(
                         <>
-                            <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Issued To Equipments</h5>
+                            <h5 style={{ fontFamily: "Roboto-Light", fontWeight: 'bold' }}>Fuel Issued To Equipments</h5>
                             <hr />
-                            <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
+                            <table style={{ fontFamily: "Roboto-Light" }} className="table table-borderless">
                                 <tbody>
                                     <tr>
                                         <td>
@@ -132,32 +132,32 @@ const StockAtFuelingStation = () => {
                                         </td>
                                         <td>
                                             <b>Issued At</b><br />
-                                            <span>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</span>
+                                            <span>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0, 8)}</span>
                                         </td>
                                         {
                                             Details.status === 'Rejected'
-                                            ?
-                                            <>
-                                                <td>
-                                                    <b>Rejected By</b><br />
-                                                    <span>{Details.verifier_person && Details.verifier_person}</span>
-                                                </td>
-                                                <td>
-                                                    <b>Rejected At</b><br />
-                                                    <span>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                                </td>
-                                            </>
-                                            :
-                                            <>
-                                                <td>
-                                                    <b>{Details.verified_at ? 'Verified By' : 'Submitted To'}</b><br />
-                                                    <span>{Details.verifier_person && Details.verifier_person}</span>
-                                                </td>
-                                                <td>
-                                                    <b>Verified At</b><br />
-                                                    <span>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</span>
-                                                </td>
-                                            </>
+                                                ?
+                                                <>
+                                                    <td>
+                                                        <b>Rejected By</b><br />
+                                                        <span>{Details.verifier_person && Details.verifier_person}</span>
+                                                    </td>
+                                                    <td>
+                                                        <b>Rejected At</b><br />
+                                                        <span>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0, 8)) : '-'}</span>
+                                                    </td>
+                                                </>
+                                                :
+                                                <>
+                                                    <td>
+                                                        <b>{Details.verified_at ? 'Verified By' : 'Submitted To'}</b><br />
+                                                        <span>{Details.verifier_person && Details.verifier_person}</span>
+                                                    </td>
+                                                    <td>
+                                                        <b>Verified At</b><br />
+                                                        <span>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0, 8)) : '-'}</span>
+                                                    </td>
+                                                </>
                                         }
                                         <td>
                                             <b>Status</b><br />
@@ -169,58 +169,58 @@ const StockAtFuelingStation = () => {
                         </>
                     );
                 }).catch(err => console.log(err));
-            }else 
-            if (trip_based === 1) {
-                axios.post('/fuel-managent/fuel-issue-for-trip/request/details', {id}).then(res => {
-                    const Details = res.data[0];
-                    setModal(
-                        <>
-                            <h5 style={{fontFamily: "Roboto-Light", fontWeight: 'bold'}}>Fuel Issued To Trailer</h5>
-                            <hr />
-                            <table style={{fontFamily: "Roboto-Light"}} className="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <b>Equipment Type</b><br />
-                                            <span>{Details.equipment_type_name}</span>
-                                        </td>
-                                        <td>
-                                            <b>Equipment Number</b><br />
-                                            <span>{Details.equipment_no}</span>
-                                        </td>
-                                        <td>
-                                            <b>Trip</b><br />
-                                            <pre style={{fontFamily: "Roboto-Light"}}>{Details.route}</pre>
-                                        </td>
-                                        <td>
-                                            <b>Fuel Issued (Ltr.)</b><br />
-                                            <span>{Details.total_fuel_to_issue}</span>
-                                        </td>
-                                        <td>
-                                            <b>Trip Date</b><br />
-                                            <span>{new Date(Details.trip_date).toDateString()}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <b>Issued By</b><br />
-                                            <span>{Details.submit_person}</span>
-                                        </td>
-                                        <td>
-                                            <b>Issued At</b><br />
-                                            <span>{new Date(Details.created_at).toDateString()} at {new Date(Details.created_at).toLocaleTimeString().substring(0,8)}</span>
-                                        </td>
-                                        <td>
-                                            <b>Status</b><br />
-                                            <Status status={Details.status} />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </>
-                    );
-                }).catch(err => console.log(err));
-            }
+            } else
+                if (trip_based === 1) {
+                    axios.post('/fuel-managent/fuel-issue-for-trip/request/details', { id }).then(res => {
+                        const Details = res.data[0];
+                        setModal(
+                            <>
+                                <h5 style={{ fontFamily: "Roboto-Light", fontWeight: 'bold' }}>Fuel Issued To Trailer</h5>
+                                <hr />
+                                <table style={{ fontFamily: "Roboto-Light" }} className="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <b>Equipment Type</b><br />
+                                                <span>{Details.equipment_type_name}</span>
+                                            </td>
+                                            <td>
+                                                <b>Equipment Number</b><br />
+                                                <span>{Details.equipment_no}</span>
+                                            </td>
+                                            <td>
+                                                <b>Trip</b><br />
+                                                <pre style={{ fontFamily: "Roboto-Light" }}>{Details.route}</pre>
+                                            </td>
+                                            <td>
+                                                <b>Fuel Issued (Ltr.)</b><br />
+                                                <span>{Details.total_fuel_to_issue}</span>
+                                            </td>
+                                            <td>
+                                                <b>Trip Date</b><br />
+                                                <span>{new Date(Details.trip_date).toDateString()}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Issued By</b><br />
+                                                <span>{Details.submit_person}</span>
+                                            </td>
+                                            <td>
+                                                <b>Issued At</b><br />
+                                                <span>{new Date(Details.created_at).toDateString()} at {new Date(Details.created_at).toLocaleTimeString().substring(0, 8)}</span>
+                                            </td>
+                                            <td>
+                                                <b>Status</b><br />
+                                                <Status status={Details.status} />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </>
+                        );
+                    }).catch(err => console.log(err));
+                }
         }
     }
 
@@ -250,7 +250,7 @@ const StockAtFuelingStation = () => {
                         <h6 style={{ fontSize: 15 }} className='text-capitalize mb-0'>Total Stock at Station</h6>
                     </div>
                     <div className='d-flex justify-content-between align-items-center mb-3'>
-                        <h5 className='mb-0' style={{fontFamily: "Roboto-Light"}}>
+                        <h5 className='mb-0' style={{ fontFamily: "Roboto-Light" }}>
                             <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
                         </h5>
                         <div>
@@ -258,11 +258,12 @@ const StockAtFuelingStation = () => {
                             <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
                         </div>
                     </div>
-                    <table className="table" style={{fontSize: 12}}>
+                    <table className="table" style={{ fontSize: 12 }}>
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Com & Loc</th>
+                                <th>Equipment</th>
                                 <th>Fuel (ltr.)</th>
                                 <th>Requested By</th>
                                 <th>Approved By</th>
@@ -273,44 +274,60 @@ const StockAtFuelingStation = () => {
                         <tbody>
                             {
                                 Requests.filter(val => val.inserted_at.includes(DateFilter)).map((val, i) => {
-                                    const { requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
+                                    const { equipment_submit_person, equipment_verify_person, equipment_type, equipment_number, requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
                                     const d = new Date(inserted_at);
                                     const label = other_than_trip === 0 && trip_based === 0 ? 'Requested At' :
-                                        other_than_trip === 1 ? 'Issued To Equipement' :
-                                        trip_based === 1 ? 'Trip Date' : null;
+                                        other_than_trip === 1 ? 'Issued To Equipment' :
+                                            trip_based === 1 ? 'Trip Date' : null;
                                     return (
                                         <tr key={i} onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
                                             {/*  onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)} */}
-                                            <td>{i+1}</td>
+                                            <td>{i + 1}</td>
                                             <td>
                                                 {station_company}<br />
                                                 {station_location}
                                             </td>
+                                            <td>
+                                                {equipment_type}<br />
+                                                {equipment_number}
+                                            </td>
                                             {
                                                 in_out === 'IN'
-                                                ?
-                                                <td id={'quantity_' + (i+1)} className='text-success'>+{quantity_in_ltr}</td>
-                                                :
-                                                <td id={'quantity_' + (i+1)} className='text-danger'>-{quantity_in_ltr}</td>
+                                                    ?
+                                                    <td id={'quantity_' + (i + 1)} className='text-success'>+{quantity_in_ltr}</td>
+                                                    :
+                                                    <td id={'quantity_' + (i + 1)} className='text-danger'>-{quantity_in_ltr}</td>
                                             }
                                             {
                                                 in_out === 'IN'
-                                                ?
-                                                <>
-                                                    <td>
-                                                        {station_submit_person}<br />
-                                                        {moment(requested_at).format('YYYY-MM-DD HH:mm a')}
-                                                    </td>
-                                                    <td>
-                                                        {station_verify_person}<br />
-                                                        {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
-                                                    </td>
-                                                </>
-                                                :
-                                                <>
-                                                    <td></td>
-                                                    <td></td>
-                                                </>
+                                                    ?
+                                                    <>
+                                                        <td>
+                                                            {station_submit_person}<br />
+                                                            {moment(requested_at).format('YYYY-MM-DD HH:mm a')}
+                                                        </td>
+                                                        <td>
+                                                            {station_verify_person}<br />
+                                                            {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
+                                                        </td>
+                                                    </>
+                                                    :
+                                                    other_than_trip === 1
+                                                    ?
+                                                    <>
+                                                        <td>
+                                                            {equipment_submit_person}<br />
+                                                            {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
+                                                        </td>
+                                                        <td>
+                                                            
+                                                        </td>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </>
                                             }
                                             <td>
                                                 <b>{label}</b><br />
