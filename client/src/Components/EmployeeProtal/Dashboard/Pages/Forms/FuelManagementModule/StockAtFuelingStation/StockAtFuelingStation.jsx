@@ -267,26 +267,35 @@ const StockAtFuelingStation = () => {
                                 <th>Fuel (ltr.)</th>
                                 <th>Requested By</th>
                                 <th>Approved By</th>
-                                <th>Dates</th>
+                                {/* <th>Dates</th> */}
                                 <th>Date & Time</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
                                 Requests.filter(val => val.inserted_at.includes(DateFilter)).map((val, i) => {
-                                    const { equipment_submit_person, equipment_verify_person, equipment_type, equipment_number, requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
+                                    const { last_issued_at, trip_issued_by, trip_location, trip_company, verified_at, submitted_at, equipment_submit_person, equipment_verify_person, equipment_type, equipment_number, requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
                                     const d = new Date(inserted_at);
                                     const label = other_than_trip === 0 && trip_based === 0 ? 'Requested At' :
                                         other_than_trip === 1 ? 'Issued To Equipment' :
                                             trip_based === 1 ? 'Trip Date' : null;
                                     return (
-                                        <tr key={i} onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)}>
+                                        <tr key={i}>
                                             {/*  onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)} */}
                                             <td>{i + 1}</td>
-                                            <td>
-                                                {station_company}<br />
-                                                {station_location}
-                                            </td>
+                                            {
+                                                trip_based === 1
+                                                ?
+                                                <td>
+                                                    {trip_company}<br />
+                                                    {trip_location}
+                                                </td>
+                                                :
+                                                <td>
+                                                    {station_company}<br />
+                                                    {station_location}
+                                                </td>
+                                            }
                                             <td>
                                                 {equipment_type}<br />
                                                 {equipment_number}
@@ -317,22 +326,26 @@ const StockAtFuelingStation = () => {
                                                     <>
                                                         <td>
                                                             {equipment_submit_person}<br />
-                                                            {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
+                                                            {moment(submitted_at).format('YYYY-MM-DD HH:mm a')}
                                                         </td>
                                                         <td>
-                                                            
+                                                            {equipment_verify_person}<br />
+                                                            {moment(verified_at).format('YYYY-MM-DD HH:mm a')}
                                                         </td>
                                                     </>
                                                     :
                                                     <>
-                                                        <td></td>
+                                                        <td>
+                                                            {trip_issued_by}<br />
+                                                            {moment(last_issued_at).format('YYYY-MM-DD HH:mm a')}
+                                                        </td>
                                                         <td></td>
                                                     </>
                                             }
-                                            <td>
+                                            {/* <td>
                                                 <b>{label}</b><br />
                                                 <span>{fuel_requested_at && fuel_requested_at && moment(new Date(fuel_requested_at)).format('DD-MM-YYYY')}</span>
-                                            </td>
+                                            </td> */}
                                             <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
                                         </tr>
                                     )

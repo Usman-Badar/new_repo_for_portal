@@ -13,12 +13,21 @@ function FuelManagement() {
     const btnRef = useRef();
     const formRef = useRef();
     const fieldsetRef = useRef();
+    
     const [Companies, setCompanies] = useState([]);
     const [Locations, setLocations] = useState([]);
     const [Equipments, setEquipments] = useState([]);
     const [List, setList] = useState([]);
     const [RowDetails, setRowDetails] = useState();
     const [Loading, setLoading] = useState(false);
+    const [ID, setID] = useState();
+
+    const [ FilterCompany, setFilterCompany ] = useState('');
+    const [ FilterLocation, setFilterLocation ] = useState('');
+    const [ FilterEquipmentType, setFilterEquipmentType ] = useState('');
+    const [ FilterEquipmentNumber, setFilterEquipmentNumber ] = useState('');
+    const [ StartDate, setStartDate ] = useState('');
+    const [ EndDate, setEndDate ] = useState('');
 
     useEffect(
         () => {
@@ -39,6 +48,24 @@ function FuelManagement() {
             }
         }, []
     );
+    useEffect(
+        () => {
+            if ( sessionStorage.getItem('FilterCompany') && sessionStorage.getItem('FilterCompany') !== '' ) setFilterCompany(sessionStorage.getItem('FilterCompany'));
+            if ( sessionStorage.getItem('FilterLocation') && sessionStorage.getItem('FilterLocation') !== '' ) setFilterLocation(sessionStorage.getItem('FilterLocation'));
+            if ( sessionStorage.getItem('FilterEquipmentType') && sessionStorage.getItem('FilterEquipmentType') !== '' ) setFilterEquipmentType(sessionStorage.getItem('FilterEquipmentType'));
+            if ( sessionStorage.getItem('FilterEquipmentNumber') && sessionStorage.getItem('FilterEquipmentNumber') !== '' ) setFilterEquipmentNumber(sessionStorage.getItem('FilterEquipmentNumber'));
+        }, []
+    );
+    useEffect(
+        () => {
+            if (StartDate.length > 0) {
+                loadDetailsFiltered();
+            }else {
+                setEndDate('');
+                if (RowDetails) loadDetails(RowDetails.data);
+            }
+        }, [StartDate, EndDate]
+    );
 
     const loadRequests = (isActive) => {
         axios.get('/fuel-managent/equipments')
@@ -46,6 +73,18 @@ function FuelManagement() {
             if (!isActive) return;
             setList(res.data);
             GetCompanies(isActive);
+        }).catch(err => console.log(err));
+    }
+    const loadDetailsFiltered = () => {
+        setLoading(true);
+        axios.post('/fuel-managent/equipments/details/filtered', {id: ID, startDate: StartDate, endDate: EndDate})
+        .then(res => {
+            setRowDetails({
+                data: RowDetails.data,
+                total: res.data[0].total,
+                transactions: res.data[1]
+            });
+            setLoading(false);
         }).catch(err => console.log(err));
     }
     const beforeunload = (e, ) => {
@@ -118,6 +157,7 @@ function FuelManagement() {
                 total: res.data[0].total,
                 transactions: res.data[1]
             });
+            setID(val.id);
             setLoading(false);
         }).catch(err => console.log(err));
     }
@@ -128,7 +168,7 @@ function FuelManagement() {
             <div className='FuelManagement page'>
                 <div className="page-content">
                     <h3 className="heading">
-                        Fuel Management Module
+                        Setup Company Equipments
                         <sub>Comapany Equipment Setup Form</sub>
                     </h3>
 
@@ -251,7 +291,21 @@ function FuelManagement() {
                                         <div className="col-9">
                                             <div className="d-flex justify-content-between align-items-center mb-3">
                                                 <h4 className='mb-0'><b>Transactions:</b> {RowDetails?.transactions?.length}</h4>
-                                                <button className='btn light' onClick={() => setRowDetails()}>Back</button>
+                                                <div className="d-flex align-items-end" style={{gap: 10}}>
+                                                    <div>
+                                                        <label className='mb-0'><b>{StartDate.length > 0 ? "Start Date" : "Date"}</b></label>
+                                                        <input type="date" className='form-control' onChange={(e) => setStartDate(e.target.value)} />
+                                                    </div>
+                                                    {
+                                                        StartDate.length > 0 && (
+                                                            <div>
+                                                                <label className='mb-0'><b>End Date</b></label>
+                                                                <input type="date" className='form-control' onChange={(e) => setEndDate(e.target.value)} />
+                                                            </div>
+                                                        )
+                                                    }
+                                                    <button className='btn light' onClick={() => setRowDetails()}>Back</button>
+                                                </div>
                                             </div>
                                             <table className="table mb-0">
                                                 <thead>
@@ -268,13 +322,7 @@ function FuelManagement() {
                                                                 return (
                                                                     <tr key={i}>
                                                                         <td>{i+1}</td>
-                                                                        {
-                                                                            val.in_out === 'IN'
-                                                                            ?
-                                                                            <td className='text-success'>+{val.quantity_in_ltr}</td>
-                                                                            :
-                                                                            <td className='text-danger'>-{val.quantity_in_ltr}</td>
-                                                                        }
+                                                                        <td>{val.quantity_in_ltr}</td>
                                                                         <td>{moment(new Date(val.inserted_at)).format('YYYY-MM-DD HH:mm a')}</td>
                                                                     </tr>
                                                                 )
@@ -291,6 +339,53 @@ function FuelManagement() {
                     </div>
                     :
                     <div className="page-content popUps">
+                        <div className="d-flex justify-content-end align-items-center mb-3" style={{gap: 15}}>
+                            <div>
+                                <label className="mb-0"><b>Company</b></label>
+                                <select value={FilterCompany} onChange={
+                                    e => {
+                                        setFilterCompany(e.target.value);
+                                        sessionStorage.setItem('FilterCompany', e.target.value);
+                                    }
+                                } className="form-control">
+                                    <option value=''>Show All</option>
+                                    {Companies.map(val => <option key={val.company_name} value={val.company_name}>{val.company_name}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="mb-0"><b>Location</b></label>
+                                <select value={FilterLocation} onChange={
+                                    e => {
+                                        setFilterLocation(e.target.value);
+                                        sessionStorage.setItem('FilterLocation', e.target.value);
+                                    }
+                                } className="form-control">
+                                    <option value=''>Show All</option>
+                                    {Locations.map(val => <option key={val.location_name} value={val.location_name}>{val.location_name}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="mb-0"><b>Equipment Type</b></label>
+                                <select value={FilterEquipmentType} onChange={
+                                    e => {
+                                        setFilterEquipmentType(e.target.value);
+                                        sessionStorage.setItem('FilterEquipmentType', e.target.value);
+                                    }
+                                } className="form-control">
+                                    <option value=''>Show All</option>
+                                    {Equipments.map(({ equipment_type }) => <option value={equipment_type}>{equipment_type}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="mb-0"><b>Equipment Number</b></label>
+                                <input value={FilterEquipmentNumber} onChange={
+                                    e => {
+                                        setFilterEquipmentNumber(e.target.value);
+                                        sessionStorage.setItem('FilterEquipmentNumber', e.target.value);
+                                    }
+                                } className="form-control" />
+                            </div>
+                        </div>
                         {
                             List.length === 0
                             ?
@@ -309,7 +404,12 @@ function FuelManagement() {
                                 </thead>
                                 <tbody>
                                     {
-                                        List.map((val, i) => {
+                                        List.filter(val => {
+                                            return val.company_name.includes(FilterCompany) && 
+                                            val.location_name.includes(FilterLocation) &&
+                                            val.equipment_type_name.includes(FilterEquipmentType) &&
+                                            val.equipment_number.toLowerCase().includes(FilterEquipmentNumber.toLowerCase())
+                                        }).map((val, i) => {
                                             const { company_name, location_name, equipment_type_name, equipment_number, created_at } = val;
                                             const d = new Date(created_at);
                                             return (

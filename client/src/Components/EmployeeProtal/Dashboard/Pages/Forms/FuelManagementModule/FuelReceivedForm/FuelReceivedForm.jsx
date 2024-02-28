@@ -7,6 +7,8 @@ import $ from 'jquery';
 import axios from '../../../../../../../axios';
 import Modal from '../../../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
+import moment from 'moment';
 
 function FuelRecievedFrom() {
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
@@ -20,9 +22,15 @@ function FuelRecievedFrom() {
     const fieldsetRef = useRef();
     const [Companies, setCompanies] = useState([]);
     const [Locations, setLocations] = useState([]);
+    const [AllLocations, setAllLocations] = useState([]);
     const [Requests, setRequests] = useState();
     const [New, setNew] = useState(false);
     const [Details, setDetails] = useState();
+    const [ ShowFilters, setShowFilters ] = useState(false);
+    const [ FilterCompany, setFilterCompany ] = useState('');
+    const [ FilterLocation, setFilterLocation ] = useState('');
+    const [ FilterSupplier, setFilterSupplier ] = useState('');
+    const [ FilterReceivingDate, setFilterReceivingDate ] = useState('');
 
     useEffect(
         () => {
@@ -42,11 +50,20 @@ function FuelRecievedFrom() {
             }
         }, []
     );
+    useEffect(
+        () => {
+            if ( sessionStorage.getItem('FilterCompany') && sessionStorage.getItem('FilterCompany') !== '' ) setFilterCompany(sessionStorage.getItem('FilterCompany'));
+            if ( sessionStorage.getItem('FilterLocation') && sessionStorage.getItem('FilterLocation') !== '' ) setFilterLocation(sessionStorage.getItem('FilterLocation'));
+            if ( sessionStorage.getItem('FilterSupplier') && sessionStorage.getItem('FilterSupplier') !== '' ) setFilterSupplier(sessionStorage.getItem('FilterSupplier'));
+            if ( sessionStorage.getItem('FilterReceivingDate') && sessionStorage.getItem('FilterReceivingDate') !== '' ) setFilterReceivingDate(sessionStorage.getItem('FilterReceivingDate'));
+        }, []
+    );
     const GetCompanies = (isActive) => {
         axios.get('/getallcompanies')
         .then(res => {
             if (!isActive) return;
             setCompanies(res.data);
+            GetAllLocations();
         }).catch(err => console.log(err));
     }
     const GetLocations = (value) => {
@@ -61,6 +78,7 @@ function FuelRecievedFrom() {
             }
         )
     }
+    const GetAllLocations = () => axios.get('/getalllocations').then(res => setAllLocations(res.data)).catch(err => console.log(err));
     const onSubmit = (e) => {
         e.preventDefault();
         if (companyRef.current.value.trim().length === 0) {
@@ -135,6 +153,16 @@ function FuelRecievedFrom() {
         //     return false;
         // }
         return true;
+    }
+    const resetFilters = () => {
+        sessionStorage.removeItem('FilterCompany');
+        sessionStorage.removeItem('FilterLocation');
+        sessionStorage.removeItem('FilterSupplier');
+        sessionStorage.removeItem('FilterReceivingDate');
+        setFilterCompany("");
+        setFilterLocation("");
+        setFilterSupplier("");
+        setFilterReceivingDate("");
     }
 
     if (!AccessControls) {
@@ -247,8 +275,87 @@ function FuelRecievedFrom() {
                                 Fuel Management Module
                                 <sub>Fuel Received for QFS Workshop from Supplier</sub>
                             </h3>
-                            {JSON.parse(AccessControls.access).includes(84) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}
+                            <div>
+                                {JSON.parse(AccessControls.access).includes(84) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}
+                                <button className="btn submit px-2 ml-2 filter-emit" onClick={() => setShowFilters(!ShowFilters)} type='button'>
+                                    {
+                                        ShowFilters
+                                        ?
+                                        <>
+                                            <i className="las la-times"></i>
+                                        </>
+                                        :
+                                        <div data-tip data-for='filter'>
+                                            {
+                                                FilterCompany !== '' || FilterLocation !== '' || FilterSupplier !== '' || FilterReceivingDate !== ''
+                                                ?
+                                                <div className='filterisOpen'></div>
+                                                :
+                                                null
+                                            }
+                                            <i className="las la-filter"></i>
+                                            <ReactTooltip id='filter' place="top">
+                                                Filters
+                                            </ReactTooltip>
+                                        </div>
+                                    }
+                                </button>
+                            </div>
                         </div>
+                        {
+                            ShowFilters && (
+                                <>
+                                    <br />
+                                    <div className='filter-content popUps'>
+                                        <div className='flex'>
+                                            <div className='w-50'>
+                                                <label className="font-weight-bold mb-0">Company</label>
+                                                <select value={FilterCompany} onChange={
+                                                    e => {
+                                                        setFilterCompany(e.target.value);
+                                                        sessionStorage.setItem('FilterCompany', e.target.value);
+                                                    }
+                                                } className="form-control form-control-sm mb-2">
+                                                    <option value=''>Show All</option>
+                                                    {Companies.map(val => <option key={val.company_name} value={val.company_name}>{val.company_name}</option>)}
+                                                </select>
+                                            </div>
+                                            <div className='w-50'>
+                                                <label className="font-weight-bold mb-0">Location</label>
+                                                <select value={FilterLocation} onChange={
+                                                    e => {
+                                                        setFilterLocation(e.target.value);
+                                                        sessionStorage.setItem('FilterLocation', e.target.value);
+                                                    }
+                                                } className="form-control form-control-sm mb-2">
+                                                    <option value=''>Show All</option>
+                                                    {AllLocations.map(val => <option key={val.location_name} value={val.location_name}>{val.location_name}</option>)}
+                                                </select>
+                                            </div>
+                                            <div className='w-50'>
+                                                <label className="font-weight-bold mb-0">Supplier</label>
+                                                <input value={FilterSupplier} onChange={
+                                                    e => {
+                                                        setFilterSupplier(e.target.value);
+                                                        sessionStorage.setItem('FilterSupplier', e.target.value);
+                                                    }
+                                                } className="form-control form-control-sm mb-2" />
+                                            </div>
+                                            <div className='w-50'>
+                                                <label className="font-weight-bold mb-0">Receiving Date</label>
+                                                <input value={FilterReceivingDate} type='date' onChange={
+                                                    e => {
+                                                        setFilterReceivingDate(e.target.value);
+                                                        sessionStorage.setItem('FilterReceivingDate', e.target.value);
+                                                    }
+                                                } className="form-control form-control-sm mb-2" />
+                                            </div>
+                                            <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        }
                         <hr />
                         {
                             !Requests
@@ -270,7 +377,12 @@ function FuelRecievedFrom() {
                                 </thead>
                                 <tbody>
                                     {
-                                        Requests.map(
+                                        Requests.filter(val => {
+                                            return val.company_name.includes(FilterCompany) && 
+                                            val.location_name.includes(FilterLocation) &&
+                                            val.supplier.toLowerCase().includes(FilterSupplier.toLowerCase()) &&
+                                            moment(val.receival_date).format('YYYY-MM-DD').includes(FilterReceivingDate)
+                                        }).map(
                                             ({company_name, location_name, supplier, fuel_received, receival_date, submit_person, submitted_at, status}, i) => (
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
                                                     <td className='border-top-0'>{i+1}</td>

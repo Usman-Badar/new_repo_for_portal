@@ -5,54 +5,154 @@ const { SendWhatsappNotification } = require('../Whatsapp/whatsapp');
 // const supplier_verifier = 10106;
 // const supplier_approval = 10119;
 
-router.post('/fuel-managent/fuel-issue-for-selected-trips-list', ( req, res ) => {
-    const { trip_date, number, allIssued, id, routes, emp_id } = req.body;
-    const selectedRoutes = JSON.parse(routes);
+router.post('/fuel-managent/additional-fuel-issue-for-selected-trips-list', ( req, res ) => {
+    const { allIssued, id, fuel, emp_id, number, trip_date } = req.body;
+    let status = 'partial issued';
+    if (allIssued === 1) {
+        status = 'issued';
+    }
     db.query(
-        "UPDATE tbl_fuel_entry_for_trip SET status = ?, last_issued_by = ?, last_issued_at = ? WHERE id = ?;",
-        [allIssued === 1 ? 'issued' : 'partial issued', emp_id, new Date(), id],
-        ( err ) => {
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
+        ( err, result ) => {
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
                 res.end();
             }else {
-                let q = '';
-                let para = [];
-                for (let x = 0; x < selectedRoutes.length; x++) {
-                    q = q.concat("UPDATE tbl_fuel_entry_trips_list SET status = ?, issued_by = ?, issued_at = ? WHERE id = ?;");
-                    para.push('issued')
-                    para.push(emp_id)
-                    para.push(new Date())
-                    para.push(selectedRoutes[x].id)
-
-                    q = q.concat('INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);');
-                    para.push(id)
-                    para.push(selectedRoutes[x].fuel)
-                    para.push(trip_date)
-                    para.push('OUT')
-                    para.push(1)
-
-                    q = q.concat('INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);');
-                    para.push(id)
-                    para.push(selectedRoutes[x].fuel)
-                    para.push(1)
-                    para.push(number)
-                }
-                db.query(
-                    q,
-                    para,
-                    ( err ) => {
-                        if( err ) {
-                            console.log(err)
-                            res.status(500).send(err);
-                            res.end();
-                        }else {
-                            res.send('success');
-                            res.end();
+                const IN = result[0][0].q;
+                const OUT = result[1][0].q;
+                const TOTAL = IN - OUT;
+                if (parseFloat(fuel) > TOTAL) {
+                    res.send('limit increase');
+                    res.end();
+                }else {
+                    db.query(
+                        "UPDATE tbl_fuel_entry_for_trip SET status = ?, last_issued_by = ?, last_issued_at = ?, additional_fuel_issued = 1, additional_fuel_issued_at = ? WHERE id = ?;",
+                        [status, emp_id, new Date(), new Date(), id],
+                        ( err ) => {
+                            if( err ) {
+                                console.log(err)
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                let q = '';
+                                let para = [];
+                                q = q.concat('INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);');
+                                para.push(id)
+                                para.push(fuel)
+                                para.push(trip_date)
+                                para.push('OUT')
+                                para.push(1)
+            
+                                q = q.concat('INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);');
+                                para.push(id)
+                                para.push(fuel)
+                                para.push(1)
+                                para.push(number)
+                                db.query(
+                                    q,
+                                    para,
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log(err)
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else {
+                                            res.send('success');
+                                            res.end();
+                                        }
+                                    }
+                                );
+                            }
                         }
-                    }
-                );
+                    );
+                }
+            }
+        }
+    );
+} );
+
+router.post('/fuel-managent/fuel-issue-for-selected-trips-list', ( req, res ) => {
+    const { additionalFuelIssued, additionalFuel, trip_date, number, allIssued, id, routes, emp_id } = req.body;
+    const selectedRoutes = JSON.parse(routes);
+    let status = 'issued';
+
+    if (allIssued !== 1) {
+        status = 'partial issued';
+    }
+    if (additionalFuel === 1 && additionalFuelIssued === 0) {
+        status = 'partial issued';
+    }
+    db.query(
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
+        ( err, result ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                const IN = result[0][0].q;
+                const OUT = result[1][0].q;
+                const TOTAL = IN - OUT;
+                let fuelSelected = 0;
+                for (let x = 0; x < selectedRoutes.length; x++) {
+                    fuelSelected = parseFloat(fuelSelected) + parseFloat(selectedRoutes[x].fuel);
+                }
+                if (fuelSelected > TOTAL) {
+                    res.send('limit increase');
+                    res.end();
+                }else {
+                    db.query(
+                        "UPDATE tbl_fuel_entry_for_trip SET status = ?, last_issued_by = ?, last_issued_at = ? WHERE id = ?;",
+                        [status, emp_id, new Date(), id],
+                        ( err ) => {
+                            if( err ) {
+                                console.log(err)
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                let q = '';
+                                let para = [];
+                                for (let x = 0; x < selectedRoutes.length; x++) {
+                                    q = q.concat("UPDATE tbl_fuel_entry_trips_list SET status = ?, issued_by = ?, issued_at = ? WHERE id = ?;");
+                                    para.push('issued')
+                                    para.push(emp_id)
+                                    para.push(new Date())
+                                    para.push(selectedRoutes[x].id)
+                
+                                    q = q.concat('INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);');
+                                    para.push(id)
+                                    para.push(selectedRoutes[x].fuel)
+                                    para.push(trip_date)
+                                    para.push('OUT')
+                                    para.push(1)
+                
+                                    q = q.concat('INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);');
+                                    para.push(id)
+                                    para.push(selectedRoutes[x].fuel)
+                                    para.push(1)
+                                    para.push(number)
+                                }
+                                db.query(
+                                    q,
+                                    para,
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log(err)
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else {
+                                            res.send('success');
+                                            res.end();
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    );
+                }
             }
         }
     );
@@ -208,6 +308,7 @@ router.post('/fuel-managent/issue-fuel-for-trips', ( req, res ) => {
         "INSERT INTO `tbl_fuel_entry_for_trip`(`total_fuel_to_issue`, `trip_date`, `equipment_type`, `equipment_number`, `additional_fuel`, `created_by`) VALUES (?,?,?,?,?,?);",
         [total_fuel, dt, type, number, additionalFuel, emp_id],
         ( err, rslt ) => {
+            console.log(rslt);
             if( err ) {
                 console.log(err)
                 res.status(500).send(err);
@@ -266,6 +367,38 @@ router.post('/fuel-managent/equipments/details', ( req, res ) => {
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'IN' AND equipment_id = ?) ,0) AS q;" +
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'OUT' AND equipment_id = ?) ,0) AS q;" +
         "SELECT * FROM `tbl_fuel_issued_to_equipments` WHERE equipment_id = ?;",
+        [id, id, id],
+        ( err, rslt ) => {
+            if( err ) {
+                console.log(err);
+                res.status(500).send(err);
+                res.end();
+            }else {
+                const IN = rslt[0][0].q;
+                const OUT = rslt[1][0].q;
+                const TOTAL = IN - OUT;
+                res.send([{total: TOTAL}, rslt[2]]);
+                res.end();
+            }
+        }
+    );
+} );
+
+router.post('/fuel-managent/equipments/details/filtered', ( req, res ) => {
+    const { id, startDate, endDate } = req.body;
+    console.log(startDate)
+    let q = "";
+    if (startDate.length > 0 && endDate.length === 0) {
+        q = "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'IN' AND equipment_id = ? AND DATE(inserted_at) = DATE('" + startDate + "')) ,0) AS q;" +
+            "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'OUT' AND equipment_id = ? AND DATE(inserted_at) = DATE('" + startDate + "')) ,0) AS q;" +
+            "SELECT * FROM `tbl_fuel_issued_to_equipments` WHERE equipment_id = ? AND DATE(inserted_at) = DATE('" + startDate + "');";
+    }else {
+        q = "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'IN' AND equipment_id = ? AND DATE(inserted_at) BETWEEN DATE('" + startDate + "') AND DATE('" + endDate + "')) ,0) AS q;" +
+            "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'OUT' AND equipment_id = ? AND DATE(inserted_at) BETWEEN DATE('" + startDate + "') AND DATE('" + endDate + "')) ,0) AS q;" +
+            "SELECT * FROM `tbl_fuel_issued_to_equipments` WHERE equipment_id = ? AND DATE(inserted_at) BETWEEN DATE('" + startDate + "') AND DATE('" + endDate + "');";
+    }
+    db.query(
+        q,
         [id, id, id],
         ( err, rslt ) => {
             if( err ) {
@@ -421,7 +554,36 @@ router.get('/fuel-managent/fuel-receival-for-workshop/transactions', ( req, res 
     db.query(
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_workshop` WHERE in_out = 'IN') ,0) AS q;" +
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_workshop` WHERE in_out = 'OUT') ,0) AS q;" +
-        "SELECT * FROM `tbl_fuel_stock_at_workshop` ORDER BY inserted_at DESC;",
+        "SELECT  \
+        tbl_fuel_stock_at_workshop.*,  \
+        workshop_company.code AS workshop_company,  \
+        workshop_location.location_name AS workshop_location, \
+        tbl_fuel_receival_for_workshop.supplier, \
+        tbl_fuel_receival_for_workshop.fuel_received AS workshop_fuel_received, \
+        tbl_fuel_receival_for_workshop.submitted_at, \
+        tbl_fuel_receival_for_workshop.verified_at, \
+        workshop_submit_person.name AS workshop_submit_person, \
+        workshop_verify_person.name AS workshop_verify_person, \
+         \
+        station_company.code AS station_company, \
+        station_location.location_name AS station_location, \
+        station_submit_person.name AS station_submit_person, \
+        station_verify_person.name AS station_verify_person, \
+        tbl_fuel_request_for_station.requested_at, \
+        tbl_fuel_request_for_station.approved_at \
+        FROM `tbl_fuel_stock_at_workshop`  \
+        LEFT OUTER JOIN tbl_fuel_receival_for_workshop ON tbl_fuel_stock_at_workshop.request_id = tbl_fuel_receival_for_workshop.id \
+        LEFT OUTER JOIN companies workshop_company ON tbl_fuel_receival_for_workshop.company_code = workshop_company.company_code \
+        LEFT OUTER JOIN locations workshop_location ON tbl_fuel_receival_for_workshop.location_code = workshop_location.location_code \
+        LEFT OUTER JOIN employees workshop_submit_person ON tbl_fuel_receival_for_workshop.submitted_by = workshop_submit_person.emp_id \
+        LEFT OUTER JOIN employees workshop_verify_person ON tbl_fuel_receival_for_workshop.verified_by = workshop_verify_person.emp_id \
+         \
+        LEFT OUTER JOIN tbl_fuel_request_for_station ON tbl_fuel_stock_at_workshop.request_id = tbl_fuel_request_for_station.id \
+        LEFT OUTER JOIN companies station_company ON tbl_fuel_request_for_station.company_code = station_company.company_code \
+        LEFT OUTER JOIN locations station_location ON tbl_fuel_request_for_station.location_code = station_location.location_code \
+        LEFT OUTER JOIN employees station_submit_person ON tbl_fuel_request_for_station.requested_by = station_submit_person.emp_id \
+        LEFT OUTER JOIN employees station_verify_person ON tbl_fuel_request_for_station.approved_by = station_verify_person.emp_id \
+        ORDER BY tbl_fuel_stock_at_workshop.inserted_at DESC;",
         ( err, rslt ) => {
             if( err ) {
                 console.log(err)
@@ -616,7 +778,7 @@ router.get('/fuel-managent/fuel-issue-for-trips-list/requests', ( req, res ) => 
         LEFT OUTER JOIN employees submit ON tbl_fuel_entry_for_trip.created_by = submit.emp_id \
         LEFT OUTER JOIN tbl_fuel_equipment_setup ON tbl_fuel_entry_for_trip.equipment_type = tbl_fuel_equipment_setup.id \
         LEFT OUTER JOIN tbl_fuel_equipment_company_setup ON tbl_fuel_entry_for_trip.equipment_number = tbl_fuel_equipment_company_setup.id \
-        ORDER BY id DESC;",
+        ORDER BY tbl_fuel_entry_for_trip.id DESC;",
         ( err, rslt ) => {
             if( err ) {
                 console.log(err)
@@ -791,16 +953,20 @@ router.post('/fuel-managent/fuel-request-for-station/new', ( req, res ) => {
 } );
 
 router.post('/fuel-managent/fuel-request-for-station/requests', ( req, res ) => {
-    const { emp_id, access } = req.body;
+    const { emp_id, access, date } = req.body;
 
     db.query(
         "SELECT tbl_fuel_request_for_station.*, \
         submit.name AS submit_person, \
-        approve.name AS approval_person  \
+        approve.name AS approval_person,  \
+        companies.company_name,  \
+        locations.location_name  \
         FROM tbl_fuel_request_for_station  \
         LEFT OUTER JOIN employees submit ON tbl_fuel_request_for_station.requested_by = submit.emp_id \
         LEFT OUTER JOIN employees approve ON tbl_fuel_request_for_station.approved_by = approve.emp_id \
-        " + (access === 1 ? "" : "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ?") + " ORDER BY id DESC;",
+        LEFT OUTER JOIN companies ON tbl_fuel_request_for_station.company_code = companies.company_code \
+        LEFT OUTER JOIN locations ON tbl_fuel_request_for_station.location_code = locations.location_code \
+        " + (access === 1 ? "" : (date && date.length > 0 ? "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ? AND DATE(tbl_fuel_request_for_station.requested_at) = '" + date + "'" : "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ?")) + " ORDER BY id DESC;",
         [emp_id, emp_id],
         ( err, rslt ) => {
             if( err ) {
@@ -1023,7 +1189,51 @@ router.get('/fuel-managent/fuel-request-for-station/transactions', ( req, res ) 
     db.query(
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;" +
-        "SELECT * FROM `tbl_fuel_stock_at_fueling_station` ORDER BY inserted_at DESC;",
+        "SELECT  \
+        tbl_fuel_stock_at_fueling_station.*,  \
+        station_company.company_name AS station_company,  \
+        station_location.location_name AS station_location, \
+        tbl_fuel_request_for_station.requested_at, \
+        tbl_fuel_request_for_station.approved_at, \
+        station_submit_person.name AS station_submit_person, \
+        station_verify_person.name AS station_verify_person, \
+        equipment_company.code AS equipment_company, \
+        equipment_location.location_name AS equipment_location, \
+        equipment.equipment_number, \
+        equipment_type.equipment_type, \
+        equipment_submit_person.name AS equipment_submit_person, \
+        equipment_verify_person.name AS equipment_verify_person, \
+        tbl_fuel_issue_for_equipments.submitted_at, \
+        tbl_fuel_issue_for_equipments.verified_at, \
+         \
+        trip_company.code AS trip_company, \
+        trip_location.location_name AS trip_location, \
+        trip_issued_by.name AS trip_issued_by, \
+        trip_equipment.equipment_number, \
+        trip_equipment_type.equipment_type, \
+        tbl_fuel_entry_for_trip.last_issued_at \
+        FROM `tbl_fuel_stock_at_fueling_station`  \
+        LEFT OUTER JOIN tbl_fuel_request_for_station ON tbl_fuel_stock_at_fueling_station.request_id = tbl_fuel_request_for_station.id \
+        LEFT OUTER JOIN companies station_company ON tbl_fuel_request_for_station.company_code = station_company.company_code \
+        LEFT OUTER JOIN locations station_location ON tbl_fuel_request_for_station.location_code = station_location.location_code \
+        LEFT OUTER JOIN employees station_submit_person ON tbl_fuel_request_for_station.requested_by = station_submit_person.emp_id \
+        LEFT OUTER JOIN employees station_verify_person ON tbl_fuel_request_for_station.approved_by = station_verify_person.emp_id \
+         \
+        LEFT OUTER JOIN tbl_fuel_issue_for_equipments ON tbl_fuel_stock_at_fueling_station.request_id = tbl_fuel_issue_for_equipments.id \
+        LEFT OUTER JOIN companies equipment_company ON tbl_fuel_issue_for_equipments.company_code = equipment_company.company_code \
+        LEFT OUTER JOIN locations equipment_location ON tbl_fuel_issue_for_equipments.location_code = equipment_location.location_code \
+        LEFT OUTER JOIN tbl_fuel_equipment_company_setup equipment ON tbl_fuel_issue_for_equipments.equipment_number = equipment.id \
+        LEFT OUTER JOIN tbl_fuel_equipment_setup equipment_type ON tbl_fuel_issue_for_equipments.equipment_type = equipment_type.id \
+        LEFT OUTER JOIN employees equipment_submit_person ON tbl_fuel_issue_for_equipments.submitted_by = equipment_submit_person.emp_id \
+        LEFT OUTER JOIN employees equipment_verify_person ON tbl_fuel_issue_for_equipments.verified_by = equipment_verify_person.emp_id \
+         \
+        LEFT OUTER JOIN tbl_fuel_entry_for_trip ON tbl_fuel_stock_at_fueling_station.request_id = tbl_fuel_entry_for_trip.id \
+        LEFT OUTER JOIN companies trip_company ON tbl_fuel_entry_for_trip.company_code = trip_company.company_code \
+        LEFT OUTER JOIN locations trip_location ON tbl_fuel_entry_for_trip.location_code = trip_location.location_code \
+        LEFT OUTER JOIN employees trip_issued_by ON tbl_fuel_entry_for_trip.last_issued_by = trip_issued_by.emp_id \
+        LEFT OUTER JOIN tbl_fuel_equipment_company_setup trip_equipment ON tbl_fuel_entry_for_trip.equipment_number = trip_equipment.id \
+        LEFT OUTER JOIN tbl_fuel_equipment_setup trip_equipment_type ON tbl_fuel_entry_for_trip.equipment_type = trip_equipment_type.id \
+        ORDER BY tbl_fuel_stock_at_fueling_station.inserted_at DESC;",
         ( err, rslt ) => {
             if( err ) {
                 console.log(err)
