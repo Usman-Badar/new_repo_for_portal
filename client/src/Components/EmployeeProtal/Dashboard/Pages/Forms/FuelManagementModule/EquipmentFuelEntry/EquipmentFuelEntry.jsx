@@ -7,15 +7,18 @@ import $ from 'jquery';
 import axios from '../../../../../../../axios';
 import Modal from '../../../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 function EquipmentFuelEntry() {
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
     const typeRef = useRef();
     const numberRef = useRef();
     const meterRef = useRef();
+    const tripBasedRef = useRef();
     const dateRef = useRef();
     const fuelRef = useRef();
     const btnRef = useRef();
+    const tripListRef = useRef();
     const formRef = useRef();
     const fieldsetRef = useRef();
     const [Equipments, setEquipments] = useState([]);
@@ -23,6 +26,9 @@ function EquipmentFuelEntry() {
     const [Requests, setRequests] = useState();
     const [New, setNew] = useState(false);
     const [Details, setDetails] = useState();
+    const [tripBased, setTripBased] = useState(0);
+    const [TripEntries, setTripEntries] = useState([]);
+    const [SelectedTrips, setSelectedTrips] = useState([]);
 
     useEffect(
         () => {
@@ -61,6 +67,31 @@ function EquipmentFuelEntry() {
             }
         )
     }
+    const GetTripEntries = (value) => {
+        setTripEntries([]);
+        axios.post('/fuel-managent/trip-entries/equipment-numbers', {number: value}).then(
+            res => {
+                setTripEntries(res.data);
+                setSelectedTrips([]);
+            }
+        ).catch(
+            err => {
+                console.log(err);
+            }
+        )
+    }
+    const addTrips = (value) => {
+        const arr = SelectedTrips.slice();
+        arr.push(JSON.parse(value));
+        setSelectedTrips(arr);
+        tripListRef.current.value = "";    
+    }
+    const delEntry = (index) => {
+        const arr = SelectedTrips.filter((val, i) => {
+            return i !== index;
+        });
+        setSelectedTrips(arr);
+    }
     const onSubmit = (e) => {
         e.preventDefault();
         if (typeRef.current.value.trim().length === 0) {
@@ -73,21 +104,19 @@ function EquipmentFuelEntry() {
             JSAlert.alert('Hrs. meter reading is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
         }
-        // else if (dateRef.current.value.trim().length === 0) {
-        //     JSAlert.alert('Date is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-        //     return false;
-        // }
-        else if (isNaN(parseInt(fuelRef.current.value))) {
+        else if (parseInt(tripBasedRef.current.value) === 0 && isNaN(parseInt(fuelRef.current.value))) {
             JSAlert.alert('Invalid fuel quantity!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
-        }else if (parseFloat(fuelRef.current.value) <= 0) {
+        }else if (parseInt(tripBasedRef.current.value) === 0 && parseFloat(fuelRef.current.value) <= 0) {
             JSAlert.alert('Fuel quantity must be greater than 0!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
+        }else if (parseInt(tripBasedRef.current.value) === 1 && SelectedTrips.length === 0) {
+            JSAlert.alert('At least one route should be selected!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }else if (parseInt(tripBasedRef.current.value) === 1 && TripEntries.length === 0) {
+            JSAlert.alert('At least one trip should be selected!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
         }
-        // else if (!isValidDate(dateRef)) {
-        //     JSAlert.alert('Date should be valid and must not be greater than the current date!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
-        //     return false;
-        // }
 
         fieldsetRef.current.disabled = true;
         btnRef.current.innerHTML = 'Please Wait...';
@@ -97,17 +126,24 @@ function EquipmentFuelEntry() {
                 type: typeRef.current.value,
                 number: numberRef.current.value,
                 meter: meterRef.current.value,
-                date: dateRef.current.disabled ? '' : dateRef.current.value,
-                fuel: fuelRef.current.value,
-                emp_id: localStorage.getItem('EmpID')
+                trips: JSON.stringify(SelectedTrips),
+                date:  dateRef.current.disabled ? '' : dateRef.current.value,
+                fuel: parseInt(tripBasedRef.current.value) === 0 ? fuelRef.current.value : parseFloat(totalFuel),
+                emp_id: localStorage.getItem('EmpID'),
+                trip_based: parseInt(tripBasedRef.current.value)
             }
         ).then(() => {
+
+            setTripBased(0);
+            setTripEntries([]);
+            setSelectedTrips([]);
+            setEquipmentNumbers([]);
+
+            setNew(false);
             loadRequests(true);
             fieldsetRef.current.disabled = false;
             btnRef.current.innerHTML = 'Submit';
             formRef.current.reset();
-            setNew(false);
-            
             JSAlert.alert('Fuel issue request has been submitted', 'Success', JSAlert.Icons.Success).dismissIn(2000);
         }).catch(err => {
             console.log(err);
@@ -144,6 +180,11 @@ function EquipmentFuelEntry() {
         return <></>
     }
 
+    let totalFuel = 0;
+    SelectedTrips.forEach(val => {
+        totalFuel = totalFuel + (val.fuel_to_issue ? val.fuel_to_issue : 0);
+    })
+
     if (New) {
         return (
             <div className='page'>
@@ -174,7 +215,7 @@ function EquipmentFuelEntry() {
                                 <label className='mb-0'>
                                     <b>Equipment Number</b>
                                 </label>
-                                <select className="form-control" ref={numberRef} required>
+                                <select onChange={(e) => GetTripEntries(e.target.value)} className="form-control" ref={numberRef} required>
                                     <option value=''>Select the option</option>
                                     {
                                         EquipmentNumbers.map(
@@ -203,17 +244,72 @@ function EquipmentFuelEntry() {
                             </div>
                             <div className='w-50'>
                                 <label className='mb-0'>
-                                    <b>Date</b>
+                                    <b>Trip Based Or Not</b>
                                 </label>
-                                <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled={AccessControls.access && JSON.parse(AccessControls.access).includes(93) ? false : true} />
+                                <select className="form-control" ref={tripBasedRef} onChange={(e) => setTripBased(e.target.value)} required>
+                                    <option value="0">Other Than Trip Based</option>
+                                    <option value="1">Trip Based</option>
+                                </select>
                             </div>
                         </div>
-
+                        <table className="table table-sm mb-0" style={{fontFamily: 'Roboto-Light'}}>
+                            {
+                                SelectedTrips.length > 0 && (
+                                    <tr>
+                                        <th>Trip</th>
+                                        <th>Fuel</th>
+                                    </tr>
+                                )
+                            }
+                            {
+                                SelectedTrips.length > 0 && SelectedTrips.map((val, i) => {
+                                    return (
+                                        <tr key={val.id}>
+                                            <td>{val.trip_from} to {val.trip_to}</td>
+                                            <td>
+                                                <div className='d-flex justify-content-between'>
+                                                    <span>{val.fuel_to_issue}ltr</span>
+                                                    <i onClick={() => delEntry(i)} className="lar la-trash-alt pointer" style={{ fontSize: 20 }}></i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                            {
+                                SelectedTrips.length > 0 && (
+                                    <tr>
+                                        <th>Total</th>
+                                        <th>{totalFuel}ltr</th>
+                                    </tr>
+                                )
+                            }
+                        </table>
+                        {
+                            parseInt(tripBased) === 0
+                            ?
+                            <div className="mb-3">
+                                <label className='mb-0'>
+                                    <b>Fuel (Ltr.)</b>
+                                </label>
+                                <input type='number' min={1} className="form-control" ref={fuelRef} required />
+                            </div>
+                            :
+                            <div className="mb-3">
+                                <label className='mb-0'>
+                                    <b>Select Trip</b>
+                                </label>
+                                <select onChange={(e) => addTrips(e.target.value)} className="form-control" ref={tripListRef}>
+                                    <option value=''>Select a trip</option>
+                                    {TripEntries.map(val => <option key={val.id} value={JSON.stringify(val)}>{val.trip_from} to {val.trip_to}</option>)}
+                                </select>
+                            </div>
+                        }
                         <div className="mb-3">
                             <label className='mb-0'>
-                                <b>Fuel (Ltr.)</b>
+                                <b>Date</b>
                             </label>
-                            <input type='number' min={1} className="form-control" ref={fuelRef} required />
+                            <input type="date" defaultValue={new Date().toISOString().slice(0, 10).replace('T', ' ')} max={new Date().toISOString().slice(0, 10).replace('T', ' ')} className="form-control" ref={dateRef} required disabled={AccessControls.access && JSON.parse(AccessControls.access).includes(93) ? false : true} />
                         </div>
 
                         <div className='d-flex justify-content-end align-items-center'>
@@ -250,7 +346,7 @@ function EquipmentFuelEntry() {
                             ?
                             <h6 className='text-center'>Please Wait....</h6>
                             :
-                            <table className="table">
+                            <table className="table" style={{fontFamily: 'Roboto-Light'}}>
                                 <thead>
                                     <tr>
                                         <th className='border-top-0'>#</th>
@@ -268,18 +364,18 @@ function EquipmentFuelEntry() {
                                         Requests.map(
                                             ({equipment_type_name, equipment_no, hrs_meter_reading, fuel_issued, issued_date, submit_person, submitted_at, status}, i) => (
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
-                                                    <td className='border-top-0'>{i+1}</td>
-                                                    <td className='border-top-0'>{fuel_issued}</td>
-                                                    <td className='border-top-0'>{new Date(issued_date).toDateString()}</td>
-                                                    <td className='border-top-0'>{equipment_type_name}</td>
-                                                    <td className='border-top-0'>{equipment_no}</td>
-                                                    <td className='border-top-0'>{hrs_meter_reading}</td>
-                                                    <td className='border-top-0'>
+                                                    <td>{i+1}</td>
+                                                    <td>{fuel_issued}</td>
+                                                    <td>{new Date(issued_date).toDateString()}</td>
+                                                    <td>{equipment_type_name}</td>
+                                                    <td>{equipment_no}</td>
+                                                    <td>{hrs_meter_reading}</td>
+                                                    <td>
                                                         <b>{submit_person}</b><br />
                                                         <span>{new Date(submitted_at).toDateString()}</span><br />
                                                         <span>{new Date(submitted_at).toLocaleTimeString()}</span>
                                                     </td>
-                                                    <td className='border-top-0'><Status status={status} /></td>
+                                                    <td><Status status={status} /></td>
                                                 </tr>
                                             )
                                         )
@@ -304,7 +400,7 @@ const Status = ({ status }) => {
                     "dot mr-1 "
                     +
                     (
-                        status === 'Verified'
+                        status === 'Verified' || status === 'issued'
                             ?
                             "bg-success"
                             :
@@ -325,7 +421,7 @@ const Status = ({ status }) => {
                     "text-capitalize mb-0 "
                     +
                     (
-                        status === 'Verified'
+                        status === 'Verified' || status === 'issued'
                             ?
                             "text-success"
                             :
@@ -369,6 +465,31 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
             </>
         )
     }
+    const issueFuel = () => {
+        setModal(
+            <>
+                <h6><b>Confirm to issue fuel?</b></h6>
+                <hr />
+                <button id='confirm' className="btn d-block ml-auto submit mt-3" onClick={() => confirmIssueFuel()}>Confirm</button>
+            </>
+        )
+    }
+    const confirmIssueFuel = () => {
+        $('#confirm').prop('disabled', true);
+        axios.post('/fuel-managent/fuel-issue-for-equipemnt/issue', {id: Details?.id, fuel_issued: Details.fuel_issued, emp_id: Details.submitted_by, issued_by: localStorage.getItem('EmpID'), issued_date: Details.issued_date, equipment_number: Details.equipment_number}).then((res) => {
+            if (res.data === 'limit exceed') {
+                $('#confirm').prop('disabled', false);
+                JSAlert.alert('Insufficient quantity at the station!', 'Warning', JSAlert.Icons.Warning).dismissIn(4000);
+                return;
+            }
+            setDetails();
+            loadRequests(true);
+            JSAlert.alert('Fuel Has been Issued!', 'Success', JSAlert.Icons.Success).dismissIn(4000);
+        }).catch(err => {
+            console.log(err);
+            $('#confirm').prop('disabled', false);
+        });
+    }
     const rejectRequest = () => {
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-issue-for-equipemnt/reject', {id: Details?.id, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID')}).then(() => {
@@ -408,6 +529,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                         </h3>
                         <div>
                             {
+                                Details.trip_based === 0 &&
                                 Details.status === 'Waiting For Verification' && 
                                 JSON.parse(AccessControls.access).includes(92) 
                                 // &&
@@ -417,6 +539,11 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                     <button className="btn submit" onClick={approve}>Verify</button>
                                     <button className="btn cancle ml-2" onClick={reject}>Reject</button>
                                 </>
+                                :
+                                Details.trip_based === 1 &&
+                                Details.status === 'Waiting For Verification' && 
+                                JSON.parse(AccessControls.access).includes(92) 
+                                ?<button className="btn submit" onClick={issueFuel}>Issue Fuel</button>
                                 :null
                             }
                             <button className="btn light ml-2" onClick={() => setDetails()}>Back</button>
@@ -449,40 +576,85 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                     <td>{Details.hrs_meter_reading}</td>
                                 </tr>
                                 <tr>
-                                    <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>
-                                    <td>{Details.fuel_issued}ltr</td>
-                                </tr>
-                                <tr>
-                                    <td><h6 className='font-weight-bold'>Issued By</h6></td>
-                                    <td>{Details.submit_person}</td>
-                                </tr>
-                                <tr>
-                                    <td><h6 className='font-weight-bold'>Issued At</h6></td>
-                                    <td>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</td>
+                                    <td><h6 className='font-weight-bold'>Trip Based</h6></td>
+                                    <td>{Details.trip_based === 1 ? "Trip Based" : "Other Than Trip Based"}</td>
                                 </tr>
                                 {
-                                    Details.status === 'Rejected'
+                                    Details.trip_based === 1
                                     ?
                                     <>
                                         <tr>
-                                            <td><h6 className='font-weight-bold'>Rejected By</h6></td>
-                                            <td>{Details.verifier_person && Details.verifier_person}</td>
+                                            <td><h6 className='font-weight-bold'>Total Fuel To Issue (Ltr.)</h6></td>
+                                            <td>{Details.fuel_issued}ltr</td>
                                         </tr>
                                         <tr>
-                                            <td><h6 className='font-weight-bold'>Rejected At</h6></td>
-                                            <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                            <td><h6 className='font-weight-bold'>Trips</h6></td>
+                                            <td>
+                                                <pre style={{fontFamily: 'Roboto-Light', display: 'block'}}>{Details.trips.split(', ').join('\n')}</pre>
+                                            </td>
                                         </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Created By</h6></td>
+                                            <td>{Details.submit_person}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Created At</h6></td>
+                                            <td>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</td>
+                                        </tr>
+                                        {
+                                            Details.status === 'issued' && (
+                                                <>
+                                                    <tr>
+                                                        <td><h6 className='font-weight-bold'>Issued By</h6></td>
+                                                        <td>{Details.verifier_person && Details.verifier_person}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><h6 className='font-weight-bold'>Issued At</h6></td>
+                                                        <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        }
                                     </>
                                     :
                                     <>
                                         <tr>
-                                            <td><h6 className='font-weight-bold'>{Details.verified_at ? 'Verified By' : 'Submitted To'}</h6></td>
-                                            <td>{Details.verifier_person && Details.verifier_person}</td>
+                                            <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>
+                                            <td>{Details.fuel_issued}ltr</td>
                                         </tr>
                                         <tr>
-                                            <td><h6 className='font-weight-bold'>Verified At</h6></td>
-                                            <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                            <td><h6 className='font-weight-bold'>Issued By</h6></td>
+                                            <td>{Details.submit_person}</td>
                                         </tr>
+                                        <tr>
+                                            <td><h6 className='font-weight-bold'>Issued At</h6></td>
+                                            <td>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</td>
+                                        </tr>
+                                        {
+                                            Details.status === 'Rejected'
+                                            ?
+                                            <>
+                                                <tr>
+                                                    <td><h6 className='font-weight-bold'>Rejected By</h6></td>
+                                                    <td>{Details.verifier_person && Details.verifier_person}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><h6 className='font-weight-bold'>Rejected At</h6></td>
+                                                    <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                                </tr>
+                                            </>
+                                            :
+                                            <>
+                                                <tr>
+                                                    <td><h6 className='font-weight-bold'>{Details.verified_at ? 'Verified By' : 'Submitted To'}</h6></td>
+                                                    <td>{Details.verifier_person && Details.verifier_person}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><h6 className='font-weight-bold'>Verified At</h6></td>
+                                                    <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                                </tr>
+                                            </>
+                                        }
                                     </>
                                 }
                             </tbody>

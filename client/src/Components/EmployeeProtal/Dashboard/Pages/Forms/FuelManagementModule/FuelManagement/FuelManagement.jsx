@@ -239,9 +239,8 @@ function FuelManagement() {
                                 </div>
                             </div>
                             <div className='d-flex justify-content-end align-items-center mt-3'>
-                                <button className="btn light" type="button">Cancel</button>
-                                <button className="btn ml-3 submit" ref={btnRef} type='submit'>
-                                    Submit
+                                <button className="btn submit" ref={btnRef} type='submit'>
+                                    Enter
                                 </button>
                             </div>
                         </fieldset>
@@ -252,45 +251,48 @@ function FuelManagement() {
                     Loading || RowDetails
                     ?
                     <div className="page-content popUps">
+                        {!RowDetails && <h6 className='text-center font-weight-bold mb-0'>Loading...</h6>}
                         {
                             RowDetails && (
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-3">
-                                            <table className="table mb-0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <h3 className='text-center mb-0' style={{fontFamily: 'Maersk'}}>
-                                                                <b>{parseFloat(RowDetails?.total).toFixed(2)}</b> {' '}
-                                                                <small style={{fontSize: '12px'}} className='text-secondary'><b>Ltr.</b></small>
-                                                            </h3>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>Equipment Type</b><br />
-                                                            {RowDetails?.data?.equipment_type_name}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>Equipment Number</b><br />
-                                                            {RowDetails?.data?.equipment_number}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <b>Created At</b><br />
-                                                            {moment(new Date(RowDetails?.data?.created_at)).format('DD-MM-YYYY HH:mm a')}
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div style={{position: 'sticky', top: 0}}>
+                                                <table className="table table-striped mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <h3 className='text-center mb-0' style={{fontFamily: 'Maersk'}}>
+                                                                    <b>{parseFloat(RowDetails?.total).toFixed(2)}</b> {' '}
+                                                                    <small style={{fontSize: '12px'}} className='text-secondary'><b>Ltr.</b></small>
+                                                                </h3>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Equipment Type</b><br />
+                                                                {RowDetails?.data?.equipment_type_name}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Equipment Number</b><br />
+                                                                {RowDetails?.data?.equipment_number}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Created At</b><br />
+                                                                {moment(new Date(RowDetails?.data?.created_at)).format('DD-MM-YYYY HH:mm a')}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                         <div className="col-9">
-                                            <div className="d-flex justify-content-between align-items-center mb-3">
-                                                <h4 className='mb-0'><b>Transactions:</b> {RowDetails?.transactions?.length}</h4>
+                                            <div className="d-flex justify-content-between align-items-end mb-3">
+                                                <h4 className='mb-0' style={{fontFamily: "Roboto-Light"}}><b>Transactions:</b> {RowDetails?.transactions?.length}</h4>
                                                 <div className="d-flex align-items-end" style={{gap: 10}}>
                                                     <div>
                                                         <label className='mb-0'><b>{StartDate.length > 0 ? "Start Date" : "Date"}</b></label>
@@ -307,7 +309,7 @@ function FuelManagement() {
                                                     <button className='btn light' onClick={() => setRowDetails()}>Back</button>
                                                 </div>
                                             </div>
-                                            <table className="table mb-0">
+                                            <table className="table table-bordered mb-0">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>

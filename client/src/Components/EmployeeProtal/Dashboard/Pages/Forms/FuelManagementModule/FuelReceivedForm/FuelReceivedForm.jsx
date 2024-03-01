@@ -362,17 +362,17 @@ function FuelRecievedFrom() {
                             ?
                             <h6 className='text-center'>Please Wait....</h6>
                             :
-                            <table className="table">
+                            <table className="table" style={{fontFamily: 'Roboto-Light'}}>
                                 <thead>
                                     <tr>
-                                        <th className='border-top-0'>#</th>
-                                        <th className='border-top-0'>Company</th>
-                                        <th className='border-top-0'>Location</th>
-                                        <th className='border-top-0'>Supplier</th>
-                                        <th className='border-top-0'>Received Fuel (Ltr.)</th>
-                                        <th className='border-top-0'>Receiving Date</th>
-                                        <th className='border-top-0'>Submitted By</th>
-                                        <th className='border-top-0'>Status</th>
+                                        <th className='border-top-0 bg-light'>#</th>
+                                        <th className='border-top-0 bg-light'>Company</th>
+                                        <th className='border-top-0 bg-light'>Location</th>
+                                        <th className='border-top-0 bg-light'>Supplier</th>
+                                        <th className='border-top-0 bg-light'>Received Fuel (Ltr.)</th>
+                                        <th className='border-top-0 bg-light'>Receiving Date</th>
+                                        <th className='border-top-0 bg-light'>Submitted By</th>
+                                        <th className='border-top-0 bg-light'>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -385,18 +385,18 @@ function FuelRecievedFrom() {
                                         }).map(
                                             ({company_name, location_name, supplier, fuel_received, receival_date, submit_person, submitted_at, status}, i) => (
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
-                                                    <td className='border-top-0'>{i+1}</td>
-                                                    <td className='border-top-0'>{company_name}</td>
-                                                    <td className='border-top-0'>{location_name}</td>
-                                                    <td className='border-top-0'>{supplier}</td>
-                                                    <td className='border-top-0'>{fuel_received}</td>
-                                                    <td className='border-top-0'>{new Date(receival_date).toDateString()}</td>
-                                                    <td className='border-top-0'>
+                                                    <td>{i+1}</td>
+                                                    <td>{company_name}</td>
+                                                    <td>{location_name}</td>
+                                                    <td>{supplier}</td>
+                                                    <td>{fuel_received}</td>
+                                                    <td>{new Date(receival_date).toDateString()}</td>
+                                                    <td>
                                                         <b>{submit_person}</b><br />
                                                         <span>{new Date(submitted_at).toDateString()}</span><br />
                                                         <span>{new Date(submitted_at).toLocaleTimeString()}</span>
                                                     </td>
-                                                    <td className='border-top-0'><Status status={status} /></td>
+                                                    <td><Status status={status} /></td>
                                                 </tr>
                                             )
                                         )

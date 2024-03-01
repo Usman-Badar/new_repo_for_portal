@@ -231,7 +231,7 @@ function FuelRequest() {
                             ?
                             <h6 className='text-center'>Please Wait....</h6>
                             :
-                            <table className="table">
+                            <table className="table" style={{fontFamily: 'Roboto-Light'}}>
                                 <thead>
                                     <tr>
                                         <th className='border-top-0'>#</th>
@@ -250,16 +250,16 @@ function FuelRequest() {
                                         }).map(
                                             ({fuel_required, submit_person, requested_at, status, company_name, location_name}, i) => (
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
-                                                    <td className='border-top-0'>{i+1}</td>
-                                                    <td className='border-top-0'>{company_name}</td>
-                                                    <td className='border-top-0'>{location_name}</td>
-                                                    <td className='border-top-0'>{fuel_required}</td>
-                                                    <td className='border-top-0'>
+                                                    <td>{i+1}</td>
+                                                    <td>{company_name}</td>
+                                                    <td>{location_name}</td>
+                                                    <td>{fuel_required}</td>
+                                                    <td>
                                                         <b>{submit_person}</b><br />
                                                         <span>{new Date(requested_at).toDateString()}</span><br />
                                                         <span>{new Date(requested_at).toLocaleTimeString()}</span>
                                                     </td>
-                                                    <td className='border-top-0'><Status status={status} /></td>
+                                                    <td><Status status={status} /></td>
                                                 </tr>
                                             )
                                         )

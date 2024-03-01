@@ -176,40 +176,38 @@ router.post('/fuel-managent/equipment-numbers', ( req, res ) => {
 } );
 
 router.post('/fuel-managent/fuel-issue-for-equipemnt/new', ( req, res ) => {
-    const { type, number, meter, date, fuel, emp_id } = req.body;
+    const { trips, trip_based, type, number, meter, date, fuel, emp_id } = req.body;
+    const tripList = JSON.parse(trips);
+    const tripArr = [];
+    tripList.forEach(val => tripArr.push(`${val.trip_from} to ${val.trip_to}`));
     const dt = date === '' || date === null || date === 'null' || date === undefined ? new Date() : date;
 
     if (type === '' || isNaN(parseInt(type))) {
-        res.status(500).send(err);
+        res.status(500).send('err');
         res.end();
         return false;
     }else if (number === '' || isNaN(parseInt(number))) {
-        res.status(500).send(err);
+        res.status(500).send('err');
         res.end();
         return false;
     }else if (fuel === '' || isNaN(parseInt(fuel)) || parseInt(fuel) <= 0) {
-        res.status(500).send(err);
+        res.status(500).send('err');
         res.end();
         return false;
     }else if (meter === '' || isNaN(parseInt(meter))) {
-        res.status(500).send(err);
+        res.status(500).send('err');
         res.end();
         return false;
     }
-    // else if (date === '') {
-    //     res.status(500).send(err);
-    //     res.end();
-    //     return false;
-    // }
     else if (emp_id == null || emp_id === '' || isNaN(parseInt(emp_id))) {
-        res.status(500).send(err);
+        res.status(500).send('err');
         res.end();
         return false;
     }
 
     db.query(
-        "INSERT INTO `tbl_fuel_issue_for_equipments`(`fuel_issued`, `issued_date`, `equipment_type`, `equipment_number`, `hrs_meter_reading`, `submitted_by`) VALUES (?,?,?,?,?,?);",
-        [fuel, dt, type, number, meter, emp_id],
+        "INSERT INTO `tbl_fuel_issue_for_equipments`(`trips`, `fuel_issued`, `issued_date`, `equipment_type`, `equipment_number`, `hrs_meter_reading`, `submitted_by`, `trip_based`) VALUES (?,?,?,?,?,?,?,?);",
+        [tripArr.join(', '), fuel, dt, type, number, meter, emp_id, trip_based],
         ( err ) => {
             if( err ) {
                 console.log(err)
@@ -386,7 +384,6 @@ router.post('/fuel-managent/equipments/details', ( req, res ) => {
 
 router.post('/fuel-managent/equipments/details/filtered', ( req, res ) => {
     const { id, startDate, endDate } = req.body;
-    console.log(startDate)
     let q = "";
     if (startDate.length > 0 && endDate.length === 0) {
         q = "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_issued_to_equipments` WHERE in_out = 'IN' AND equipment_id = ? AND DATE(inserted_at) = DATE('" + startDate + "')) ,0) AS q;" +
@@ -697,6 +694,73 @@ router.post('/fuel-managent/fuel-issue-for-equipemnt/requests', ( req, res ) => 
                         }
                     }
                 );
+            }
+        }
+    );
+} );
+
+router.post('/fuel-managent/fuel-issue-for-equipemnt/issue', ( req, res ) => {
+    const { id, fuel_issued, issued_by, equipment_number } = req.body;
+
+    db.query(
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'IN') ,0) AS q;" +
+        "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;",
+        ( err, result ) => {
+            if( err ) {
+                console.log(err)
+                res.status(500).send(err);
+                res.end();
+            }else {
+                const IN = result[0][0].q;
+                const OUT = result[1][0].q;
+                const TOTAL = IN - OUT;
+
+                if (parseFloat(fuel_issued) > TOTAL) {
+                    res.send('limit exceed');
+                    res.end();
+                }else {
+                    db.query(
+                        "UPDATE tbl_fuel_issue_for_equipments SET status = ?, verified_by = ?, verified_at = ?, stock_at_station = ? WHERE id = ?;",
+                        ['issued', issued_by, new Date(), TOTAL, id],
+                        ( err ) => {
+                            if( err ) {
+                                console.log(err)
+                                res.status(500).send(err);
+                                res.end();
+                            }else {
+                                let q = '';
+                                let para = [];
+                                q = q.concat('INSERT INTO `tbl_fuel_stock_at_fueling_station`(`request_id`, `quantity_in_ltr`, `fuel_requested_at`, `in_out`, `trip_based`) VALUES (?,?,?,?,?);');
+                                para.push(id)
+                                para.push(fuel_issued)
+                                para.push(fuel_issued)
+                                para.push('OUT')
+                                para.push(1)
+            
+                                q = q.concat('INSERT INTO `tbl_fuel_issued_to_equipments`(`request_id`, `quantity_in_ltr`, `trip_based`, `equipment_id`) VALUES (?,?,?,?);');
+                                para.push(id)
+                                para.push(fuel_issued)
+                                para.push(1)
+                                para.push(equipment_number)
+                                db.query(
+                                    q,
+                                    para,
+                                    ( err ) => {
+                                        if( err ) {
+                                            console.log(err)
+                                            res.status(500).send(err);
+                                            res.end();
+                                        }else {
+                                            res.send('success');
+                                            res.end();
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    );
+                }
+
             }
         }
     );

@@ -258,7 +258,7 @@ const StockAtFuelingStation = () => {
                             <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
                         </div>
                     </div>
-                    <table className="table" style={{ fontSize: 12 }}>
+                    <table className="table table-bordered" style={{fontSize: 12, fontFamily: 'Roboto-Light'}}>
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -296,10 +296,16 @@ const StockAtFuelingStation = () => {
                                                     {station_location}
                                                 </td>
                                             }
-                                            <td>
-                                                {equipment_type}<br />
-                                                {equipment_number}
-                                            </td>
+                                            {
+                                                in_out === 'OUT'
+                                                ?
+                                                <td>
+                                                    {equipment_type}<br />
+                                                    {equipment_number}
+                                                </td>
+                                                :
+                                                <td></td>
+                                            }
                                             {
                                                 in_out === 'IN'
                                                     ?
