@@ -150,7 +150,7 @@ function TripEntry() {
             <div className='page'>
                 <form className='page-content' ref={formRef} onSubmit={onSubmit}>
                     <h3 className="heading">
-                        New Record
+                        Create New Trips
                         <sub>Trailer Trip Entry</sub>
                     </h3>
                     <hr />
@@ -250,7 +250,7 @@ function TripEntry() {
                     <div className="page-content">
                         <div className="d-flex align-items-center justify-content-between">
                             <h3 className="heading">
-                                Fuel Management Module
+                                Trip Entry
                                 <sub>Trailer Trip Entry</sub>
                             </h3>
                             {JSON.parse(AccessControls.access).includes(94) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}

@@ -149,7 +149,7 @@ function EquipmentFuelEntry() {
             <div className='page'>
                 <form className='page-content' ref={formRef} onSubmit={onSubmit}>
                     <h3 className="heading">
-                        New Record
+                        Issue Fuel to Equipments
                         <sub>Equipment's Fuel Entry</sub>
                     </h3>
                     <hr />
@@ -239,7 +239,7 @@ function EquipmentFuelEntry() {
                     <div className="page-content">
                         <div className="d-flex align-items-center justify-content-between">
                             <h3 className="heading">
-                                Fuel Management Module
+                                Issue Fuel To Equipments
                                 <sub>Equipment's Fuel Entry (Other than Trip base)</sub>
                             </h3>
                             {JSON.parse(AccessControls.access).includes(91) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}

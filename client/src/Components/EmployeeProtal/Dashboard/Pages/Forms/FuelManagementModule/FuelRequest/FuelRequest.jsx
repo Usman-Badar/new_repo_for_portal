@@ -114,7 +114,7 @@ function FuelRequest() {
                 <div className="page-content">
                     <div className="d-flex align-items-center justify-content-between">
                         <h3 className="heading">
-                            Fuel Management Module
+                            New Request For Fuel
                             <sub>Request Fuel for Fueling Station / Point when required</sub>
                         </h3>
                         <button className="btn light" onClick={() => setNew(false)}>Back</button>
@@ -150,7 +150,7 @@ function FuelRequest() {
                     <div className="page-content">
                         <div className="d-flex align-items-center justify-content-between">
                             <h3 className="heading">
-                                Fuel Management Module
+                                Request For Fueling Station
                                 <sub>Request Fuel for Fueling Station / Point when required</sub>
                             </h3>
                             <div>

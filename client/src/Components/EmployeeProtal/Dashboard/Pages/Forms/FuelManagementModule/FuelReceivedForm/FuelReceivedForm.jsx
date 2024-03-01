@@ -174,7 +174,7 @@ function FuelRecievedFrom() {
             <div className='page'>
                 <form className='page-content' ref={formRef} onSubmit={onSubmit}>
                     <h3 className="heading">
-                        New Fuel Entry
+                        Fuel Received Entry
                         <sub>For Workshop</sub>
                     </h3>
                     <hr />
@@ -272,7 +272,7 @@ function FuelRecievedFrom() {
                     <div className="page-content">
                         <div className="d-flex align-items-center justify-content-between">
                             <h3 className="heading">
-                                Fuel Management Module
+                                Fuel Received At Workshop
                                 <sub>Fuel Received for QFS Workshop from Supplier</sub>
                             </h3>
                             <div>

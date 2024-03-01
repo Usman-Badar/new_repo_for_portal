@@ -286,7 +286,7 @@ const TripSelection = () => {
                 <div className="page-content">
                     <div className="d-flex align-items-center justify-content-between">
                         <h3 className="heading">
-                            Fuel Management Module
+                            Issue Fuel For Trips
                             <sub>Trailer Trip Entry</sub>
                         </h3>
                         <button className="btn light" onClick={() => setNew(false)}>Back</button>
@@ -398,7 +398,7 @@ const TripSelection = () => {
                 <div className="page-content">
                     <div className="d-flex align-items-center justify-content-between">
                         <h3 className="heading">
-                            Fuel Management Module
+                            Trip Details
                             <sub>Trailer Trip Entry</sub>
                         </h3>
                         <button className="btn light" onClick={() => {
@@ -527,7 +527,7 @@ const TripSelection = () => {
             <div className="page-content">
                 <div className="d-flex align-items-center justify-content-between">
                     <h3 className="heading">
-                        Fuel Management Module
+                        Issue Fuel For Trips
                         <sub>Trailer Trip Entry</sub>
                     </h3>
                     {JSON.parse(AccessControls.access).includes(94) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}
