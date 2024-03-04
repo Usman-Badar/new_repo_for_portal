@@ -129,7 +129,7 @@ const StockAtWorkshop = () => {
                                 </td>
                                 <td>
                                     <b>Requested At</b><br />
-                                    <span>{moment(new Date(Details?.requested_at)).format('DD-MM-YYYY')} at {new Date(Details?.requested_at).toLocaleTimeString().substring(0,8)}</span>
+                                    <span>{moment(new Date(Details?.requested_at)).format('DD-MM-YYYY hh:mm A')}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -196,12 +196,14 @@ const StockAtWorkshop = () => {
                         </h1>
                         <h6 style={{ fontSize: 15 }} className='text-capitalize mb-0'>Total Stock at Workshop</h6>
                     </div>
-                    <div className='d-flex justify-content-between align-items-center mb-3'>
+                    <div className='d-flex justify-content-between align-items-end mb-3'>
                         <h5 className='mb-0' style={{fontFamily: "Roboto-Light"}}>
                             <b>No. of Transactions:</b> {Requests?.filter(val => val.inserted_at.includes(DateFilter)).length}
                         </h5>
                         <div>
-                            <label className="mb-0">Date</label>
+                            <label className="mb-0">
+                                <b>Date</b>
+                            </label>
                             <input onChange={(e) => setDate(e.target.value)} type="date" className="form-control form-control-sm" max={moment(new Date()).format('YYYY-MM-DD')} />
                         </div>
                     </div>
@@ -249,9 +251,13 @@ const StockAtWorkshop = () => {
                                             {
                                                 in_out === 'IN'
                                                 ?
-                                                <td id={'quantity_' + (i+1)} className='text-success'>+{quantity_in_ltr}</td>
+                                                <td id={'quantity_' + (i+1)} className='text-success'>
+                                                    <div className="badge">+{quantity_in_ltr}</div>
+                                                </td>
                                                 :
-                                                <td id={'quantity_' + (i+1)} className='text-danger'>-{quantity_in_ltr}</td>
+                                                <td id={'quantity_' + (i+1)} className='text-danger'>
+                                                    <div className="badge">-{quantity_in_ltr}</div>
+                                                </td>
                                             }
                                             {
                                                 in_out === 'IN'
@@ -259,22 +265,22 @@ const StockAtWorkshop = () => {
                                                 <>
                                                     <td>
                                                         {workshop_submit_person}<br />
-                                                        {moment(submitted_at).format('YYYY-MM-DD HH:mm a')}
+                                                        {moment(submitted_at).format('DD-MM-YYYY hh:mm A')}
                                                     </td>
                                                     <td>
                                                         {workshop_verify_person}<br />
-                                                        {moment(verified_at).format('YYYY-MM-DD HH:mm a')}
+                                                        {moment(verified_at).format('DD-MM-YYYY hh:mm A')}
                                                     </td>
                                                 </>
                                                 :
                                                 <>
                                                     <td>
                                                         {station_submit_person}<br />
-                                                        {moment(requested_at).format('YYYY-MM-DD HH:mm a')}
+                                                        {moment(requested_at).format('DD-MM-YYYY hh:mm A')}
                                                     </td>
                                                     <td>
                                                         {station_verify_person}<br />
-                                                        {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
+                                                        {moment(approved_at).format('DD-MM-YYYY hh:mm A')}
                                                     </td>
                                                 </>
                                             }
@@ -295,7 +301,7 @@ const StockAtWorkshop = () => {
                                                     )
                                                 }
                                             </td>
-                                            <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
+                                            <td>{moment(d).format('DD-MM-YYYY hh:mm A')}</td>
                                         </tr>
                                     )
                                 })

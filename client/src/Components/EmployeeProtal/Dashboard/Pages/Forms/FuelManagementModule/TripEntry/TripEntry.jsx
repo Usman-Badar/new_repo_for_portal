@@ -6,6 +6,7 @@ import JSAlert from 'js-alert';
 import axios from '../../../../../../../axios';
 import Modal from '../../../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 function TripEntry() {
     const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
@@ -145,7 +146,7 @@ function TripEntry() {
     if (!AccessControls) {
         return <></>
     }
-    if (New) {
+    if (JSON.parse(AccessControls.access).includes(94) && New) {
         return (
             <div className='page'>
                 <form className='page-content' ref={formRef} onSubmit={onSubmit}>
@@ -259,7 +260,9 @@ function TripEntry() {
                         {
                             !Requests
                             ?
-                            <h6 className='text-center'>Please Wait....</h6>
+                            <h6 className='text-center mb-0' style={{fontFamily: "Roboto-Light"}}>
+                                <b>Please Wait....</b>
+                            </h6>
                             :
                             <table className="table">
                                 <thead>
@@ -283,12 +286,15 @@ function TripEntry() {
                                                     <td className='border-top-0'>{fuel_to_issue}</td>
                                                     <td className='border-top-0'>{new Date(trip_date).toDateString()}</td>
                                                     <td className='border-top-0'>{equipment_type_name}</td>
-                                                    <td className='border-top-0'>{equipment_no}</td>
+                                                    <td className='border-top-0'>
+                                                        <div className="badge bg-light border">
+                                                            <b>{equipment_no}</b>
+                                                        </div>
+                                                    </td>
                                                     <td className='border-top-0'>{trip_from} to {trip_to}</td>
                                                     <td className='border-top-0'>
                                                         <b>{submit_person}</b><br />
-                                                        <span>{new Date(created_at).toDateString()}</span><br />
-                                                        <span>{new Date(created_at).toLocaleTimeString()}</span>
+                                                        <span>{moment(created_at).format('DD-MM-YYYY hh:mm A')}</span>
                                                     </td>
                                                     <td className='border-top-0'><Status status={status} /></td>
                                                 </tr>
@@ -395,7 +401,11 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Equipment Number</h6></td>
-                                    <td>{Details.equipment_no}</td>
+                                    <td>
+                                        <div className="badge bg-light border">
+                                            <b>{Details.equipment_no}</b>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>

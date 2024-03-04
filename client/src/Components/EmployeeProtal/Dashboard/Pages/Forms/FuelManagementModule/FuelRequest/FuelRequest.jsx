@@ -108,7 +108,7 @@ function FuelRequest() {
         setFilterDate("");
     }
 
-    if (New) {
+    if (JSON.parse(AccessControls.access).includes(86) && New) {
         return (
             <div className='page'>
                 <div className="page-content">
@@ -154,7 +154,7 @@ function FuelRequest() {
                                 <sub>Request Fuel for Fueling Station / Point when required</sub>
                             </h3>
                             <div>
-                                <button className="btn submit" onClick={() => setNew(true)}>New</button>
+                                {JSON.parse(AccessControls.access).includes(86) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}
                                 <button className="btn submit px-2 ml-2 filter-emit" onClick={() => setShowFilters(!ShowFilters)} type='button'>
                                     {
                                         ShowFilters
@@ -229,17 +229,19 @@ function FuelRequest() {
                         {
                             !Requests
                             ?
-                            <h6 className='text-center'>Please Wait....</h6>
+                            <h6 className='text-center mb-0' style={{fontFamily: "Roboto-Light"}}>
+                                <b>Please Wait....</b>
+                            </h6>
                             :
                             <table className="table" style={{fontFamily: 'Roboto-Light'}}>
                                 <thead>
                                     <tr>
-                                        <th className='border-top-0'>#</th>
-                                        <th className='border-top-0'>Company</th>
-                                        <th className='border-top-0'>Location</th>
-                                        <th className='border-top-0'>Required Fuel (Ltr.)</th>
-                                        <th className='border-top-0'>Requested By</th>
-                                        <th className='border-top-0'>Status</th>
+                                        <th className='border-top-0 bg-light'>#</th>
+                                        <th className='border-top-0 bg-light'>Company</th>
+                                        <th className='border-top-0 bg-light'>Location</th>
+                                        <th className='border-top-0 bg-light'>Required Fuel (Ltr.)</th>
+                                        <th className='border-top-0 bg-light'>Requested By</th>
+                                        <th className='border-top-0 bg-light'>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -256,8 +258,7 @@ function FuelRequest() {
                                                     <td>{fuel_required}</td>
                                                     <td>
                                                         <b>{submit_person}</b><br />
-                                                        <span>{new Date(requested_at).toDateString()}</span><br />
-                                                        <span>{new Date(requested_at).toLocaleTimeString()}</span>
+                                                        <span>{moment(requested_at).format('DD-MM-YYYY hh:mm A')}</span>
                                                     </td>
                                                     <td><Status status={status} /></td>
                                                 </tr>
@@ -350,6 +351,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         )
     }
     const rejectRequest = () => {
+        if (!JSON.parse(AccessControls.access).includes(87)) {
+            JSAlert.alert('Access Denied!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-request-for-station/reject', {id: Details?.id, rejected_by: localStorage.getItem('EmpID')}).then(() => {
             setDetails();
@@ -361,6 +366,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         });
     }
     const approveRequest = () => {
+        if (!JSON.parse(AccessControls.access).includes(87)) {
+            JSAlert.alert('Access Denied!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-request-for-station/approve', {id: Details?.id, quantity: Details?.fuel_required, emp_id: Details?.requested_by, approved_by: localStorage.getItem('EmpID'), requested_at: Details?.requested_at}).then((res) => {
             if (res.data === 'limit exceed') {
@@ -408,7 +417,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                             <h1 className='mb-0' style={{fontSize: 35}}>
                                 <span className='font-weight-bold'>{parseFloat(Details.stock_at_workshop ? Details.stock_at_workshop : Details.total_stock).toFixed(2)}<small className='text-success' style={{ fontSize: 16 }}>Ltr</small></span>
                             </h1>
-                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the Workshop {Details.stock_at_workshop ? `(dated: ${new Date(Details?.approved_at).toDateString()})` : '(Current)' }</h6>
+                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the Workshop {Details.stock_at_workshop ? `(dated: ${moment(Details?.approved_at).format('DD-MM-YYYY')})` : '(Current)' }</h6>
                         </div>
                         <table className="table">
                             <tbody>
@@ -426,7 +435,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Requested At</h6></td>
-                                    <td>{new Date(Details.requested_at).toDateString()} at {new Date(Details.requested_at).toLocaleTimeString().substring(0,8)}</td>
+                                    <td>{moment(Details.requested_at).format('DD-MM-YYYY hh:mm A')}</td>
                                 </tr>
                                 {
                                     Details.status === 'Rejected'
@@ -438,7 +447,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                         </tr>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Rejected At</h6></td>
-                                            <td>{Details.approved_at ? (new Date(Details.approved_at).toDateString() + ' at ' + new Date(Details.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                            <td>{Details.approved_at ? (moment(Details.approved_at).format('DD-MM-YYYY hh:mm A')) : '-'}</td>
                                         </tr>
                                     </>
                                     :
@@ -449,7 +458,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                         </tr>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Approved At</h6></td>
-                                            <td>{Details.approved_at ? (new Date(Details.approved_at).toDateString() + ' at ' + new Date(Details.approved_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                            <td>{Details.approved_at ? (moment(Details.approved_at).format('DD-MM-YYYY hh:mm A')) : '-'}</td>
                                         </tr>
                                     </>
                                 }

@@ -4,8 +4,10 @@ import './FuelManagement.css';
 import axios from '../../../../../../../axios';
 import JSAlert from 'js-alert';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 function FuelManagement() {
+    const AccessControls = useSelector( ( state ) => state.EmpAuth.EmployeeData );
     const companyRef = useRef();
     const locationRef = useRef();
     const typeRef = useRef();
@@ -13,6 +15,7 @@ function FuelManagement() {
     const btnRef = useRef();
     const formRef = useRef();
     const fieldsetRef = useRef();
+
     
     const [Companies, setCompanies] = useState([]);
     const [Locations, setLocations] = useState([]);
@@ -109,6 +112,11 @@ function FuelManagement() {
             return false;
         }
 
+        if (!JSON.parse(AccessControls.access).includes(81)) {
+            JSAlert.alert('Access Denied!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }
+
         fieldsetRef.current.disabled = true;
         btnRef.current.innerHTML = 'Please Wait...';
         axios.post(
@@ -124,7 +132,7 @@ function FuelManagement() {
             fieldsetRef.current.disabled = false;
             btnRef.current.innerHTML = 'Submit';
             formRef.current.reset();
-            JSAlert.alert('Equiment has been setup', 'Success', JSAlert.Icons.Success).dismissIn(2000);
+            JSAlert.alert('Equiment has been added', 'Success', JSAlert.Icons.Success).dismissIn(2000);
             loadEquipments(true);
             loadRequests(true);
         }).catch(err => {
@@ -171,8 +179,14 @@ function FuelManagement() {
                         Setup Company Equipments
                         <sub>Comapany Equipment Setup Form</sub>
                     </h3>
-
                     <hr />
+                    {
+                        !JSON.parse(AccessControls.access).includes(81) && (
+                            <div className="alert alert-warning">
+                                <b>You don't have access to add new company equipements.</b>
+                            </div>
+                        )
+                    }
                     <form onSubmit={onSubmit} ref={formRef}>
                         <fieldset ref={fieldsetRef}>
                             <div className="flex_container mb-3">
@@ -238,11 +252,15 @@ function FuelManagement() {
                                     <input type="text" className="form-control" ref={numberRef} required />
                                 </div>
                             </div>
-                            <div className='d-flex justify-content-end align-items-center mt-3'>
-                                <button className="btn submit" ref={btnRef} type='submit'>
-                                    Enter
-                                </button>
-                            </div>
+                            {
+                                JSON.parse(AccessControls.access).includes(81) && (
+                                    <div className='d-flex justify-content-end align-items-center mt-3'>
+                                        <button className="btn submit" ref={btnRef} type='submit'>
+                                            Submit
+                                        </button>
+                                    </div>
+                                )
+                            }
                         </fieldset>
                     </form>
                 </div>
@@ -251,18 +269,18 @@ function FuelManagement() {
                     Loading || RowDetails
                     ?
                     <div className="page-content popUps">
-                        {!RowDetails && <h6 className='text-center font-weight-bold mb-0'>Loading...</h6>}
+                        {!RowDetails && <h5 className='text-center font-weight-bold mb-0' style={{fontFamily: 'Roboto-Light'}}>Loading...</h5>}
                         {
                             RowDetails && (
                                 <div className="container-fluid">
                                     <div className="row">
                                         <div className="col-3">
                                             <div style={{position: 'sticky', top: 0}}>
-                                                <table className="table table-striped mb-0">
+                                                <table className="table mb-0" style={{fontFamily: 'Roboto-Light'}}>
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                                <h3 className='text-center mb-0' style={{fontFamily: 'Maersk'}}>
+                                                                <h3 className='text-center mb-0' style={{fontFamily: 'Roboto-Light'}}>
                                                                     <b>{parseFloat(RowDetails?.total).toFixed(2)}</b> {' '}
                                                                     <small style={{fontSize: '12px'}} className='text-secondary'><b>Ltr.</b></small>
                                                                 </h3>
@@ -277,13 +295,15 @@ function FuelManagement() {
                                                         <tr>
                                                             <td>
                                                                 <b>Equipment Number</b><br />
-                                                                {RowDetails?.data?.equipment_number}
+                                                                <div className="badge badge-light border">
+                                                                    <b>{RowDetails?.data?.equipment_number}</b>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
                                                                 <b>Created At</b><br />
-                                                                {moment(new Date(RowDetails?.data?.created_at)).format('DD-MM-YYYY HH:mm a')}
+                                                                {moment(new Date(RowDetails?.data?.created_at)).format('DD-MM-YYYY hh:mm A')}
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -325,7 +345,7 @@ function FuelManagement() {
                                                                     <tr key={i}>
                                                                         <td>{i+1}</td>
                                                                         <td>{val.quantity_in_ltr}</td>
-                                                                        <td>{moment(new Date(val.inserted_at)).format('YYYY-MM-DD HH:mm a')}</td>
+                                                                        <td>{moment(new Date(val.inserted_at)).format('YYYY-MM-DD hh:mm A')}</td>
                                                                     </tr>
                                                                 )
                                                             }
@@ -341,8 +361,9 @@ function FuelManagement() {
                     </div>
                     :
                     <div className="page-content popUps">
-                        <div className="d-flex justify-content-end align-items-center mb-3" style={{gap: 15}}>
-                            <div>
+                        <h5>Filters</h5>
+                        <div className="d-flex mb-3" style={{gap: 15}}>
+                            <div className='w-100'>
                                 <label className="mb-0"><b>Company</b></label>
                                 <select value={FilterCompany} onChange={
                                     e => {
@@ -354,7 +375,7 @@ function FuelManagement() {
                                     {Companies.map(val => <option key={val.company_name} value={val.company_name}>{val.company_name}</option>)}
                                 </select>
                             </div>
-                            <div>
+                            <div className='w-100'>
                                 <label className="mb-0"><b>Location</b></label>
                                 <select value={FilterLocation} onChange={
                                     e => {
@@ -366,7 +387,7 @@ function FuelManagement() {
                                     {Locations.map(val => <option key={val.location_name} value={val.location_name}>{val.location_name}</option>)}
                                 </select>
                             </div>
-                            <div>
+                            <div className='w-100'>
                                 <label className="mb-0"><b>Equipment Type</b></label>
                                 <select value={FilterEquipmentType} onChange={
                                     e => {
@@ -378,7 +399,7 @@ function FuelManagement() {
                                     {Equipments.map(({ equipment_type }) => <option value={equipment_type}>{equipment_type}</option>)}
                                 </select>
                             </div>
-                            <div>
+                            <div className='w-100'>
                                 <label className="mb-0"><b>Equipment Number</b></label>
                                 <input value={FilterEquipmentNumber} onChange={
                                     e => {
@@ -393,7 +414,7 @@ function FuelManagement() {
                             ?
                             <h5 className="text-center mb-0">Please Wait...</h5>
                             :
-                            <table className="table mb-0">
+                            <table className="table table-hover mb-0">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -420,8 +441,12 @@ function FuelManagement() {
                                                     <td>{company_name}</td>
                                                     <td>{location_name}</td>
                                                     <td>{equipment_type_name}</td>
-                                                    <td>{equipment_number}</td>
-                                                    <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
+                                                    <td className='text-uppercase'>
+                                                        <div className="badge badge-light border">
+                                                            <b>{equipment_number}</b>
+                                                        </div>
+                                                    </td>
+                                                    <td>{moment(d).format('DD-MM-YYYY hh:mm A')}</td>
                                                 </tr>
                                             )
                                         })

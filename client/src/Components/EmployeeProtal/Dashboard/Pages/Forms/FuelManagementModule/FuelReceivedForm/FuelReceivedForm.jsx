@@ -104,6 +104,11 @@ function FuelRecievedFrom() {
             return false;
         }
 
+        if (!JSON.parse(AccessControls.access).includes(84)) {
+            JSAlert.alert('Access Denied!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }
+
         fieldsetRef.current.disabled = true;
         btnRef.current.innerHTML = 'Please Wait...';
         axios.post(
@@ -169,7 +174,7 @@ function FuelRecievedFrom() {
         return <></>
     }
 
-    if (New) {
+    if (JSON.parse(AccessControls.access).includes(84) && New) {
         return (
             <div className='page'>
                 <form className='page-content' ref={formRef} onSubmit={onSubmit}>
@@ -360,7 +365,9 @@ function FuelRecievedFrom() {
                         {
                             !Requests
                             ?
-                            <h6 className='text-center'>Please Wait....</h6>
+                            <h6 className='text-center mb-0' style={{fontFamily: "Roboto-Light"}}>
+                                <b>Please Wait....</b>
+                            </h6>
                             :
                             <table className="table" style={{fontFamily: 'Roboto-Light'}}>
                                 <thead>
@@ -390,11 +397,10 @@ function FuelRecievedFrom() {
                                                     <td>{location_name}</td>
                                                     <td>{supplier}</td>
                                                     <td>{fuel_received}</td>
-                                                    <td>{new Date(receival_date).toDateString()}</td>
+                                                    <td>{moment(receival_date).format('DD-MM-YYYY')}</td>
                                                     <td>
                                                         <b>{submit_person}</b><br />
-                                                        <span>{new Date(submitted_at).toDateString()}</span><br />
-                                                        <span>{new Date(submitted_at).toLocaleTimeString()}</span>
+                                                        <span>{moment(submitted_at).format('DD-MM-YYYY hh:mm A')}</span>
                                                     </td>
                                                     <td><Status status={status} /></td>
                                                 </tr>
@@ -487,6 +493,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         )
     }
     const rejectRequest = () => {
+        if (!JSON.parse(AccessControls.access).includes(85)) {
+            JSAlert.alert('Access Denied!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-receival-for-workshop/reject', {id: Details?.id, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID')}).then(() => {
             setDetails();
@@ -498,6 +508,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         });
     }
     const approveRequest = () => {
+        if (!JSON.parse(AccessControls.access).includes(85)) {
+            JSAlert.alert('Access Denied!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
+            return false;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-receival-for-workshop/approve', {id: Details?.id, fuel_received: Details.fuel_received, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID'), received_at: Details.receival_date}).then((res) => {
             console.log(res)
@@ -541,7 +555,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                             <h1 className='mb-0' style={{fontSize: 35}}>
                                 <span className='font-weight-bold'>{parseFloat(Details?.stock_at_workshop ? Details?.stock_at_workshop : Details?.total_stock).toFixed(2)}<small className='text-success' style={{ fontSize: 16 }}>Ltr</small></span>
                             </h1>
-                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the Workshop {Details?.stock_at_workshop ? `(dated: ${new Date(Details?.verified_at).toDateString()})` : '(Current)' }</h6>
+                            <h6 style={{fontSize: 15}} className='text-capitalize mb-0'>Stored at the Workshop {Details?.stock_at_workshop ? `(dated: ${moment(Details?.verified_at).format('YYYY-MM-DD')})` : '(Current)' }</h6>
                         </div>
                         <table className="table">
                             <tbody>
@@ -567,7 +581,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Received At</h6></td>
-                                    <td>{new Date(Details.receival_date).toDateString()}</td>
+                                    <td>{moment(Details.receival_date).format('YYYY-MM-DD')}</td>
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Entered By</h6></td>
@@ -575,7 +589,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Entered At</h6></td>
-                                    <td>{new Date(Details.submitted_at).toDateString()} at {new Date(Details.submitted_at).toLocaleTimeString().substring(0,8)}</td>
+                                    <td>{moment(Details.submitted_at).format('YYYY-MM-DD hh:mm A')}</td>
                                 </tr>
                                 {
                                     Details.status === 'Rejected'
@@ -587,7 +601,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                         </tr>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Rejected At</h6></td>
-                                            <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                            <td>{Details.verified_at ? moment(Details.verified_at).format('YYYY-MM-DD hh:mm A') : '-'}</td>
                                         </tr>
                                     </>
                                     :
@@ -598,7 +612,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                         </tr>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Verified At</h6></td>
-                                            <td>{Details.verified_at ? (new Date(Details.verified_at).toDateString() + ' at ' + new Date(Details.verified_at).toLocaleTimeString().substring(0,8)) : '-'}</td>
+                                            <td>{Details.verified_at ? moment(Details.verified_at).format('YYYY-MM-DD hh:mm A') : '-'}</td>
                                         </tr>
                                     </>
                                 }

@@ -319,11 +319,11 @@ const StockAtFuelingStation = () => {
                                                     <>
                                                         <td>
                                                             {station_submit_person}<br />
-                                                            {moment(requested_at).format('YYYY-MM-DD HH:mm a')}
+                                                            {moment(requested_at).format('YYYY-MM-DD hh:mm A')}
                                                         </td>
                                                         <td>
                                                             {station_verify_person}<br />
-                                                            {moment(approved_at).format('YYYY-MM-DD HH:mm a')}
+                                                            {moment(approved_at).format('YYYY-MM-DD hh:mm A')}
                                                         </td>
                                                     </>
                                                     :
@@ -332,18 +332,18 @@ const StockAtFuelingStation = () => {
                                                     <>
                                                         <td>
                                                             {equipment_submit_person}<br />
-                                                            {moment(submitted_at).format('YYYY-MM-DD HH:mm a')}
+                                                            {moment(submitted_at).format('YYYY-MM-DD hh:mm A')}
                                                         </td>
                                                         <td>
                                                             {equipment_verify_person}<br />
-                                                            {moment(verified_at).format('YYYY-MM-DD HH:mm a')}
+                                                            {moment(verified_at).format('YYYY-MM-DD hh:mm A')}
                                                         </td>
                                                     </>
                                                     :
                                                     <>
                                                         <td>
                                                             {trip_issued_by}<br />
-                                                            {moment(last_issued_at).format('YYYY-MM-DD HH:mm a')}
+                                                            {moment(last_issued_at).format('YYYY-MM-DD hh:mm A')}
                                                         </td>
                                                         <td></td>
                                                     </>
@@ -352,7 +352,7 @@ const StockAtFuelingStation = () => {
                                                 <b>{label}</b><br />
                                                 <span>{fuel_requested_at && fuel_requested_at && moment(new Date(fuel_requested_at)).format('DD-MM-YYYY')}</span>
                                             </td> */}
-                                            <td>{moment(d).format('DD-MM-YYYY HH:mm a')}</td>
+                                            <td>{moment(d).format('DD-MM-YYYY hh:mm A')}</td>
                                         </tr>
                                     )
                                 })

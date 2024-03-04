@@ -1030,7 +1030,7 @@ router.post('/fuel-managent/fuel-request-for-station/requests', ( req, res ) => 
         LEFT OUTER JOIN employees approve ON tbl_fuel_request_for_station.approved_by = approve.emp_id \
         LEFT OUTER JOIN companies ON tbl_fuel_request_for_station.company_code = companies.company_code \
         LEFT OUTER JOIN locations ON tbl_fuel_request_for_station.location_code = locations.location_code \
-        " + (access === 1 ? "" : (date && date.length > 0 ? "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ? AND DATE(tbl_fuel_request_for_station.requested_at) = '" + date + "'" : "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ?")) + " ORDER BY id DESC;",
+        " + (access === 1 ? (date && date.length > 0 ? "WHERE DATE(tbl_fuel_request_for_station.requested_at) = '" + date + "'" : "") : (date && date.length > 0 ? "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ? AND DATE(tbl_fuel_request_for_station.requested_at) = '" + date + "'" : "WHERE tbl_fuel_request_for_station.requested_by = ? OR tbl_fuel_request_for_station.approved_by = ?")) + " ORDER BY id DESC;",
         [emp_id, emp_id],
         ( err, rslt ) => {
             if( err ) {

@@ -103,8 +103,7 @@ function EquipmentFuelEntry() {
         }else if (meterRef.current.value.trim().length === 0) {
             JSAlert.alert('Hrs. meter reading is required!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
-        }
-        else if (parseInt(tripBasedRef.current.value) === 0 && isNaN(parseInt(fuelRef.current.value))) {
+        }else if (parseInt(tripBasedRef.current.value) === 0 && isNaN(parseInt(fuelRef.current.value))) {
             JSAlert.alert('Invalid fuel quantity!!', 'Validation Error', JSAlert.Icons.Warning).dismissIn(4000);
             return false;
         }else if (parseInt(tripBasedRef.current.value) === 0 && parseFloat(fuelRef.current.value) <= 0) {
@@ -133,6 +132,9 @@ function EquipmentFuelEntry() {
                 trip_based: parseInt(tripBasedRef.current.value)
             }
         ).then(() => {
+            fieldsetRef.current.disabled = false;
+            btnRef.current.innerHTML = 'Submit';
+            formRef.current.reset();
 
             setTripBased(0);
             setTripEntries([]);
@@ -141,9 +143,6 @@ function EquipmentFuelEntry() {
 
             setNew(false);
             loadRequests(true);
-            fieldsetRef.current.disabled = false;
-            btnRef.current.innerHTML = 'Submit';
-            formRef.current.reset();
             JSAlert.alert('Fuel issue request has been submitted', 'Success', JSAlert.Icons.Success).dismissIn(2000);
         }).catch(err => {
             console.log(err);
@@ -185,7 +184,7 @@ function EquipmentFuelEntry() {
         totalFuel = totalFuel + (val.fuel_to_issue ? val.fuel_to_issue : 0);
     })
 
-    if (New) {
+    if (JSON.parse(AccessControls.access).includes(91) && New) {
         return (
             <div className='page'>
                 <form className='page-content' ref={formRef} onSubmit={onSubmit}>
@@ -349,14 +348,14 @@ function EquipmentFuelEntry() {
                             <table className="table" style={{fontFamily: 'Roboto-Light'}}>
                                 <thead>
                                     <tr>
-                                        <th className='border-top-0'>#</th>
-                                        <th className='border-top-0'>Issued Fuel (Ltr.)</th>
-                                        <th className='border-top-0'>Issued Date</th>
-                                        <th className='border-top-0'>Equipment Type</th>
-                                        <th className='border-top-0'>Equipment Number</th>
-                                        <th className='border-top-0'>Hrs. Meter Reading</th>
-                                        <th className='border-top-0'>Submitted By</th>
-                                        <th className='border-top-0'>Status</th>
+                                        <th className='border-top-0 bg-light'>#</th>
+                                        <th className='border-top-0 bg-light'>Fuel (Ltr.)</th>
+                                        <th className='border-top-0 bg-light'>Date</th>
+                                        <th className='border-top-0 bg-light'>Equipment Type</th>
+                                        <th className='border-top-0 bg-light'>Equipment Number</th>
+                                        <th className='border-top-0 bg-light'>Hrs. Meter Reading</th>
+                                        <th className='border-top-0 bg-light'>Submitted By</th>
+                                        <th className='border-top-0 bg-light'>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -366,14 +365,17 @@ function EquipmentFuelEntry() {
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
                                                     <td>{i+1}</td>
                                                     <td>{fuel_issued}</td>
-                                                    <td>{new Date(issued_date).toDateString()}</td>
+                                                    <td>{moment(issued_date).format('DD-MM-YYYY')}</td>
                                                     <td>{equipment_type_name}</td>
-                                                    <td>{equipment_no}</td>
+                                                    <td>
+                                                        <div className="badge bg-light border">
+                                                            <b>{equipment_no}</b>
+                                                        </div>
+                                                    </td>
                                                     <td>{hrs_meter_reading}</td>
                                                     <td>
                                                         <b>{submit_person}</b><br />
-                                                        <span>{new Date(submitted_at).toDateString()}</span><br />
-                                                        <span>{new Date(submitted_at).toLocaleTimeString()}</span>
+                                                        <span>{moment(submitted_at).format('DD-MM-YYYY hh:mm A')}</span>
                                                     </td>
                                                     <td><Status status={status} /></td>
                                                 </tr>
@@ -475,6 +477,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         )
     }
     const confirmIssueFuel = () => {
+        if (!JSON.parse(AccessControls.access).includes(92)) {
+            JSAlert.alert('Access Denied!', 'Warning', JSAlert.Icons.Warning).dismissIn(4000);
+            return;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-issue-for-equipemnt/issue', {id: Details?.id, fuel_issued: Details.fuel_issued, emp_id: Details.submitted_by, issued_by: localStorage.getItem('EmpID'), issued_date: Details.issued_date, equipment_number: Details.equipment_number}).then((res) => {
             if (res.data === 'limit exceed') {
@@ -491,6 +497,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         });
     }
     const rejectRequest = () => {
+        if (!JSON.parse(AccessControls.access).includes(92)) {
+            JSAlert.alert('Access Denied!', 'Warning', JSAlert.Icons.Warning).dismissIn(4000);
+            return;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-issue-for-equipemnt/reject', {id: Details?.id, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID')}).then(() => {
             setDetails();
@@ -502,6 +512,10 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
         });
     }
     const approveRequest = () => {
+        if (!JSON.parse(AccessControls.access).includes(92)) {
+            JSAlert.alert('Access Denied!', 'Warning', JSAlert.Icons.Warning).dismissIn(4000);
+            return;
+        }
         $('#confirm').prop('disabled', true);
         axios.post('/fuel-managent/fuel-issue-for-equipemnt/approve', {id: Details?.id, fuel_issued: Details.fuel_issued, emp_id: Details.submitted_by, verifier: localStorage.getItem('EmpID'), issued_date: Details.issued_date, equipment_number: Details.equipment_number}).then((res) => {
             if (res.data === 'limit exceed') {
