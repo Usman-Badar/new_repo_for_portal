@@ -128,9 +128,13 @@ function FuelManagement() {
                 equipment_number: numberRef.current.value,
                 emp_id: localStorage.getItem('EmpID')
             }
-        ).then(() => {
+        ).then((res) => {
             fieldsetRef.current.disabled = false;
             btnRef.current.innerHTML = 'Submit';
+            if (res.data === 'exists') {
+                JSAlert.alert('Failed To Add, Equipment with this number is already exists!!', 'Request Failed', JSAlert.Icons.Failed).dismissIn(4000);
+                return;
+            }
             formRef.current.reset();
             JSAlert.alert('Equiment has been added', 'Success', JSAlert.Icons.Success).dismissIn(2000);
             loadEquipments(true);

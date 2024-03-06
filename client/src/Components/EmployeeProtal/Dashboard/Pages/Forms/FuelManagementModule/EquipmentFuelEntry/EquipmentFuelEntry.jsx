@@ -239,7 +239,7 @@ function EquipmentFuelEntry() {
                                 <label className='mb-0'>
                                     <b>Hrs. Meter Reading</b>
                                 </label>
-                                <input type="number" className="form-control" ref={meterRef} required />
+                                <input type="number" min={0} className="form-control" ref={meterRef} required />
                             </div>
                             <div className='w-50'>
                                 <label className='mb-0'>
@@ -267,7 +267,7 @@ function EquipmentFuelEntry() {
                                             <td>{val.trip_from} to {val.trip_to}</td>
                                             <td>
                                                 <div className='d-flex justify-content-between'>
-                                                    <span>{val.fuel_to_issue}ltr</span>
+                                                    <span>{val.fuel_to_issue} (Ltr.)</span>
                                                     <i onClick={() => delEntry(i)} className="lar la-trash-alt pointer" style={{ fontSize: 20 }}></i>
                                                 </div>
                                             </td>
@@ -279,7 +279,7 @@ function EquipmentFuelEntry() {
                                 SelectedTrips.length > 0 && (
                                     <tr>
                                         <th>Total</th>
-                                        <th>{totalFuel}ltr</th>
+                                        <th>{totalFuel} (Ltr.)</th>
                                     </tr>
                                 )
                             }
@@ -335,7 +335,7 @@ function EquipmentFuelEntry() {
                         <div className="d-flex align-items-center justify-content-between">
                             <h3 className="heading">
                                 Issue Fuel To Equipments
-                                <sub>Equipment's Fuel Entry (Other than Trip base)</sub>
+                                <sub>Equipment's Fuel Entry</sub>
                             </h3>
                             {JSON.parse(AccessControls.access).includes(91) && <button className="btn submit" onClick={() => setNew(true)}>New</button>}
                         </div>
@@ -355,13 +355,14 @@ function EquipmentFuelEntry() {
                                         <th className='border-top-0 bg-light'>Equipment Number</th>
                                         <th className='border-top-0 bg-light'>Hrs. Meter Reading</th>
                                         <th className='border-top-0 bg-light'>Submitted By</th>
+                                        <th className='border-top-0 bg-light'>Trip Based</th>
                                         <th className='border-top-0 bg-light'>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
                                         Requests.map(
-                                            ({equipment_type_name, equipment_no, hrs_meter_reading, fuel_issued, issued_date, submit_person, submitted_at, status}, i) => (
+                                            ({trip_based, equipment_type_name, equipment_no, hrs_meter_reading, fuel_issued, issued_date, submit_person, submitted_at, status}, i) => (
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
                                                     <td>{i+1}</td>
                                                     <td>{fuel_issued}</td>
@@ -377,7 +378,8 @@ function EquipmentFuelEntry() {
                                                         <b>{submit_person}</b><br />
                                                         <span>{moment(submitted_at).format('DD-MM-YYYY hh:mm A')}</span>
                                                     </td>
-                                                    <td><Status status={status} /></td>
+                                                    <td>{trip_based === 1 ? "Trip Based" : "Other Than Trip Based"}</td>
+                                                    <td><Status status={status === 'Waiting For Verification' && trip_based === 1 ? 'Waiting For Issue' : status} /></td>
                                                 </tr>
                                             )
                                         )
@@ -410,7 +412,7 @@ const Status = ({ status }) => {
                                 ?
                                 "bg-primary"
                                 :
-                                status === 'Waiting For Verification' || status === 'Waiting For Verification'
+                                status === 'Waiting For Verification' || status === 'Waiting For Verification' || status === 'Waiting For Issue'
                                     ?
                                     "bg-warning"
                                     :
@@ -431,7 +433,7 @@ const Status = ({ status }) => {
                                 ?
                                 "text-primary"
                                 :
-                                status === 'Waiting For Verification' || status === 'Waiting For Verification'
+                                status === 'Waiting For Verification' || status === 'Waiting For Verification' || status === 'Waiting For Issue'
                                     ?
                                     "text-warning"
                                     :
@@ -599,7 +601,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                     <>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Total Fuel To Issue (Ltr.)</h6></td>
-                                            <td>{Details.fuel_issued}ltr</td>
+                                            <td>{Details.fuel_issued} (Ltr.)</td>
                                         </tr>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Trips</h6></td>
@@ -634,7 +636,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                     <>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>
-                                            <td>{Details.fuel_issued}ltr</td>
+                                            <td>{Details.fuel_issued} (Ltr.)</td>
                                         </tr>
                                         <tr>
                                             <td><h6 className='font-weight-bold'>Issued By</h6></td>

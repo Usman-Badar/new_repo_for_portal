@@ -817,12 +817,16 @@ const Attendance = () => {
                     DailyAttendance.length === 0
                     ?
                     <div className='page-content'>
-                        <h5 className='text-center mb-0'>No Record Found</h5>
+                        <h5 className='text-center mb-0' style={{fontFamily: 'Roboto-Light'}}>
+                            <b>No Record Found</b>
+                        </h5>
                     </div>
                     :
-                    <div className="Attendance page-content">
+                    <div className="Attendance page-content" style={{fontFamily: 'Roboto-Light'}}>
                         <div className='d-flex align-items-center justify-content-between' style={{ height: 40 }}>
-                            <h4 className='text-uppercase mb-0'>Records Found: {DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())).length}</h4>
+                            <h5 className='mb-0' style={{fontFamily: 'Roboto-Light'}}>
+                                <b>Records Found: {DailyAttendance.filter(val => val.name.toLowerCase().includes(Name.toLowerCase())).length}</b>
+                            </h5>
                             <div>
                                 {checkedList.length > 0 ? <button className='btn light' onClick={makeViewForGroupedAttendanceChanges}>Make Changes</button> : null}
                                 {checkedTemporaryList.length > 0 ? <button id="mar_as_paid" className='btn btn-success text-white' onClick={markAsPaid}>Mark as Paid</button> : null}

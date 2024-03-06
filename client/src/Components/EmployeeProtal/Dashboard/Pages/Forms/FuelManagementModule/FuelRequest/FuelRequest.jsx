@@ -75,6 +75,7 @@ function FuelRequest() {
             btnRef.current.innerHTML = 'Submit';
             formRef.current.reset();
             loadRequests(true);
+            setNew(false);
             JSAlert.alert('Request has been sent', 'Success', JSAlert.Icons.Success).dismissIn(2000);
         }).catch(err => {
             console.log(err);
@@ -427,7 +428,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Fuel Required (Ltr.)</h6></td>
-                                    <td>{Details.fuel_required}ltr</td>
+                                    <td>{Details.fuel_required} (Ltr.)</td>
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Requested By</h6></td>

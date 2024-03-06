@@ -1,9 +1,11 @@
-Employee/attendance.js
-/getmymonthlyattendance
+to connect to other db
 
-portal_issues.js
-/portal/issues/details
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
 
-attendance_requests.js
-/getallattendancerequests
-/getpreviousdateslimit
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' WITH GRANT OPTION;
+
+CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;

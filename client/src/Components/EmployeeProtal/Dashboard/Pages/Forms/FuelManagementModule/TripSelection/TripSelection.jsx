@@ -333,7 +333,7 @@ const TripSelection = () => {
                                                     <td>{val.trip_from} to {val.trip_to}</td>
                                                     <td>
                                                         <div className='d-flex justify-content-between'>
-                                                            <span>{val.fuel_to_issue}ltr</span>
+                                                            <span>{val.fuel_to_issue} (Ltr.)</span>
                                                             <i onClick={() => delEntry(i)} className="lar la-trash-alt pointer" style={{fontSize: 20}}></i>
                                                         </div>
                                                     </td>
@@ -345,7 +345,7 @@ const TripSelection = () => {
                                         SelectedTrips.length > 0 && (
                                             <tr>
                                                 <th>Total</th>
-                                                <th>{totalFuel}ltr</th>
+                                                <th>{totalFuel} (Ltr.)</th>
                                             </tr>
                                         )
                                     }
@@ -434,7 +434,7 @@ const TripSelection = () => {
                                         <td style={{verticalAlign: 'bottom'}}><h6 className='font-weight-bold'>Additional Fuel</h6></td>
                                         <td>
                                             <div className={Details.additional_fuel_issued === 1 ? "" : "d-flex align-items-center justify-content-between"}>
-                                                {Details.additional_fuel}ltr
+                                                {Details.additional_fuel} (Ltr.)
                                                 {
                                                     Details.additional_fuel_issued === 1 && (
                                                         <p className='mb-0'>
@@ -502,7 +502,7 @@ const TripSelection = () => {
                                                         </td>
                                                         <td>{i+1}</td>
                                                         <td>{val.route}</td>
-                                                        <td>{val.fuel}ltr</td>
+                                                        <td>{val.fuel} (Ltr.)</td>
                                                         <td>
                                                             {val.submit_person || 'not issued'} <br />
                                                             {val.submit_person && moment(val.issued_at).format('YYYY-MM-DD HH:mm A')}
@@ -556,7 +556,7 @@ const TripSelection = () => {
                                     ({equipment_type_name, equipment_no, total_fuel_to_issue, trip_date, submit_person, created_at, status}, i) => (
                                         <tr key={i} className='pointer pointer-hover' onClick={() => openDetails(i)}>
                                             <td className='border-top-0'>{i+1}</td>
-                                            <td className='border-top-0'>{total_fuel_to_issue}ltr</td>
+                                            <td className='border-top-0'>{total_fuel_to_issue} (Ltr.)</td>
                                             <td className='border-top-0'>{new Date(trip_date).toDateString()}</td>
                                             <td className='border-top-0'>{equipment_type_name}</td>
                                             <td className='border-top-0'>{equipment_no}</td>

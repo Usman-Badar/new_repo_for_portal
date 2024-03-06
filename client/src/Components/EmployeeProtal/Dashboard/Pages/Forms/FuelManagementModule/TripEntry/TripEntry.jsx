@@ -409,7 +409,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Fuel Issued (Ltr.)</h6></td>
-                                    <td>{Details.fuel_to_issue}ltr</td>
+                                    <td>{Details.fuel_to_issue} (Ltr.)</td>
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Trip Date</h6></td>

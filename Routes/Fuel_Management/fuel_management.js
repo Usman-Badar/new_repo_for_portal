@@ -205,9 +205,25 @@ router.post('/fuel-managent/fuel-issue-for-equipemnt/new', ( req, res ) => {
         return false;
     }
 
+    let query = "";
+    let parameters = [];
+
+    for (let x = 0; x < tripList.length; x++) {
+        query = query.concat("INSERT INTO `tbl_fuel_issue_for_equipments`(`trips`, `fuel_issued`, `issued_date`, `equipment_type`, `equipment_number`, `hrs_meter_reading`, `submitted_by`, `trip_based`, `trip_id`) VALUES (?,?,?,?,?,?,?,?,?);");
+        parameters.push(`${tripList[x].trip_from} to ${tripList[x].trip_to}`);
+        parameters.push(tripList[x].fuel_to_issue);
+        parameters.push(dt);
+        parameters.push(type);
+        parameters.push(number);
+        parameters.push(meter);
+        parameters.push(emp_id);
+        parameters.push(trip_based);
+        parameters.push(tripList[x].id);
+    }
+
     db.query(
-        "INSERT INTO `tbl_fuel_issue_for_equipments`(`trips`, `fuel_issued`, `issued_date`, `equipment_type`, `equipment_number`, `hrs_meter_reading`, `submitted_by`, `trip_based`) VALUES (?,?,?,?,?,?,?,?);",
-        [tripArr.join(', '), fuel, dt, type, number, meter, emp_id, trip_based],
+        query,
+        parameters,
         ( err ) => {
             if( err ) {
                 console.log(err)
@@ -479,15 +495,26 @@ router.post('/fuel-managent/company-equipment-setup-entry', ( req, res ) => {
     }
 
     db.query(
-        "INSERT INTO `tbl_fuel_equipment_company_setup`(`company_code`, `location_code`, `equipment_type`, `equipment_number`, `created_by`) VALUES (?,?,?,?,?);",
-        [company_code, location_code, type_id, equipment_number, emp_id],
-        ( err ) => {
-            if( err ) {
-                res.status(500).send(err);
+        "SELECT equipment_number FROM tbl_fuel_equipment_company_setup WHERE LOWER(equipment_number) = ?;",
+        [equipment_number.toString().toLowerCase()],
+        ( err, rslt ) => {
+            if (rslt.length > 0) {
+                res.send('exists');
                 res.end();
             }else {
-                res.send('success');
-                res.end();
+                db.query(
+                    "INSERT INTO `tbl_fuel_equipment_company_setup`(`company_code`, `location_code`, `equipment_type`, `equipment_number`, `created_by`) VALUES (?,?,?,?,?);",
+                    [company_code, location_code, type_id, equipment_number, emp_id],
+                    ( err ) => {
+                        if( err ) {
+                            res.status(500).send(err);
+                            res.end();
+                        }else {
+                            res.send('success');
+                            res.end();
+                        }
+                    }
+                );
             }
         }
     );
@@ -1255,7 +1282,7 @@ router.get('/fuel-managent/fuel-request-for-station/transactions', ( req, res ) 
         "SELECT IFNULL( (SELECT SUM(quantity_in_ltr) FROM `tbl_fuel_stock_at_fueling_station` WHERE in_out = 'OUT') ,0) AS q;" +
         "SELECT  \
         tbl_fuel_stock_at_fueling_station.*,  \
-        station_company.company_name AS station_company,  \
+        station_company.code AS station_company,  \
         station_location.location_name AS station_location, \
         tbl_fuel_request_for_station.requested_at, \
         tbl_fuel_request_for_station.approved_at, \
@@ -1268,14 +1295,7 @@ router.get('/fuel-managent/fuel-request-for-station/transactions', ( req, res ) 
         equipment_submit_person.name AS equipment_submit_person, \
         equipment_verify_person.name AS equipment_verify_person, \
         tbl_fuel_issue_for_equipments.submitted_at, \
-        tbl_fuel_issue_for_equipments.verified_at, \
-         \
-        trip_company.code AS trip_company, \
-        trip_location.location_name AS trip_location, \
-        trip_issued_by.name AS trip_issued_by, \
-        trip_equipment.equipment_number, \
-        trip_equipment_type.equipment_type, \
-        tbl_fuel_entry_for_trip.last_issued_at \
+        tbl_fuel_issue_for_equipments.verified_at \
         FROM `tbl_fuel_stock_at_fueling_station`  \
         LEFT OUTER JOIN tbl_fuel_request_for_station ON tbl_fuel_stock_at_fueling_station.request_id = tbl_fuel_request_for_station.id \
         LEFT OUTER JOIN companies station_company ON tbl_fuel_request_for_station.company_code = station_company.company_code \
@@ -1284,19 +1304,12 @@ router.get('/fuel-managent/fuel-request-for-station/transactions', ( req, res ) 
         LEFT OUTER JOIN employees station_verify_person ON tbl_fuel_request_for_station.approved_by = station_verify_person.emp_id \
          \
         LEFT OUTER JOIN tbl_fuel_issue_for_equipments ON tbl_fuel_stock_at_fueling_station.request_id = tbl_fuel_issue_for_equipments.id \
-        LEFT OUTER JOIN companies equipment_company ON tbl_fuel_issue_for_equipments.company_code = equipment_company.company_code \
-        LEFT OUTER JOIN locations equipment_location ON tbl_fuel_issue_for_equipments.location_code = equipment_location.location_code \
         LEFT OUTER JOIN tbl_fuel_equipment_company_setup equipment ON tbl_fuel_issue_for_equipments.equipment_number = equipment.id \
+        LEFT OUTER JOIN companies equipment_company ON equipment.company_code = equipment_company.company_code \
+        LEFT OUTER JOIN locations equipment_location ON equipment.location_code = equipment_location.location_code \
         LEFT OUTER JOIN tbl_fuel_equipment_setup equipment_type ON tbl_fuel_issue_for_equipments.equipment_type = equipment_type.id \
         LEFT OUTER JOIN employees equipment_submit_person ON tbl_fuel_issue_for_equipments.submitted_by = equipment_submit_person.emp_id \
         LEFT OUTER JOIN employees equipment_verify_person ON tbl_fuel_issue_for_equipments.verified_by = equipment_verify_person.emp_id \
-         \
-        LEFT OUTER JOIN tbl_fuel_entry_for_trip ON tbl_fuel_stock_at_fueling_station.request_id = tbl_fuel_entry_for_trip.id \
-        LEFT OUTER JOIN companies trip_company ON tbl_fuel_entry_for_trip.company_code = trip_company.company_code \
-        LEFT OUTER JOIN locations trip_location ON tbl_fuel_entry_for_trip.location_code = trip_location.location_code \
-        LEFT OUTER JOIN employees trip_issued_by ON tbl_fuel_entry_for_trip.last_issued_by = trip_issued_by.emp_id \
-        LEFT OUTER JOIN tbl_fuel_equipment_company_setup trip_equipment ON tbl_fuel_entry_for_trip.equipment_number = trip_equipment.id \
-        LEFT OUTER JOIN tbl_fuel_equipment_setup trip_equipment_type ON tbl_fuel_entry_for_trip.equipment_type = trip_equipment_type.id \
         ORDER BY tbl_fuel_stock_at_fueling_station.inserted_at DESC;",
         ( err, rslt ) => {
             if( err ) {

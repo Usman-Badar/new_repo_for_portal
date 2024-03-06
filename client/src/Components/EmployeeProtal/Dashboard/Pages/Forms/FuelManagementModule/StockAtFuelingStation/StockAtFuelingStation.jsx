@@ -274,7 +274,7 @@ const StockAtFuelingStation = () => {
                         <tbody>
                             {
                                 Requests.filter(val => val.inserted_at.includes(DateFilter)).map((val, i) => {
-                                    const { last_issued_at, trip_issued_by, trip_location, trip_company, verified_at, submitted_at, equipment_submit_person, equipment_verify_person, equipment_type, equipment_number, requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
+                                    const { last_issued_at, trip_issued_by, equipment_company, equipment_location, verified_at, submitted_at, equipment_submit_person, equipment_verify_person, equipment_type, equipment_number, requested_at, approved_at, station_submit_person, station_verify_person, station_company, station_location, in_out, request_id, quantity_in_ltr, inserted_at, fuel_requested_at, other_than_trip, trip_based } = val;
                                     const d = new Date(inserted_at);
                                     const label = other_than_trip === 0 && trip_based === 0 ? 'Requested At' :
                                         other_than_trip === 1 ? 'Issued To Equipment' :
@@ -283,25 +283,18 @@ const StockAtFuelingStation = () => {
                                         <tr key={i}>
                                             {/*  onClick={() => loadTransactionDetails(request_id, in_out, other_than_trip, trip_based)} */}
                                             <td>{i + 1}</td>
-                                            {
-                                                trip_based === 1
-                                                ?
-                                                <td>
-                                                    {trip_company}<br />
-                                                    {trip_location}
-                                                </td>
-                                                :
-                                                <td>
-                                                    {station_company}<br />
-                                                    {station_location}
-                                                </td>
-                                            }
+                                            <td>
+                                                {station_company || equipment_company}<br />
+                                                {station_location || equipment_location}
+                                            </td>
                                             {
                                                 in_out === 'OUT'
                                                 ?
-                                                <td>
+                                                <td className='text-uppercase'>
                                                     {equipment_type}<br />
-                                                    {equipment_number}
+                                                    <div className="badge bg-light border">
+                                                        <b>{equipment_number}</b>
+                                                    </div>
                                                 </td>
                                                 :
                                                 <td></td>
@@ -342,8 +335,8 @@ const StockAtFuelingStation = () => {
                                                     :
                                                     <>
                                                         <td>
-                                                            {trip_issued_by}<br />
-                                                            {moment(last_issued_at).format('YYYY-MM-DD hh:mm A')}
+                                                            {equipment_submit_person}<br />
+                                                            {moment(submitted_at).format('YYYY-MM-DD hh:mm A')}
                                                         </td>
                                                         <td></td>
                                                     </>
