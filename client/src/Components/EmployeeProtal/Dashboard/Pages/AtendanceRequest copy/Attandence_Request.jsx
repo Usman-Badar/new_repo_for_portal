@@ -733,6 +733,7 @@ const Attandence_Request = () => {
                 request_id: request_id,
                 id: id,
                 emp_id: localStorage.getItem('EmpID'),
+                name: localStorage.getItem('name'),
                 date_time: new Date().toString(),
                 status: RequestAction.request_action,
                 forward_to: RequestAction.request_send_to,

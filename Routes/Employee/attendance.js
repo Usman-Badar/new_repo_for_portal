@@ -804,12 +804,33 @@ router.post('/getemployeefullattendance', ( req, res ) => {
                                         console.log( err );
                                     }else
                                     {
-                        
-                                        let arr = [];
-                                        arr.push( rslt );
-                                        arr.push( rslt2 );
-                                        arr.push( rslt3 );
-                                        res.send( arr );
+
+                                        if (rslt2[0].leave_ref !== null) {
+                                            let qqq = "";
+                                            if (rslt2[0].leave_ref.includes('leave')) {
+                                                qqq = "SELECT * FROM emp_leave_applications WHERE leave_id = ?;";
+                                            }else {
+                                                qqq = "SELECT * FROM emp_short_leave_applications WHERE leave_id = ?;";
+                                            }
+                                            db.query(
+                                                qqq,
+                                                [ rslt2[0].leave_ref.split('/').pop() ],
+                                                ( err, rslt4 ) => {
+                                                    let arr = [];
+                                                    arr.push( rslt );
+                                                    arr.push( rslt2 );
+                                                    arr.push( rslt3 );
+                                                    arr.push( rslt4 );
+                                                    res.send( arr );
+                                                }
+                                            )
+                                        }else {
+                                            let arr = [];
+                                            arr.push( rslt );
+                                            arr.push( rslt2 );
+                                            arr.push( rslt3 );
+                                            res.send( arr );
+                                        }
                                     }
                         
                                 }
