@@ -413,7 +413,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Trip Date</h6></td>
-                                    <td>{new Date(Details.trip_date).toDateString()}</td>
+                                    <td>{moment(Details.trip_date).format("DD-MM-YYYY")}</td>
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Created By</h6></td>
@@ -421,7 +421,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Created At</h6></td>
-                                    <td>{new Date(Details.created_at).toDateString()} at {new Date(Details.created_at).toLocaleTimeString().substring(0,8)}</td>
+                                    <td>{moment(Details.created_at).format("DD-MM-YYYY hh:mm A")}</td>
                                 </tr>
                             </tbody>
                         </table>

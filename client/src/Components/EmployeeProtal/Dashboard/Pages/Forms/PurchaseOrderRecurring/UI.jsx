@@ -11,7 +11,7 @@ import Modal from '../../../../../UI/Modal/Modal';
 import { useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
 import BreadCrumb from '../../../Components/BreadCrumb';
-// import moment from 'moment';
+import moment from 'moment';
 import { convertTZ } from '../../../../../../utils/date';
 
 import ReactTooltip from 'react-tooltip';
@@ -2360,7 +2360,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                         ?
                         <h6 className="text-center">No Request Found</h6>
                         :
-                        <table className="table popUps">
+                        <table className="table popUps" style={{fontFamily: "Roboto-Light"}}>
                             <thead>
                                 <tr>
                                     {/* <th className='border-top-0'>
@@ -2394,6 +2394,7 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                             </div>
                                         </div>
                                     </th>
+                                    <th className='border-top-0'>Last Generated At</th>
                                     {/* <th className='border-top-0'>Status</th> */}
                                 </tr>
                             </thead>
@@ -2417,6 +2418,9 @@ const PORequests = ( { fm, Status, RequestStatuses, AccessDefined, LoadedCompani
                                                         { val.requested_time }
                                                     </td>
                                                     <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }><span style={{ fontFamily: "Exo", fontWeight: 500 }}>{ fm.from(val.total_value) }</span></td>
+                                                    <td onClick={ () => history.push('/purchase/order/recursive/details?po_id=' + val.po_id) }>
+                                                        {val.last_generated_at ? moment(val.last_generated_at).format('DD-MM-YYYY hh:mm A') : "Not Generated Yet"}
+                                                    </td>
                                                     {/* <td>
                                                         <div className='d-flex align-items-center'>
                                                             <div 
