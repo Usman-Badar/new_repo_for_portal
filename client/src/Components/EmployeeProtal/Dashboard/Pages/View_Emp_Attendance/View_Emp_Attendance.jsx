@@ -635,7 +635,7 @@ const View_Emp_Attendance = () => {
                                         </div>
 
                                         {
-                                            AttendanceDetails?.attendance[0]?.leave_ref !== null && (
+                                            AttendanceDetails?.attendance[0]?.leave_ref !== null && (JSON.parse(AccessControls.access).includes(108) || JSON.parse(AccessControls.access).includes(0)) && (
                                                 <div className='mt-3'>
                                                     <h5 style={{fontFamily: "Roboto-Light"}}>
                                                         {
