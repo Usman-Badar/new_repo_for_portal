@@ -246,6 +246,11 @@ const App = () => {
                     <Route exact path="/purchase/order/form&&po_id=:id" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/purchase/order/requests" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/purchase/order/details" render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    <Route exact path="/purchase/order/recursive/form" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/purchase/order/recursive/requests" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/purchase/order/recursive/form&&po_id=:id" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/purchase/order/recursive/details" render={ () => <Sus content={ <Dashboard /> } /> } />
                     
                     {/* 
                         For Container
@@ -271,6 +276,17 @@ const App = () => {
                     <Route exact path="/cash/shipping/line/list" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/cash/shipping/line/form" render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path="/cash/shipping/line/details/:id" render={ () => <Sus content={ <Dashboard /> } /> } />
+
+                    {/* FUEL MANAGEMENT */}
+                    <Route exact path="/fuel-managent/equipment-type-entry" render={ () => <Sus content={ <AdminModule /> } /> } />
+                    <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/fuel-request-for-station" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/fuel-receival-for-workshop" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/equipment-trip-selection" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/stock-at-workshop" render={ () => <Sus content={ <Dashboard /> } /> } />
+                    <Route exact path="/fuel-managent/stock-at-station" render={ () => <Sus content={ <Dashboard /> } /> } />
 
                     <Route exact path='/portal/issues' render={ () => <Sus content={ <Dashboard /> } /> } />
                     <Route exact path='/portal/issues/new' render={ () => <Sus content={ <Dashboard /> } /> } />

@@ -170,4 +170,6 @@ app.use( require('./workshop/workshop') );
 
 app.use( require('./Routes/Vehicle_Tracking/vehicleTracking') );
 
+app.use( require('./Routes/Fuel_Management/fuel_management') );
+
 module.exports = app;
