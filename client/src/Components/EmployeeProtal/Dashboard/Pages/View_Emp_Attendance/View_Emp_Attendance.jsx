@@ -18,12 +18,10 @@ const View_Emp_Attendance = () => {
     const AccessControls = useSelector((state) => state.EmpAuth.EmployeeData);
 
     const [FilterName, setFilterName] = useState('');
-    const [SelectedEmployee, setSelectedEmployee] = useState('');
     const [Employees, setEmployees] = useState([]);
-    const [DailyAttendance, setDailyAttendance] = useState([]);
     const [Companies, setCompanies] = useState([]);
 
-    const [Clicked, setClicked] = useState(false);
+    const [LoadingThumbs, setLoadingThumbs] = useState();
     const [Attendance, setAttendance] = useState(
         {
             time_in: '',
@@ -43,19 +41,6 @@ const View_Emp_Attendance = () => {
 
     const [Company, setCompany] = useState('');
     const [DateTime, setDateTime] = useState('');
-
-    useEffect(
-        () => {
-            let names = [];
-            for (let x = 0; x < DailyAttendance.length; x++) {
-                if (!names.includes(DailyAttendance[x].name)) {
-                    names.push(DailyAttendance[x].name);
-                }
-            }
-            setEmployees(names);
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [DailyAttendance.length]
-    )
 
     useEffect(
         () => {
@@ -124,6 +109,7 @@ const View_Emp_Attendance = () => {
 
     const GetList = (date, company) => {
 
+        setEmployees();
         axios.post(
             '/getthatdateemployeeslist',
             {
@@ -149,6 +135,7 @@ const View_Emp_Attendance = () => {
 
     const showEmpDetails = (date, emp_id, name) => {
 
+        setLoadingThumbs('Loading Thumbs...');
         axios.post(
             '/getemployeefullattendance',
             {
@@ -164,7 +151,8 @@ const View_Emp_Attendance = () => {
                         emp_id: emp_id,
                         thumbs: res.data[0],
                         attendance: res.data[1],
-                        logs: res.data[2]
+                        logs: res.data[2],
+                        leave: res.data[3]
                     }
                 );
 
@@ -176,7 +164,7 @@ const View_Emp_Attendance = () => {
                         break_out: res.data[1][0].break_out
                     }
                 )
-                setClicked(true);
+                setLoadingThumbs();
 
                 ShowDetails();
 
@@ -259,7 +247,7 @@ const View_Emp_Attendance = () => {
     return (
         <>
             <ToastContainer />
-            <div className="View_Employee_Attendance page">
+            <div className="View_Employee_Attendance page" style={{fontFamily: 'Roboto-Light'}}>
                 <div className="DivFirst page-content">
                     <div>
                         <h4 className=" font-weight-bold">Edit Employees Attendance</h4>
@@ -331,8 +319,14 @@ const View_Emp_Attendance = () => {
                     {/* <h5 className="mb-4 font-weight-bolder">Daily Attendance</h5> */}
 
                     {
+                        !Employees ? <h6 className='text-center mt-4'>
+                            <b>Loading...</b>
+                        </h6>
+                        :
                         Employees.length === 0
-                        ?null
+                        ?<h6 className='text-center mt-4'>
+                            <b>No Record Found</b>
+                        </h6>
                         :
                         <>
                             <br />
@@ -340,14 +334,14 @@ const View_Emp_Attendance = () => {
                                 <div className="attendance-content page-content">
 
                                     <h6 className="font-weight-bolder">Search By Name</h6>
-                                    <input type='search' className='form-control' placeholder='Search Here...' onChange={ (e) => setFilterName(e.target.value) } />
+                                    <input type='search' className='form-control mb-3' placeholder='Search Here...' onChange={ (e) => setFilterName(e.target.value) } />
 
                                     {
                                         Employees.filter(val => val.name.toLowerCase().includes(FilterName.toLocaleLowerCase())).sort().map(
                                             (val, index) => {
                                                 return (
                                                     <>
-                                                        <div className="Employee_info" key={index} onClick={() => showEmpDetails(DateTime, val.emp_id, val.name)}>
+                                                        <div className={AttendanceDetails?.emp_id === val.emp_id ? "Employee_info border bg-dark-gray" : "Employee_info border"} key={index} onClick={() => showEmpDetails(DateTime, val.emp_id, val.name)}>
                                                             <div className='d-flex align-items-center'>
                                                                 <img
                                                                     src={process.env.REACT_APP_SERVER+'/images/employees/' + val.emp_image}
@@ -365,41 +359,37 @@ const View_Emp_Attendance = () => {
                                                             {
                                                                 val.status === 'Present'
                                                                     ?
-                                                                    <div className='statusbage' style={{ backgroundColor: '#5C6E9C' }} >
-                                                                        <p>{val.status}</p>
+                                                                    <div className='badge badge-success' style={{minWidth: 60}}>
+                                                                        <b>{val.status}</b>
                                                                     </div>
                                                                     :
                                                                     val.status === 'Late'
                                                                         ?
-                                                                        <div className='statusbage blinkstatus' style={{ backgroundColor: '#E7604A' }} >
-                                                                            <p>{val.status}</p>
+                                                                        <div className='badge badge-warning' style={{minWidth: 60}}>
+                                                                            <b>{val.status}</b>
                                                                         </div>
                                                                         :
                                                                         val.status === 'Absent'
                                                                             ?
-                                                                            <div className='statusbage blinkstatus' style={{ backgroundColor: '#E7604A' }}>
-                                                                                <p>{val.status}</p>
+                                                                            <div className='badge badge-danger' style={{minWidth: 60}}>
+                                                                                <b>{val.status}</b>
                                                                             </div>
                                                                             :
-                                                                            val.status === 'Holiday'
+                                                                            val.status === 'Holiday' || val.status === 'OFF'
                                                                                 ?
-                                                                                <div className='statusbage' style={{ backgroundColor: 'red' }}>
-                                                                                    <p>{val.status}</p>
+                                                                                <div className='badge badge-info' style={{minWidth: 60}}>
+                                                                                    <b>{val.status}</b>
                                                                                 </div>
                                                                                 :
-                                                                                val.status === 'leave'
+                                                                                val.status === 'leave' || val.status === 'short leave'
                                                                                     ?
-                                                                                    <div className='statusbage' style={{ backgroundColor: 'red' }}>
-                                                                                        <p>{val.status}</p>
+                                                                                    <div className='badge badge-secondary' style={{minWidth: 60}}>
+                                                                                        <b>{val.status}</b>
                                                                                     </div>
                                                                                     :
-                                                                                    val.status === 'leave'
-                                                                                        ?
-                                                                                        <div className='statusbage' style={{ backgroundColor: 'red' }}>
-                                                                                            <p>{val.status}</p>
-                                                                                        </div>
-                                                                                        :
-                                                                                        null
+                                                                                    <div className='badge bg-light border'>
+                                                                                        <b>{val.status}</b>
+                                                                                    </div>
                                                             }
 
                                                         </div>
@@ -411,30 +401,35 @@ const View_Emp_Attendance = () => {
 
                                 </div>
                                 {
-                                    Clicked
-                                        ?
-                                        AttendanceDetails.thumbs.length === 0
-                                            ?
-                                            <div className='thumb_details page-content'>
-                                                <h6 className="mb-4 font-weight-bolder">No Thumb Found</h6>
+                                    LoadingThumbs ?
+                                    <h6 className='text-center mt-3'>
+                                        <b>{LoadingThumbs}</b>
+                                    </h6>
+                                    :
+                                    AttendanceDetails.emp_id
+                                    ?
+                                    <div className='thumb_details page-content'>
+
+                                            <div className='d-flex align-items-center justify-content-between w-100'>
+                                                <h6 className="font-weight-bolder mb-0">{ AttendanceDetails.name } Thumbs</h6>
+                                                <ReactHTMLTableToExcel
+                                                    id="test-table-xls-button"
+                                                    className="btn btn-sm submit"
+                                                    table="table-to-xls"
+                                                    filename={ AttendanceDetails.name + "_thumbs" }
+                                                    sheet={[ AttendanceDetails.name + " Thumbs"]}
+                                                    buttonText="export"
+                                                />
+                                                {/* <button className=''>export</button> */}
                                             </div>
-                                            :
-                                            <div className='thumb_details page-content'>
-
-                                                <div className='d-flex align-items-center justify-content-between w-100'>
-                                                    <h6 className="font-weight-bolder mb-0">{ AttendanceDetails.name } Thumbs</h6>
-                                                    <ReactHTMLTableToExcel
-                                                        id="test-table-xls-button"
-                                                        className="btn btn-sm submit"
-                                                        table="table-to-xls"
-                                                        filename={ AttendanceDetails.name + "_thumbs" }
-                                                        sheet={[ AttendanceDetails.name + " Thumbs"]}
-                                                        buttonText="export"
-                                                    />
-                                                    {/* <button className=''>export</button> */}
-                                                </div>
-                                                <p className='mb-3'><b>Employee Code:</b> {AttendanceDetails.emp_id}</p>
-
+                                            <p className='mb-2'><b>Code:</b> {AttendanceDetails.emp_id}</p>
+                                            {
+                                                AttendanceDetails.thumbs.length === 0
+                                                ?
+                                                <h6 className="text-center border-top pt-3">
+                                                    <b>No Thumb Found</b>
+                                                </h6>
+                                                :
                                                 <table className="table table-sm mb-0" id="table-to-xls" ref={ref}>
                                                     <thead>
                                                         <tr>
@@ -491,151 +486,204 @@ const View_Emp_Attendance = () => {
                                                         </tr>
                                                     </tfoot>
                                                 </table>
+                                            }
 
-                                            </div>
-                                        : null
+
+                                    </div>
+                                    :null
                                 }
                                 {
                                     AttendanceDetails.attendance.length === 0
-                                        ? null
-                                        :
-                                        <div className='daily_att_details page-content'>
+                                    ? null
+                                    :
+                                    <div className='daily_att_details page-content'>
 
-                                            <div className='d-flex align-items-center justify-content-between mb-3'>
-                                                <h6 className="font-weight-bolder">Employee Attendance Details</h6>
+                                        <div className='d-flex align-items-end justify-content-between mb-3'>
+                                            <h5 className="font-weight-bolder" style={{fontFamily: "Roboto-Light"}}>Employee Attendance Details</h5>
 
-                                                <div className='togglebutton'>
-                                                    <div className="ClickDiv1" onClick={ShowDetails} >
-                                                        <p className="mb-0">Default</p>
-                                                    </div>
-                                                    <div className="ClickDiv2" onClick={ShowEdit}>
-                                                        <p className="mb-0">Edit</p>
-                                                    </div>
-                                                    <div className="HideDiv">
-                                                        <p className="mb-0">Default</p>
-                                                    </div>
+                                            <div className='togglebutton'>
+                                                <div className="ClickDiv1" onClick={ShowDetails} >
+                                                    <p className="mb-0">Default</p>
                                                 </div>
-
+                                                <div className="ClickDiv2" onClick={ShowEdit}>
+                                                    <p className="mb-0">Edit</p>
+                                                </div>
+                                                <div className="HideDiv">
+                                                    <p className="mb-0">Default</p>
+                                                </div>
                                             </div>
 
-
-                                            <div className='list'>
-
-                                                <table className="table table-sm mb-0" id="table-to-xls" ref={ref}>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Time In</th>
-                                                            <th>Time Out</th>
-                                                            <th>Break In</th>
-                                                            <th>Break Out</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        {
-                                                            AttendanceDetails.attendance.map(
-                                                                (val, index) => {
-                                                                    return (
-                                                                        <tr>
-                                                                            <td>{val.time_in}</td>
-                                                                            <td>{val.time_out}</td>
-                                                                            <td>{val.break_in}</td>
-                                                                            <td>{val.break_out}</td>
-                                                                        </tr>
-                                                                    )
-                                                                }
-                                                            )
-                                                        }
-
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
+                                        </div>
 
 
-                                            <div >
-                                                <form className='form' onSubmit={updateattendance} >
-                                                    <div className='d-flex w-100 mb-3'>
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">Current Time In</label>
-                                                            <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.time_in} style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
+                                        <div className='list'>
 
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">New Time In</label>
-                                                            <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="time_in" style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-                                                    </div>
+                                            <table className="table table-sm mb-0" id="table-to-xls" ref={ref}>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Time In</th>
+                                                        <th>Time Out</th>
+                                                        <th>Break In</th>
+                                                        <th>Break Out</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                    <div className='d-flex w-100 mb-3'>
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">Current Time Out</label>
-                                                            <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.time_out} style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">New Time Out</label>
-                                                            <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="time_out" style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className='d-flex w-100 mb-3'>
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">Current Break In</label>
-                                                            <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.break_in} style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">New Break In</label>
-                                                            <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="break_in" style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className='d-flex w-100 mb-3'>
-
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">Current Break Out</label>
-                                                            <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.break_out} style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-
-                                                        <div className="w-100 px-1">
-                                                            <label className="mb-0">New Break Out</label>
-                                                            <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="break_out" style={{ marginBottom: '10px' }} fullWidth />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className='d-flex align-items-center justify-content-end'>
-                                                        <button type='submit' >Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                            <div className='my-2'>
-
-                                                <h6> Logs </h6>
-
-                                                <div className="my-3 logContainer">
                                                     {
-                                                        AttendanceDetails.logs.length === 0
-                                                        ?
-                                                        <p className='mb-0 text-center'> No Log Found </p>
-                                                        :
-                                                        AttendanceDetails.logs.map(
-                                                            val => {
+                                                        AttendanceDetails.attendance.map(
+                                                            (val, index) => {
                                                                 return (
-                                                                    <div key={ val.log_id } className="log"> 
-                                                                        <span style={ { textAlign: "justify" } }>{ val.log }</span>
-                                                                        <span className='d-block text-right'>{ new Date( val.log_date ).toDateString() } at { val.log_time }</span>
-                                                                    </div>
+                                                                    <tr>
+                                                                        <td>{val.time_in}</td>
+                                                                        <td>{val.time_out}</td>
+                                                                        <td>{val.break_in}</td>
+                                                                        <td>{val.break_out}</td>
+                                                                    </tr>
                                                                 )
                                                             }
                                                         )
                                                     }
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+
+                                        <div >
+                                            <form className='form' onSubmit={updateattendance} >
+                                                <div className='d-flex w-100 mb-3'>
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">Current Time In</label>
+                                                        <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.time_in} style={{ marginBottom: '10px' }} fullWidth />
+                                                    </div>
+
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">New Time In</label>
+                                                        <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="time_in" style={{ marginBottom: '10px' }} fullWidth />
+                                                    </div>
                                                 </div>
 
+                                                <div className='d-flex w-100 mb-3'>
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">Current Time Out</label>
+                                                        <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.time_out} style={{ marginBottom: '10px' }} fullWidth />
+                                                    </div>
+
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">New Time Out</label>
+                                                        <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="time_out" style={{ marginBottom: '10px' }} fullWidth />
+                                                    </div>
+                                                </div>
+
+                                                <div className='d-flex w-100 mb-3'>
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">Current Break In</label>
+                                                        <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.break_in} style={{ marginBottom: '10px' }} fullWidth />
+                                                    </div>
+
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">New Break In</label>
+                                                        <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="break_in" style={{ marginBottom: '10px' }} fullWidth disabled />
+                                                    </div>
+                                                </div>
+
+                                                <div className='d-flex w-100 mb-3'>
+
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">Current Break Out</label>
+                                                        <input className="form-control form-control-sm bg-light" type='text' name="" disabled value={Attendance.break_out} style={{ marginBottom: '10px' }} fullWidth />
+                                                    </div>
+
+                                                    <div className="w-100 px-1">
+                                                        <label className="mb-0">New Break Out</label>
+                                                        <input className="form-control form-control-sm bg-light" type='time' onChange={changeNewTime} name="break_out" style={{ marginBottom: '10px' }} fullWidth disabled />
+                                                    </div>
+                                                </div>
+
+                                                <div className='d-flex align-items-center justify-content-end'>
+                                                    <button type='submit' >Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div className='mt-3'>
+
+                                            <h5 style={{fontFamily: "Roboto-Light"}}>
+                                                <b>Logs</b>
+                                            </h5>
+
+                                            <div className="my-3 logContainer rounded">
+                                                {
+                                                    AttendanceDetails.logs.length === 0
+                                                    ?
+                                                    <p className='mb-0 text-center'> No Log Found </p>
+                                                    :
+                                                    AttendanceDetails.logs.map(
+                                                        val => {
+                                                            return (
+                                                                <div key={ val.log_id } className="log"> 
+                                                                    <b style={ { textAlign: "justify" } }>{ val.log }</b>
+                                                                    <span className='d-block text-right'>{ new Date( val.log_date ).toDateString() } at { val.log_time }</span>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    )
+                                                }
                                             </div>
 
                                         </div>
+
+                                        {
+                                            AttendanceDetails?.attendance[0]?.leave_ref !== null && (
+                                                <div className='mt-3'>
+                                                    <h5 style={{fontFamily: "Roboto-Light"}}>
+                                                        {
+                                                            AttendanceDetails?.attendance[0]?.leave_ref.includes('leave')
+                                                            ?
+                                                            <b>Leave Request</b>
+                                                            :
+                                                            <b>Short Leave Request</b>
+                                                        }
+                                                    </h5>
+                                                    {
+                                                        AttendanceDetails?.leave[0]?.leave_type
+                                                        ?
+                                                        <table className="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Leave Type</th>
+                                                                    <th>Reason</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{AttendanceDetails?.leave[0]?.leave_type}</td>
+                                                                    <td>{AttendanceDetails?.leave[0]?.leave_purpose}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        :
+                                                        <table className="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Leave Time</th>
+                                                                    <th>Reason</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>{AttendanceDetails?.leave[0]?.leave_time}</td>
+                                                                    <td>{AttendanceDetails?.leave[0]?.leave_purpose}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    }
+                                                </div>
+                                            )
+                                        }
+
+                                    </div>
                                 }
                             </div>
                         </>

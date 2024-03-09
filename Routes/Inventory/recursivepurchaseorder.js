@@ -675,6 +675,9 @@ router.post('/purchase/order/recursive/generate/all', ( req, res ) => {
                     }else 
                     {
                         const mPoId = rslt.insertId;
+                        db.query("UPDATE tbl_recursive_purchase_order SET last_generated_at = ? WHERE po_id = ?;", [new Date(), obj.po_id], () => {
+                            console.log("last generated at date time saved")
+                        });
                         db.query(
                             "SELECT * FROM tbl_recursive_purchase_order_additional_specifications WHERE po_id = ?;",
                             [obj.po_id],
@@ -783,7 +786,7 @@ router.post('/purchase/order/recursive/generate/all', ( req, res ) => {
                 console.log("All Po Generated");
                 res.send('success');
                 res.end();
-            }else {
+            }else { 
                 count.push(1);
                 generatePO();
             }

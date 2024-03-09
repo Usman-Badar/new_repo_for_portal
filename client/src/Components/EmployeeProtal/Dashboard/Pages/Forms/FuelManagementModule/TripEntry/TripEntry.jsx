@@ -284,7 +284,7 @@ function TripEntry() {
                                                 <tr key={i} className='pointer pointer-hover' onClick={() => loadDetails(i)}>
                                                     <td className='border-top-0'>{i+1}</td>
                                                     <td className='border-top-0'>{fuel_to_issue}</td>
-                                                    <td className='border-top-0'>{moment(trip_date).format('DD-MM-YYYY')}</td>
+                                                    <td className='border-top-0'>{new Date(trip_date).toDateString()}</td>
                                                     <td className='border-top-0'>{equipment_type_name}</td>
                                                     <td className='border-top-0'>
                                                         <div className="badge bg-light border">
@@ -413,7 +413,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Trip Date</h6></td>
-                                    <td>{moment(Details.trip_date).format('DD-MM-YYYY')}</td>
+                                    <td>{moment(Details.trip_date).format("DD-MM-YYYY")}</td>
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Created By</h6></td>
@@ -421,7 +421,7 @@ const ReceivalDetails = ({ AccessControls, Details, setDetails, loadRequests }) 
                                 </tr>
                                 <tr>
                                     <td><h6 className='font-weight-bold'>Created At</h6></td>
-                                    <td>{moment(Details.created_at).format('DD-MM-YYYY hh:mm A')}</td>
+                                    <td>{moment(Details.created_at).format("DD-MM-YYYY hh:mm A")}</td>
                                 </tr>
                             </tbody>
                         </table>

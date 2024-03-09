@@ -203,8 +203,8 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
                     </div>
                     <div className='d-flex align-items-center justify-content-between mt-4'>
                         <div className='d-flex align-items-center'>
-                            <button onClick={ () => setView(1) } className={ View === 1 ? ' btn submit' : 'btn' }>Inward <sup>({Inward.length})</sup></button>
-                            <button onClick={ () => setView(2) } className={ View === 2 ? ' btn submit' : 'btn' }>Outward <sup>({Outward.length})</sup></button>
+                            <button onClick={ () => setView(1) } className={ View === 1 ? ' btn submit' : 'btn' }>Inward <sup>({Inward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length})</sup></button>
+                            <button onClick={ () => setView(2) } className={ View === 2 ? ' btn submit' : 'btn' }>Outward <sup>({Outward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length})</sup></button>
                         </div>
                         <div>
                             <button className="btn light filter-emit" type='button'>
@@ -232,7 +232,11 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
                         {
                             View === 1
                             ?
-                            ArrInward.map(
+                            ArrInward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length === 0
+                            ?
+                            <h6>No Inward Found</h6>
+                            :
+                            ArrInward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).map(
                                 ( val, index ) => {
                                     return (
                                         <div className='card-div' key={index}>
@@ -269,7 +273,11 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
                         {
                             View === 2
                             ?
-                            ArrOutward.map(
+                            ArrOutward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length === 0
+                            ?
+                            <h6>No Outward Found</h6>
+                            :
+                            ArrOutward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).map(
                                 ( val, index ) => {
                                     return (
                                         <div className='card-div' key={index} onClick={ () => viewDetails( val ) }>

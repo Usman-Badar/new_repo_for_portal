@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../../db/connection');
 const moment = require('moment');
 const io = require('../../server');
+const { CreateLog } = require('./logs');
 
 io.on('connection', ( socket ) => {
 
@@ -458,6 +459,7 @@ router.get('/getpreviousdateslimit', ( req, res ) => {
 router.post('/performactionforattrequest', ( req, res ) => {
 
     const {
+        name,
         request_id,
         date_time,
         emp_id,
@@ -581,17 +583,21 @@ router.post('/performactionforattrequest', ( req, res ) => {
                         db.query(
                             q,
                             parameters,
-                            ( err ) => {
-                    
-                                if( err )
-                                {
-                    
-                                    console.log( err );
-                                    res.status(500).send(err);
-                                    res.end();
-                    
-                                }
-                    
+                            () => {
+                                db.query(
+                                    "SELECT emp_attendance.id, employees.name FROM emp_attendance LEFT OUTER JOIN employees ON emp_attendance.emp_id = employees.emp_id WHERE emp_attendance.emp_id = ? AND emp_attendance.emp_date = ?",
+                                    [request_by, new Date(record_date).toISOString().slice(0, 10).replace('T', ' ')],
+                                    ( err, rslt ) => {
+                                        if (rslt.length > 0) {
+                                            CreateLog( 
+                                                'emp_attendance', 
+                                                rslt[0].id,
+                                                "This record has been corrected by "+name+" to (time in="+timeIn+", time out="+timeOut+") through attendance correction request.",
+                                                'info'
+                                            )
+                                        }
+                                    }
+                                );
                             }
                         );
                     }
