@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Style.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import $ from 'jquery';
+import ReactTooltip from 'react-tooltip';
 
-const UI = ( { ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setShowZeroValues, setSubLocationCode, setLocationCode, setCompanyCode, setCategory, search, setCatType, setSubCategory } ) => {
+const UI = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setShowZeroValues, setSubLocationCode, setLocationCode, setCompanyCode, setCategory, search, setCatType, setSubCategory } ) => {
     
     const history = useHistory();
 
@@ -28,6 +29,9 @@ const UI = ( { ShowZeroValues, SubLocations, Locations, Companies, SearchedProdu
                                         SearchedProductsList={ SearchedProductsList }
                                         SubLocations={ SubLocations }
                                         ShowZeroValues={ ShowZeroValues }
+                                        CompanyCode={ CompanyCode }
+                                        LocationCode={ LocationCode }
+                                        SubLocationCode={ SubLocationCode }
                     
                                         setShowZeroValues={ setShowZeroValues }
                                         setSubLocationCode={ setSubLocationCode }
@@ -52,9 +56,19 @@ const UI = ( { ShowZeroValues, SubLocations, Locations, Companies, SearchedProdu
 
 export default UI;
 
-const ListView = ( { ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setShowZeroValues, setLocationCode, setSubLocationCode, setCatType, search, setSubCategory, setCategory, setCompanyCode } ) => {
+const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setShowZeroValues, setLocationCode, setSubLocationCode, setCatType, search, setSubCategory, setCategory, setCompanyCode } ) => {
 
+    const [ ShowFilters, setShowFilters ] = useState(false);
     const Arr = SearchedProductsList ? SearchedProductsList : ProductsList;
+
+    const resetFilters = () => {
+        sessionStorage.removeItem('productLocation');
+        sessionStorage.removeItem('productCompany');
+        sessionStorage.removeItem('productSubLocation');
+        setCompanyCode("");
+        setLocationCode("");
+        setSubLocationCode('');
+    }
 
     return (
         <>
@@ -64,125 +78,158 @@ const ListView = ( { ShowZeroValues, SubLocations, Locations, Companies, Searche
                     <sub>List Of All Items ({Arr.length})</sub>
                 </h3>
                 <div>
-                    <button className="btn submit px-2 filter-emit" type='button'>
-                        <i className="las la-filter"></i> Filters
-                        <div className="filter-container">
-                            <div className="d-flex align-items-center justify-content-between">
-                                <h6 className='mb-0' style={{ fontFamily: 'Oxygen' }}>Filter Options</h6>
-                                {/* <small>Clear All</small> */}
-                            </div>
-                            <hr className='my-1 bg-dark' />
-
-                            {
-                                Companies && (
-                                    <>
-                                        <label className="font-weight-bold mb-0">Company</label>
-                                        <select onChange={(e) => setCompanyCode(e.target.value)} className='form-control form-control-sm mb-2'>
-                                            <option value=''>All</option>
-                                            {Companies.map(( val, index ) => <option key={ index } value={ val.company_code }>{ val.company_name }</option>)}
-                                        </select>
-                                    </>
-                                )
-                            }
-                            {
-                                Locations && Locations.length > 0 && (
-                                    <>
-                                        <label className="font-weight-bold mb-0">Location</label>
-                                        <select onChange={(e) => setLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
-                                            <option value=''>All</option>
-                                            {Locations.map(( val, index ) => <option key={ index } value={ val.location_code }>{ val.location_name }</option>)}
-                                        </select>
-                                    </>
-                                )
-                            }
-                            {
-                                SubLocations && SubLocations.length > 0 && (
-                                    <>
-                                        <label className="font-weight-bold mb-0">Sub Location</label>
-                                        <select onChange={(e) => setSubLocationCode(e.target.value)} className='form-control form-control-sm mb-2'>
-                                            <option value=''>All</option>
-                                            {SubLocations.map(( val, index ) => <option key={ index } value={ val.sub_location_code }>{ val.sub_location_name }</option>)}
-                                        </select>
-                                    </>
-                                )
-                            }
-                            
-                            {
-                                Categories
-                                ?
-                                <>
-                                    <label className="font-weight-bold mb-0">Category</label>
-                                    <select value={ Category } className='form-control form-control-sm mb-2' onChange={ (e) => setCategory(e.target.value) }>
-                                        <option value=''>All</option>
-                                        {
-                                            Categories.map(
-                                                ( val, index ) => {
-
-                                                    let content;
-                                                    if ( val.type === CatType )
-                                                    {
-                                                        content = <option key={ index } value={ val.category_id }>{ val.name }</option>
-                                                    }
-                                                    return content;
-
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </>
-                                :null
-                            }
-                            {
-                                SubCategories && Category
-                                ?
-                                <>
-                                    <label className="font-weight-bold mb-0">Sub-Category</label>
-                                    <select value={SubCategory} className='form-control form-control-sm mb-2' onChange={ (e) => setSubCategory(e.target.value) }>
-                                        <option value=''>All</option>
-                                        {
-                                            SubCategories.map(
-                                                ( val, index ) => {
-
-                                                    return <option key={ index } value={ val.id }>{ val.name }</option>
-
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </>
-                                :null
-                            }
-
-                            <label className="font-weight-bold mb-0">Search Products</label>
-                            <input placeholder='Search Keywords...' type="search" onChange={ search } className='form-control form-control-sm mb-2' />
-                            
-                            <label className="font-weight-bold my-2">Product Type</label>
-                            <div className='d-flex align-items-center mb-2'>
-                                <input type="radio" checked={ CatType === 'consumable' ? true : false } name='product_type' onChange={ () => setCatType('consumable') } className='form-control form-control-sm mr-2' />
-                                <span>Consumable</span>
-                            </div>
-                            <div className='d-flex align-items-center mb-1'>
-                                <input type="radio" checked={ CatType === 'non-consumable' ? true : false } name='product_type' onChange={ () => setCatType('non-consumable') } className='form-control form-control-sm mr-2' />
-                                <span>Non-Consumable</span>
-                            </div>
-
-                            <label className="font-weight-bold my-2">Include Zero Values</label>
-                            <div className='d-flex align-items-center mb-2'>
-                                <input type="radio" checked={ ShowZeroValues } name='zero_values' onChange={ () => setShowZeroValues(true) } className='form-control form-control-sm mr-2' />
-                                <span>Include</span>
-                            </div>
-                            <div className='d-flex align-items-center mb-1'>
-                                <input type="radio" checked={ !ShowZeroValues } name='zero_values' onChange={ () => setShowZeroValues(false) } className='form-control form-control-sm mr-2' />
-                                <span>Exclude</span>
-                            </div>
-
-                            <br />
-                        </div>
-                    </button>
                     <button className='btn light ml-2' onClick={ () => history.push('/inventory/products/create') }>Create New</button>
+                    <button className="btn submit px-2 ml-2 filter-emit" onClick={() => setShowFilters(!ShowFilters)} type='button'>
+                        {
+                            ShowFilters
+                                ?
+                                <>
+                                    <i className="las la-times"></i>
+                                </>
+                                :
+                                <div data-tip data-for='filter'>
+                                    {
+                                        CompanyCode || LocationCode || LocationCode
+                                        ?
+                                        <div className='filterisOpen'></div>
+                                        :
+                                        null
+                                    }
+                                    <i className="las la-filter"></i>
+                                    <ReactTooltip id='filter' place="top">
+                                        Filters
+                                    </ReactTooltip>
+                                </div>
+                        }
+                    </button>
                 </div>
             </div>
             <hr />
+            {
+                ShowFilters
+                    ?
+                    <>
+                        <div className='filter-content popUps'>
+                            <div className='flex'>
+                                {
+                                    Companies && (
+                                        <div className='w-100 searchDiv'>
+                                            <label className="font-weight-bold mb-0">Company</label>
+                                            <select value={CompanyCode} onChange={(e) => {
+                                                setCompanyCode(e.target.value);
+                                                sessionStorage.setItem('productCompany', e.target.value);
+                                            }} className='form-control form-control-sm mb-2'>
+                                                <option value=''>All</option>
+                                                {Companies.map((val, index) => <option key={index} value={val.company_code}>{val.company_name}</option>)}
+                                            </select>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    Locations && Locations.length > 0 && (
+                                        <div className='w-100 searchDiv'>
+                                            <label className="font-weight-bold mb-0">Location</label>
+                                            <select value={LocationCode} onChange={(e) => {
+                                                setLocationCode(e.target.value);
+                                                sessionStorage.setItem('productLocation', e.target.value);
+                                            }} className='form-control form-control-sm mb-2'>
+                                                <option value=''>All</option>
+                                                {Locations.map((val, index) => <option key={index} value={val.location_code}>{val.location_name}</option>)}
+                                            </select>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    SubLocations && SubLocations.length > 0 && (
+                                        <div className='w-100 searchDiv'>
+                                            <label className="font-weight-bold mb-0">Sub Location</label>
+                                            <select value={SubLocationCode} onChange={(e) => {
+                                                setSubLocationCode(e.target.value);
+                                                sessionStorage.setItem('productSubLocation', e.target.value);
+                                            }} className='form-control form-control-sm mb-2'>
+                                                <option value=''>All</option>
+                                                {SubLocations.map((val, index) => <option key={index} value={val.sub_location_code}>{val.sub_location_name}</option>)}
+                                            </select>
+                                        </div>
+                                    )
+                                }
+                                {
+                                    Categories
+                                        ?
+                                        <div className='w-100 searchDiv'>
+                                            <label className="font-weight-bold mb-0">Category</label>
+                                            <select value={Category} className='form-control form-control-sm mb-2' onChange={(e) => setCategory(e.target.value)}>
+                                                <option value=''>All</option>
+                                                {
+                                                    Categories.map(
+                                                        (val, index) => {
+
+                                                            let content;
+                                                            if (val.type === CatType) {
+                                                                content = <option key={index} value={val.category_id}>{val.name}</option>
+                                                            }
+                                                            return content;
+
+                                                        }
+                                                    )
+                                                }
+                                            </select>
+                                        </div>
+                                        : null
+                                }
+                                {
+                                    SubCategories && Category
+                                        ?
+                                        <div className='w-100 searchDiv'>
+                                            <label className="font-weight-bold mb-0">Sub-Category</label>
+                                            <select value={SubCategory} className='form-control form-control-sm mb-2' onChange={(e) => setSubCategory(e.target.value)}>
+                                                <option value=''>All</option>
+                                                {
+                                                    SubCategories.map(
+                                                        (val, index) => {
+
+                                                            return <option key={index} value={val.id}>{val.name}</option>
+
+                                                        }
+                                                    )
+                                                }
+                                            </select>
+                                        </div>
+                                        : null
+                                }
+                                <div className='w-100 searchDiv'>
+                                    <label className="font-weight-bold mb-0">Search Products</label>
+                                    <input id="searchProduct" placeholder='Search Keywords...' type="search" onChange={search} className='form-control form-control-sm mb-2' />
+                                </div>
+                                <div className='w-100 searchDiv'>
+                                    <label className="font-weight-bold my-2">Product Type</label>
+                                    <div className='d-flex align-items-center mb-2'>
+                                        <input type="radio" checked={CatType === 'consumable' ? true : false} name='product_type' onChange={() => setCatType('consumable')} className='form-control form-control-sm mr-2' />
+                                        <span>Consumable</span>
+                                    </div>
+                                    <div className='d-flex align-items-center mb-1'>
+                                        <input type="radio" checked={CatType === 'non-consumable' ? true : false} name='product_type' onChange={() => setCatType('non-consumable')} className='form-control form-control-sm mr-2' />
+                                        <span>Non-Consumable</span>
+                                    </div>
+                                </div>
+                                <div className='w-100 searchDiv'>
+                                    <label className="font-weight-bold my-2">Include Zero Values</label>
+                                    <div className='d-flex align-items-center mb-2'>
+                                        <input type="radio" checked={ShowZeroValues} name='zero_values' onChange={() => setShowZeroValues(true)} className='form-control form-control-sm mr-2' />
+                                        <span>Include</span>
+                                    </div>
+                                    <div className='d-flex align-items-center mb-1'>
+                                        <input type="radio" checked={!ShowZeroValues} name='zero_values' onChange={() => setShowZeroValues(false)} className='form-control form-control-sm mr-2' />
+                                        <span>Exclude</span>
+                                    </div>
+                                </div>
+                                <button className='btn green d-block ml-auto mt-2' type='button' onClick={resetFilters}>Reset All</button>
+                            </div>
+                        </div>
+                        <br />
+                    </>
+                    : null
+            }
 
             {
                 Arr

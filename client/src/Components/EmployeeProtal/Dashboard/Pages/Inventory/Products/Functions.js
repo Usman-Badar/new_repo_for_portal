@@ -1,4 +1,5 @@
 import axios from '../../../../../../axios';
+import $ from 'jquery';
 
 export const GetCompanies = ( setCompanies ) => {
 
@@ -58,10 +59,8 @@ export const getAllProducts = (SubLocationCode, LocationCode, CompanyCode, CatTy
         }
     ).then(
         res => {
-
             setProductsList(res.data);
             GetCompanies(setCompanies);
-
         }
     ).catch(
         err => {

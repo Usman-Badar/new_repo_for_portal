@@ -102,22 +102,13 @@ const Products = () => {
         }, [ SubCategory ]
     )
 
-    // useEffect(
-    //     () => {
-    //         if ( sessionStorage.getItem('CatType') && sessionStorage.getItem('CatType') !== '' )
-    //         {
-    //             setCatType(sessionStorage.getItem('CatType'));
-    //         }
-    //         if ( sessionStorage.getItem('Category') && sessionStorage.getItem('Category') !== '' )
-    //         {
-    //             setCategory(parseInt(sessionStorage.getItem('Category')));
-    //         }
-    //         if ( sessionStorage.getItem('SubCategory') && sessionStorage.getItem('SubCategory') !== '' )
-    //         {
-    //             setSubCategory(parseInt(sessionStorage.getItem('SubCategory')));
-    //         }
-    //     }, []
-    // );
+    useEffect(
+        () => {
+            if ( sessionStorage.getItem('productCompany') && sessionStorage.getItem('productCompany') !== '' ) setCompanyCode(sessionStorage.getItem('productCompany'));
+            if ( sessionStorage.getItem('productLocation') && sessionStorage.getItem('productLocation') !== '' ) setLocationCode(sessionStorage.getItem('productLocation'));
+            if ( sessionStorage.getItem('productSubLocation') && sessionStorage.getItem('productSubLocation') !== '' ) setSubLocationCode(sessionStorage.getItem('productSubLocation'));
+        }, []
+    );
 
     return (
         <>
@@ -135,6 +126,9 @@ const Products = () => {
                     Locations={ Locations }
                     SubLocations={ SubLocations }
                     ShowZeroValues={ ShowZeroValues }
+                    CompanyCode={ CompanyCode }
+                    LocationCode={ LocationCode }
+                    SubLocationCode={ SubLocationCode }
 
                     setShowZeroValues={ setShowZeroValues }
                     setSubLocationCode={ setSubLocationCode }
