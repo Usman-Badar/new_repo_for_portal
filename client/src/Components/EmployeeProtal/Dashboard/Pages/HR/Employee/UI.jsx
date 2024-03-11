@@ -9,6 +9,7 @@ import axios from '../../../../../../axios';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import JSAlert from 'js-alert';
 import { useSelector } from 'react-redux';
+import { Uint8ToBase64 } from '../../../../../../utils/Uint8ToBase64';
 
 function UI({ Grades, Designations, Departments, Employee, SpecKeyword, Location, Locations, Companies, Company, HREmployee, fetchDetails, fetchList, setSpecKeyword, setLocation, loadCompanies, setCompany, loadEmployees }) {
 
@@ -427,11 +428,11 @@ const EmployeeDetails = ({ Data, Employee, history, fetchDetails }) => {
                                 </td>
                                 <td>
                                     <b>CNIC Front Image</b> <br />
-                                    <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/front/' + Employee.cnic_front_image } alt="CNIC photo" width="70%" className='border' />
+                                    <img src={ Employee.cnic_front_file ? Uint8ToBase64(Buffer.from(Employee.cnic_front_file, 'base64')) : process.env.REACT_APP_SERVER+'/images/documents/cnic/front/' + Employee.cnic_front_image } alt="CNIC photo" width="70%" className='border' />
                                 </td>
                                 <td>
                                     <b>CNIC Back Image</b> <br />
-                                    <img src={ process.env.REACT_APP_SERVER+'/images/documents/cnic/back/' + Employee.cnic_back_image } alt="CNIC photo" width="70%" className='border' />
+                                    <img src={ Employee.cnic_back_file ? Uint8ToBase64(Buffer.from(Employee.cnic_back_file, 'base64')) : process.env.REACT_APP_SERVER+'/images/documents/cnic/back/' + Employee.cnic_back_image } alt="CNIC photo" width="70%" className='border' />
                                 </td>
                             </tr>
                             <tr>

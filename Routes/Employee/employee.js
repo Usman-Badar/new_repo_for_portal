@@ -311,8 +311,10 @@ router.post('/getemployee', ( req, res ) => {
 
     db.query(
         "SELECT employees.*, \
-        ADDDATE(employees.date_of_birth, INTERVAL 1 DAY) `date_of_birth`, \
-        ADDDATE(employees.date_of_join, INTERVAL 1 DAY) `date_of_join`, \
+        `date_of_birth`, \
+        `date_of_join`, \
+        AES_DECRYPT(employees.cnic_front_file, '"+process.env.BLOB_ENCRYPTION_SALT+"') AS cnic_front_file, \
+        AES_DECRYPT(employees.cnic_back_file, '"+process.env.BLOB_ENCRYPTION_SALT+"') AS cnic_back_file, \
         users.user_name, \
         users.user_image, \
         emp_app_profile.*, \
@@ -344,8 +346,7 @@ router.post('/getemployee', ( req, res ) => {
         employees.name,  \
         employees.email,  \
         employees.gender, \
-        emp_props.pr_approval_limit, \
-        emp_props.adv_cash_approval_limit \
+        emp_props.pr_approval_limit \
         FROM tbl_er  \
         LEFT OUTER JOIN employees ON employees.emp_id = tbl_er.sr \
         LEFT OUTER JOIN emp_props ON employees.emp_id = emp_props.emp_id  \
@@ -1352,6 +1353,8 @@ router.post('/hr/employee/data', ( req, res ) => {
     db.query(
         "SELECT  \
         `employees`.*, \
+        AES_DECRYPT(employees.cnic_front_file, '"+process.env.BLOB_ENCRYPTION_SALT+"') AS cnic_front_file, \
+        AES_DECRYPT(employees.cnic_back_file, '"+process.env.BLOB_ENCRYPTION_SALT+"') AS cnic_back_file, \
         `emp_app_profile`.`emp_image`, \
         `designations`.`designation_name`, \
         `departments`.`department_name`, \

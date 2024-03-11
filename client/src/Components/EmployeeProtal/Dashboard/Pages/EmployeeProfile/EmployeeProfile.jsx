@@ -9,6 +9,7 @@ import { EmployeeLogin } from '../../../../../Redux/Actions/Action';
 import axios from '../../../../../axios';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import moment from 'moment';
+import { Uint8ToBase64 } from '../../../../../utils/Uint8ToBase64';
 
 const EmployeeProfile = () => {
 
@@ -288,29 +289,33 @@ const Item = ({ label, txt }) => {
 
 }
 
-const FileItem = ({ label, source }) => {
+const FileItem = ({ label, source, blob }) => {
 
     let elm;
     let path;
-    if (source.includes('CV')) {
-        path = "/documents/cv/";
-    } else
-        if (source.includes('Driving_License')) {
-            path = "/documents/licenses/driving/";
+    if (!blob) {
+        if (source.includes('CV')) {
+            path = "/documents/cv/";
         } else
-            if (source.includes('Armed_License')) {
-                path = "/documents/licenses/armed/";
+            if (source.includes('Driving_License')) {
+                path = "/documents/licenses/driving/";
             } else
-                if (source.includes('proof_of_address')) {
-                    path = "/documents/address/";
+                if (source.includes('Armed_License')) {
+                    path = "/documents/licenses/armed/";
                 } else
-                    if (source.includes('_front')) {
-                        path = "/documents/cnic/front/";
+                    if (source.includes('proof_of_address')) {
+                        path = "/documents/address/";
                     } else
-                        if (source.includes('_back')) {
-                            path = "/documents/cnic/back/";
-                        }
-    if (source.includes('.pdf')) {
+                        if (source.includes('_front')) {
+                            path = "/documents/cnic/front/";
+                        } else
+                            if (source.includes('_back')) {
+                                path = "/documents/cnic/back/";
+                            }
+    }
+    if (blob) {
+        elm = <img src={Uint8ToBase64(Buffer.from(source, 'base64'))} alt="document" width="100%" title="CV" />
+    } else if (source.includes('.pdf')) {
         elm = <iframe src={'images' + path + source} width="100%" title="CV"></iframe>
     } else {
         elm = <img src={'images' + path + source} alt="document" width="100%" title="CV" />
@@ -851,12 +856,14 @@ const AccountInfo = (props) => {
                     <div className='detailsContainer-grid'>
                         <FileItem
                             label="CNIC (front)"
-                            source={props.ProfileData.cnic_front_image}
+                            source={props.ProfileData.cnic_front_file}
+                            blob
                         />
 
                         <FileItem
                             label="CNIC (back)"
-                            source={props.ProfileData.cnic_back_image}
+                            source={props.ProfileData.cnic_back_file}
+                            blob
                         />
 
                         {
