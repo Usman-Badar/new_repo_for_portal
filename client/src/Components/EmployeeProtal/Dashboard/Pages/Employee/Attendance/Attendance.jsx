@@ -158,7 +158,9 @@ const Attendance = () => {
             Data.append('CompanyCode', Filters.company);
             Data.append('LocationCode', Filters.location);
             Data.append('temporaryStaff', temporaryStaff ? 1 : 0);
-            Data.append('AccessControls', JSON.stringify(AccessControls));
+            // BEFORE 2024-03-12 -> CHANGE DUE TO BLOB DATA -> SLOW DOWN THE REQUEST
+            // Data.append('AccessControls', JSON.stringify(AccessControls));
+            Data.append('AccessControls', JSON.stringify(AccessControls.access));
             axios.post('/allemployeesattcompanywiseaccordingtodate', Data).then( res => {
     
                 $(".checkboxes").prop('checked', false);

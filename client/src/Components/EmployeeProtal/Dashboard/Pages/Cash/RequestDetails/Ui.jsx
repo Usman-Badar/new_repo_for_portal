@@ -1933,7 +1933,10 @@ const ConfirmVApproval = ({ Details, Relations, verifyRequest }) => {
                                         let option;
                                         if (val.category === 'all') {
                                             if (val.companies.includes(parseInt(Details.company))) {
-                                                option = <option value={val.sr} key={index}> {val.name} </option>
+                                                if ( val.adv_cash_approval_limit && val.adv_cash_approval_limit >= parseFloat(Details.amount) )
+                                                {
+                                                    option = <option value={val.sr} key={index}>{val.name}</option>
+                                                }
                                             }
                                         }
 

@@ -1101,6 +1101,16 @@ const Detailing = ({ AccessControls, SiteManagerRejectionConfirm, SiteManagerApp
                                             {RequestDetails.requested_time}
                                         </span>
                                     </td>
+                                    {
+                                        RequestDetails.behalf_employee_name && (
+                                            <td>
+                                                <b>Requested on behalf</b><br />
+                                                <span>
+                                                    {RequestDetails.behalf_employee_name}
+                                                </span>
+                                            </td>
+                                        )
+                                    }
                                     <td>
                                         {
                                             RequestDetails.site_manager

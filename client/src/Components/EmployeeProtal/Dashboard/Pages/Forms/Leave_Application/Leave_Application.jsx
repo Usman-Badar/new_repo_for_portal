@@ -843,7 +843,7 @@ const PrevLeaveApp = ({ Type, PrevLeave, printLeave, cancelLeave, approveLeave, 
                         <th>Date</th>
                         <td>{new Date(PrevLeave.requested_date).toDateString()}</td>
                         <th>Name</th>
-                        <td>{PrevLeave.sender_person}</td>
+                        <td>{PrevLeave.sender_person} (<b>Code:</b> {PrevLeave.requested_by})</td>
 
                     </tr>
                     <tr>
@@ -1029,6 +1029,7 @@ const PrevLeaveApp = ({ Type, PrevLeave, printLeave, cancelLeave, approveLeave, 
                         <h2 className='text-right px-5 mb-0 signatures'>{PrevLeave.receiver_person ? PrevLeave.receiver_person : null}</h2>
                         <p className='text-right mb-0'>-----------------------------------------------------</p>
                         <p className='text-right font-weight-bold mb-0'> {PrevLeave.request_status.toLowerCase() === 'rejected' ? "Rejected" : "Recommended"} By</p>
+                        {PrevLeave.approval_date && <p className='text-right font-weight-bold mb-0'>{new Date(PrevLeave.approval_date).toDateString()}</p>}
                         <p className='text-right font-weight-bold mb-0'>{PrevLeave.receiver_designation}</p>
 
 
@@ -1076,6 +1077,7 @@ const PrevLeaveApp = ({ Type, PrevLeave, printLeave, cancelLeave, approveLeave, 
                                     <h2 className='text-right px-5 mb-0 signatures'>{PrevLeave.auther_person ? PrevLeave.auther_person : null}</h2>
                                     <p className='text-right mb-0'>-----------------------------------------------------</p>
                                     <p className='text-right font-weight-bold mb-0'>Authorized By</p>
+                                    {PrevLeave.authorized_date && <p className='text-right font-weight-bold mb-0'>{new Date(PrevLeave.authorized_date).toDateString()}</p>}
                                     <p className='text-right font-weight-bold mb-0'>{PrevLeave.auther_designation}</p>
 
                                     <br />
@@ -1170,10 +1172,12 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                             <thead>
                                 <tr>
 
+                                    {console.log(Recent)}
                                     <th className='border-top-0'>Sr.No</th>
                                     <th className='border-top-0'>Description</th>
                                     <th className='border-top-0'>Leave Type</th>
                                     <th className='border-top-0'>Request Date & Time</th>
+                                    <th className='border-top-0'>Request To</th>
                                     <th className='border-top-0'>Leave Date</th>
                                     <th className='border-top-0'>Status</th>
 
@@ -1183,7 +1187,6 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                 {
                                     Recent.map(
                                         (val, index) => {
-                                            if ( index === 0 ) console.log(val)
 
                                             return (
                                                 <tr style={ { cursor: "pointer" } } title='Double Click' onDoubleClick={() => openLeave(index, val.date ? "short" : 'leave', 'recent')}>
@@ -1208,6 +1211,7 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                                         {new Date(val.requested_date).toDateString()} <br />
                                                         at {val.requested_time}
                                                     </td>
+                                                    <td>{val.receiver}</td>
                                                     {
                                                         val.date
                                                             ?
@@ -1336,6 +1340,7 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                     <th>Sr.No</th>
                                     <th>Description</th>
                                     <th>Request Date & Time</th>
+                                    <th>Request To</th>
                                     <th>Leave Date</th>
                                     <th>Status</th>
 
@@ -1366,6 +1371,7 @@ const List = ({ Recent, Leaves, GetHistorySorted, openLeave }) => {
                                                         {new Date(val.requested_date).toDateString()} <br />
                                                         at {val.requested_time}
                                                     </td>
+                                                    <td>{val.receiver}</td>
                                                     {
                                                         val.date
                                                         ?

@@ -853,24 +853,48 @@ const EmployeeEdit = ({ Grades, Designations, Departments, Locations, Employee, 
                                                 <option selected={ Employee.time_in === '13:30 PM'} value={'13:30 PM'}>13:30 PM</option>
                                                 <option selected={ Employee.time_in === '14:00 PM'} value={'14:00 PM'}>14:00 PM</option>
                                                 <option selected={ Employee.time_in === '14:30 PM'} value={'14:30 PM'}>14:30 PM</option>
+                                                <option selected={ Employee.time_in === '15:00 PM'} value={'15:00 PM'}>15:00 PM</option>
+                                                <option selected={ Employee.time_in === '15:30 PM'} value={'15:30 PM'}>15:30 PM</option>
+                                                <option selected={ Employee.time_in === '16:00 PM'} value={'16:00 PM'}>16:00 PM</option>
+                                                <option selected={ Employee.time_in === '16:30 PM'} value={'16:30 PM'}>16:30 PM</option>
+                                                <option selected={ Employee.time_in === '17:00 PM'} value={'17:00 PM'}>17:00 PM</option>
+                                                <option selected={ Employee.time_in === '17:30 PM'} value={'17:30 PM'}>17:30 PM</option>
+                                                <option selected={ Employee.time_in === '18:00 PM'} value={'18:00 PM'}>18:00 PM</option>
+                                                <option selected={ Employee.time_in === '18:30 PM'} value={'18:30 PM'}>18:30 PM</option>
+                                                <option selected={ Employee.time_in === '19:00 PM'} value={'19:00 PM'}>19:00 PM</option>
+                                                <option selected={ Employee.time_in === '19:30 PM'} value={'19:30 PM'}>19:30 PM</option>
+                                                <option selected={ Employee.time_in === '20:00 PM'} value={'20:00 PM'}>20:00 PM</option>
+                                                <option selected={ Employee.time_in === '20:30 PM'} value={'20:30 PM'}>20:30 PM</option>
+                                                <option selected={ Employee.time_in === '21:00 PM'} value={'21:00 PM'}>21:00 PM</option>
+                                                <option selected={ Employee.time_in === '21:30 PM'} value={'21:30 PM'}>21:30 PM</option>
+                                                <option selected={ Employee.time_in === '22:00 PM'} value={'22:00 PM'}>22:00 PM</option>
+                                                <option selected={ Employee.time_in === '22:30 PM'} value={'22:30 PM'}>22:30 PM</option>
+                                                <option selected={ Employee.time_in === '23:00 PM'} value={'23:00 PM'}>23:00 PM</option>
+                                                <option selected={ Employee.time_in === '23:30 PM'} value={'23:30 PM'}>23:30 PM</option>
                                             </select>
                                             <select className='form-control ml-1' id="time_out" required>
-                                                <option selected={ Employee.time_out === '03:00 PM'} value={'03:00 PM'}>03:00 PM</option>
-                                                <option selected={ Employee.time_out === '03:30 PM'} value={'03:30 PM'}>03:30 PM</option>
-                                                <option selected={ Employee.time_out === '04:00 PM'} value={'04:00 PM'}>04:00 PM</option>
-                                                <option selected={ Employee.time_out === '04:30 PM'} value={'04:30 PM'}>04:30 PM</option>
-                                                <option selected={ Employee.time_out === '05:00 PM'} value={'05:00 PM'}>05:00 PM</option>
-                                                <option selected={ Employee.time_out === '05:30 PM'} value={'05:30 PM'}>05:30 PM</option>
-                                                <option selected={ Employee.time_out === '06:00 PM'} value={'06:00 PM'}>06:00 PM</option>
-                                                <option selected={ Employee.time_out === '06:30 PM'} value={'06:30 PM'}>06:30 PM</option>
-                                                <option selected={ Employee.time_out === '07:00 PM'} value={'07:00 PM'}>07:00 PM</option>
-                                                <option selected={ Employee.time_out === '07:30 PM'} value={'07:30 PM'}>07:30 PM</option>
-                                                <option selected={ Employee.time_out === '08:00 PM'} value={'08:00 PM'}>08:00 PM</option>
-                                                <option selected={ Employee.time_out === '08:30 PM'} value={'08:30 PM'}>08:30 PM</option>
-                                                <option selected={ Employee.time_out === '09:00 PM'} value={'09:00 PM'}>09:00 PM</option>
-                                                <option selected={ Employee.time_out === '09:30 PM'} value={'09:30 PM'}>09:30 PM</option>
-                                                <option selected={ Employee.time_out === '10:00 PM'} value={'10:00 PM'}>10:00 PM</option>
-                                                <option selected={ Employee.time_out === '10:30 PM'} value={'10:30 PM'}>10:30 PM</option>
+                                                <option selected={ Employee.time_out === '06:00 AM'} value={'06:00 AM'}>06:00 AM</option>
+                                                <option selected={ Employee.time_out === '06:30 AM'} value={'06:30 AM'}>06:30 AM</option>
+                                                <option selected={ Employee.time_out === '07:00 AM'} value={'07:00 AM'}>07:00 AM</option>
+                                                <option selected={ Employee.time_out === '07:30 AM'} value={'07:30 AM'}>07:30 AM</option>
+                                                <option selected={ Employee.time_out === '08:00 AM'} value={'08:00 AM'}>08:00 AM</option>
+                                                <option selected={ Employee.time_out === '08:30 AM'} value={'08:30 AM'}>08:30 AM</option>
+                                                <option selected={ Employee.time_out === '15:00 PM'} value={'15:00 PM'}>15:00 PM</option>
+                                                <option selected={ Employee.time_out === '15:30 PM'} value={'15:30 PM'}>15:30 PM</option>
+                                                <option selected={ Employee.time_out === '16:00 PM'} value={'16:00 PM'}>16:00 PM</option>
+                                                <option selected={ Employee.time_out === '16:30 PM'} value={'16:30 PM'}>16:30 PM</option>
+                                                <option selected={ Employee.time_out === '17:00 PM'} value={'17:00 PM'}>17:00 PM</option>
+                                                <option selected={ Employee.time_out === '17:30 PM'} value={'17:30 PM'}>17:30 PM</option>
+                                                <option selected={ Employee.time_out === '18:00 PM'} value={'18:00 PM'}>18:00 PM</option>
+                                                <option selected={ Employee.time_out === '18:30 PM'} value={'18:30 PM'}>18:30 PM</option>
+                                                <option selected={ Employee.time_out === '19:00 PM'} value={'19:00 PM'}>19:00 PM</option>
+                                                <option selected={ Employee.time_out === '19:30 PM'} value={'19:30 PM'}>19:30 PM</option>
+                                                <option selected={ Employee.time_out === '20:00 PM'} value={'20:00 PM'}>20:00 PM</option>
+                                                <option selected={ Employee.time_out === '20:30 PM'} value={'20:30 PM'}>20:30 PM</option>
+                                                <option selected={ Employee.time_out === '21:00 PM'} value={'21:00 PM'}>21:00 PM</option>
+                                                <option selected={ Employee.time_out === '21:30 PM'} value={'21:30 PM'}>21:30 PM</option>
+                                                <option selected={ Employee.time_out === '22:00 PM'} value={'22:00 PM'}>22:00 PM</option>
+                                                <option selected={ Employee.time_out === '22:30 PM'} value={'22:30 PM'}>22:30 PM</option>
                                             </select>
                                         </div>
                                     </td>
