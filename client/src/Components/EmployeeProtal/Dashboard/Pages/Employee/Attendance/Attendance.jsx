@@ -161,6 +161,8 @@ const Attendance = () => {
             // BEFORE 2024-03-12 -> CHANGE DUE TO BLOB DATA -> SLOW DOWN THE REQUEST
             // Data.append('AccessControls', JSON.stringify(AccessControls));
             Data.append('AccessControls', JSON.stringify(AccessControls.access));
+            Data.append('user_company_code', AccessControls.company_code);
+            Data.append('user_location_code', AccessControls.location_code);
             axios.post('/allemployeesattcompanywiseaccordingtodate', Data).then( res => {
     
                 $(".checkboxes").prop('checked', false);
