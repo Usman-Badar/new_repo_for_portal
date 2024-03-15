@@ -155,6 +155,39 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
         }
     );
 
+    let totalStoredQuantity = 0;
+    let totalInwardQuantity = 0;
+    let totalOutwardQuantity = 0;
+    let totalIssuedOutwardQuantity = 0;
+    ArrInward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true )  &&
+    (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) &&
+    ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )
+    ).map(val => {
+        return totalStoredQuantity = totalStoredQuantity + parseFloat(val.stored_quantity);
+    })
+    ArrInward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true )  &&
+    (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) &&
+    ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )
+    ).map(val => {
+        return totalInwardQuantity = totalInwardQuantity + parseFloat(val.quantity);
+    })
+    ArrOutward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true )  &&
+    (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) &&
+    ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )
+    ).map(val => {
+        return totalOutwardQuantity = totalOutwardQuantity + parseFloat(val.quantity);
+    })
+    ArrOutward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true )  &&
+    (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) &&
+    ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )
+    ).map(val => {
+        // if (val.status === 'issued') {
+            return totalIssuedOutwardQuantity = totalIssuedOutwardQuantity + parseFloat(val.quantity);
+        // }else {
+        //     return 0;
+        // }
+    });
+
     useEffect(
         () => {
 
@@ -185,26 +218,50 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
                     </div>
                     <div className='calc_container'>
                         <div>
-                            <h1 className='mb-0'><i className="las la-warehouse"></i> { Product.quantity }</h1>
+                            {
+                                sessionStorage.getItem('productCompany') || sessionStorage.getItem('productLocation') || sessionStorage.getItem('productSubLocation')
+                                ?
+                                <h1 className='mb-0'><i className="las la-warehouse"></i> { totalStoredQuantity }</h1>
+                                :
+                                <h1 className='mb-0'><i className="las la-warehouse"></i> { Product.quantity }</h1>
+                            }
                             <span>Total Stored Quantity</span>
                         </div>
                         <div>
-                            <h1 className='mb-0'><i className="las la-sort-amount-up-alt"></i> { Inward.length > 0 ? Inward.map(item => item.quantity).reduce((prev, next) => prev + next) : 0 }</h1>
+                            {
+                                sessionStorage.getItem('productCompany') || sessionStorage.getItem('productLocation') || sessionStorage.getItem('productSubLocation')
+                                ?
+                                <h1 className='mb-0'><i className="las la-sort-amount-up-alt"></i> { totalInwardQuantity }</h1>
+                                :
+                                <h1 className='mb-0'><i className="las la-sort-amount-up-alt"></i> { Inward.length > 0 ? Inward.map(item => item.quantity).reduce((prev, next) => prev + next) : 0 }</h1>
+                            }
                             <span>Total Inward Quantity</span>
                         </div>
                         <div>
-                            <h1 className='mb-0'><i className="las la-sort-amount-down"></i> { Outward.length > 0 ? Outward.map(item => item.quantity).reduce((prev, next) => prev + next) : 0 }</h1>
+                            {
+                                sessionStorage.getItem('productCompany') || sessionStorage.getItem('productLocation') || sessionStorage.getItem('productSubLocation')
+                                ?
+                                <h1 className='mb-0'><i className="las la-sort-amount-down"></i> { totalOutwardQuantity }</h1>
+                                :
+                                <h1 className='mb-0'><i className="las la-sort-amount-down"></i> { Outward.length > 0 ? Outward.map(item => item.quantity).reduce((prev, next) => prev + next) : 0 }</h1>
+                            }
                             <span>Total Outward Quantity</span>
                         </div>
                         <div className='border-0'>
-                            <h1 className='mb-0'><i className="las la-user-tag"></i> { Outward.length > 0 ? Outward.map(item => item.status === 'issued' ? item.quantity : 0).reduce((prev, next) => prev + next) : 0 }</h1>
+                            {
+                                sessionStorage.getItem('productCompany') || sessionStorage.getItem('productLocation') || sessionStorage.getItem('productSubLocation')
+                                ?
+                                <h1 className='mb-0'><i className="las la-user-tag"></i> {totalIssuedOutwardQuantity}</h1>
+                                :
+                                <h1 className='mb-0'><i className="las la-user-tag"></i> { Outward.length > 0 ? Outward.map(item => item.status === 'issued' ? item.quantity : 0).reduce((prev, next) => prev + next) : 0 }</h1>
+                            }
                             <span>Total Quantity Issued</span>
                         </div>
                     </div>
                     <div className='d-flex align-items-center justify-content-between mt-4'>
                         <div className='d-flex align-items-center'>
-                            <button onClick={ () => setView(1) } className={ View === 1 ? ' btn submit' : 'btn' }>Inward <sup>({Inward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length})</sup></button>
-                            <button onClick={ () => setView(2) } className={ View === 2 ? ' btn submit' : 'btn' }>Outward <sup>({Outward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length})</sup></button>
+                            <button onClick={ () => setView(1) } className={ View === 1 ? ' btn submit' : 'btn' }>Inward <sup>({Inward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true ) && (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) && ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )).length})</sup></button>
+                            <button onClick={ () => setView(2) } className={ View === 2 ? ' btn submit' : 'btn' }>Outward <sup>({Outward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true ) && (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) && ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )).length})</sup></button>
                         </div>
                         <div>
                             <button className="btn light filter-emit" type='button'>
@@ -232,11 +289,11 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
                         {
                             View === 1
                             ?
-                            ArrInward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length === 0
+                            ArrInward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true ) && (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) && ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )).length === 0
                             ?
                             <h6>No Inward Found</h6>
                             :
-                            ArrInward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).map(
+                            ArrInward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true ) && (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) && ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )).map(
                                 ( val, index ) => {
                                     return (
                                         <div className='card-div' key={index}>
@@ -273,11 +330,11 @@ const MainView = ( { history, Name, Month, Amount, View, Inward, Outward, Produc
                         {
                             View === 2
                             ?
-                            ArrOutward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).length === 0
+                            ArrOutward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true ) && (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) && ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )).length === 0
                             ?
                             <h6>No Outward Found</h6>
                             :
-                            ArrOutward.filter(val => val.company_code.toString().includes(sessionStorage.getItem('productCompany') || "") && val.location_code.toString().includes(sessionStorage.getItem('productLocation') || "") && val.sub_location_code.toString().includes(sessionStorage.getItem('productSubLocation') || "")).map(
+                            ArrOutward.filter(val => (sessionStorage.getItem('productCompany') ? parseInt(val.company_code) === parseInt(sessionStorage.getItem('productCompany')) : true ) && (sessionStorage.getItem('productLocation') ? parseInt(val.location_code) === parseInt(sessionStorage.getItem('productLocation')) : true) && ( sessionStorage.getItem('productSubLocation') ? parseInt(val.sub_location_code) === parseInt(sessionStorage.getItem('productSubLocation')) : true )).map(
                                 ( val, index ) => {
                                     return (
                                         <div className='card-div' key={index} onClick={ () => viewDetails( val ) }>
