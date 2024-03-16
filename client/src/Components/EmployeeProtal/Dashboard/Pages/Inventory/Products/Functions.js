@@ -1,7 +1,7 @@
 import axios from '../../../../../../axios';
 import $ from 'jquery';
 
-export const GetCompanies = ( setCompanies ) => {
+export const GetCompanies = ( setCompanies, setLocations ) => {
 
     axios.get('/getallcompanies')
     .then(
@@ -9,6 +9,7 @@ export const GetCompanies = ( setCompanies ) => {
         {
                 
             setCompanies(res.data);
+            GetLocations(setLocations)
 
         }
     ).catch(
@@ -21,9 +22,9 @@ export const GetCompanies = ( setCompanies ) => {
 
 }
 
-export const GetLocations = (value, setLocations) => {
+export const GetLocations = (setLocations) => {
     setLocations([]);
-    axios.post('/getcompanylocations', {company_code: value}).then(
+    axios.get('/getalllocations').then(
         res => {
             setLocations(res.data);
         }
@@ -47,7 +48,7 @@ export const GetSubLocations = (value, setSubLocations) => {
     )
 }
 
-export const getAllProducts = (SubLocationCode, LocationCode, CompanyCode, CatType, setProductsList, setCompanies) => {
+export const getAllProducts = (SubLocationCode, LocationCode, CompanyCode, CatType, setProductsList) => {
 
     axios.post(
         '/inventory/get_products',
@@ -60,7 +61,6 @@ export const getAllProducts = (SubLocationCode, LocationCode, CompanyCode, CatTy
     ).then(
         res => {
             setProductsList(res.data);
-            GetCompanies(setCompanies);
         }
     ).catch(
         err => {
@@ -111,6 +111,7 @@ export const search = (e, Category, SubCategory, arr, setState) => {
         }
     }
     setState(rslt);
+    sessionStorage.setItem('productSearch', e.target.value);
 
 };
 

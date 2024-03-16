@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import './Style.css';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import $ from 'jquery';
 import ReactTooltip from 'react-tooltip';
+import LoadingIcon from '../../../../../../images/loadingIcons/icons8-iphone-spinner.gif';
 
 const UI = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, ProductsList, Open, CatType, Category, SubCategory, Categories, SubCategories, setShowZeroValues, setSubLocationCode, setLocationCode, setCompanyCode, setCategory, search, setCatType, setSubCategory } ) => {
     
@@ -59,15 +61,32 @@ export default UI;
 const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues, SubLocations, Locations, Companies, SearchedProductsList, SubCategory, Category, CatType, SubCategories, Categories, ProductsList, history, setShowZeroValues, setLocationCode, setSubLocationCode, setCatType, search, setSubCategory, setCategory, setCompanyCode } ) => {
 
     const [ ShowFilters, setShowFilters ] = useState(false);
+    const [ Search, setSearch ] = useState('');
     const Arr = SearchedProductsList ? SearchedProductsList : ProductsList;
+
+    useEffect(
+        () => {
+            setSearch(sessionStorage.getItem('productSearch'));
+        }, [sessionStorage.getItem('productSearch')]
+    )
 
     const resetFilters = () => {
         sessionStorage.removeItem('productLocation');
         sessionStorage.removeItem('productCompany');
         sessionStorage.removeItem('productSubLocation');
+        sessionStorage.removeItem('productSearch');
+        sessionStorage.removeItem('productZeroValues');
+        sessionStorage.removeItem('CatType');
+        sessionStorage.removeItem('productCategory')
+        sessionStorage.removeItem('productSubCategory')
+        setCategory('');
+        setSubCategory('');
         setCompanyCode("");
         setLocationCode("");
         setSubLocationCode('');
+        setSearch('');
+        setShowZeroValues(false);
+        setCatType('consumable');
     }
 
     return (
@@ -75,7 +94,8 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
             <div className="d-flex align-items-center justify-content-between">
                 <h3 className="heading">
                     Inventory Products
-                    <sub>List Of All Items ({Arr.length})</sub>
+                    <sub>List Of All Items</sub>
+                    {/*  ({Arr.length}) */}
                 </h3>
                 <div>
                     <button className='btn light ml-2' onClick={ () => history.push('/inventory/products/create') }>Create New</button>
@@ -89,7 +109,7 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                                 :
                                 <div data-tip data-for='filter'>
                                     {
-                                        CompanyCode || LocationCode || LocationCode
+                                        CompanyCode || LocationCode || LocationCode || (sessionStorage.getItem('CatType') && sessionStorage.getItem('CatType') !== 'consumable') || sessionStorage.getItem('productSearch') || sessionStorage.getItem('productCompany') || sessionStorage.getItem('productLocation') || sessionStorage.getItem('productSubLocation')
                                         ?
                                         <div className='filterisOpen'></div>
                                         :
@@ -112,7 +132,7 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                         <div className='filter-content popUps'>
                             <div className='flex'>
                                 {
-                                    Companies && (
+                                    Companies ? (
                                         <div className='w-100 searchDiv'>
                                             <label className="font-weight-bold mb-0">Company</label>
                                             <select value={CompanyCode} onChange={(e) => {
@@ -123,10 +143,10 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                                                 {Companies.map((val, index) => <option key={index} value={val.company_code}>{val.company_name}</option>)}
                                             </select>
                                         </div>
-                                    )
+                                    ) : <img src={LoadingIcon} width='20' height='20' alt='loading...' />
                                 }
                                 {
-                                    Locations && Locations.length > 0 && (
+                                    Locations && Locations.length > 0 ? (
                                         <div className='w-100 searchDiv'>
                                             <label className="font-weight-bold mb-0">Location</label>
                                             <select value={LocationCode} onChange={(e) => {
@@ -137,7 +157,7 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                                                 {Locations.map((val, index) => <option key={index} value={val.location_code}>{val.location_name}</option>)}
                                             </select>
                                         </div>
-                                    )
+                                    ) : <img src={LoadingIcon} width='20' height='20' alt='loading...' />
                                 }
                                 {
                                     SubLocations && SubLocations.length > 0 && (
@@ -158,7 +178,10 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                                         ?
                                         <div className='w-100 searchDiv'>
                                             <label className="font-weight-bold mb-0">Category</label>
-                                            <select value={Category} className='form-control form-control-sm mb-2' onChange={(e) => setCategory(e.target.value)}>
+                                            <select value={Category} className='form-control form-control-sm mb-2' onChange={(e) => {
+                                                setCategory(e.target.value);
+                                                sessionStorage.setItem('productCategory', e.target.value);
+                                            }}>
                                                 <option value=''>All</option>
                                                 {
                                                     Categories.map(
@@ -182,7 +205,10 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                                         ?
                                         <div className='w-100 searchDiv'>
                                             <label className="font-weight-bold mb-0">Sub-Category</label>
-                                            <select value={SubCategory} className='form-control form-control-sm mb-2' onChange={(e) => setSubCategory(e.target.value)}>
+                                            <select value={SubCategory} className='form-control form-control-sm mb-2' onChange={(e) => {
+                                                setSubCategory(e.target.value);
+                                                sessionStorage.setItem('productSubCategory', e.target.value);
+                                            }}>
                                                 <option value=''>All</option>
                                                 {
                                                     SubCategories.map(
@@ -199,7 +225,7 @@ const ListView = ( { CompanyCode, LocationCode, SubLocationCode, ShowZeroValues,
                                 }
                                 <div className='w-100 searchDiv'>
                                     <label className="font-weight-bold mb-0">Search Products</label>
-                                    <input id="searchProduct" placeholder='Search Keywords...' type="search" onChange={search} className='form-control form-control-sm mb-2' />
+                                    <input value={Search} id="searchProduct" placeholder='Search Keywords...' type="search" onChange={search} className='form-control form-control-sm mb-2' />
                                 </div>
                                 <div className='w-100 searchDiv'>
                                     <label className="font-weight-bold my-2">Product Type</label>
