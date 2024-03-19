@@ -42,6 +42,7 @@ const AdminNotification = () => {
             .then(
                 res => {
                     setCompanies(res.data);
+                    if (locations.length === 0) GetLocations();
                 }
             ).catch(
                 err => {
@@ -49,9 +50,9 @@ const AdminNotification = () => {
                 }
             );
     }
-    const GetLocations = (value) => {
+    const GetLocations = () => {
         setLocations([]);
-        axios.post('/getcompanylocations', {company_code: value}).then(
+        axios.get('/getalllocations').then(
             res => {
                 setLocations(res.data);
             }
@@ -305,146 +306,31 @@ const AdminNotification = () => {
             JSAlert.alert(`Something went wrong, ${err}.`, "Request Failed", JSAlert.Icons.Failed);
         });
     }
-    const addRow = (e, id, arr, notice_id) => {
+    const addRow = (e, id) => {
         e.preventDefault();
-        // // RESTRICT MORE THAN 1 ROW
-        // if ( arr && arr.length > 0 )
-        // {
-        //     alert('You can send notification for one location at a time!!!');
-        //     return false;
-        // }
 
-        if ( arr && arr.length >= 1 ) {
-            // console.log('arr[arr.length-1].location', arr[arr?.length-1]?.location)
-            if ( arr[arr.length-1].location != 1 ) // Headoffice
-            {
-                JSAlert.alert("You can send notification for one location at a time!!", "Validation Error", JSAlert.Icons.Warning);
-                return false;
-            }
-            if ( arr[arr.length-1].location == 1 && e.target['location'].value != 1 ) //Headoffice
-            {
-                JSAlert.alert("You can not select location other tha Head Office!!!", "Validation Error", JSAlert.Icons.Warning);
-                return false;
-            }
-        }
         const company = e.target['company'].value;
-        const companyName = $('#company').find('option:selected').text();
         const location = e.target['location'].value;
-        const locationName = $('#location').find('option:selected').text();
-        if (company.trim().length === 0) {
-            JSAlert.alert("Company is required.", "Validation Error", JSAlert.Icons.Warning);
-            return false;
-        } else if (location.trim().length === 0) {
-            JSAlert.alert("Location is required.", "Validation Error", JSAlert.Icons.Warning);
-            return false;
-        }
-        const obj = {
-            company: company,
-            companyName: companyName,
-            location: location,
-            locationName: locationName
-        };
-        const list = arr || [];
-        list.push(obj);
-        openWhatsAppModal(id, notice_id, list);
-    }
-    const openWhatsAppModal = (id, notice_id, arr) => {
-        setWhatsapp(id);
-        setNoticeID(notice_id);
-        setModalData(
-            <>
-                <h5 className='mb-0'>WhatsApp Notification</h5>
-                <hr />
-                <div id="arr" className='d-none'>{JSON.stringify(arr || [])}</div>
-                <form onSubmit={(e) => addRow(e, id, arr, notice_id)}>
-                    <table className='table table-sm table-borderless'>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <label className='mb-0'><b>Company</b></label>
-                                    <select className='form-control' id='company' onChange={(e) => GetLocations(e.target.value)} name="company" required>
-                                        <option value="">Select company</option>
-                                        {
-                                            companies.map(
-                                                ({ company_code, company_name }, i) => {
-                                                    return <option value={company_code} key={i}>{company_name}</option>
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                </td>
-                                <td>
-                                    <label className='mb-0'><b>Location</b></label>
-                                    <select className='form-control' id='location' name="location" required>
-                                        <option value="">Select Location</option>
-                                        {
-                                            locations.map(
-                                                ({ location_code, location_name }, i) => {
-                                                    return <option value={location_code} key={i}>{location_name}</option>
-                                                }
-                                            )
-                                        }
-                                    </select>
-                                    <button className='d-none' id="reset">Reset</button>
-                                    <button className='btn submit d-block ml-auto mt-3'>Add</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-                {
-                    arr && arr.length > 0
-                        ?
-                        <table className='table table-sm'>
-                            <thead>
-                                <tr>
-                                    <th>Sr.No</th>
-                                    <th>Company</th>
-                                    <th>Location</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    arr.map(
-                                        ({ companyName, locationName }, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td>{i + 1}</td>
-                                                    <td>{companyName}</td>
-                                                    <td>{locationName}</td>
-                                                </tr>
-                                            )
-                                        }
-                                    )
-                                }
-                            </tbody>
-                        </table>
-                        : null
-                }
-                {
-                    arr && arr.length > 0
-                    ?
-                    <button className='btn submit d-block ml-auto' onClick={SendNotification}>Send</button>
-                    : null
-                }
-            </>
-        )
-    }
-    const SendNotification = () => {
+        const checkAll = e.target['checkAll'].checked;
+        
         if (!JSON.parse(AccessControls.access).includes(70)) {
             JSAlert.alert("You don't have access!!", "Validation Error", JSAlert.Icons.Warning);
             return false;
         }
+        if (!checkAll) {
+            if (company.trim().length === 0 && location.trim().length === 0) {
+                JSAlert.alert("Please fill atleast one field.", "Validation Error", JSAlert.Icons.Warning);
+                return false;
+            }
+        }
         
-        const arr = $('#arr').text();
-        const id = whatsapp;
         setModalData(
             <>
                 <h6 className='text-center mb-0 p-3'><b>Sending WhatsApp Notification...</b></h6>
                 <p className='text-center mb-0'>This may take a while, please wait or you can close this window.</p>
             </>
         );
-        axios.post('/notice/send', { notice_id: noticeID, arr: arr, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
+        axios.post('/notice/send', { notice_id: noticeID, company: company, location: location, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
             setModalData();
             loadNotices();
             JSAlert.alert(`Notice has been sent successfully`, "Success", JSAlert.Icons.Success).dismissIn(2000);
@@ -452,6 +338,69 @@ const AdminNotification = () => {
             console.log(err);
             JSAlert.alert(`Something went wrong, ${err}.`, "Request Failed", JSAlert.Icons.Failed);
         });
+    }
+
+    const sendToAll = (e) => {
+        const {checked} = e.target;
+        if (checked) {
+            $('#company').prop('disabled', true);
+            $('#location').prop('disabled', true);
+        }else {
+            $('#company').prop('disabled', false);
+            $('#location').prop('disabled', false);
+        }
+    }
+
+    const openWhatsAppModal = (id, notice_id, arr) => {
+        setModalData(
+            <>
+                <h5 className='mb-0'>WhatsApp Notification</h5>
+                <hr />
+                <div id="arr" className='d-none'>{JSON.stringify(arr || [])}</div>
+                <form onSubmit={(e) => addRow(e, id, notice_id)}>
+                    <fieldset id="fieldset">
+                        <table className='table table-sm table-borderless mb-0'>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label className='mb-0'><b>Company</b></label>
+                                        <select className='form-control' id='company' name="company">
+                                            <option value="">Select company</option>
+                                            {
+                                                companies.map(
+                                                    ({ company_code, company_name }, i) => {
+                                                        return <option value={company_code} key={i}>{company_name}</option>
+                                                    }
+                                                )
+                                            }
+                                        </select>
+                                        <div className='d-flex align-items-center mt-3' onChange={sendToAll} style={{gap: 5, fontFamily: 'Roboto-Light'}}>
+                                            <input type='checkbox' id="checkAll" name="checkAll" />
+                                            Send To All
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label className='mb-0'><b>Location</b></label>
+                                        <select className='form-control' id='location' name="location">
+                                            <option value="">Select Location</option>
+                                            {
+                                                locations.map(
+                                                    ({ location_code, location_name }, i) => {
+                                                        return <option value={location_code} key={i}>{location_name}</option>
+                                                    }
+                                                )
+                                            }
+                                        </select>
+                                        <button className='d-none' id="reset">Reset</button>
+                                        <button className='btn submit d-block ml-auto mt-3'>Send</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form>
+            </>
+        )
     }
 
     return (
@@ -476,7 +425,7 @@ const AdminNotification = () => {
                     {
                         notices
                         ?
-                        <table className='table'>
+                        <table className='table' style={{fontFamily: "Roboto-Light"}}>
                             <thead>
                                 <tr>
                                     <th>Sr.No</th>
@@ -505,9 +454,9 @@ const AdminNotification = () => {
                                                                 !JSON.parse(AccessControls.access).includes(69)?null:
                                                                 status === 'Active'
                                                                 ?
-                                                                <button className='btn cancle d-block ml-auto' onClick={() => disableNotice(id)}>Disable</button>
+                                                                <b className='text-danger d-block ml-auto' onClick={() => disableNotice(id)}>Disable</b>
                                                                 :
-                                                                <button className='btn green d-block ml-auto' onClick={() => enableNotice(id)}>Enable</button>
+                                                                <b className='text-success d-block ml-auto' onClick={() => enableNotice(id)}>Enable</b>
                                                             }
                                                         </td>
                                                     </tr>
