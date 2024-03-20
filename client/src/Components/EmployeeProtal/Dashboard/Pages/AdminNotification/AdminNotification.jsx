@@ -330,7 +330,7 @@ const AdminNotification = () => {
                 <p className='text-center mb-0'>This may take a while, please wait or you can close this window.</p>
             </>
         );
-        axios.post('/notice/send', { notice_id: noticeID, company: company, location: location, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
+        axios.post('/notice/send', { checkAll: checkAll ? 1 : 0, notice_id: noticeID, company: company, location: location, url: id, name: localStorage.getItem('name'), emp_id: localStorage.getItem("EmpID") }).then(() => {
             setModalData();
             loadNotices();
             JSAlert.alert(`Notice has been sent successfully`, "Success", JSAlert.Icons.Success).dismissIn(2000);

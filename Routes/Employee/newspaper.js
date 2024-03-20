@@ -248,21 +248,27 @@ router.post('/notice/update/title', ( req, res ) => {
 } );
 
 router.post('/notice/send', ( req, res ) => {
-    const {url, location, company, emp_id, notice_id} = req.body;
+    const {checkAll, url, location, company, emp_id, notice_id} = req.body;
     const LIMIT = 5;
     const DELAY = 5000;
     const QUERY_PARAMETERS = [];
     const NOTIFICATION_BODY = "New notice has been uploaded on portal, please check";
 
     let q = "SELECT emp_id, name, cell FROM employees WHERE emp_status = 'Active' ";
-    if (company.toString().length > 0) {
-        q = q.concat(' AND company_code = ' + parseInt(company));
-        QUERY_PARAMETERS.push("company: " + company);
+    if (parseInt(checkAll) === 0) {
+        if (company.toString().length > 0) {
+            q = q.concat(' AND company_code = ' + parseInt(company));
+            QUERY_PARAMETERS.push("company: " + company);
+        }
+    
+        if (location.toString().length > 0) {
+            q = q.concat(' AND location_code = ' + parseInt(location));
+            QUERY_PARAMETERS.push("location: " + location);
+        }
     }
 
-    if (location.toString().length > 0) {
-        q = q.concat(' AND location_code = ' + parseInt(location));
-        QUERY_PARAMETERS.push("location: " + location);
+    if (parseInt(checkAll) === 1) {
+        QUERY_PARAMETERS.push("All");
     }
 
     db.query(
@@ -303,7 +309,7 @@ router.post('/notice/send', ( req, res ) => {
                             let qq = "";
                             for (let x = 0; x < employees.length; x++) {
                                 SendWhatsappNotification( null, null, "Hi " + employees[x]?.name, NOTIFICATION_BODY, employees[x]?.cell );
-                                qq = qq.concat("INSERT INTO `tbl_notice_notifications`(`emp_id`, `notification`, `query_parameters`, `sent_by`) VALUES ('"+list[x][y]?.emp_id+"','"+NOTIFICATION_BODY+"', '"+JSON.stringify(QUERY_PARAMETERS)+"','"+emp_id+"');")
+                                qq = qq.concat("INSERT INTO `tbl_notice_notifications`(`emp_id`, `notification`, `query_parameters`, `sent_by`) VALUES ('"+employees[x]?.emp_id+"','"+NOTIFICATION_BODY+"', '"+JSON.stringify(QUERY_PARAMETERS)+"','"+emp_id+"');")
                             }
                             db.query(
                                 qq,
