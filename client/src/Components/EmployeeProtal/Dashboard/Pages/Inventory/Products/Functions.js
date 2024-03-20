@@ -1,17 +1,66 @@
 import axios from '../../../../../../axios';
+import $ from 'jquery';
 
-export const getAllProducts = (CatType, setProductsList) => {
+export const GetCompanies = ( setCompanies, setLocations ) => {
+
+    axios.get('/getallcompanies')
+    .then(
+        res => 
+        {
+                
+            setCompanies(res.data);
+            GetLocations(setLocations)
+
+        }
+    ).catch(
+        err => {
+
+            console.log(err);
+
+        }
+    );
+
+}
+
+export const GetLocations = (setLocations) => {
+    setLocations([]);
+    axios.get('/getalllocations').then(
+        res => {
+            setLocations(res.data);
+        }
+    ).catch(
+        err => {
+            console.log(err);
+        }
+    )
+}
+
+export const GetSubLocations = (value, setSubLocations) => {
+    setSubLocations([]);
+    axios.post('/getallsublocations', {location_code: value}).then(
+        res => {
+            setSubLocations(res.data);
+        }
+    ).catch(
+        err => {
+            console.log(err);
+        }
+    )
+}
+
+export const getAllProducts = (SubLocationCode, LocationCode, CompanyCode, CatType, setProductsList) => {
 
     axios.post(
         '/inventory/get_products',
         {
-            type: CatType
+            type: CatType,
+            company: CompanyCode,
+            location: LocationCode,
+            sub_location: SubLocationCode
         }
     ).then(
         res => {
-
             setProductsList(res.data);
-
         }
     ).catch(
         err => {
@@ -62,6 +111,7 @@ export const search = (e, Category, SubCategory, arr, setState) => {
         }
     }
     setState(rslt);
+    sessionStorage.setItem('productSearch', e.target.value);
 
 };
 

@@ -55,8 +55,6 @@
     padding: 1px 10px;
     color: var( --black );
     width: 100%;
-    display: grid;
-    grid-template-columns: 50fr 50fr;
     margin: 10px 0;
 }
 
@@ -77,13 +75,14 @@
     cursor: pointer;
 }
 
-.View_Employee_Attendance .DivSecond .attendance-content .Employee_info:hover{
-    background-color: #fff;
-}
-
 .View_Employee_Attendance .DivSecond .attendance-content .Employee_info p {
     margin-bottom: 0;
     font-size: 12px;
+    transition: .5s;
+}
+
+.View_Employee_Attendance .DivSecond .attendance-content .Employee_info:hover p {
+    margin-left: 5px;
 }
 
 .View_Employee_Attendance .DivSecond .attendance-content .Employee_info .statusbage {

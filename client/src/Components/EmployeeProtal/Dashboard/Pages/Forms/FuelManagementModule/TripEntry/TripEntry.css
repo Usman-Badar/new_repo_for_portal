@@ -1,0 +1,9 @@
+.TripEntry .flex_container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.TripEntry .flex_container>div {
+    width: 50%;
+}

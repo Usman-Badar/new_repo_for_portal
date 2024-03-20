@@ -88,6 +88,7 @@ const PeerReview = lazy( () => import('./Pages/PeerReview/PeerReview') );
 
 const PurchaseRequisition = lazy( () => import('./Pages/Forms/PurchaseRequisition/PurchaseRequisition') );
 const PurchaseOrder = lazy( () => import('./Pages/Forms/PurchaseOrder/PurchaseOrder') );
+const RecursivePurchaseOrder = lazy( () => import('./Pages/Forms/PurchaseOrderRecurring/RecursivePurchaseOrder') );
 
 const DeliveryChallan = lazy( () => import('./Pages/Inventory/DeliveryChallan/DeliveryChallan') );
 
@@ -117,7 +118,15 @@ const TemporaryEmployees = lazy( () => import('./Pages/HR/TemporaryEmployees/Tem
 
 const NotificationManagement = lazy( () => import('./Pages/AdminNotification/AdminNotification') );
 const PortalIssues = lazy( () => import('./Pages/PortalIssues/PortalIssues') );
+
 const ComapanyEquipmentSetupForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelManagement/FuelManagement') );
+const FuelReceivedForm = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelReceivedForm/FuelReceivedForm') );
+const FuelRequest = lazy( () => import('./Pages/Forms/FuelManagementModule/FuelRequest/FuelRequest') );
+const EquipmentFuelEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/EquipmentFuelEntry/EquipmentFuelEntry') );
+const TripEntry = lazy( () => import('./Pages/Forms/FuelManagementModule/TripEntry/TripEntry') );
+const TripSelection = lazy( () => import('./Pages/Forms/FuelManagementModule/TripSelection/TripSelection') );
+const StockAtWorkshop = lazy( () => import('./Pages/Forms/FuelManagementModule/StockAtWorkshop/StockAtWorkshop') );
+const StockAtFuelingStation = lazy( () => import('./Pages/Forms/FuelManagementModule/StockAtFuelingStation/StockAtFuelingStation') );
 
 const Dashboard = () => {
     
@@ -519,6 +528,11 @@ const Dashboard = () => {
                                 <Route exact path="/purchase/order/requests" render={ () => <Sus content={ <PurchaseOrder /> } /> } />
                                 <Route exact path="/purchase/order/details" render={ () => <Sus content={ <PurchaseOrder /> } /> } />
                                 
+                                <Route exact path="/purchase/order/recursive/form" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                <Route exact path="/purchase/order/recursive/requests" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                <Route exact path="/purchase/order/recursive/form&&po_id=:id" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                <Route exact path="/purchase/order/recursive/details" render={ () => <Sus content={ <RecursivePurchaseOrder /> } /> } />
+                                
                                 {/* 
                                     For Container
                                 */}
@@ -544,13 +558,20 @@ const Dashboard = () => {
                                 <Route exact path="/cash/shipping/line/form" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
                                 <Route exact path="/cash/shipping/line/details/:id" render={ () => <Sus content={ <ShippingLinePayment /> } /> } />
 
+                                {/* FUEL MANAGEMENT */}
+                                <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <ComapanyEquipmentSetupForm /> } /> } />
+                                <Route exact path="/fuel-managent/fuel-receival-for-workshop" render={ () => <Sus content={ <FuelReceivedForm /> } /> } />
+                                <Route exact path="/fuel-managent/fuel-request-for-station" render={ () => <Sus content={ <FuelRequest /> } /> } />
+                                <Route exact path="/fuel-managent/equipment-fuel-entry" render={ () => <Sus content={ <EquipmentFuelEntry /> } /> } />
+                                <Route exact path="/fuel-managent/equipment-trip-entry" render={ () => <Sus content={ <TripEntry /> } /> } />
+                                <Route exact path="/fuel-managent/equipment-trip-selection" render={ () => <Sus content={ <TripSelection /> } /> } />
+                                <Route exact path="/fuel-managent/stock-at-workshop" render={ () => <Sus content={ <StockAtWorkshop /> } /> } />
+                                <Route exact path="/fuel-managent/stock-at-station" render={ () => <Sus content={ <StockAtFuelingStation /> } /> } />
+
 
                                 <Route exact path='/portal/issues' render={ () => <Sus content={ <PortalIssues /> } /> } />
                                 <Route exact path='/portal/issues/new' render={ () => <Sus content={ <PortalIssues /> } /> } />
                                 <Route exact path='/portal/issues/details/:id' render={ () => <Sus content={ <PortalIssues /> } /> } />
-
-                                {/* FUEL MANAGEMENT */}
-                                <Route exact path="/fuel-managent/company-equipment-setup-form" render={ () => <Sus content={ <ComapanyEquipmentSetupForm /> } /> } />
                             </div>
                         }
                     </div>

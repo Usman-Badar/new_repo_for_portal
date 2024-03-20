@@ -25,7 +25,7 @@
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-    background: var(--lightgray);
+    background: var(--gray-text);
     border-radius: 20px;
 }
 
@@ -788,8 +788,12 @@ input:checked+.slider:before {
     border-radius: 20px;
 }
 
+.bg-dark-gray {
+    background-color: rgb(204, 219, 232);
+}
+
 .bg-light {
-    background-color: var(--lightgray);
+    background-color: var(--lightgray) !important;
 }
 
 .inner-shadow {
@@ -976,4 +980,14 @@ h5 {
 
 #react-joyride-step-0 span {
     display: none !important;
+}
+
+.main-banner {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;    
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-color: #F8F9FA;
+    font-family: Roboto-Light;
 }

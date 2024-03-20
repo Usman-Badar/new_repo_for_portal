@@ -39,6 +39,7 @@ app.use( require('./Routes/Inventory/Assets/category') );
 app.use( require('./Routes/Inventory/Assets/sub_category') );
 app.use( require('./Routes/Inventory/purchaserequisition') );
 app.use( require('./Routes/Inventory/purchaseorder') );
+app.use( require('./Routes/Inventory/recursivepurchaseorder') );
 app.use( require('./Routes/Employee/chat') );
 app.use( require('./Routes/Employee/guests') );
 app.use( require('./Routes/Employee/courses') );
@@ -169,5 +170,7 @@ app.use( require('./workshop/workshop') );
 
 
 app.use( require('./Routes/Vehicle_Tracking/vehicleTracking') );
+
+app.use( require('./Routes/Fuel_Management/fuel_management') );
 
 module.exports = app;

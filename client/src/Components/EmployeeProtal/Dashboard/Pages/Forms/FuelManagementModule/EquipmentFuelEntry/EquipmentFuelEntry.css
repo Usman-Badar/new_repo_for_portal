@@ -1,0 +1,9 @@
+.EquipmentFuelEntry .flex_container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.EquipmentFuelEntry .flex_container>div {
+    width: 50%;
+}
