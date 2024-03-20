@@ -17,7 +17,7 @@ import { convertTZ } from '../../../../../../utils/date';
 import ReactTooltip from 'react-tooltip';
 import axios from '../../../../../../axios';
 
-const UI = ( { CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefined, Admin, SPRSpecifications, PRCode, FilterPRCompany, FilterCompany, SpecKeyword, FilterAmount, LoadedCompanies, POUpdate, EditConfirmation, setStatus, setRemovedBills, setFilterPRCompany, setBills, setFilterAmount, setFilterCompany, setSpecKeyword, setEditConfirmation, updatePO, Vendor, Data, SubOrdinands, loadSubOrdinands, SubTotalCostCalculation, TotalCostCalculation, PRSpecifications, PRequestDetails, AdditionalRows, addAdditionalRow, PR, PRList, attachPR, PRAttachment, onFooterContentInput, selectVendor, Vendors, addRow, setPRAttachment, ApproveRequisition, AttachedBills, Specifications, RequestDetails, history, Requests, RejectRequisition, searchVendor, CancelRequisition, SubmitConfirmation, ShowBillModal, Bills, Locations, Companies, SubmitPO, loadRequests, openRequestDetails, POSubmittion, setSubmitConfirmation, onAttachBills, onContentInput, setShowBillModal } ) => {
+const UI = ( { setSPRSpecifications, setPR, setPRCode, CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefined, Admin, SPRSpecifications, PRCode, FilterPRCompany, FilterCompany, SpecKeyword, FilterAmount, LoadedCompanies, POUpdate, EditConfirmation, setStatus, setRemovedBills, setFilterPRCompany, setBills, setFilterAmount, setFilterCompany, setSpecKeyword, setEditConfirmation, updatePO, Vendor, Data, SubOrdinands, loadSubOrdinands, SubTotalCostCalculation, TotalCostCalculation, PRSpecifications, PRequestDetails, AdditionalRows, addAdditionalRow, PR, PRList, attachPR, PRAttachment, onFooterContentInput, selectVendor, Vendors, addRow, setPRAttachment, ApproveRequisition, AttachedBills, Specifications, RequestDetails, history, Requests, RejectRequisition, searchVendor, CancelRequisition, SubmitConfirmation, ShowBillModal, Bills, Locations, Companies, SubmitPO, loadRequests, openRequestDetails, POSubmittion, setSubmitConfirmation, onAttachBills, onContentInput, setShowBillModal } ) => {
     
     const { FormatMoney } = require('format-money-js');
     const fm = new FormatMoney({ symbol: 'Rs ', decimals: 2 });
@@ -87,6 +87,9 @@ const UI = ( { CompanyViewer, Status, RequestStatuses, RemovedBills, AccessDefin
                                     AdditionalRows={ AdditionalRows }
                                     SPRSpecifications={ SPRSpecifications }
                                     
+                                    setSPRSpecifications={ setSPRSpecifications }
+                                    setPR={ setPR }
+                                    setPRCode={ setPRCode }
                                     openRequestDetails={ openRequestDetails }
                                     onFooterContentInput={ onFooterContentInput }
                                     addAdditionalRow={ addAdditionalRow }
@@ -654,7 +657,7 @@ const POForm = ( { SPRSpecifications, PRCode, SubTotalCostCalculation, TotalCost
 
 }
 
-const POFormForEditing = ( { PRCode, SPRSpecifications, updatePO, AdditionalRows, RequestDetails, Specifications, openRequestDetails, onFooterContentInput, PR, addAdditionalRow, setPRAttachment, Vendors, history, Locations, Bills, Companies, SubmitPO, selectVendor, addRow, searchVendor, setShowBillModal, onContentInput } ) => {
+const POFormForEditing = ( { setSPRSpecifications, setPR, setPRCode, PRCode, SPRSpecifications, updatePO, AdditionalRows, RequestDetails, Specifications, openRequestDetails, onFooterContentInput, PR, addAdditionalRow, setPRAttachment, Vendors, history, Locations, Bills, Companies, SubmitPO, selectVendor, addRow, searchVendor, setShowBillModal, onContentInput } ) => {
 
     useEffect(
         () => {
@@ -863,6 +866,14 @@ const POFormForEditing = ( { PRCode, SPRSpecifications, updatePO, AdditionalRows
                             <div className="btn-group">
                                 <button className="btn green" type='button' onClick={ () => setShowBillModal(true) }>Attached Bills ({ Bills.length })</button>
                                 <button title={ SPRSpecifications } className="btn submit" type='button' onClick={ () => setPRAttachment(true) }> { PR ? "PR (" + PRCode + ") Attached" : "Attach PR" }</button>
+                                {
+                                    PR && <button className='btn cancle' onClick={() => {
+                                        setPRCode();
+                                        setPR();
+                                        setPRAttachment();
+                                        setSPRSpecifications();
+                                    }}>Remove PR</button>
+                                }
                             </div>
                             <button className="btn submit" type='submit'>Update Template</button>
                         </div>
@@ -1998,7 +2009,7 @@ const Detailing = ( { fm, componentRef, StartPrint, printPO, SubOrdinands, loadS
                     <p className="text-center">Print</p>
 
                     {
-                        RequestDetails.requested_by == localStorage.getItem('EmpID') && 
+                        // RequestDetails.requested_by == localStorage.getItem('EmpID') && 
                         ( RequestDetails.status === 'sent' || RequestDetails.status === 'viewed' || RequestDetails.status === 'waiting_for_approval' )
                         ?
                         <>

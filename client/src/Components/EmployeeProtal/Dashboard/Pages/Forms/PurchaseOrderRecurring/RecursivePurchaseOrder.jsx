@@ -180,6 +180,9 @@ function RecursivePurchaseOrder() {
                     Status={ Status }
                     RequestStatuses={ RequestStatuses }
 
+                    setSPRSpecifications={ setSPRSpecifications }
+                    setPR={ setPR }
+                    setPRCode={ setPRCode }
                     overrideRequisition={ (e, type) => overrideRequisition( e, type, RequestDetails, history ) }
                     setStatus={ setStatus }
                     setRemovedBills={ setRemovedBills }
